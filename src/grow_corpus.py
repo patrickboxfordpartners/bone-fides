@@ -54,6 +54,17 @@ QUERIES = [
 EATER_PLAN = os.path.join(BASE, "data_eater_urls.json")
 SEEN = os.path.join(BASE, "data_seen_urls.json")
 
+# free regex pre-pass: an edge needs a person (chef/owner/founder) and a move
+# verb; articles with neither almost never yield one, so skip them before
+# spending a Mistral call
+ROLE_HINT = re.compile(
+    r"\b(chef|cook|culinary|pastry|kitchen|founder|co-founder|owner|restaurateur)\b", re.I)
+MOVE_HINT = re.compile(
+    r"\b(join(ed|s|ing)?|depart(ed|s|ure)?|leav(e|es|ing)|hired|appoint(ed|s|ment)?|"
+    r"took over|at the helm|formerly|previously|worked|stints?|came from|went on to|"
+    r"now (at|runs|heads)|opened by|founded by|from the (chef|team|folks|people) behind|"
+    r"alums?|chef de cuisine|sous chef|executive chef|chef-owner|hands? (of|over))\b", re.I)
+
 def discover(serp_fn, queries, per_query=20):
     """SERP queries -> candidate article URLs (already filtered by site:)."""
     urls = []
@@ -131,9 +142,24 @@ def main(max_articles=60):
             if not text or len(text) < 400:
                 print(f"[{done}/{len(fresh)}] skip thin: {u[:80]}")
                 seen.add(u); continue
-            edges = extract_edges(client, text)
+            if not (ROLE_HINT.search(text) and MOVE_HINT.search(text)):
+                print(f"[{done}/{len(fresh)}] pre-pass 0: {u[:80]}")
+                seen.add(u); continue
+            for attempt in range(4):
+                try:
+                    edges = extract_edges(client, text)
+                    break
+                except Exception as e:
+                    is_rate = "429" in str(e) or "rate" in str(e).lower()
+                    if not is_rate or attempt == 3:
+                        raise
+                    wait = 20 * (attempt + 1)
+                    print(f"[{done}/{len(fresh)}] rate limited, waiting {wait}s...")
+                    time.sleep(wait)
         except Exception as e:
             print(f"[{done}/{len(fresh)}] fail: {u[:80]} -> {type(e).__name__} {str(e)[:100]}")
+            if "429" in str(e) or "rate" in str(e).lower():
+                continue  # don't mark rate-limited URLs as seen — retry next run
             seen.add(u); continue
         if edges:
             docs = []

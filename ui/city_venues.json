@@ -294,7 +294,9 @@
 "address": "3565 20TH ST",
 "neighborhood": "Mission",
 "lat": 37.758357000001,
-"lng": -122.420376000002
+"lng": -122.420376000002,
+"lineaged": true,
+"lineage_name": "20 Spot"
 },
 {
 "name": "200 Channels Llc",
@@ -558,7 +560,9 @@
 "address": "919 CORTLAND AVE",
 "neighborhood": "Bernal Heights",
 "lat": 37.739133000001,
-"lng": -122.413680000002
+"lng": -122.413680000002,
+"lineaged": true,
+"lineage_name": "3rd Cousin"
 },
 {
 "name": "3Rd Floor Banquet Kitchen - W San Francisco",
@@ -1239,7 +1243,9 @@
 "address": "2355 CHESTNUT ST",
 "neighborhood": "Marina",
 "lat": 37.799793000001,
-"lng": -122.442066000002
+"lng": -122.442066000002,
+"lineaged": true,
+"lineage_name": "A16"
 },
 {
 "name": "A16 At Ferry Building",
@@ -1247,7 +1253,9 @@
 "address": "1 FERRY PLZ BLDG 17",
 "neighborhood": "Financial District/South Beach",
 "lat": 37.794934994446,
-"lng": -122.394265021381
+"lng": -122.394265021381,
+"lineaged": true,
+"lineage_name": "A16"
 },
 {
 "name": "Aa Bakery & Cafe The",
@@ -1319,7 +1327,9 @@
 "address": "398 HAYES ST",
 "neighborhood": "Hayes Valley",
 "lat": 37.777149000001,
-"lng": -122.422702500002
+"lng": -122.422702500002,
+"lineaged": true,
+"lineage_name": "Absinthe"
 },
 {
 "name": "Absinthe Pastry Kitchen",
@@ -1327,7 +1337,9 @@
 "address": "201 IVY ST",
 "neighborhood": "Hayes Valley",
 "lat": 37.777522232277,
-"lng": -122.421545008762
+"lng": -122.421545008762,
+"lineaged": true,
+"lineage_name": "Absinthe"
 },
 {
 "name": "Absteak",
@@ -2201,7 +2213,9 @@
 "address": "1415 18TH ST",
 "neighborhood": "Potrero Hill",
 "lat": 37.762443000001,
-"lng": -122.396836500002
+"lng": -122.396836500002,
+"lineaged": true,
+"lineage_name": "Alimentari Aurora"
 },
 {
 "name": "Alimento",
@@ -2979,7 +2993,9 @@
 "address": "132 THE EMBARCADERO",
 "neighborhood": "Financial District/South Beach",
 "lat": 37.793250000001,
-"lng": -122.392435500002
+"lng": -122.392435500002,
+"lineaged": true,
+"lineage_name": "Angler"
 },
 {
 "name": "Angolo Inc",
@@ -3510,7 +3526,9 @@
 "address": "1 FERRY BLDG STE 5",
 "neighborhood": "Financial District/South Beach",
 "lat": 37.794934994446,
-"lng": -122.394265021381
+"lng": -122.394265021381,
+"lineaged": true,
+"lineage_name": "Arquet"
 },
 {
 "name": "Arsicault Bakery",
@@ -3791,6 +3809,8 @@
 "neighborhood": "Marina",
 "lat": 37.798371000001,
 "lng": -122.436058500002,
+"lineaged": true,
+"lineage_name": "Atelier Crenn",
 "michelin": true
 },
 {
@@ -4048,6 +4068,8 @@
 "neighborhood": "Outer Richmond",
 "lat": 37.780304677265,
 "lng": -122.481597733467,
+"lineaged": true,
+"lineage_name": "Aziza",
 "michelin": true
 },
 {
@@ -4112,7 +4134,9 @@
 "address": "2821 CALIFORNIA ST",
 "neighborhood": "Pacific Heights",
 "lat": 37.787841000001,
-"lng": -122.440743000002
+"lng": -122.440743000002,
+"lineaged": true,
+"lineage_name": "B Patisserie"
 },
 {
 "name": "B Restaurant",
@@ -4136,7 +4160,9 @@
 "address": "205 FRANKLIN ST",
 "neighborhood": "Hayes Valley",
 "lat": 37.776375000001,
-"lng": -122.421564000002
+"lng": -122.421564000002,
+"lineaged": true,
+"lineage_name": "B-Side"
 },
 {
 "name": "B. Patisserie",
@@ -4144,7 +4170,9 @@
 "address": "350 POWELL ST",
 "neighborhood": "Financial District/South Beach",
 "lat": 37.787940000001,
-"lng": -122.407515000002
+"lng": -122.407515000002,
+"lineaged": true,
+"lineage_name": "B Patisserie"
 },
 {
 "name": "Ba @ Adobe Sf",
@@ -5240,7 +5268,9 @@
 "address": "821 DIVISADERO ST",
 "neighborhood": "Western Addition",
 "lat": 37.777185000001,
-"lng": -122.438475000002
+"lng": -122.438475000002,
+"lineaged": true,
+"lineage_name": "Bar 821"
 },
 {
 "name": "Bar Bibi",
@@ -5272,7 +5302,9 @@
 "address": "655 DIVISADERO ST",
 "neighborhood": "Hayes Valley",
 "lat": 37.775628000001,
-"lng": -122.438277000002
+"lng": -122.438277000002,
+"lineaged": true,
+"lineage_name": "Bar Crudo"
 },
 {
 "name": "Bar Gemini",
@@ -5280,7 +5312,9 @@
 "address": "2845 18TH ST",
 "neighborhood": "Mission",
 "lat": 37.761597000001,
-"lng": -122.410593000002
+"lng": -122.410593000002,
+"lineaged": true,
+"lineage_name": "Bar Gemini"
 },
 {
 "name": "Bar Hesperus Llc",
@@ -6256,7 +6290,9 @@
 "address": "3848 GEARY BLVD",
 "neighborhood": "Inner Richmond",
 "lat": 37.781487000001,
-"lng": -122.460867000002
+"lng": -122.460867000002,
+"lineaged": true,
+"lineage_name": "Bella"
 },
 {
 "name": "Bella Cafe",
@@ -6264,7 +6300,9 @@
 "address": "12 TILLMAN PL",
 "neighborhood": "Financial District/South Beach",
 "lat": 37.789407000001,
-"lng": -122.405647500002
+"lng": -122.405647500002,
+"lineaged": true,
+"lineage_name": "Bella"
 },
 {
 "name": "Bella Maggia Inc",
@@ -6272,7 +6310,9 @@
 "address": "500 FELL ST",
 "neighborhood": "Hayes Valley",
 "lat": 37.775700000001,
-"lng": -122.426293500002
+"lng": -122.426293500002,
+"lineaged": true,
+"lineage_name": "Bella"
 },
 {
 "name": "Bella Trattoria",
@@ -6280,7 +6320,9 @@
 "address": "3854 Geary BLVD",
 "neighborhood": "Inner Richmond",
 "lat": 37.781487000001,
-"lng": -122.460867000002
+"lng": -122.460867000002,
+"lineaged": true,
+"lineage_name": "Bella"
 },
 {
 "name": "Bellaria Dessert Studio",
@@ -6441,6 +6483,8 @@
 "neighborhood": "Financial District/South Beach",
 "lat": 37.785438000001,
 "lng": -122.399226000002,
+"lineaged": true,
+"lineage_name": "Benu",
 "michelin": true
 },
 {
@@ -6489,7 +6533,9 @@
 "address": "545 HAIGHT ST",
 "neighborhood": "Hayes Valley",
 "lat": 37.771839000001,
-"lng": -122.431162500002
+"lng": -122.431162500002,
+"lineaged": true,
+"lineage_name": "Berliner Berliner"
 },
 {
 "name": "Bernal Bakery",
@@ -7569,7 +7615,9 @@
 "address": "49 S Van Ness Ave 7th Floor",
 "neighborhood": "Mission",
 "lat": 37.774431000001,
-"lng": -122.418045000002
+"lng": -122.418045000002,
+"lineaged": true,
+"lineage_name": "Blue Bottle Coffee"
 },
 {
 "name": "Blue Bottle Coffee",
@@ -7577,7 +7625,9 @@
 "address": "199 SUTTER ST",
 "neighborhood": "Financial District/South Beach",
 "lat": 37.789614000001,
-"lng": -122.403510000002
+"lng": -122.403510000002,
+"lineaged": true,
+"lineage_name": "Blue Bottle Coffee"
 },
 {
 "name": "Blue Bottle Coffee",
@@ -7585,7 +7635,9 @@
 "address": "250 Howard ST",
 "neighborhood": "Financial District/South Beach",
 "lat": 37.790406000001,
-"lng": -122.394010500002
+"lng": -122.394010500002,
+"lineaged": true,
+"lineage_name": "Blue Bottle Coffee"
 },
 {
 "name": "Blue Bottle Coffee",
@@ -7593,7 +7645,9 @@
 "address": "55 S VAN NESS AVE",
 "neighborhood": "Mission",
 "lat": 37.774017000001,
-"lng": -122.418616500002
+"lng": -122.418616500002,
+"lineaged": true,
+"lineage_name": "Blue Bottle Coffee"
 },
 {
 "name": "Blue Bottle Coffee",
@@ -7601,7 +7655,9 @@
 "address": "115 SANSOME ST",
 "neighborhood": "Financial District/South Beach",
 "lat": 37.791432000001,
-"lng": -122.401053000002
+"lng": -122.401053000002,
+"lineaged": true,
+"lineage_name": "Blue Bottle Coffee"
 },
 {
 "name": "Blue Bottle Coffee",
@@ -7609,7 +7665,9 @@
 "address": "1 FERRY BLDG NORTH ARCADE 56",
 "neighborhood": "Financial District/South Beach",
 "lat": 37.794934994446,
-"lng": -122.394265021381
+"lng": -122.394265021381,
+"lineaged": true,
+"lineage_name": "Blue Bottle Coffee"
 },
 {
 "name": "Blue Bottle Coffee",
@@ -7617,7 +7675,9 @@
 "address": "2 SOUTH PARK ST",
 "neighborhood": "Financial District/South Beach",
 "lat": 37.78241514977,
-"lng": -122.39295904677
+"lng": -122.39295904677,
+"lineaged": true,
+"lineage_name": "Blue Bottle Coffee"
 },
 {
 "name": "Blue Bottle Coffee",
@@ -7625,7 +7685,9 @@
 "address": "1 FERRY BLDG MKT PLACE",
 "neighborhood": "Financial District/South Beach",
 "lat": 37.794934994446,
-"lng": -122.394265021381
+"lng": -122.394265021381,
+"lineaged": true,
+"lineage_name": "Blue Bottle Coffee"
 },
 {
 "name": "Blue Bottle Coffee",
@@ -7633,7 +7695,9 @@
 "address": "2453 FILLMORE ST",
 "neighborhood": "Pacific Heights",
 "lat": 37.792035000001,
-"lng": -122.434623000002
+"lng": -122.434623000002,
+"lineaged": true,
+"lineage_name": "Blue Bottle Coffee"
 },
 {
 "name": "Blue Bottle Coffee",
@@ -7641,7 +7705,9 @@
 "address": "168 2ND STREET ST",
 "neighborhood": "Inner Richmond",
 "lat": 37.785757669848,
-"lng": -122.460303426291
+"lng": -122.460303426291,
+"lineaged": true,
+"lineage_name": "Blue Bottle Coffee"
 },
 {
 "name": "Blue Bottle Coffee",
@@ -7649,7 +7715,9 @@
 "address": "705 MARKET ST",
 "neighborhood": "Financial District/South Beach",
 "lat": 37.787184000001,
-"lng": -122.403586500002
+"lng": -122.403586500002,
+"lineaged": true,
+"lineage_name": "Blue Bottle Coffee"
 },
 {
 "name": "Blue Bottle Coffee Inc",
@@ -7657,7 +7725,9 @@
 "address": "1385 4th ST",
 "neighborhood": "Mission Bay",
 "lat": 37.771110000001,
-"lng": -122.391076500002
+"lng": -122.391076500002,
+"lineaged": true,
+"lineage_name": "Blue Bottle Coffee"
 },
 {
 "name": "Blue Bottle Coffee Inc",
@@ -7665,7 +7735,9 @@
 "address": "909 MONTGOMERY ST STE 105",
 "neighborhood": "North Beach",
 "lat": 37.797516000001,
-"lng": -122.404081500002
+"lng": -122.404081500002,
+"lineaged": true,
+"lineage_name": "Blue Bottle Coffee"
 },
 {
 "name": "Blue Bottle Coffee Llc",
@@ -7673,7 +7745,9 @@
 "address": "315 Linden ST",
 "neighborhood": "Hayes Valley",
 "lat": 37.776267000001,
-"lng": -122.423242500002
+"lng": -122.423242500002,
+"lineaged": true,
+"lineage_name": "Blue Bottle Coffee"
 },
 {
 "name": "Blue Cross Pet Hospital",
@@ -7753,7 +7827,9 @@
 "address": "2033 UNION ST",
 "neighborhood": "Marina",
 "lat": 37.797147000001,
-"lng": -122.432827500002
+"lng": -122.432827500002,
+"lineaged": true,
+"lineage_name": "Blue Whale"
 },
 {
 "name": "Bluemoon Beauty Salon And  Spa",
@@ -8961,7 +9037,9 @@
 "address": "1   MISSION ST",
 "neighborhood": "Financial District/South Beach",
 "lat": 37.793232000001,
-"lng": -122.392894500002
+"lng": -122.392894500002,
+"lineaged": true,
+"lineage_name": "Boulevard"
 },
 {
 "name": "Bourbon And Branch",
@@ -10497,7 +10575,9 @@
 "address": "545 SANSOME ST",
 "neighborhood": "Chinatown",
 "lat": 37.795464000001,
-"lng": -122.401885500002
+"lng": -122.401885500002,
+"lineaged": true,
+"lineage_name": "Cafe Sebastian"
 },
 {
 "name": "Cafe Suspiro",
@@ -10929,7 +11009,9 @@
 "address": "1715 UNION ST",
 "neighborhood": "Marina",
 "lat": 37.797849000001,
-"lng": -122.427612000002
+"lng": -122.427612000002,
+"lineaged": true,
+"lineage_name": "Camino"
 },
 {
 "name": "Camp",
@@ -11641,7 +11723,9 @@
 "address": "2346 CHESTNUT ST",
 "neighborhood": "Marina",
 "lat": 37.800378000001,
-"lng": -122.441980500002
+"lng": -122.441980500002,
+"lineaged": true,
+"lineage_name": "Causwells"
 },
 {
 "name": "Cavalli Cafe",
@@ -12441,7 +12525,9 @@
 "address": "3355 MISSION ST",
 "neighborhood": "Bernal Heights",
 "lat": 37.742922000001,
-"lng": -122.421294000002
+"lng": -122.421294000002,
+"lineaged": true,
+"lineage_name": "Chicano Nuevo"
 },
 {
 "name": "Chicken G'S",
@@ -14632,7 +14718,9 @@
 "address": "1598 YOSEMITE AVE",
 "neighborhood": "Bayview Hunters Point",
 "lat": 37.726551000001,
-"lng": -122.390644500002
+"lng": -122.390644500002,
+"lineaged": true,
+"lineage_name": "Craftsman and Wolves"
 },
 {
 "name": "Craftsman And Wolves Valencia",
@@ -14640,7 +14728,9 @@
 "address": "746 VALENCIA ST",
 "neighborhood": "Mission",
 "lat": 37.760958000001,
-"lng": -122.421838500002
+"lng": -122.421838500002,
+"lineaged": true,
+"lineage_name": "Craftsman and Wolves"
 },
 {
 "name": "Crazy Crab Food Cart-317",
@@ -15312,7 +15402,9 @@
 "address": "135 4TH ST STE FC03",
 "neighborhood": "Financial District/South Beach",
 "lat": 37.784115000001,
-"lng": -122.403433500002
+"lng": -122.403433500002,
+"lineaged": true,
+"lineage_name": "Dabao Singapore"
 },
 {
 "name": "Dabao Singapore",
@@ -15320,7 +15412,9 @@
 "address": "1661 TENNESSEE ST STE 2K",
 "neighborhood": "Bayview Hunters Point",
 "lat": 37.750950000001,
-"lng": -122.388138000002
+"lng": -122.388138000002,
+"lineaged": true,
+"lineage_name": "Dabao Singapore"
 },
 {
 "name": "Dacha",
@@ -15592,7 +15686,9 @@
 "address": "425   BARNEVELD AVE",
 "neighborhood": "Bayview Hunters Point",
 "lat": 37.740375000001,
-"lng": -122.403640500002
+"lng": -122.403640500002,
+"lineaged": true,
+"lineage_name": "Daniel"
 },
 {
 "name": "Daniel Webster Elementary School",
@@ -15600,7 +15696,9 @@
 "address": "465 MISSOURI ST",
 "neighborhood": "Potrero Hill",
 "lat": 37.760526000001,
-"lng": -122.395855500002
+"lng": -122.395855500002,
+"lineaged": true,
+"lineage_name": "Daniel"
 },
 {
 "name": "Danny'S Coffee Shop",
@@ -15952,7 +16050,9 @@
 "address": "3621 18TH ST",
 "neighborhood": "Mission",
 "lat": 37.761363000001,
-"lng": -122.424201000002
+"lng": -122.424201000002,
+"lineaged": true,
+"lineage_name": "Delfina"
 },
 {
 "name": "Deli 23",
@@ -17032,7 +17132,9 @@
 "address": "395 HAYES ST",
 "neighborhood": "Hayes Valley",
 "lat": 37.776816000001,
-"lng": -122.422684500002
+"lng": -122.422684500002,
+"lineaged": true,
+"lineage_name": "Doppio Zero"
 },
 {
 "name": "Dos Pinas",
@@ -17840,7 +17942,9 @@
 "address": "50   CLEMENT ST",
 "neighborhood": "Inner Richmond",
 "lat": 37.783305000001,
-"lng": -122.459895000002
+"lng": -122.459895000002,
+"lineaged": true,
+"lineage_name": "Eats"
 },
 {
 "name": "Ebb & Flow",
@@ -18920,7 +19024,9 @@
 "address": "838 GRANT AVE FL SIXTH",
 "neighborhood": "Chinatown",
 "lat": 37.794798000001,
-"lng": -122.406318000002
+"lng": -122.406318000002,
+"lineaged": true,
+"lineage_name": "Empress by Boon"
 },
 {
 "name": "Enchanted Massage",
@@ -19048,7 +19154,9 @@
 "address": "478 GREEN ST",
 "neighborhood": "North Beach",
 "lat": 37.800027000001,
-"lng": -122.407155000002
+"lng": -122.407155000002,
+"lineaged": true,
+"lineage_name": "Equal Parts"
 },
 {
 "name": "Equator Coffees",
@@ -19872,7 +19980,9 @@
 "address": "690 VAN NESS AVE",
 "neighborhood": "Tenderloin",
 "lat": 37.781856000001,
-"lng": -122.420209500002
+"lng": -122.420209500002,
+"lineaged": true,
+"lineage_name": "Farming Hope"
 },
 {
 "name": "Fashion Laundrette",
@@ -20665,6 +20775,8 @@
 "neighborhood": "Mission",
 "lat": 37.758924000001,
 "lng": -122.412199500002,
+"lineaged": true,
+"lineage_name": "Flour + Water",
 "michelin": true
 },
 {
@@ -20673,7 +20785,9 @@
 "address": "1090 DR MAYA ANGELOU LANE LN STE A",
 "neighborhood": "Mission Bay",
 "lat": 37.774802391886,
-"lng": -122.389012923155
+"lng": -122.389012923155,
+"lineaged": true,
+"lineage_name": "Flour + Water"
 },
 {
 "name": "Flour + Water Pizzeria",
@@ -20681,7 +20795,9 @@
 "address": "532 COLUMBUS AVE",
 "neighborhood": "North Beach",
 "lat": 37.800072000001,
-"lng": -122.409427500002
+"lng": -122.409427500002,
+"lineaged": true,
+"lineage_name": "Flour + Water Pizzeria"
 },
 {
 "name": "Fluff N Fold",
@@ -20873,7 +20989,9 @@
 "address": "300 PRECITA AVE",
 "neighborhood": "Bernal Heights",
 "lat": 37.746603000001,
-"lng": -122.413333500002
+"lng": -122.413333500002,
+"lineaged": true,
+"lineage_name": "Foliage"
 },
 {
 "name": "Fondue Chinoise",
@@ -21121,7 +21239,9 @@
 "address": "710 COMMERCIAL ST",
 "neighborhood": "Chinatown",
 "lat": 37.794096000001,
-"lng": -122.405080500002
+"lng": -122.405080500002,
+"lineaged": true,
+"lineage_name": "Four Kings"
 },
 {
 "name": "Four Seasons Hotel San Francisco At Embarcadero",
@@ -21561,7 +21681,9 @@
 "address": "2809 24TH ST",
 "neighborhood": "Mission",
 "lat": 37.752642000001,
-"lng": -122.408460000002
+"lng": -122.408460000002,
+"lineaged": true,
+"lineage_name": "Fu Hui Hua"
 },
 {
 "name": "Fu Jian Traditional Chinese Medical Center",
@@ -22057,7 +22179,9 @@
 "address": "800 N POINT ST",
 "neighborhood": "Russian Hill",
 "lat": 37.805877000001,
-"lng": -122.420596500002
+"lng": -122.420596500002,
+"lineaged": true,
+"lineage_name": "Gary Danko"
 },
 {
 "name": "Gaspare'S Pizza House And Restaurant",
@@ -23249,7 +23373,9 @@
 "address": "362 COLUMBUS AVE",
 "neighborhood": "North Beach",
 "lat": 37.798569000001,
-"lng": -122.407362000002
+"lng": -122.407362000002,
+"lineaged": true,
+"lineage_name": "Golden Sardine"
 },
 {
 "name": "Golden Star Massage Therapy Llc",
@@ -23345,7 +23471,9 @@
 "address": "3560 18TH ST",
 "neighborhood": "Mission",
 "lat": 37.761840000001,
-"lng": -122.422936500002
+"lng": -122.422936500002,
+"lineaged": true,
+"lineage_name": "Good Good Culture Club"
 },
 {
 "name": "Good Life Company",
@@ -24761,7 +24889,9 @@
 "address": "1734 DIVISADERO ST",
 "neighborhood": "Pacific Heights",
 "lat": 37.785780000001,
-"lng": -122.439694500002
+"lng": -122.439694500002,
+"lineaged": true,
+"lineage_name": "Habibi"
 },
 {
 "name": "Habibi Lounge",
@@ -24769,7 +24899,9 @@
 "address": "26 6TH ST",
 "neighborhood": "South of Market",
 "lat": 37.781685000001,
-"lng": -122.409994500002
+"lng": -122.409994500002,
+"lineaged": true,
+"lineage_name": "Habibi"
 },
 {
 "name": "Habibi Market",
@@ -24777,7 +24909,9 @@
 "address": "1700 HAYES ST",
 "neighborhood": "Lone Mountain/USF",
 "lat": 37.774269000001,
-"lng": -122.444685000002
+"lng": -122.444685000002,
+"lineaged": true,
+"lineage_name": "Habibi"
 },
 {
 "name": "Habibi'S Birria Inc",
@@ -25033,7 +25167,9 @@
 "address": "808 DIVISADERO ST",
 "neighborhood": "Western Addition",
 "lat": 37.777077000001,
-"lng": -122.437935000002
+"lng": -122.437935000002,
+"lineaged": true,
+"lineage_name": "Hamburger Project"
 },
 {
 "name": "Hamburguesa Bar",
@@ -27065,7 +27201,9 @@
 "address": "1906 VAN NESS AVE",
 "neighborhood": "Russian Hill",
 "lat": 37.793385000001,
-"lng": -122.422513500002
+"lng": -122.422513500002,
+"lineaged": true,
+"lineage_name": "House of Prime Rib"
 },
 {
 "name": "House Of Shields",
@@ -27225,7 +27363,9 @@
 "address": "121   CAPP ST STE A",
 "neighborhood": "Mission",
 "lat": 37.764711000001,
-"lng": -122.418387000002
+"lng": -122.418387000002,
+"lineaged": true,
+"lineage_name": "Humphry Slocombe"
 },
 {
 "name": "Humphry Slocombe Ice Cream",
@@ -27233,7 +27373,9 @@
 "address": "2790 HARRISON ST A",
 "neighborhood": "Mission",
 "lat": 37.752836851424,
-"lng": -122.411964611437
+"lng": -122.411964611437,
+"lineaged": true,
+"lineage_name": "Humphry Slocombe"
 },
 {
 "name": "Humphry Slocombe Ice Cream",
@@ -27241,7 +27383,9 @@
 "address": "121 CAPP ST STE A",
 "neighborhood": "Mission",
 "lat": 37.764711000001,
-"lng": -122.418387000002
+"lng": -122.418387000002,
+"lineaged": true,
+"lineage_name": "Humphry Slocombe"
 },
 {
 "name": "Humphry Slocombe Ice Cream",
@@ -27249,7 +27393,9 @@
 "address": "1 FERRY BLDG PLZ STE 8",
 "neighborhood": "Financial District/South Beach",
 "lat": 37.794934994446,
-"lng": -122.394265021381
+"lng": -122.394265021381,
+"lineaged": true,
+"lineage_name": "Humphry Slocombe"
 },
 {
 "name": "Humphry Slocombe Ice Cream",
@@ -27257,7 +27403,9 @@
 "address": "699 22ND ST",
 "neighborhood": "Potrero Hill",
 "lat": 37.757871000001,
-"lng": -122.388129000002
+"lng": -122.388129000002,
+"lineaged": true,
+"lineage_name": "Humphry Slocombe"
 },
 {
 "name": "Hunan Cafe #2",
@@ -28121,7 +28269,9 @@
 "address": "301 MISSION ST",
 "neighborhood": "Financial District/South Beach",
 "lat": 37.790658000001,
-"lng": -122.396157000002
+"lng": -122.396157000002,
+"lineaged": true,
+"lineage_name": "International Smoke"
 },
 {
 "name": "International Store",
@@ -30106,7 +30256,9 @@
 "address": "151 WARRIORS WAY STE 105",
 "neighborhood": "Mission Bay",
 "lat": 37.768563000001,
-"lng": -122.388552000002
+"lng": -122.388552000002,
+"lineaged": true,
+"lineage_name": "Kayah by Burma Love"
 },
 {
 "name": "Kayah By Burma Love",
@@ -30114,7 +30266,9 @@
 "address": "151  WARRIORS WAY STE 105",
 "neighborhood": "Mission Bay",
 "lat": 37.768563000001,
-"lng": -122.388552000002
+"lng": -122.388552000002,
+"lineaged": true,
+"lineage_name": "Kayah by Burma Love"
 },
 {
 "name": "Kayma",
@@ -30555,7 +30709,9 @@
 "address": "55 CYRIL MAGNIN ST",
 "neighborhood": "Tenderloin",
 "lat": 37.784880000001,
-"lng": -122.408977500002
+"lng": -122.408977500002,
+"lineaged": true,
+"lineage_name": "Kin Khao"
 },
 {
 "name": "Kinara Kitchen Inc",
@@ -30963,7 +31119,9 @@
 "address": "10 29TH ST",
 "neighborhood": "Bernal Heights",
 "lat": 37.744146000001,
-"lng": -122.421001500002
+"lng": -122.421001500002,
+"lineaged": true,
+"lineage_name": "Komaaj"
 },
 {
 "name": "Kombu",
@@ -34412,7 +34570,9 @@
 "address": "50  FRANCISCO ST STE 105",
 "neighborhood": "North Beach",
 "lat": 37.806093000001,
-"lng": -122.405940000002
+"lng": -122.405940000002,
+"lineaged": true,
+"lineage_name": "Lulu"
 },
 {
 "name": "Luminara Coffee Llc",
@@ -34812,7 +34972,9 @@
 "address": "1398 HAIGHT ST",
 "neighborhood": "Haight Ashbury",
 "lat": 37.770259937251,
-"lng": -122.445253105203
+"lng": -122.445253105203,
+"lineaged": true,
+"lineage_name": "Magnolia Brewing"
 },
 {
 "name": "Mahalo!",
@@ -34924,7 +35086,9 @@
 "address": "1 FERRY BUILDING PLZ",
 "neighborhood": "Financial District/South Beach",
 "lat": 37.794934994446,
-"lng": -122.394265021381
+"lng": -122.394265021381,
+"lineaged": true,
+"lineage_name": "Maison Nico"
 },
 {
 "name": "Maison Nico",
@@ -34932,7 +35096,9 @@
 "address": "710 Montgomery ST",
 "neighborhood": "Chinatown",
 "lat": 37.795815000001,
-"lng": -122.403172500002
+"lng": -122.403172500002,
+"lineaged": true,
+"lineage_name": "Maison Nico"
 },
 {
 "name": "Maison Verbena Llc",
@@ -35486,7 +35652,9 @@
 "address": "500 BRANNAN ST",
 "neighborhood": "South of Market",
 "lat": 37.778337000001,
-"lng": -122.396764500002
+"lng": -122.396764500002,
+"lineaged": true,
+"lineage_name": "Marlowe"
 },
 {
 "name": "Marnee Thai Restaurant",
@@ -35903,7 +36071,9 @@
 "address": "2232 BUSH ST",
 "neighborhood": "Pacific Heights",
 "lat": 37.787211000001,
-"lng": -122.434137000002
+"lng": -122.434137000002,
+"lineaged": true,
+"lineage_name": "Mattina"
 },
 {
 "name": "Mau Restaurant",
@@ -36447,7 +36617,9 @@
 "address": "1148 MISSION ST",
 "neighborhood": "South of Market",
 "lat": 37.778553000001,
-"lng": -122.412163500002
+"lng": -122.412163500002,
+"lineaged": true,
+"lineage_name": "Merchant Roots"
 },
 {
 "name": "Merchants Exchange Bldg Llc",
@@ -37938,7 +38110,9 @@
 "address": "414 COLUMBUS AVE",
 "neighborhood": "North Beach",
 "lat": 37.799082000001,
-"lng": -122.408028000002
+"lng": -122.408028000002,
+"lineaged": true,
+"lineage_name": "Mona Lisa"
 },
 {
 "name": "Mona Lisa Restaurant",
@@ -37946,7 +38120,9 @@
 "address": "353 COLUMBUS AVE",
 "neighborhood": "Chinatown",
 "lat": 37.798353000001,
-"lng": -122.407740000002
+"lng": -122.407740000002,
+"lineaged": true,
+"lineage_name": "Mona Lisa"
 },
 {
 "name": "Monaghans",
@@ -38314,7 +38490,9 @@
 "address": "3079 16TH ST",
 "neighborhood": "Mission",
 "lat": 37.764684000001,
-"lng": -122.421334500002
+"lng": -122.421334500002,
+"lineaged": true,
+"lineage_name": "Mother"
 },
 {
 "name": "Mothership",
@@ -38890,7 +39068,9 @@
 "address": "553 DIVISADERO ST",
 "neighborhood": "Hayes Valley",
 "lat": 37.774701000001,
-"lng": -122.438038500002
+"lng": -122.438038500002,
+"lineaged": true,
+"lineage_name": "Namu Stonepot"
 },
 {
 "name": "Nan King Road Bistro",
@@ -38963,6 +39143,8 @@
 "neighborhood": "Japantown",
 "lat": 37.785564000001,
 "lng": -122.428719000002,
+"lineaged": true,
+"lineage_name": "Nari",
 "michelin": true
 },
 {
@@ -39819,7 +40001,9 @@
 "address": "330 GOUGH ST",
 "neighborhood": "Hayes Valley",
 "lat": 37.776663000001,
-"lng": -122.422684500002
+"lng": -122.422684500002,
+"lineaged": true,
+"lineage_name": "Nightbird"
 },
 {
 "name": "Nightingale",
@@ -40190,7 +40374,9 @@
 "address": "560 DIVISADERO ST",
 "neighborhood": "Hayes Valley",
 "lat": 37.774836000001,
-"lng": -122.437480500002
+"lng": -122.437480500002,
+"lineaged": true,
+"lineage_name": "Nopa"
 },
 {
 "name": "Nopa Corner Market",
@@ -40198,7 +40384,9 @@
 "address": "1601 FULTON ST",
 "neighborhood": "Lone Mountain/USF",
 "lat": 37.775979000001,
-"lng": -122.443272000002
+"lng": -122.443272000002,
+"lineaged": true,
+"lineage_name": "Nopa"
 },
 {
 "name": "Nopa Corner Market Llc",
@@ -40206,7 +40394,9 @@
 "address": "1601 FULTON ST",
 "neighborhood": "Lone Mountain/USF",
 "lat": 37.775979000001,
-"lng": -122.443272000002
+"lng": -122.443272000002,
+"lineaged": true,
+"lineage_name": "Nopa"
 },
 {
 "name": "Nopa Fish",
@@ -40214,7 +40404,9 @@
 "address": "1 FERRY BUILDING STE 31",
 "neighborhood": "Financial District/South Beach",
 "lat": 37.794934994446,
-"lng": -122.394265021381
+"lng": -122.394265021381,
+"lineaged": true,
+"lineage_name": "Nopa"
 },
 {
 "name": "Nopalito",
@@ -40862,7 +41054,9 @@
 "address": "1701 OCTAVIA ST",
 "neighborhood": "Pacific Heights",
 "lat": 37.787967000001,
-"lng": -122.427207000002
+"lng": -122.427207000002,
+"lineaged": true,
+"lineage_name": "Octavia"
 },
 {
 "name": "Odoo, Inc.",
@@ -41616,7 +41810,9 @@
 "address": "2875 18TH ST",
 "neighborhood": "Mission",
 "lat": 37.761597000001,
-"lng": -122.410863000002
+"lng": -122.410863000002,
+"lineaged": true,
+"lineage_name": "Osito"
 },
 {
 "name": "Oski",
@@ -41656,7 +41852,9 @@
 "address": "1402 GRANT AVE",
 "neighborhood": "North Beach",
 "lat": 37.800027000001,
-"lng": -122.407155000002
+"lng": -122.407155000002,
+"lineaged": true,
+"lineage_name": "Otherwise Brewing"
 },
 {
 "name": "Otoro",
@@ -42098,7 +42296,9 @@
 "address": "900 NORTH POINT ST B201A",
 "neighborhood": "Russian Hill",
 "lat": 37.805871995076,
-"lng": -122.423412000026
+"lng": -122.423412000026,
+"lineaged": true,
+"lineage_name": "Palette"
 },
 {
 "name": "Palihotel San Francisco",
@@ -42138,7 +42338,9 @@
 "address": "3809 18TH ST",
 "neighborhood": "Castro/Upper Market",
 "lat": 37.761084000001,
-"lng": -122.428620000002
+"lng": -122.428620000002,
+"lineaged": true,
+"lineage_name": "Palmetto"
 },
 {
 "name": "Palmetto Superfoods",
@@ -42146,7 +42348,9 @@
 "address": "49 S Van Ness Ave 7th Floor",
 "neighborhood": "Mission",
 "lat": 37.774431000001,
-"lng": -122.418045000002
+"lng": -122.418045000002,
+"lineaged": true,
+"lineage_name": "Palmetto"
 },
 {
 "name": "Palmetto Superfoods",
@@ -42154,7 +42358,9 @@
 "address": "291   3RD AVE",
 "neighborhood": "Inner Richmond",
 "lat": 37.783341000001,
-"lng": -122.461411500002
+"lng": -122.461411500002,
+"lineaged": true,
+"lineage_name": "Palmetto"
 },
 {
 "name": "Palmvy Hot Dogs",
@@ -42586,7 +42792,9 @@
 "address": "1652 STOCKTON ST",
 "neighborhood": "North Beach",
 "lat": 37.801134000001,
-"lng": -122.409022500002
+"lng": -122.409022500002,
+"lineaged": true,
+"lineage_name": "Park Tavern"
 },
 {
 "name": "Parker",
@@ -43298,7 +43506,9 @@
 "address": "609 HAYES ST",
 "neighborhood": "Hayes Valley",
 "lat": 37.776267000001,
-"lng": -122.426505000002
+"lng": -122.426505000002,
+"lineaged": true,
+"lineage_name": "Petit Crenn"
 },
 {
 "name": "Petite Auberge",
@@ -43530,7 +43740,9 @@
 "address": "4683 MISSION ST",
 "neighborhood": "Excelsior",
 "lat": 37.723293000001,
-"lng": -122.435532000002
+"lng": -122.435532000002,
+"lineaged": true,
+"lineage_name": "Pho Golden"
 },
 {
 "name": "Pho Ha Tien Inc",
@@ -43986,7 +44198,9 @@
 "address": "519 CLEMENT ST",
 "neighborhood": "Inner Richmond",
 "lat": 37.782684000001,
-"lng": -122.464953000002
+"lng": -122.464953000002,
+"lineaged": true,
+"lineage_name": "Pixlcat Coffee"
 },
 {
 "name": "Pizza Due",
@@ -44370,7 +44584,9 @@
 "address": "716 IRVING ST",
 "neighborhood": "Inner Sunset",
 "lat": 37.764261000001,
-"lng": -122.465551500002
+"lng": -122.465551500002,
+"lineaged": true,
+"lineage_name": "Poke Origin"
 },
 {
 "name": "Pokebola",
@@ -45626,7 +45842,9 @@
 "address": "49 S Van Ness Ave 7th Floor",
 "neighborhood": "Mission",
 "lat": 37.774431000001,
-"lng": -122.418045000002
+"lng": -122.418045000002,
+"lineaged": true,
+"lineage_name": "Quik Dog"
 },
 {
 "name": "Quince Restaurant",
@@ -45634,7 +45852,9 @@
 "address": "470 PACIFIC AVE",
 "neighborhood": "North Beach",
 "lat": 37.797507000001,
-"lng": -122.403379500002
+"lng": -122.403379500002,
+"lineaged": true,
+"lineage_name": "Quince"
 },
 {
 "name": "R & G Lounge",
@@ -45946,7 +46166,9 @@
 "address": "1379 4TH ST",
 "neighborhood": "Mission Bay",
 "lat": 37.771247949947,
-"lng": -122.391200007851
+"lng": -122.391200007851,
+"lineaged": true,
+"lineage_name": "Rasa"
 },
 {
 "name": "Rasa Rasa Kitchen",
@@ -45954,7 +46176,9 @@
 "address": "2200 BRYANT ST",
 "neighborhood": "Mission",
 "lat": 37.759059000001,
-"lng": -122.410062000002
+"lng": -122.410062000002,
+"lineaged": true,
+"lineage_name": "Rasa"
 },
 {
 "name": "Ratcha Thai",
@@ -46579,6 +46803,8 @@
 "neighborhood": "Hayes Valley",
 "lat": 37.774854000001,
 "lng": -122.422855500002,
+"lineaged": true,
+"lineage_name": "Rich Table",
 "michelin": true
 },
 {
@@ -47208,7 +47434,9 @@
 "address": "2  EMBARCADERO CTR UNIT R-2",
 "neighborhood": "Mission Bay",
 "lat": 37.781832368482,
-"lng": -122.388205587724
+"lng": -122.388205587724,
+"lineaged": true,
+"lineage_name": "Rosalind Bakery"
 },
 {
 "name": "Rosalind Bakery Llc",
@@ -47216,7 +47444,9 @@
 "address": "4 EMBARCADERO CTR STE 4054",
 "neighborhood": "Financial District/South Beach",
 "lat": 37.795534007156,
-"lng": -122.396236025913
+"lng": -122.396236025913,
+"lineaged": true,
+"lineage_name": "Rosalind Bakery"
 },
 {
 "name": "Rosamunde Sausage Grill",
@@ -47224,7 +47454,9 @@
 "address": "2832 MISSION ST",
 "neighborhood": "Mission",
 "lat": 37.751526000001,
-"lng": -122.418769500002
+"lng": -122.418769500002,
+"lineaged": true,
+"lineage_name": "Rosamunde"
 },
 {
 "name": "Rosas Jabali Inc",
@@ -47456,7 +47688,9 @@
 "address": "2801 CALIFORNIA ST",
 "neighborhood": "Pacific Heights",
 "lat": 37.787841000001,
-"lng": -122.440743000002
+"lng": -122.440743000002,
+"lineaged": true,
+"lineage_name": "Routier"
 },
 {
 "name": "Roxanne Cafe",
@@ -48152,7 +48386,9 @@
 "address": "228 TOWNSEND ST",
 "neighborhood": "South of Market",
 "lat": 37.778274000001,
-"lng": -122.393893500002
+"lng": -122.393893500002,
+"lineaged": true,
+"lineage_name": "Saison"
 },
 {
 "name": "Saison Cellar Sf Llc",
@@ -48160,7 +48396,9 @@
 "address": "234 TOWNSEND ST",
 "neighborhood": "South of Market",
 "lat": 37.778274000001,
-"lng": -122.393893500002
+"lng": -122.393893500002,
+"lineaged": true,
+"lineage_name": "Saison"
 },
 {
 "name": "Saison Restaurant",
@@ -48168,7 +48406,9 @@
 "address": "178 TOWNSEND ST",
 "neighborhood": "Financial District/South Beach",
 "lat": 37.779507000001,
-"lng": -122.392242000002
+"lng": -122.392242000002,
+"lineaged": true,
+"lineage_name": "Saison"
 },
 {
 "name": "Saiwaii Ramen",
@@ -48486,7 +48726,9 @@
 "address": "713 CLAY ST",
 "neighborhood": "Chinatown",
 "lat": 37.794258000001,
-"lng": -122.405125500002
+"lng": -122.405125500002,
+"lineaged": true,
+"lineage_name": "Sam Wo"
 },
 {
 "name": "Sam'S",
@@ -51406,7 +51648,9 @@
 "address": "708 BUSH ST",
 "neighborhood": "Nob Hill",
 "lat": 37.790160927656,
-"lng": -122.409031350087
+"lng": -122.409031350087,
+"lineaged": true,
+"lineage_name": "Sons & Daughters"
 },
 {
 "name": "Sool Bar And Lounge",
@@ -51446,7 +51690,9 @@
 "address": "3228 SACRAMENTO ST",
 "neighborhood": "Presidio Heights",
 "lat": 37.788570000001,
-"lng": -122.446201500002
+"lng": -122.446201500002,
+"lineaged": true,
+"lineage_name": "Sorrel"
 },
 {
 "name": "Sota (School Of The Arts)",
@@ -51895,6 +52141,8 @@
 "neighborhood": "Presidio Heights",
 "lat": 37.787733000001,
 "lng": -122.452771500002,
+"lineaged": true,
+"lineage_name": "Spruce",
 "michelin": true
 },
 {
@@ -52551,7 +52799,9 @@
 "address": "450 POWELL ST FL 21",
 "neighborhood": "Financial District/South Beach",
 "lat": 37.788858000001,
-"lng": -122.408388000002
+"lng": -122.408388000002,
+"lineaged": true,
+"lineage_name": "Starlite"
 },
 {
 "name": "Starr King Elementary School",
@@ -52576,6 +52826,8 @@
 "neighborhood": "Western Addition",
 "lat": 37.783665000001,
 "lng": -122.433088500002,
+"lineaged": true,
+"lineage_name": "State Bird Provisions",
 "michelin": true
 },
 {
@@ -52680,7 +52932,9 @@
 "address": "401 COLUMBUS AVE",
 "neighborhood": "Chinatown",
 "lat": 37.798884000001,
-"lng": -122.408568000002
+"lng": -122.408568000002,
+"lineaged": true,
+"lineage_name": "Steps of Rome"
 },
 {
 "name": "Sterne School",
@@ -52808,7 +53062,9 @@
 "address": "561 VALENCIA ST",
 "neighborhood": "Mission",
 "lat": 37.764018000001,
-"lng": -122.421519000002
+"lng": -122.421519000002,
+"lineaged": true,
+"lineage_name": "Stonemill Matcha"
 },
 {
 "name": "Stookey'S Club Moderne",
@@ -52976,7 +53232,9 @@
 "address": "302 VALENCIA ST",
 "neighborhood": "Mission",
 "lat": 37.767861000001,
-"lng": -122.422495500002
+"lng": -122.422495500002,
+"lineaged": true,
+"lineage_name": "Studio Aurora"
 },
 {
 "name": "Studio Golf Sf Llc",
@@ -54720,7 +54978,9 @@
 "address": "1500 BROADWAY ST",
 "neighborhood": "Russian Hill",
 "lat": 37.795962518321,
-"lng": -122.421897759567
+"lng": -122.421897759567,
+"lineaged": true,
+"lineage_name": "Taco Rouge"
 },
 {
 "name": "Taco San Buena",
@@ -55112,7 +55372,9 @@
 "address": "665 VALENCIA ST",
 "neighborhood": "Mission",
 "lat": 37.762236000001,
-"lng": -122.421460500002
+"lng": -122.421460500002,
+"lineaged": true,
+"lineage_name": "Taishoken"
 },
 {
 "name": "Taiwan Restaurant",
@@ -55640,7 +55902,9 @@
 "address": "1226 9TH AVE",
 "neighborhood": "Inner Sunset",
 "lat": 37.765368000001,
-"lng": -122.466087000002
+"lng": -122.466087000002,
+"lineaged": true,
+"lineage_name": "Tartine"
 },
 {
 "name": "Tartine Bakery",
@@ -55658,7 +55922,9 @@
 "address": "550 ALABAMA ST",
 "neighborhood": "Mission",
 "lat": 37.762200000001,
-"lng": -122.412469500002
+"lng": -122.412469500002,
+"lineaged": true,
+"lineage_name": "Tartine"
 },
 {
 "name": "Tartine Manufactory",
@@ -55666,7 +55932,9 @@
 "address": "595 ALABAMA ST",
 "neighborhood": "Mission",
 "lat": 37.761795000001,
-"lng": -122.411889000002
+"lng": -122.411889000002,
+"lineaged": true,
+"lineage_name": "Tartine"
 },
 {
 "name": "Taste Of Fusion Kitchen",
@@ -56554,7 +56822,9 @@
 "address": "1740 O'FARRELL ST",
 "neighborhood": "Western Addition",
 "lat": 37.783485000001,
-"lng": -122.433327000002
+"lng": -122.433327000002,
+"lineaged": true,
+"lineage_name": "The Anchovy Bar"
 },
 {
 "name": "The Arc San Francisco",
@@ -57086,7 +57356,9 @@
 "address": "1737 BALBOA ST",
 "neighborhood": "Outer Richmond",
 "lat": 37.776465000001,
-"lng": -122.477751000002
+"lng": -122.477751000002,
+"lineaged": true,
+"lineage_name": "Coffee Movement"
 },
 {
 "name": "The Coffee Movement",
@@ -57094,7 +57366,9 @@
 "address": "1030 WASHINGTON ST",
 "neighborhood": "Chinatown",
 "lat": 37.794834000001,
-"lng": -122.410309500002
+"lng": -122.410309500002,
+"lineaged": true,
+"lineage_name": "Coffee Movement"
 },
 {
 "name": "The Cookie Jeannie",
@@ -57134,7 +57408,9 @@
 "address": "1755 POLK ST",
 "neighborhood": "Russian Hill",
 "lat": 37.793160000001,
-"lng": -122.421334500002
+"lng": -122.421334500002,
+"lineaged": true,
+"lineage_name": "Crepe House"
 },
 {
 "name": "The Crepevine",
@@ -57904,7 +58180,9 @@
 "address": "1199 S VAN NESS AVE",
 "neighborhood": "Mission",
 "lat": 37.754127000001,
-"lng": -122.416087500002
+"lng": -122.416087500002,
+"lineaged": true,
+"lineage_name": "Little Spot Cafe"
 },
 {
 "name": "The Lost Church",
@@ -58160,7 +58438,9 @@
 "address": "299 BAYSHORE BLVD",
 "neighborhood": "Bayview Hunters Point",
 "lat": 37.743066000001,
-"lng": -122.404864500002
+"lng": -122.404864500002,
+"lineaged": true,
+"lineage_name": "Old Clam House"
 },
 {
 "name": "The Olympic Club (Lower Level)",
@@ -58401,6 +58681,8 @@
 "neighborhood": "Western Addition",
 "lat": 37.783665000001,
 "lng": -122.433088500002,
+"lineaged": true,
+"lineage_name": "The Progress",
 "michelin": true
 },
 {
@@ -58529,7 +58811,9 @@
 "address": "215 CHURCH ST",
 "neighborhood": "Castro/Upper Market",
 "lat": 37.767195000001,
-"lng": -122.428575000002
+"lng": -122.428575000002,
+"lineaged": true,
+"lineage_name": "The Rustic"
 },
 {
 "name": "The Sacred Grounds Cafe",
@@ -59017,7 +59301,9 @@
 "address": "123 BATTERY ST",
 "neighborhood": "Financial District/South Beach",
 "lat": 37.792611000001,
-"lng": -122.400450000002
+"lng": -122.400450000002,
+"lineaged": true,
+"lineage_name": "The Wild Fox"
 },
 {
 "name": "The Willows",
@@ -59593,7 +59879,9 @@
 "address": "1838 IRVING ST",
 "neighborhood": "Sunset/Parkside",
 "lat": 37.763784000001,
-"lng": -122.477796000002
+"lng": -122.477796000002,
+"lineaged": true,
+"lineage_name": "Toast\u2019N Egg"
 },
 {
 "name": "Tobacco Barn",
@@ -59946,6 +60234,8 @@
 "neighborhood": "North Beach",
 "lat": 37.797584011125,
 "lng": -122.405741020295,
+"lineaged": true,
+"lineage_name": "Tosca Cafe",
 "michelin": true
 },
 {
@@ -60306,7 +60596,9 @@
 "address": "3010 20TH ST",
 "neighborhood": "Mission",
 "lat": 37.759329000001,
-"lng": -122.411295000002
+"lng": -122.411295000002,
+"lineaged": true,
+"lineage_name": "Trick Dog"
 },
 {
 "name": "Tricolore Caffe And Pizzeria",
@@ -60370,7 +60662,9 @@
 "address": "753 ALABAMA ST",
 "neighborhood": "Mission",
 "lat": 37.759320000001,
-"lng": -122.411299500002
+"lng": -122.411299500002,
+"lineaged": true,
+"lineage_name": "True Laurel"
 },
 {
 "name": "True Sake Llc",
@@ -61730,7 +62024,9 @@
 "address": "2101 MARKET ST",
 "neighborhood": "Castro/Upper Market",
 "lat": 37.766961000001,
-"lng": -122.429151000002
+"lng": -122.429151000002,
+"lineaged": true,
+"lineage_name": "Verve"
 },
 {
 "name": "Verve Coffee Roasters",
@@ -61738,7 +62034,9 @@
 "address": "1155 BATTERY ST",
 "neighborhood": "Financial District/South Beach",
 "lat": 37.801800000001,
-"lng": -122.402322000002
+"lng": -122.402322000002,
+"lineaged": true,
+"lineage_name": "Verve"
 },
 {
 "name": "Verve Coffee Roasters",
@@ -61746,7 +62044,9 @@
 "address": "1155   BATTERY ST",
 "neighborhood": "Financial District/South Beach",
 "lat": 37.801800000001,
-"lng": -122.402322000002
+"lng": -122.402322000002,
+"lineaged": true,
+"lineage_name": "Verve"
 },
 {
 "name": "Verve Wine",
@@ -61754,7 +62054,9 @@
 "address": "2358 FILLMORE ST",
 "neighborhood": "Pacific Heights",
 "lat": 37.791468000001,
-"lng": -122.434141500002
+"lng": -122.434141500002,
+"lineaged": true,
+"lineage_name": "Verve"
 },
 {
 "name": "Vesuvio Cafe",
@@ -62746,7 +63048,9 @@
 "address": "201 PINE ST",
 "neighborhood": "Financial District/South Beach",
 "lat": 37.792071000001,
-"lng": -122.400027000002
+"lng": -122.400027000002,
+"lineaged": true,
+"lineage_name": "Wayfare Tavern"
 },
 {
 "name": "Wayfare Tavern",
@@ -62754,7 +63058,9 @@
 "address": "558 SACRAMENTO ST",
 "neighborhood": "Chinatown",
 "lat": 37.794015000001,
-"lng": -122.402340000002
+"lng": -122.402340000002,
+"lineaged": true,
+"lineage_name": "Wayfare Tavern"
 },
 {
 "name": "Wayo",
@@ -63314,7 +63620,9 @@
 "address": "3464 19TH ST",
 "neighborhood": "Mission",
 "lat": 37.760355000001,
-"lng": -122.420821500002
+"lng": -122.420821500002,
+"lineaged": true,
+"lineage_name": "Wildhawk"
 },
 {
 "name": "Wildseed",
@@ -64044,7 +64352,9 @@
 "address": "1265 BATTERY ST",
 "neighborhood": "Financial District/South Beach",
 "lat": 37.802880000001,
-"lng": -122.402074500002
+"lng": -122.402074500002,
+"lineaged": true,
+"lineage_name": "Xica"
 },
 {
 "name": "Xing Wang Market",
@@ -64244,7 +64554,9 @@
 "address": "702 VALENCIA ST",
 "neighborhood": "Mission",
 "lat": 37.761525000001,
-"lng": -122.421802500002
+"lng": -122.421802500002,
+"lineaged": true,
+"lineage_name": "Yellow Moto Pizzeria"
 },
 {
 "name": "Yellow Orchid Nail Spa",
@@ -64620,7 +64932,9 @@
 "address": "396 HARRISON ST",
 "neighborhood": "Financial District/South Beach",
 "lat": 37.787022000001,
-"lng": -122.392021500002
+"lng": -122.392021500002,
+"lineaged": true,
+"lineage_name": "YUJA Kitchen"
 },
 {
 "name": "Yuji",
