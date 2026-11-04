@@ -19,7 +19,7 @@
     mapboxgl.accessToken = TOKEN;
     const map = new mapboxgl.Map({
       container: 'map',
-      style: 'mapbox://styles/mapbox/light-v11',
+      style: 'mapbox://styles/mapbox/dark-v11',
       center: SF, zoom: 12.4, attributionControl: false,
     });
     map.addControl(new mapboxgl.NavigationControl({ showCompass: false }), 'top-right');
@@ -76,37 +76,6 @@
         });
       });
     });
-  }
-
-  async function openPop(v) {
-    // count edges touching this venue, then render the popup
-    let hits = [];
-    try {
-      const r = await fetch('/api/search?q=' + encodeURIComponent(v.name));
-      const d = await r.json();
-      hits = d.lineage || [];
-    } catch (e) { /* popup still opens */ }
-    const el = document.createElement('div');
-    el.className = 'mappop';
-    const chefs = new Set(hits.map(h => h.person).filter(Boolean));
-    el.innerHTML = `
-      <div class="t">${esc(v.name)}</div>
-      <div class="m">${hits.length} cited move${hits.length===1?'':'s'}${chefs.size ? ' · ' + chefs.size + ' chefs in the graph' : ''}</div>
-      <div class="links"></div>`;
-    const links = el.querySelector('.links');
-    if (v.website) {
-      const a = document.createElement('a');
-      a.href = v.website; a.target = '_blank'; a.rel = 'noopener';
-      a.textContent = 'Website';
-      links.appendChild(a);
-    }
-    const res = document.createElement('a');
-    res.href = 'https://www.resy.com/city/san-francisco?query=' + encodeURIComponent(v.name);
-    res.target = '_blank'; res.rel = 'noopener'; res.className = 'res';
-    res.textContent = 'Book on Resy';
-    links.appendChild(res);
-    new mapboxgl.Popup({ offset: 14, maxWidth: '280px' })
-      .setLngLat([v.lng, v.lat]).setDOMContent(el).addTo(map);
   }
 
   function esc(s){ return (s||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
