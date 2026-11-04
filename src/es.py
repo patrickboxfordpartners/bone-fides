@@ -50,10 +50,25 @@ def ensure_index(es, index=INDEX):
         es.indices.create(index=index, mappings=INDEX_SETTINGS["mappings"])
 
 def index_edges(es, docs, index=INDEX):
+    """Bulk-index, retrying through transient timeouts (the semantic_text field
+    generates embeddings server-side per doc, which intermittently stalls)."""
+    import time
     from elasticsearch.helpers import bulk
+    from elastic_transport import ConnectionTimeout
     actions = [{"_index": index, "_source": d} for d in docs]
-    bulk(es, actions)
-    es.indices.refresh(index=index)
+    for attempt in range(4):
+        try:
+            bulk(es, actions, request_timeout=120)
+            break
+        except ConnectionTimeout:
+            if attempt == 3:
+                raise
+            print(f"  index timeout, retrying in {15 * (attempt + 1)}s...")
+            time.sleep(15 * (attempt + 1))
+    try:
+        es.indices.refresh(index=index)
+    except Exception:
+        pass  # refresh is an optimization; the next refresh will catch up
 
 def find_edges(es, query, index=INDEX, size=20):
     """Hybrid search: fuzzy keyword on names + sparse_vector on semantic_text field."""
