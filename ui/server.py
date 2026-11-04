@@ -116,9 +116,9 @@ def stats(es):
     return {"edges": es.count(index=INDEX)["count"],
             "people": a["people"]["value"],
             "venues": len(venues),
-            "sources": len({b["key"] for b in es.search(
-                index=INDEX, body={"size": 0, "aggs": {"s": {"terms": {"field": "source_url.keyword", "size": 500}}}}
-            )["aggregations"]["s"]["buckets"]})}
+            "sources": es.search(
+                index=INDEX, body={"size": 0, "aggs": {"s": {"cardinality": {"field": "source_url.keyword"}}}}
+            )["aggregations"]["s"]["value"]}
 
 class Handler(SimpleHTTPRequestHandler):
     def do_GET(self):
