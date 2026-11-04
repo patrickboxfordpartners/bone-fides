@@ -79,6 +79,11 @@
   .arr .yr { font-size: 12px; color: var(--dim); font-weight: 340; font-style: italic; margin-left: 5px; }
   .chef .ev { font-size: 14.5px; margin-top: 10px; line-height: 1.5; color: var(--dim); font-weight: 350; font-style: italic; }
   .chef .src { font-size: 12.5px; margin-top: 8px; color: var(--dim); letter-spacing: .04em; }
+  .srcbadge { display: inline-block; font-size: 10px; font-weight: 560; letter-spacing: .08em;
+              text-transform: uppercase; padding: 1px 7px 2px; border: 1px solid currentColor;
+              border-radius: 99px; margin-left: 8px; vertical-align: 1px; }
+  .srcbadge.sfchronicle { color: #8a2318; }
+  .srcbadge.sfgate { color: #1a5e63; }
   .chef .src a { color: var(--gold); text-decoration: none; border-bottom: 1px solid rgba(194,160,90,.35); }
   .chef .src a:hover { color: var(--ink); border-color: var(--ink); }
   .empty { color: var(--dim); font-size: 16px; padding: 30px 0; font-style: italic; }
@@ -189,6 +194,13 @@ const SEEDS = ['Betelnut', 'Gitane', 'Cotogna', 'Outerlands', 'Finn Town', 'Chin
 
 function esc(s){ return (s||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 function hostOf(u){ try { return new URL(u).hostname.replace('www.',''); } catch(e){ return u; } }
+function srcBadge(u, source){
+  const h = (() => { try { return new URL(u).hostname; } catch(e){ return ''; } })();
+  const tier = source || (h.includes('sfchronicle') ? 'sfchronicle' : h.includes('sfgate') ? 'sfgate' : h.includes('eater') ? 'eater' : 'eater');
+  if(tier === 'sfchronicle') return '<span class="srcbadge sfchronicle">Chronicle</span>';
+  if(tier === 'sfgate') return '<span class="srcbadge sfgate">SFGate</span>';
+  return '<span class="srcbadge" style="color:var(--dim)">Eater</span>';
+}
 
 // ── rail head ──
 document.getElementById('dateline').textContent =
@@ -300,7 +312,7 @@ function render(q, edges, ms){
         <span class="pname">${esc(person)}</span>${meta ? '<span class="role">'+esc(meta)+'</span>' : ''}</div>
       <div class="chain">${chainHTML}</div>
       ${pivot.evidence ? '<div class="ev">' + esc(trunc(pivot.evidence, 190)) + '</div>' : ''}
-      ${pivot.source_url ? '<div class="src">§ <a href="'+esc(pivot.source_url)+'" target="_blank" rel="noopener">'+esc(hostOf(pivot.source_url))+'</a></div>' : ''}
+      ${pivot.source_url ? '<div class="src">§ <a href="'+esc(pivot.source_url)+'" target="_blank" rel="noopener">'+esc(hostOf(pivot.source_url))+'</a>' + srcBadge(pivot.source_url, pivot.source) + '</div>' : ''}
     </div>`);
   });
 

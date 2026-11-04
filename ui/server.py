@@ -41,6 +41,8 @@ def lineage(es, query, size=25):
             "role": s.get("role"),
             "date": s.get("date"),
             "confidence": s.get("confidence"),
+            "source": s.get("source"),
+            "action": s.get("action"),
             "evidence": (s.get("evidence") or "")[:220],
             "source_url": s.get("source_url"),
             "score": h.get("_score", 0),
