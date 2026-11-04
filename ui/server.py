@@ -75,13 +75,14 @@ def stats(es):
 class Handler(SimpleHTTPRequestHandler):
     def do_GET(self):
         es = self.server.es
-        if self.path.startswith("/api/search"):
+        path = urllib.parse.urlsplit(self.path).path  # ignore query string for routing
+        if path.startswith("/api/search"):
             self._safe(lambda: self._search(es))
-        elif self.path.startswith("/api/venues"):
+        elif path.startswith("/api/venues"):
             self._safe(lambda: self._json({"venues": venues_geo(es)}))
-        elif self.path.startswith("/api/stats"):
+        elif path.startswith("/api/stats"):
             self._safe(lambda: self._json(stats(es)))
-        elif self.path in ("/", "/index.html"):
+        elif path in ("/", "/index.html"):
             self._serve_index()
         else:
             super().do_GET()
