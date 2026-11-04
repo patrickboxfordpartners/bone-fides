@@ -100,8 +100,11 @@ def main(max_articles=60):
             seen.add(u); _persist(); continue
         if edges:
             docs = []
+            src = ("sfgate" if "sfgate.com" in u
+                   else "sfchronicle" if "sfchronicle.com" in u else "other")
             for e in edges:
                 e["source_url"] = u
+                e["source"] = src
                 docs.append(build_edge_doc(e))
             index_edges(es, docs)
             new_edges += len(edges)
