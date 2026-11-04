@@ -13,10 +13,13 @@ def build_edge_doc(edge):
         "to_venue": edge.get("to_venue"),
         "venue_text": " ".join(venue_bits) if venue_bits else edge.get("role", ""),
         "role": edge.get("role"),
+        "action": edge.get("action"),
+        "mentor": edge.get("mentor"),
         "date": edge.get("date"),
         "evidence": edge.get("evidence"),
         "confidence": edge.get("confidence"),
         "source_url": edge["source_url"],
+        "source": edge.get("source"),  # source tier: eater | sfgate | sfchronicle
     }
 
 INDEX_SETTINGS = {
@@ -28,10 +31,13 @@ INDEX_SETTINGS = {
             "to_venue": {"type": "keyword"},
             "venue_text": {"type": "text"},
             "role": {"type": "text"},
+            "action": {"type": "keyword"},
+            "mentor": {"type": "keyword"},
             "date": {"type": "text"},
             "evidence": {"type": "text"},
             "confidence": {"type": "keyword"},
             "source_url": {"type": "keyword"},
+            "source": {"type": "keyword"},
             "semantic": {"type": "semantic_text", "inference_id": ".openai-text-embedding-3-small"},
         }
     }
