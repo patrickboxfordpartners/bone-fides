@@ -1,33 +1,29 @@
-"""Bright Data SERP + fetch client for Bone Fides corpus growth.
+"""Bright Data SERP client for Bone Fides corpus discovery.
 
-Reads BRIGHTDATA_API_KEY / BRIGHTDATA_SERP_ZONE from the env file the user
-pointed us at (~/clones/boxford-crm-brightdata/.env) — values are never printed.
+Reads BRIGHTDATA_API_KEY / BRIGHTDATA_SERP_ZONE from bone-fides/.env
+(values are never printed). SERP results use the `link` field; google.com/goto
+redirect wrappers are dropped.
 """
-import json, os, time
-import urllib.request
+import json, os, ssl, urllib.request, urllib.parse
 
-ENV_CANDIDATES = [
-    os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), ".env"),
-    os.path.expanduser("~/clones/boxford-crm-brightdata/.env"),
-]
+BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-def _load_creds():
-    for path in ENV_CANDIDATES:
-        if not os.path.exists(path):
-            continue
-        creds = {}
-        with open(path) as f:
-            for line in f:
-                line = line.strip()
-                if line.startswith("BRIGHTDATA_"):
-                    k, _, v = line.partition("=")
-                    creds[k] = v.strip().strip('"').strip("'")
-        if creds.get("BRIGHTDATA_API_KEY") and creds.get("BRIGHTDATA_SERP_ZONE"):
-            return creds
-    raise RuntimeError("no BRIGHTDATA_API_KEY/BRIGHTDATA_SERP_ZONE in candidate env files")
+def load_env_brightdata():
+    env = {}
+    path = os.path.join(BASE, ".env")
+    if os.path.exists(path):
+        for line in open(path):
+            line = line.strip()
+            if line.startswith("BRIGHTDATA_") and "=" in line:
+                k, _, v = line.partition("=")
+                env[k] = v.strip()
+    return env
 
-CREDS = _load_creds()
+CREDS = load_env_brightdata()
 ENDPOINT = "https://api.brightdata.com/request"
+
+# local python may lack the CA bundle; the endpoint is our own authenticated call
+_CTX = ssl.create_default_context()
 
 def _post(payload, timeout=60):
     req = urllib.request.Request(ENDPOINT,
@@ -47,24 +43,15 @@ def serp(query, num=20):
         data = json.loads(data["body"])
     out = []
     for o in (data.get("organic") or []):
-        if o.get("url"):
-            out.append({"url": o["url"], "title": o.get("title") or ""})
+        link = o.get("link") or o.get("url") or ""
+        if not link or "google.com/goto" in link:
+            continue
+        out.append({"url": link, "title": o.get("title") or ""})
     return out
 
-def fetch_page(url, timeout=90):
-    """Fetch a page through Bright Data SERP zone unlocker; returns HTML text or None."""
-    try:
-        html = _post({"zone": CREDS["BRIGHTDATA_SERP_ZONE"],
-                      "url": url, "format": "raw"}, timeout=timeout)
-        return html if len(html) > 500 else None
-    except Exception as e:
-        print("  fetch fail:", url[:90], type(e).__name__, str(e)[:120])
-        return None
-
 if __name__ == "__main__":
-    import urllib.parse
     # smoke test: one cheap SERP call
-    r = serp("site:sf.eater.com chef shuffle san francisco", num=5)
+    r = serp("site:sf.eater.com chef shuffle san francisco", num=8)
     print("SERP OK:", len(r), "results")
-    for x in r[:5]:
+    for x in r[:8]:
         print(" -", x["url"][:100])
