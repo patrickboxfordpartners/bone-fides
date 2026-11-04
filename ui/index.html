@@ -109,6 +109,38 @@
            color: var(--dim); font-size: 13.5px; line-height: 1.6; }
   footer b { color: var(--ink); }
   footer .frow { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+
+  /* ── UX pass: a11y, focus, mobile ─────────── */
+  :root { --dim:#5f584c; }
+  .wrap { max-width:1120px; margin:0 auto; padding:0 40px; }
+  .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+  input#q::placeholder { color:#857b69; }
+  button.chip, button.vchip { appearance:none; }
+  :focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+  input#q:focus-visible { outline:none; border-color:var(--ink); box-shadow:0 0 0 3px rgba(139,58,47,.35); }
+  .sugg div[aria-selected="true"] { background:#f1ebdd; }
+  .err { color:#8b2a1f; font-size:16px; padding:30px 0; text-align:center; }
+  .err button { margin-left:8px; }
+  .legend { display:flex; gap:14px; font-size:12.5px; color:var(--dim); margin-top:10px; align-items:center; flex-wrap:wrap; }
+  .legend .conf { display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:5px; vertical-align:middle; }
+  @media (prefers-reduced-motion: reduce) { * { transition:none !important; } }
+  @media (max-width: 680px) {
+    .mast, .wrap { padding-left:18px; padding-right:18px; }
+    footer { padding-left:18px; padding-right:18px; }
+    .mastrow { flex-direction:column; gap:4px; }
+    h1 { font-size:38px; }
+    .standfirst { font-size:15.5px; }
+    .searchbar { flex-direction:column; }
+    input#q { font-size:18px; }
+    button.go { padding:13px; }
+    .sugg { right:0; top:58px; }
+    .card { padding:22px 18px 18px; }
+    .card h2 { font-size:29px; }
+    .maphead { flex-direction:column; gap:4px; }
+    .maphead h3 .k { display:block; font-size:15px; }
+    #graph { height:360px; } #map { height:360px; }
+    .chip, .vchip { padding:7px 14px; }
+  }
 </style>
 </head>
 <body>
@@ -123,14 +155,15 @@
      <b>cited to the article that reported it</b>. Type a kitchen; get its papers.</p>
 </header>
 
-<div class="wrap" style="max-width:1120px;margin:0 auto;padding:0 40px 0;">
-  <div class="searchbar">
-    <input id="q" placeholder="Try “Betelnut”, “Gitane”, “Cotogna”, a chef’s name…" autocomplete="off" spellcheck="false">
-    <button class="go" onclick="run()">Trace</button>
-    <div class="sugg" id="sugg"></div>
-  </div>
+<main class="wrap">
+  <form class="searchbar" role="search" onsubmit="event.preventDefault(); run();">
+    <label for="q" class="sr-only">Search a kitchen or chef</label>
+    <input id="q" type="search" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="sugg" placeholder="Try “Betelnut”, “Gitane”, “Cotogna”, a chef’s name…" autocomplete="off" spellcheck="false">
+    <button class="go" type="submit">Trace</button>
+    <div class="sugg" id="sugg" role="listbox" aria-label="Suggestions"></div>
+  </form>
   <div class="chips" id="chips"></div>
-  <div id="card" class="card">
+  <div id="card" class="card" aria-live="polite" aria-busy="false">
     <div class="empty">The graph holds a hundred-odd cited chef moves. Search one kitchen.</div>
   </div>
 
@@ -138,21 +171,21 @@
     <h3>The constellation<span class="k"> — every chef a dot, every kitchen a circle</span></h3>
     <span class="hint">click any circle to trace that kitchen</span>
   </div>
-  <svg id="graph"></svg>
+  <svg id="graph" role="img" aria-label="Lineage graph of SF kitchens and chefs"></svg>
 
   <div class="maphead">
     <h3>The map</h3>
     <span class="hint">current kitchens — website + booking on click</span>
   </div>
-  <div id="map"></div>
-</div>
+  <div id="map" aria-label="Map of current kitchens"></div>
+</main>
 
 <footer>
   <div class="frow">
     <span>Built tonight at the <b>SF Hackathon with Mistral</b> — <b>Mistral Large</b> reads the articles and
       extracts the moves; <b>Elasticsearch</b> hybrid search (keyword + vector, RRF) resolves your query to the
       kitchen. Every edge links to its source.</span>
-    <span><b>108 edges</b> · reading list of ~30 vetted SF food-writing sources</span>
+    <span>Reading list of ~30 vetted SF food-writing sources</span>
   </div>
 </footer>
 
@@ -174,14 +207,26 @@ fetch('/api/stats').then(r=>r.json()).then(d => {
 // ── search ──
 let lastFetch = 0;
 async function run(){
-  const q = Q.value.trim(); if(!q) return;
-  SUGG.style.display = 'none';
+  const q = Q.value.trim(); if(!q){ Q.focus(); return; }
+  hideSugg();
   CARD.innerHTML = '<div class="loading">Tracing the lineage…</div>';
   const mine = ++lastFetch;
   const t0 = performance.now();
-  const r = await fetch('/api/search?q=' + encodeURIComponent(q));
-  const d = await r.json();
+  CARD.setAttribute('aria-busy','true');
+  try { const u = new URL(location); u.searchParams.set('q', q); history.replaceState(null, '', u); } catch(e){}
+  let d;
+  try {
+    const r = await fetch('/api/search?q=' + encodeURIComponent(q));
+    d = await r.json();
+    if(!r.ok || d.error) throw new Error('search failed');
+  } catch(e){
+    if(mine !== lastFetch) return;
+    CARD.setAttribute('aria-busy','false');
+    CARD.innerHTML = '<div class="err" role="alert">Couldn’t reach the lineage index. <button class="chip" type="button" onclick="run()">Try again</button></div>';
+    return;
+  }
   if(mine !== lastFetch) return;
+  CARD.setAttribute('aria-busy','false');
   render(q, d.lineage, performance.now() - t0);
   if(window.__bfFocus) window.__bfFocus(q, d.lineage);
   if(window.__bfHighlight) window.__bfHighlight(q);
@@ -233,7 +278,7 @@ function buildChain(person_edges, ql){
 }
 
 function render(q, edges, ms){
-  if(!edges.length){ CARD.innerHTML = '<div class="empty">No lineage found for “'+esc(q)+'” — yet. The graph grows with every article pasted at the CLI.</div>'; return; }
+  if(!edges || !edges.length){ CARD.innerHTML = '<div class="empty">No lineage found for “'+esc(q)+'” yet. Check the spelling, try a chef’s name, or start with one of the kitchens above.</div>'; return; }
   const ql = q.toLowerCase();
 
   // group edges by chef, keep first-seen order
@@ -253,13 +298,13 @@ function render(q, edges, ms){
     const chainHTML = c.chain.map((v, i) => {
       const yr = i > 0 ? c.years[c.chain[i-1] + '>' + v] : null;
       return (i > 0 ? `<span class="arr">→${yr ? '<span class="yr">'+esc(yr)+'</span>' : ''}</span>` : '') +
-             `<span class="vchip${hereChip(v)}" ${hereChip(v) ? '' : `onclick="pick('${esc(v).replace(/'/g,"\\'")}')"`}>${esc(v)}</span>`;
+             (hereChip(v) ? `<span class="vchip here" aria-current="true">${esc(v)}</span>` : `<button type="button" class="vchip" onclick="pick('${esc(v).replace(/'/g,"\\'")}')">${esc(v)}</button>`);
     }).join('');
     const meta = [pivot.role, pivot.date && !Object.values(c.years).includes(pivot.date) ? pivot.date : null]
       .filter(Boolean).join(' · ');
     rows.push(`
     <div class="chef">
-      <div class="who"><span class="conf ${pivot.confidence||'medium'}"></span>
+      <div class="who"><span class="conf ${pivot.confidence||'medium'}" title="${esc(pivot.confidence||'medium')} confidence"></span><span class="sr-only">${esc(pivot.confidence||'medium')} confidence</span>
         <span class="pname">${esc(person)}</span>${meta ? '<span class="role">'+esc(meta)+'</span>' : ''}</div>
       <div class="chain">${chainHTML}</div>
       ${pivot.evidence ? '<div class="ev">' + esc(trunc(pivot.evidence, 190)) + '</div>' : ''}
@@ -272,6 +317,7 @@ function render(q, edges, ms){
     <div class="kicker">Kitchen dossier</div>
     <h2>${esc(q)}</h2>
     <div class="sub"><b>${rows.length}</b> chef${rows.length===1?'':'s'} in the record${ms ? ' · resolved in ' + Math.round(ms) + ' ms by hybrid search' : ''} · <i>click any kitchen to keep tracing</i></div>
+    <div class="legend" aria-hidden="true"><span><span class="conf high"></span>High confidence</span><span><span class="conf medium"></span>Medium</span><span><span class="conf low"></span>Low</span></div>
     <div class="dossier">${rows.join('')}</div>`;
 }
 
@@ -280,22 +326,34 @@ let sugTimer;
 Q.addEventListener('input', () => {
   clearTimeout(sugTimer);
   const v = Q.value.trim();
-  if(v.length < 2){ SUGG.style.display='none'; return; }
+  if(v.length < 2){ hideSugg(); return; }
   sugTimer = setTimeout(async () => {
     const r = await fetch('/api/search?q=' + encodeURIComponent(v));
     const d = await r.json();
     if(d.suggestions && d.suggestions.length){
-      SUGG.innerHTML = d.suggestions.map(s => `<div onclick="pick('${esc(s).replace(/'/g,"\\'")}')">${esc(s)}</div>`).join('');
-      SUGG.style.display = 'block';
-    } else SUGG.style.display='none';
+      SUGG.innerHTML = d.suggestions.map((s,i) => `<div role="option" id="sg${i}" aria-selected="false" onclick="pick('${esc(s).replace(/'/g,"\\'")}')">${esc(s)}</div>`).join('');
+      SUGG.style.display = 'block'; Q.setAttribute('aria-expanded','true'); sugIdx = -1;
+    } else hideSugg();
   }, 220);
 });
 document.addEventListener('click', e => { if(!SUGG.contains(e.target) && e.target !== Q) SUGG.style.display='none'; });
-Q.addEventListener('keydown', e => { if(e.key === 'Enter') run(); });
+let sugIdx = -1;
+function hideSugg(){ SUGG.style.display='none'; Q.setAttribute('aria-expanded','false'); Q.removeAttribute('aria-activedescendant'); sugIdx=-1; }
+Q.addEventListener('keydown', e => {
+  const opts = [...SUGG.querySelectorAll('[role=option]')];
+  if(e.key === 'Escape'){ hideSugg(); return; }
+  if(SUGG.style.display !== 'block' || !opts.length) return;
+  if(e.key === 'ArrowDown' || e.key === 'ArrowUp'){
+    e.preventDefault();
+    sugIdx = (sugIdx + (e.key === 'ArrowDown' ? 1 : -1) + opts.length) % opts.length;
+    opts.forEach((o,i) => o.setAttribute('aria-selected', i === sugIdx));
+    Q.setAttribute('aria-activedescendant', opts[sugIdx].id);
+  } else if(e.key === 'Enter' && sugIdx >= 0){ e.preventDefault(); pick(opts[sugIdx].textContent); }
+});
 
 // ── seed chips ──
 document.getElementById('chips').innerHTML =
-  '<span class="lbl">Start here</span>' + SEEDS.map(s => `<span class="chip" onclick="pick('${s}')">${s}</span>`).join('');
+  '<span class="lbl">Start here</span>' + SEEDS.map(s => `<button type="button" class="chip" onclick="pick('${s}')">${s}</button>`).join('');
 
 // ── map (loads only when the server injected a token) ──
 if(window.MAPBOX_TOKEN){
@@ -303,6 +361,8 @@ if(window.MAPBOX_TOKEN){
   s.src = 'map.js';
   document.head.appendChild(s);
 }
+const initQ = new URLSearchParams(location.search).get('q');
+if(initQ){ Q.value = initQ; run(); }
 const g = document.createElement('script');
 g.src = 'graph.js';
 document.head.appendChild(g);
