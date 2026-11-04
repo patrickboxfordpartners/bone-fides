@@ -142,6 +142,9 @@ def main(max_articles=60):
     fresh = [u for u in urls if u not in seen][:max_articles]
     print(f"{len(fresh)} fresh of {len(urls)} — processing up to {max_articles}")
 
+    def _persist():
+        _json.dump(sorted(seen), open(SEEN, "w"))
+
     new_edges = 0
     done = 0
     for u in fresh:
@@ -150,10 +153,10 @@ def main(max_articles=60):
             text = fetch_mod.fetch_text(u)
             if not text or len(text) < 400:
                 print(f"[{done}/{len(fresh)}] skip thin: {u[:80]}")
-                seen.add(u); continue
+                seen.add(u); _persist(); continue
             if not (ROLE_HINT.search(text) and MOVE_HINT.search(text)):
                 print(f"[{done}/{len(fresh)}] pre-pass 0: {u[:80]}")
-                seen.add(u); continue
+                seen.add(u); _persist(); continue
             for attempt in range(4):
                 try:
                     edges = extract_edges(client, text)
@@ -169,7 +172,7 @@ def main(max_articles=60):
             print(f"[{done}/{len(fresh)}] fail: {u[:80]} -> {type(e).__name__} {str(e)[:100]}")
             if "429" in str(e) or "rate" in str(e).lower():
                 continue  # don't mark rate-limited URLs as seen — retry next run
-            seen.add(u); continue
+            seen.add(u); _persist(); continue
         if edges:
             docs = []
             for e in edges:
@@ -181,9 +184,10 @@ def main(max_articles=60):
         else:
             print(f"[{done}/{len(fresh)}] 0 edges: {u[:80]}")
         seen.add(u)
-        _json.dump(sorted(seen), open(SEEN, "w"))
+        _persist()
         time.sleep(1.0)
 
+    _persist()
     print(f"DONE: {new_edges} new edges from {done} articles")
 
 if __name__ == "__main__":
