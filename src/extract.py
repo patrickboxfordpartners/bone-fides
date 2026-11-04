@@ -41,7 +41,7 @@ def build_edges_prompt(article_text):
     return (
         f"{article_text}\n\nExtract every chef-venue lineage edge stated in this article "
         f"as JSON with fields: {FIELDS}. "
-        "evidence is the citation: the exact supporting phrase. Only edges explicitly stated in the article; never infer."
+        "evidence is the source citation: the exact supporting phrase from the article. Only edges explicitly stated; never infer."
     )
 
 def parse_extraction(raw):
