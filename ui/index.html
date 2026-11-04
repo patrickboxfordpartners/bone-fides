@@ -135,6 +135,13 @@
   .err { color: var(--bad); font-size:16px; padding:30px 0; font-style:italic; }
   .err button { margin-left:10px; font-style:normal; color:var(--accent); border-bottom:1px solid var(--accent); }
   .legend { display:flex; gap:14px; font-size:12px; color:var(--dim); margin-top:12px; align-items:center; flex-wrap:wrap; }
+  .pedigree { margin-top: 18px; padding: 14px 16px 12px; border: 1px solid var(--faint); border-radius: 8px;
+              background: rgba(208,129,82,.05); }
+  .pedbar { height: 5px; border-radius: 3px; background: var(--faint); overflow: hidden; }
+  .pedbar span { display: block; height: 100%; border-radius: 3px;
+                 background: linear-gradient(90deg, var(--accent), var(--gold)); transition: width .6s ease; }
+  .pedlbl { margin-top: 8px; font-size: 12.5px; color: var(--dim); line-height: 1.5; }
+  .pedlbl b { color: var(--gold); font-weight: 600; font-size: 13.5px; }
   .legend .conf { display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px; vertical-align:middle; }
   @media (prefers-reduced-motion: reduce) { * { transition:none !important; } }
 
@@ -233,7 +240,7 @@ async function run(){
   }
   if(mine !== lastFetch) return;
   CARD.setAttribute('aria-busy','false');
-  render(q, d.lineage, performance.now() - t0);
+  render(q, d.lineage, performance.now() - t0, d.pedigree);
   if(window.__bfHighlight) window.__bfHighlight(q);
 }
 
@@ -281,9 +288,21 @@ function buildChain(person_edges, ql){
   return { chain, years, pivot };
 }
 
-function render(q, edges, ms){
+function render(q, edges, ms, ped){
   if(!edges || !edges.length){ CARD.innerHTML = '<div class="empty">No lineage found for “'+esc(q)+'” yet. Check the spelling, try a chef’s name, or start with one of the kitchens above.</div>'; return; }
   const ql = q.toLowerCase();
+
+  // pedigree dial: weighted credibility from source tiers + corroboration
+  let pedHTML = '';
+  if(ped){
+    const tierBits = [];
+    if(ped.tiers.sfchronicle) tierBits.push('<span style="color:#a8543f">'+ped.tiers.sfchronicle+' Chronicle</span>');
+    if(ped.tiers.sfgate) tierBits.push('<span style="color:#1a5e63">'+ped.tiers.sfgate+' SFGate</span>');
+    if(ped.tiers.eater) tierBits.push('<span>'+ped.tiers.eater+' Eater</span>');
+    pedHTML = '<div class="pedigree" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+ped.score+'" title="Credibility score: source authority (Chronicle > SFGate > Eater), independent corroboration across articles, and depth of the verified record">'+
+      '<div class="pedbar" aria-hidden="true"><span style="width:'+ped.score+'%"></span></div>'+
+      '<div class="pedlbl"><b>Bone Fides score '+ped.score+'</b>/100 — '+ped.moves+' move'+(ped.moves===1?'':'s')+', '+ped.sources+' independent source'+(ped.sources===1?'':'s')+' · '+tierBits.join(' · ')+'</div></div>';
+  }
 
   // group edges by chef, keep first-seen order
   const chefs = new Map();
@@ -321,6 +340,7 @@ function render(q, edges, ms){
     <div class="kicker">Kitchen dossier</div>
     <h2>${esc(q)}</h2>
     <div class="sub"><b>${rows.length}</b> chef${rows.length===1?'':'s'} in the record${ms ? ' · resolved in ' + Math.round(ms) + ' ms by hybrid search' : ''} · <i>click any kitchen to keep tracing</i></div>
+    ${pedHTML}
     <div class="legend" aria-hidden="true"><span><span class="conf high"></span>High confidence</span><span><span class="conf medium"></span>Medium</span><span><span class="conf low"></span>Low</span></div>
     <div class="dossier">${rows.join('')}</div>`;
 }

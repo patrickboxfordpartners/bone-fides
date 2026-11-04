@@ -49,6 +49,36 @@ def lineage(es, query, size=25):
         })
     return edges
 
+# Pedigree: source-tier weighting (the triangulation story). The Chronicle is
+# the paper of record — a verified personnel change weighs most; SFGate is the
+# same newsroom, lighter; Eater moves fastest but is the softest citation.
+TIER_WEIGHT = {"sfchronicle": 12, "sfgate": 8, "eater": 6}
+
+def pedigree(edges):
+    """Weighted credibility score for the queried kitchen/person, 0-100.
+
+    Three factors: authority (how Chronicle-weighted the citations are,
+    55pts), independent corroboration across sources (25pts), and depth of
+    the record (20pts). A thin single-Eater-article venue lands ~29; a
+    Chronicle-verified, multi-source, deep record approaches 100."""
+    if not edges:
+        return None
+    tiers = {"sfchronicle": 0, "sfgate": 0, "eater": 0}
+    total = 0
+    urls = set()
+    for e in edges:
+        t = e.get("source") if e.get("source") in TIER_WEIGHT else "eater"
+        tiers[t] += 1
+        total += TIER_WEIGHT[t]
+        if e.get("source_url"):
+            urls.add(e["source_url"])
+    authority = total / (len(edges) * TIER_WEIGHT["sfchronicle"])
+    corroboration = min(1.0, max(0, len(urls) - 1) / 4)
+    depth = min(1.0, len(edges) / 12)
+    score = round(55 * authority + 25 * corroboration + 20 * depth)
+    return {"score": min(100, score),
+            "moves": len(edges), "sources": len(urls), "tiers": tiers}
+
 def venues_geo(es):
     """Venues for the map: the full SF permitted-food universe (ui/city_venues.json,
     written by src/pull_city.py) merged with the curated geocode cache (ui/venues_geo.json).
@@ -140,7 +170,9 @@ class Handler(SimpleHTTPRequestHandler):
         q = urllib.parse.unquote(m.group(1)) if m else ""
         ms = re.search(r"size=(\d+)", self.path)
         size = min(300, int(ms.group(1))) if ms else 25
-        self._json({"query": q, "lineage": lineage(es, q, size=size) if q else [],
+        lin = lineage(es, q, size=size) if q else []
+        self._json({"query": q, "lineage": lin,
+                    "pedigree": pedigree(lin) if q else None,
                     "suggestions": suggest(es, q) if q else []})
 
     def _safe(self, fn):
