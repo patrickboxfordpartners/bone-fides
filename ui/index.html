@@ -32,45 +32,49 @@
             border-radius: 2px; background: var(--card); color: var(--ink); }
   input#q::placeholder { color: #a99f8e; font-style: italic; }
   input#q:focus { outline: none; border-color: var(--ink); box-shadow: 0 0 0 3px rgba(29,26,21,.08); }
-  button.go { font: 17px Georgia, serif; padding: 15px 34px; background: var(--ink); color: var(--paper);
-              border: 0; border-radius: 2px; cursor: pointer; letter-spacing: 1.5px; text-transform: uppercase; font-size: 14px; }
+  button.go { font: 14px Georgia, serif; padding: 15px 34px; background: var(--ink); color: var(--paper);
+              border: 0; border-radius: 2px; cursor: pointer; letter-spacing: 1.5px; text-transform: uppercase; }
   button.go:hover { background: var(--accent); }
   .sugg { position: absolute; top: 100%; left: 0; right: 150px; background: var(--card); border: 1px solid var(--line);
           border-top: 0; z-index: 30; display: none; box-shadow: 0 8px 22px rgba(29,26,21,.12); }
   .sugg div { padding: 11px 18px; cursor: pointer; font-size: 16.5px; border-bottom: 1px solid var(--hair); }
   .sugg div:last-child { border-bottom: 0; }
   .sugg div:hover { background: #f1ebdd; }
-  .sugg .k { color: var(--dim); font-size: 12px; float: right; font-style: italic; padding-top: 2px; }
   .chips { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0 30px; align-items: center; }
   .chips .lbl { font-size: 11.5px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--dim); margin-right: 4px; }
   .chip { font-size: 14.5px; padding: 5px 14px; border: 1px solid var(--line); border-radius: 999px; cursor: pointer;
           color: var(--ink); background: var(--card); font-family: Georgia, serif; }
   .chip:hover { border-color: var(--accent); color: var(--accent); background: #fff; }
-  .chip.on { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 
-  /* ── Result card ──────────────────────────── */
-  .card { background: var(--card); border: 1px solid var(--line); border-radius: 2px; padding: 30px 36px 26px;
+  /* ── Dossier card ─────────────────────────── */
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 2px; padding: 30px 38px 24px;
           box-shadow: 0 1px 3px rgba(29,26,21,.05); }
   .kicker { font-size: 11.5px; letter-spacing: 2.2px; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
   .card h2 { font-size: 38px; font-weight: bold; line-height: 1.05; }
-  .card .sub { color: var(--dim); font-size: 15.5px; margin-top: 6px; font-style: italic; }
-  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 40px; margin-top: 8px; }
-  @media (max-width: 860px) { .cols { grid-template-columns: 1fr; } }
-  .col h3 { font-size: 12.5px; text-transform: uppercase; letter-spacing: 1.8px; color: var(--ink);
-            border-bottom: 2px solid var(--ink); padding: 18px 0 7px; margin-bottom: 4px; }
-  .col h3 .n { color: var(--accent); }
-  .edge { padding: 14px 0 12px; border-bottom: 1px solid var(--hair); position: relative; }
-  .edge:last-child { border-bottom: 0; }
-  .edge .who { font-size: 17.5px; line-height: 1.35; }
-  .edge .who b { color: var(--accent); }
-  .edge .who .arr { color: var(--dim); }
-  .edge .meta { color: var(--dim); font-size: 13.5px; margin-top: 2px; font-style: italic; }
-  .edge .ev { font-size: 14.5px; margin-top: 7px; line-height: 1.5; color: #3d382f;
-              padding-left: 14px; border-left: 2px solid var(--hair); }
-  .edge .src { font-size: 12.5px; margin-top: 6px; color: var(--dim); }
-  .edge .src a { color: var(--accent); text-decoration: none; border-bottom: 1px dotted var(--accent); }
-  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 7px; vertical-align: 1.5px; }
-  .dot.high { background: #3a7d44; } .dot.medium { background: var(--gold); } .dot.low { background: #b03a2e; }
+  .card .sub { color: var(--dim); font-size: 15px; margin-top: 6px; font-style: italic; }
+  .card .sub b { color: var(--ink); font-style: normal; }
+
+  .dossier { margin-top: 14px; border-top: 2px solid var(--ink); }
+  .chef { padding: 16px 0 14px; border-bottom: 1px solid var(--hair); }
+  .chef:last-child { border-bottom: 0; }
+  .chef .who { display: flex; align-items: baseline; gap: 9px; }
+  .chef .pname { font-size: 18px; font-weight: bold; letter-spacing: .2px; }
+  .chef .role { color: var(--dim); font-size: 13.5px; font-style: italic; }
+  .chef .conf { width: 9px; height: 9px; border-radius: 50%; flex: none; align-self: center; }
+  .conf.high { background: #3a7d44; } .conf.medium { background: var(--gold); } .conf.low { background: #b03a2e; }
+  .chain { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; margin-top: 9px; }
+  .vchip { font-size: 14px; padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px;
+           background: #fff; cursor: pointer; color: var(--ink); font-family: Georgia, serif; line-height: 1.3;
+           transition: all .1s; }
+  .vchip:hover { border-color: var(--accent); color: var(--accent); }
+  .vchip.here { background: var(--accent); border-color: var(--accent); color: #fff; cursor: default; font-weight: bold; }
+  .arr { color: var(--accent); font-size: 15px; font-weight: bold; position: relative; padding: 0 1px; }
+  .arr .yr { position: absolute; left: 50%; transform: translateX(-50%); top: -13px; font-size: 10.5px;
+             color: var(--dim); font-weight: normal; font-style: italic; white-space: nowrap; }
+  .chef .ev { font-size: 14.5px; margin-top: 9px; line-height: 1.5; color: #3d382f;
+              padding-left: 13px; border-left: 2px solid var(--hair); max-width: 760px; }
+  .chef .src { font-size: 12.5px; margin-top: 6px; color: var(--dim); }
+  .chef .src a { color: var(--accent); text-decoration: none; border-bottom: 1px dotted var(--accent); }
   .empty { color: var(--dim); font-size: 17px; padding: 34px 0; text-align: center; font-style: italic; }
   .loading { color: var(--dim); font-size: 15px; padding: 30px 0; text-align: center; font-style: italic; }
 
@@ -80,9 +84,10 @@
   .maphead .hint { color: var(--dim); font-size: 13px; font-style: italic; }
   #map { height: 480px; border: 1px solid var(--line); border-radius: 2px; }
   .pin { cursor: pointer; }
-  .pin .d { width: 13px; height: 13px; border-radius: 50%; background: var(--accent); border: 2px solid #fff;
-            box-shadow: 0 1px 4px rgba(0,0,0,.35); transition: transform .12s; }
-  .pin:hover .d { transform: scale(1.45); }
+  .pin .d { width: 15px; height: 15px; border-radius: 50%; background: var(--accent); border: 2px solid #fff;
+            box-shadow: 0 1px 4px rgba(0,0,0,.35); transition: all .15s; }
+  .pin:hover .d { transform: scale(1.35); }
+  .pin.active .d { background: var(--ink); transform: scale(1.5); box-shadow: 0 0 0 5px rgba(29,26,21,.18), 0 1px 4px rgba(0,0,0,.4); }
   .mappop { font-family: Georgia, serif; min-width: 220px; }
   .mappop .t { font-size: 17px; font-weight: bold; margin-bottom: 4px; }
   .mappop .m { font-size: 12.5px; color: var(--dim); margin-bottom: 8px; font-style: italic; }
@@ -140,7 +145,6 @@
 <script>
 const Q = document.getElementById('q'), SUGG = document.getElementById('sugg'), CARD = document.getElementById('card');
 const SEEDS = ['Betelnut', 'Gitane', 'Cotogna', 'Outerlands', 'Finn Town', 'China Live', 'Maria Isabel'];
-const OPEN_UNKNOWN = 'https://www.google.com/search?q=';  // fallback for venues with no known site
 
 function esc(s){ return (s||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 function hostOf(u){ try { return new URL(u).hostname.replace('www.',''); } catch(e){ return u; } }
@@ -165,36 +169,93 @@ async function run(){
   const d = await r.json();
   if(mine !== lastFetch) return;
   render(q, d.lineage, performance.now() - t0);
+  if(window.__bfHighlight) window.__bfHighlight(q);
 }
 async function pick(name){ Q.value = name; run(); }
+window.pick = pick;
+
+function trunc(s, n){
+  s = (s||'').trim(); if(s.length <= n) return s;
+  const cut = s.slice(0, n); return cut.slice(0, cut.lastIndexOf(' ')) + '…';
+}
+
+/* Build one chef's venue chain around the queried kitchen.
+   person_edges: that chef's edges. q: lowercase query. Returns
+   {chain:[venue,...], years:{'a>b':date}, pivot:edge} or null if untouched by q. */
+function buildChain(person_edges, ql){
+  // prefer an exact venue match ("Betelnut") over substring noise ("Betelnut Pejiu Wu")
+  const exact = person_edges.find(e =>
+    (e.from_venue||'').toLowerCase() === ql || (e.to_venue||'').toLowerCase() === ql);
+  const pivot = exact || person_edges.find(e =>
+    (e.from_venue||'').toLowerCase().includes(ql) || (e.to_venue||'').toLowerCase().includes(ql));
+  if(!pivot) return null;
+  const pf = (pivot.from_venue||'').toLowerCase(), pt = (pivot.to_venue||'').toLowerCase();
+  const start = pf === ql ? pivot.from_venue : (pt === ql ? pivot.to_venue :
+               (pf.includes(ql) ? pivot.from_venue : pivot.to_venue));
+  const byFrom = {}, byTo = {};
+  person_edges.forEach(e => {
+    if(e.from_venue) (byFrom[e.from_venue] = byFrom[e.from_venue] || []).push(e);
+    if(e.to_venue)   (byTo[e.to_venue]   = byTo[e.to_venue]   || []).push(e);
+  });
+  const chain = [start], years = {};
+  let cur = start;
+  for(let i = 0; i < 8; i++){
+    const e = (byFrom[cur] || [])[0];
+    if(!e || !e.to_venue || chain.includes(e.to_venue)) break;
+    if(e.date) years[cur + '>' + e.to_venue] = e.date;
+    chain.push(e.to_venue); cur = e.to_venue;
+  }
+  cur = start;
+  for(let i = 0; i < 8; i++){
+    const e = (byTo[cur] || [])[0];
+    if(!e || !e.from_venue || chain.includes(e.from_venue)) break;
+    if(e.date) years[e.from_venue + '>' + cur] = e.date;
+    chain.unshift(e.from_venue); cur = e.from_venue;
+  }
+  return { chain, years, pivot };
+}
 
 function render(q, edges, ms){
   if(!edges.length){ CARD.innerHTML = '<div class="empty">No lineage found for “'+esc(q)+'” — yet. The graph grows with every article pasted at the CLI.</div>'; return; }
-  const inbound = [], outbound = [], person = [];
   const ql = q.toLowerCase();
+
+  // group edges by chef, keep first-seen order
+  const chefs = new Map();
   edges.forEach(e => {
-    const f = (e.from_venue||'').toLowerCase(), t = (e.to_venue||'').toLowerCase();
-    if(f.includes(ql) && e.to_venue) inbound.push(e);
-    else if(t.includes(ql) && e.from_venue) outbound.push(e);
-    else person.push(e);
+    if(!e.person) return;
+    if(!chefs.has(e.person)) chefs.set(e.person, []);
+    chefs.get(e.person).push(e);
   });
-  const row = (e, i) => `
-    <div class="edge">
-      <div class="who"><span class="dot ${e.confidence||'medium'}"></span><b>${esc(e.person)}</b>
-        <span class="arr">${e.from_venue && e.to_venue ? ' — ' + esc(e.from_venue) + ' → ' : (e.from_venue ? ' — from ' : ' — to ')}</span><b>${esc(e.to_venue || e.from_venue)}</b>
-        ${e.role ? ' <span class="meta">· ' + esc(e.role) + '</span>' : ''}</div>
-      ${e.evidence ? '<div class="ev">' + esc(e.evidence) + '</div>' : ''}
-      ${e.source_url ? '<div class="src">§ <a href="'+esc(e.source_url)+'" target="_blank" rel="noopener">'+esc(hostOf(e.source_url))+'</a></div>' : ''}
-    </div>`;
-  const sec = (title, rows) => rows.length ? `<div class="col"><h3>${title} <span class="n">${rows.length}</span></h3>${rows.map(row).join('')}</div>` : '';
+
+  const rows = [];
+  chefs.forEach((pedges, person) => {
+    const c = buildChain(pedges, ql);
+    if(!c) return;
+    const pivot = c.pivot;
+    const hereChip = v => v.toLowerCase() === ql ? ' here' : '';
+    const chainHTML = c.chain.map((v, i) => {
+      const yr = i > 0 ? c.years[c.chain[i-1] + '>' + v] : null;
+      return (i > 0 ? `<span class="arr">→${yr ? '<span class="yr">'+esc(yr)+'</span>' : ''}</span>` : '') +
+             `<span class="vchip${hereChip(v)}" ${hereChip(v) ? '' : `onclick="pick('${esc(v).replace(/'/g,"\\'")}')"`}>${esc(v)}</span>`;
+    }).join('');
+    const meta = [pivot.role, pivot.date && !Object.values(c.years).includes(pivot.date) ? pivot.date : null]
+      .filter(Boolean).join(' · ');
+    rows.push(`
+    <div class="chef">
+      <div class="who"><span class="conf ${pivot.confidence||'medium'}"></span>
+        <span class="pname">${esc(person)}</span>${meta ? '<span class="role">'+esc(meta)+'</span>' : ''}</div>
+      <div class="chain">${chainHTML}</div>
+      ${pivot.evidence ? '<div class="ev">' + esc(trunc(pivot.evidence, 190)) + '</div>' : ''}
+      ${pivot.source_url ? '<div class="src">§ <a href="'+esc(pivot.source_url)+'" target="_blank" rel="noopener">'+esc(hostOf(pivot.source_url))+'</a></div>' : ''}
+    </div>`);
+  });
+
+  if(!rows.length){ CARD.innerHTML = '<div class="empty">Edges matched, but none name a kitchen for “'+esc(q)+'”.</div>'; return; }
   CARD.innerHTML = `
     <div class="kicker">Kitchen dossier</div>
     <h2>${esc(q)}</h2>
-    <div class="sub">${edges.length} cited move${edges.length===1?'':'s'}${ms ? ' · resolved in ' + Math.round(ms) + ' ms by hybrid search' : ''}</div>
-    <div class="cols">
-      ${sec('Who came FROM here — where they went', inbound)}
-      ${sec('Who came TO here — where they were before', outbound)}
-    </div>${person.length ? '<div class="cols" style="margin-top:6px">' + sec('Related — chef and adjacent', person) + '</div>' : ''}`;
+    <div class="sub"><b>${rows.length}</b> chef${rows.length===1?'':'s'} in the record${ms ? ' · resolved in ' + Math.round(ms) + ' ms by hybrid search' : ''} · <i>click any kitchen to keep tracing</i></div>
+    <div class="dossier">${rows.join('')}</div>`;
 }
 
 // ── autosuggest ──

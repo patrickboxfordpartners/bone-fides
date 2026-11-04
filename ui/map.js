@@ -57,6 +57,13 @@
     }
 
     map.on('load', () => {
+      const markers = [];
+      window.__bfHighlight = name => {
+        markers.forEach(m => m.el.classList.remove('active'));
+        const hit = markers.find(m => m.name === name) ||
+                    markers.find(m => m.name.toLowerCase().startsWith(name.toLowerCase()));
+        if (hit) hit.el.classList.add('active');
+      };
       fetch('/api/venues').then(r => r.json()).then(vd => {
         (vd.venues || []).forEach(v => {
           if (typeof v.lat !== 'number') return;
@@ -64,7 +71,8 @@
           pin.className = 'pin';
           pin.innerHTML = '<div class="d"></div>';
           pin.addEventListener('click', () => openPop(v));
-          new mapboxgl.Marker({ element: pin }).setLngLat([v.lng, v.lat]).addTo(map);
+          const marker = new mapboxgl.Marker({ element: pin }).setLngLat([v.lng, v.lat]).addTo(map);
+          markers.push({ name: v.name, el: pin, marker });
         });
       });
     });
