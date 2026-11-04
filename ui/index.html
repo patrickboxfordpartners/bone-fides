@@ -93,18 +93,18 @@
   .railfoot b { color: var(--ink); font-weight: 550; }
 
   .pin { cursor: pointer; }
-  .pin .d { width: 13px; height: 13px; border-radius: 50%; background: var(--ink); border: 2px solid var(--bg);
-            box-shadow: 0 0 0 1px rgba(239,230,211,.4), 0 2px 8px rgba(0,0,0,.6); transition: all .15s; }
-  .pin:hover .d { transform: scale(1.4); background: var(--accent); box-shadow: 0 0 0 1px var(--accent), 0 2px 8px rgba(0,0,0,.6); }
+  .pin .d { width: 13px; height: 13px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg);
+            box-shadow: 0 0 0 1px var(--accent), 0 2px 8px rgba(0,0,0,.6); transition: all .15s; }
+  .pin.star .d { background: var(--gold); box-shadow: 0 0 0 1px var(--gold), 0 2px 8px rgba(0,0,0,.6); }
+  .pin:hover .d { transform: scale(1.4); box-shadow: 0 0 0 1px var(--accent), 0 0 12px rgba(208,129,82,.5), 0 2px 8px rgba(0,0,0,.6); }
+  .pin.star:hover .d { box-shadow: 0 0 0 1px var(--gold), 0 0 12px rgba(194,160,90,.5), 0 2px 8px rgba(0,0,0,.6); }
   .pin.active .d { background: var(--accent); transform: scale(1.6); box-shadow: 0 0 0 2px var(--accent), 0 0 18px rgba(208,129,82,.55); }
-  .mappop { font-family: 'Fraunces', Georgia, serif; min-width: 220px; color: var(--ink); }
-  .mappop .t { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
-  .mappop .m { font-size: 13px; color: var(--dim); margin-bottom: 10px; font-style: italic; }
-  .mappop a { display: inline-block; font-size: 13.5px; color: var(--gold); text-decoration: none;
-              border: 1px solid rgba(194,160,90,.45); border-radius: 999px; padding: 4px 14px; margin: 2px 6px 2px 0; }
-  .mappop a:hover { background: var(--gold); color: var(--bg); }
-  .mappop .res { background: var(--accent); color: var(--bg); border-color: var(--accent); font-weight: 600; }
-  .mappop .res:hover { background: var(--ink); border-color: var(--ink); }
+  .mappop .badge { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--gold);
+                   margin: -2px 0 6px; }
+  .mappop a.trace { background: var(--accent); color: var(--bg); border-color: var(--accent); font-weight: 600; }
+  .mappop a.trace:hover { background: var(--ink); border-color: var(--ink); }
+  .quiettip { font-family: 'Fraunces', Georgia, serif; font-size: 12.5px; color: var(--ink);
+              background: rgba(23,19,16,.9); padding: 4px 10px; border-radius: 4px; }
   .mapboxgl-popup-content { background: #1f1a15 !important; color: var(--ink) !important; padding: 14px 18px !important;
                             border-radius: 8px !important; box-shadow: 0 12px 32px rgba(0,0,0,.55) !important; }
   .mapboxgl-popup-tip { border-top-color: #1f1a15 !important; border-bottom-color: #1f1a15 !important; }
@@ -115,6 +115,14 @@
   .mapboxgl-ctrl-group button:hover { background-color: rgba(239,230,211,.1) !important; }
   .mapboxgl-ctrl-group button + button { border-top: 1px solid var(--faint); }
   .mapboxgl-ctrl-icon { filter: invert(.85); }
+  .mappop { font-family: 'Fraunces', Georgia, serif; min-width: 220px; color: var(--ink); }
+  .mappop .t { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+  .mappop .m { font-size: 13px; color: var(--dim); margin-bottom: 10px; font-style: italic; }
+  .mappop a { display: inline-block; font-size: 13.5px; color: var(--gold); text-decoration: none;
+              border: 1px solid rgba(194,160,90,.45); border-radius: 999px; padding: 4px 14px; margin: 2px 6px 2px 0; }
+  .mappop a:hover { background: var(--gold); color: var(--bg); }
+  .mappop .res { background: var(--accent); color: var(--bg); border-color: var(--accent); font-weight: 600; }
+  .mappop .res:hover { background: var(--ink); border-color: var(--ink); }
 
   /* ── a11y ─────────────────────────────────── */
   .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
@@ -171,7 +179,7 @@
 
   <div class="stage">
     <div id="map" aria-label="Map of current kitchens"></div>
-    <div class="stagehint" id="stagehint">Current kitchens — click a pin for website + booking</div>
+    <div class="stagehint" id="stagehint">Every permitted food business in SF — red = cited lineage, gold = Michelin starred</div>
   </div>
 </div>
 

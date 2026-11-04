@@ -48,12 +48,27 @@ def lineage(es, query, size=25):
     return edges
 
 def venues_geo(es):
-    """Venues + cached geocodes for the map (ui/venues_geo.json, written by ui/geocode.py)."""
-    cache = os.path.join(ROOT, "venues_geo.json")
-    if os.path.exists(cache):
-        with open(cache) as f:
-            return json.load(f)["venues"]
-    return []
+    """Venues for the map: the full SF permitted-food universe (ui/city_venues.json,
+    written by src/pull_city.py) merged with the curated geocode cache (ui/venues_geo.json)."""
+    venues = []
+    city = os.path.join(ROOT, "city_venues.json")
+    if os.path.exists(city):
+        with open(city) as f:
+            venues = json.load(f)["venues"]
+    curated = os.path.join(ROOT, "venues_geo.json")
+    if os.path.exists(curated):
+        with open(curated) as f:
+            by_name = {v["name"].lower(): v for v in venues}
+            for v in json.load(f)["venues"]:
+                hit = by_name.get(v["name"].lower())
+                if hit is None:
+                    # curated pin not in the city list (closed venues: Betelnut, Gitane, Stars…)
+                    # every curated pin came from the lineage graph, so it is lineaged by construction
+                    v.setdefault("lineaged", True)
+                    venues.append(v)
+                else:
+                    if v.get("website"): hit["website"] = v["website"]  # curated metadata wins
+    return venues
 
 def stats(es):
     """Top-line corpus stats for the masthead counter."""
