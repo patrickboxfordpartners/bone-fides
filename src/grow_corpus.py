@@ -95,13 +95,22 @@ def main(max_articles=60):
     from mistralai.client.sdk import Mistral
     client = Mistral(api_key=os.environ["MISTRAL_API_KEY"])
 
-    # primary source: the sitemap-harvested Eater lineage-genre list (free)
+    # primary source: the sitemap-harvested Eater lineage-genre list (free).
+    # cascade: "hot" lineage-genre slugs first, then the full "all" list (the
+    # free regex pre-pass keeps broad stretches cheap), SERP last (credits)
     urls = []
     if os.path.exists(EATER_PLAN):
         plan = _json.load(open(EATER_PLAN))
         urls = plan.get("hot") or []
-        urls = sorted(urls, reverse=True)  # newest first: richest, most extraction-friendly
-        print(f"sitemap plan: {len(urls)} lineage-genre Eater URLs (newest first)")
+        fresh = [u for u in sorted(urls, reverse=True) if u not in seen]
+        if not fresh:
+            urls = plan.get("all") or []
+            fresh = [u for u in sorted(urls, reverse=True) if u not in seen]
+            if fresh:
+                print(f"hot pool exhausted; widening to all {len(urls)} sitemap URLs")
+        urls = [u for u in fresh][:max_articles] if fresh else sorted(urls, reverse=True)
+        if fresh:
+            print(f"sitemap plan: {len(fresh)} fresh of {len(urls)} lineage-genre Eater URLs (newest first)")
     if not urls:  # fallback: Bright Data SERP discovery
         if not CREDS:
             print("no sitemap plan and no Bright Data creds — nothing to do")
