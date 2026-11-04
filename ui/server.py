@@ -89,7 +89,9 @@ class Handler(SimpleHTTPRequestHandler):
     def _search(self, es):
         m = re.search(r"q=([^&]*)", self.path)
         q = urllib.parse.unquote(m.group(1)) if m else ""
-        self._json({"query": q, "lineage": lineage(es, q) if q else [],
+        ms = re.search(r"size=(\d+)", self.path)
+        size = min(300, int(ms.group(1))) if ms else 25
+        self._json({"query": q, "lineage": lineage(es, q, size=size) if q else [],
                     "suggestions": suggest(es, q) if q else []})
 
     def _safe(self, fn):
