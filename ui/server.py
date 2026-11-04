@@ -49,12 +49,43 @@ def lineage(es, query, size=25):
 
 def venues_geo(es):
     """Venues for the map: the full SF permitted-food universe (ui/city_venues.json,
-    written by src/pull_city.py) merged with the curated geocode cache (ui/venues_geo.json)."""
+    written by src/pull_city.py) merged with the curated geocode cache (ui/venues_geo.json).
+
+    Quiet-dot curation: only eateries keep a dot. Chains, corporate cafeterias,
+    tobacco shops, pushcarts, schools and other permitted-but-not-a-kitchen
+    rows are dropped so the universe layer reads as "San Francisco restaurants".
+    Lineaged/michelin rows always survive."""
+    KEEP_TYPES = ("H24", "H25", "H26", "H28", "H29", "H86", "H87", "H88")
+
+    def keep_type(t):
+        t = t or ""
+        return any(t == k or t.startswith(k + " ") or t.startswith(k + " -")
+                   or t.startswith(k + "R") for k in KEEP_TYPES)
+
+    JUNK_WORDS = ("tbd", "to be determined", "facebook", "walgreen", "google",
+                  "salesforce", "amazon", "apple inc", "airbnb", "uber",
+                  "doordash", "lyft", "bon appetit", "proper food", "mixt",
+                  "test ", "unknown")
+    CHAIN_NAMES = ("mcdonald", "starbucks", "burger king", "jack in the box",
+                   "kentucky fried", "little caesars", "popeyes", "chipotle",
+                   "subway", "jamba juice", "peet", "philz", "phil'z", "taco bell",
+                   "wendy", "dunkin", "in n out", "mrs field", "cold stone",
+                   "dairy queen", "potbelly", "panera", "noah")
+
+    def is_junk(name):
+        n = (name or "").lower()
+        return any(w in n for w in JUNK_WORDS) or any(c in n for c in CHAIN_NAMES)
+
+    def keep(v):
+        if v.get("lineaged") or v.get("michelin"):
+            return True
+        return keep_type(v.get("permit_type")) and not is_junk(v.get("name"))
+
     venues = []
     city = os.path.join(ROOT, "city_venues.json")
     if os.path.exists(city):
         with open(city) as f:
-            venues = json.load(f)["venues"]
+            venues = [v for v in json.load(f)["venues"] if keep(v)]
     curated = os.path.join(ROOT, "venues_geo.json")
     if os.path.exists(curated):
         with open(curated) as f:

@@ -107,7 +107,7 @@
       const markers = [];
       special.forEach(v => {
         const pin = document.createElement('div');
-        pin.className = 'pin' + (v.michelin && !v.lineaged ? ' star' : '');
+        pin.className = 'pin' + (v.michelin ? ' star' : '');
         pin.title = v.name + (v.michelin ? ' · Michelin starred' : '') + (v.lineaged ? ' · has lineage' : '');
         pin.innerHTML = '<div class="d"></div>';
         pin.addEventListener('click', () => openPop(v));

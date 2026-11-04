@@ -41,7 +41,7 @@ def main():
     lineaged = {b["key"] for b in r["aggregations"]["to"]["buckets"] + r["aggregations"]["fr"]["buckets"] if b["key"]}
     ling_norm = {norm(v): v for v in lineaged}
 
-    star_norm = {norm(s) for s in STARRED}
+    star_norm = {norm(s): s for s in STARRED}
 
     cv = json.load(open(CITY))["venues"]
     tagged = 0
@@ -58,13 +58,33 @@ def main():
             v["lineaged"] = True
             v["lineage_name"] = hit
             tagged += 1
-        if n in star_norm:
-            v["michelin"] = True
+        # michelin: exact, then prefix ("Quince" matches "Quince Restaurant",
+        # "Angler" matches "Angler Sf, Llc"). Skip generic-prefix false positives
+        # ("Chestnut" must not tag "Chestnut Diner" / "Chestnut Street …").
+        GENERIC_STAR = {"chestnut", "akiko's"}
+        for sn, orig in star_norm.items():
+            if n == sn or (n.startswith(sn + " ") and sn not in GENERIC_STAR):
+                v["michelin"] = True
+                v.setdefault("lineage_name", orig)
+                break
+
+    # one pin per lineage name: keep the row with the shortest name (the
+    # flagship location), so Blue Bottle's 11 permits render as one dot
+    best = {}
+    for i, v in enumerate(cv):
+        ln = v.get("lineage_name")
+        if ln is None:
+            continue
+        if ln not in best or len(v["name"]) < len(cv[best[ln]]["name"]):
+            best[ln] = i
+    for i, v in enumerate(cv):
+        if v.get("lineage_name") and best.get(v["lineage_name"]) != i:
+            v.pop("lineaged", None); v.pop("lineage_name", None)
 
     json.dump({"venues": cv}, open(CITY, "w"), indent=0)
     mich = sum(1 for v in cv if v.get("michelin"))
     both = sum(1 for v in cv if v.get("michelin") and v.get("lineaged"))
-    print(f"city venues: {len(cv)}  lineaged: {tagged}  michelin: {mich}  starred-and-lineaged: {both}")
+    print(f"city venues: {len(cv)}  lineaged: {sum(1 for v in cv if v.get('lineaged'))}  michelin: {mich}  starred-and-lineaged: {both}")
     print("lineaged sample:", sorted({v["lineage_name"] for v in cv if v.get("lineaged")})[:15])
 
 if __name__ == "__main__":
