@@ -68,6 +68,11 @@
   .chef .who { display: flex; align-items: baseline; gap: 10px; }
   .chef .pname { font-size: 21px; font-weight: 560; letter-spacing: .01em; }
   .chef .role { color: var(--dim); font-size: 13.5px; font-style: italic; font-weight: 340; }
+  .idline { margin-top: 5px; font-size: 12.5px; color: var(--dim); font-weight: 340; }
+  .idflag { display: inline-block; padding: 1px 8px 2px; border: 1px solid var(--faint); border-radius: 10px;
+            font-size: 11.5px; font-style: normal; }
+  .idflag.homonym { color: var(--bad); border-color: color-mix(in srgb, var(--bad) 40%, transparent); }
+  .idflag.possible { color: #a07d3f; border-color: color-mix(in srgb, #a07d3f 40%, transparent); }
   .chef .conf { width: 8px; height: 8px; border-radius: 50%; flex: none; align-self: center; }
   .conf.high { background: var(--ok); } .conf.medium { background: var(--gold); } .conf.low { background: var(--bad); }
   .chain { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; margin-top: 8px; }
@@ -240,7 +245,7 @@ async function run(){
   }
   if(mine !== lastFetch) return;
   CARD.setAttribute('aria-busy','false');
-  render(q, d.lineage, performance.now() - t0, d.pedigree);
+  render(q, d.lineage, performance.now() - t0, d.pedigree, d.identity);
   if(window.__bfHighlight) window.__bfHighlight(q);
 }
 
@@ -288,9 +293,11 @@ function buildChain(person_edges, ql){
   return { chain, years, pivot };
 }
 
-function render(q, edges, ms, ped){
+function render(q, edges, ms, ped, identity){
   if(!edges || !edges.length){ CARD.innerHTML = '<div class="empty">No lineage found for “'+esc(q)+'” yet. Check the spelling, try a chef’s name, or start with one of the kitchens above.</div>'; return; }
   const ql = q.toLowerCase();
+  const isPersonQuery = identity && identity.length > 0 && identity[0].n > 0 &&
+    edges.filter(e => e.person && ((e.from_venue||'').toLowerCase().includes(ql) || (e.to_venue||'').toLowerCase().includes(ql))).length === 0;
 
   // pedigree dial: weighted credibility from source tiers + corroboration
   let pedHTML = '';
@@ -304,17 +311,13 @@ function render(q, edges, ms, ped){
       '<div class="pedlbl"><b>Bone Fides score '+ped.score+'</b>/100 — '+ped.moves+' move'+(ped.moves===1?'':'s')+', '+ped.sources+' independent source'+(ped.sources===1?'':'s')+' · '+tierBits.join(' · ')+'</div></div>';
   }
 
-  // group edges by chef, keep first-seen order
-  const chefs = new Map();
-  edges.forEach(e => {
-    if(!e.person) return;
-    if(!chefs.has(e.person)) chefs.set(e.person, []);
-    chefs.get(e.person).push(e);
-  });
-
+  // one card per identity cluster (server-side people disambiguation)
   const rows = [];
-  chefs.forEach((pedges, person) => {
-    const c = buildChain(pedges, ql);
+  const personQuery = isPersonQuery;
+  (identity || []).forEach(cl => {
+    const pedges = cl.edges;
+    // chain pivots on the queried kitchen, or on the person's own history
+    const c = buildChain(pedges, ql) || (personQuery ? buildPersonChain(pedges) : null);
     if(!c) return;
     const pivot = c.pivot;
     const hereChip = v => v.toLowerCase() === ql ? ' here' : '';
@@ -323,12 +326,20 @@ function render(q, edges, ms, ped){
       return (i > 0 ? `<span class="arr">→${yr ? '<span class="yr">'+esc(yr)+'</span>' : ''}</span>` : '') +
              (hereChip(v) ? `<span class="vchip here" aria-current="true">${esc(v)}</span>` : `<button type="button" class="vchip" onclick="pick('${esc(v).replace(/'/g,"\\'")}')">${esc(v)}</button>`);
     }).join('');
+    // identity badges: name variants + homonym / possible-same-chef flags
+    let idBadge = '';
+    const bits = [];
+    if(cl.aliases && cl.aliases.length) bits.push('also cited as ' + cl.aliases.map(a => esc(a)).join(', '));
+    if(cl.homonym) bits.push('<span class="idflag homonym" title="Same name, disjoint venue histories — possibly two different people. Not auto-merged.">possibly two people</span>');
+    if(cl.possible && cl.possible.length) bits.push('<span class="idflag possible" title="Name variants share no cited venue or article, so these stay separate.">possibly ' + cl.possible.map(a => esc(a)).join(' · ') + '</span>');
+    if(bits.length) idBadge = '<div class="idline">'+bits.join(' · ')+'</div>';
     const meta = [pivot.role, pivot.date && !Object.values(c.years).includes(pivot.date) ? pivot.date : null]
       .filter(Boolean).join(' · ');
     rows.push(`
     <div class="chef">
       <div class="who"><span class="conf ${pivot.confidence||'medium'}" title="${esc(pivot.confidence||'medium')} confidence"></span><span class="sr-only">${esc(pivot.confidence||'medium')} confidence</span>
-        <span class="pname">${esc(person)}</span>${meta ? '<span class="role">'+esc(meta)+'</span>' : ''}</div>
+        <span class="pname">${esc(cl.name)}</span>${meta ? '<span class="role">'+esc(meta)+'</span>' : ''}</div>
+      ${idBadge}
       <div class="chain">${chainHTML}</div>
       ${pivot.evidence ? '<div class="ev">' + esc(trunc(pivot.evidence, 190)) + '</div>' : ''}
       ${pivot.source_url ? '<div class="src">§ <a href="'+esc(pivot.source_url)+'" target="_blank" rel="noopener">'+esc(hostOf(pivot.source_url))+'</a>' + srcBadge(pivot.source_url, pivot.source) + '</div>' : ''}
@@ -343,6 +354,21 @@ function render(q, edges, ms, ped){
     ${pedHTML}
     <div class="legend" aria-hidden="true"><span><span class="conf high"></span>High confidence</span><span><span class="conf medium"></span>Medium</span><span><span class="conf low"></span>Low</span></div>
     <div class="dossier">${rows.join('')}</div>`;
+}
+
+/* Person-query chain: no venue pivot exists, so lay the chef's cited moves
+   out as a timeline of venue chips (each venue once, corpus order). */
+function buildPersonChain(pedges){
+  const seen = new Set(), stops = [];
+  pedges.forEach(e => {
+    [e.from_venue, e.to_venue].forEach(v => {
+      if(v && !seen.has(v)){ seen.add(v); stops.push(v); }
+    });
+  });
+  if(!stops.length) return null;
+  const years = {};
+  pedges.forEach(e => { if(e.from_venue && e.to_venue && e.date) years[e.from_venue+'>'+e.to_venue] = e.date; });
+  return { chain: stops, years, pivot: pedges[0] };
 }
 
 // ── autosuggest ──

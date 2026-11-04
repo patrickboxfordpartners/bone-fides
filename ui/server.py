@@ -54,6 +54,193 @@ def lineage(es, query, size=25):
 # same newsroom, lighter; Eater moves fastest but is the softest citation.
 TIER_WEIGHT = {"sfchronicle": 12, "sfgate": 8, "eater": 6}
 
+def norm_name(n):
+    """Canonical person-name key: drop quoted nicknames, straighten quotes,
+    lowercase, strip punctuation. 'Traci des Jardins' == 'Traci Des Jardins',
+    "Sean O'Brien" == 'Sean O’Brien', "Thitid 'Ton' Tassanakajohn" collapses."""
+    import re as _re
+    n = _re.sub(r'"[^"]*"', '', n)
+    n = n.replace(chr(8217), "'").replace(chr(8216), "'")
+    n = n.replace(chr(8220), "'").replace(chr(8221), "'")  # curly double -> straight
+    n = _re.sub(r"'[^']*'", '', n)
+    n = _re.sub(r'[^a-z\s-]', '', n.lower())
+    return ' '.join(n.split())
+
+def norm_venue(v):
+    """Normalized venue key for overlap matching only (never displayed):
+    drop parenthetical annotations (Saison (2124 Folsom St.) == Saison),
+    trailing possessives (Chez TJ's == Chez TJ), unicode-fold accents
+    (Jardinière == Jardiniere), straighten apostrophes, strip punctuation,
+    drop stop words (The Commissary == Commissary)."""
+    import re as _re, unicodedata as _ud
+    v = _re.sub(r'\([^)]*\)', ' ', v)                     # (Folsom St. location)
+    v = _ud.normalize("NFD", v)
+    v = "".join(ch for ch in v if not _ud.combining(ch))
+    v = v.replace(chr(8217), "'").replace(chr(8216), "'")
+    v = _re.sub(r"['’]s?\b", '', v)                       # possessive TJ's -> TJ
+    v = _re.sub(r'[^a-z0-9\s]', '', v.lower())
+    toks = [t for t in v.split() if t not in ("the", "a", "an", "of", "at", "in", "on")]
+    return ' '.join(toks)
+
+def _venue_touch(va, vb):
+    """Two venue keys touch on exact equality OR token containment
+    (Betelnut ⊂ Betelnut Pejiu Wu, Ritz Carlton ⊂ Ritz Carlton Buckhead)."""
+    if va == vb:
+        return True
+    ta, tb = set(va.split()), set(vb.split())
+    return bool(ta and tb and (ta <= tb or tb <= ta))
+
+def _venues_touch(sa, sb):
+    """Any pair of venue keys across two sets touches."""
+    return any(_venue_touch(a, b) for a in sa for b in sb)
+
+def venue_history(edges):
+    """Set of normalized venue keys an edge set touches (from_venue + to_venue)."""
+    v = set()
+    for e in edges:
+        for k in ("from_venue", "to_venue"):
+            if e.get(k):
+                v.add(norm_venue(e[k]))
+    return v
+
+def edge_urls(edges):
+    """Set of source URLs an edge set cites (same article = same subject)."""
+    return {e["source_url"] for e in edges if e.get("source_url")}
+
+def _keysplit(key):
+    """(first, last) tokens of a normalized person key, or (None, None)."""
+    t = key.split()
+    return (t[0], t[-1]) if len(t) >= 2 else (None, None)
+
+def _fuzzy_sibling(ka, kb):
+    """True if two normalized name keys are initial-prefix compatible variants
+    of one name: same surname, first names >=3 chars with one a prefix of the
+    other (jennifer/jen, joshua/josh, christopher/chris). Bare initials are
+    never matched — 'M. Miller' could be Mike or Mary."""
+    fa, la = _keysplit(ka)
+    fb, lb = _keysplit(kb)
+    if not fa or not fb or la != lb:
+        return False
+    return len(fa) >= 3 and len(fb) >= 3 and (fa.startswith(fb) or fb.startswith(fa))
+
+def _components(edges):
+    """Connected components over one name-key's edges. Two edges join when they
+    share a venue string (normalized) or a source URL (same article = same
+    subject). Returns [{names, edges, venues, urls}, ...]."""
+    comps = []
+    for e in edges:
+        vv = venue_history([e])
+        uu = edge_urls([e])
+        placed = False
+        for c in comps:
+            if _venues_touch(c["venues"], vv) or c["urls"] & uu:
+                c["names"].add(e["person"]); c["edges"].append(e)
+                c["venues"] |= vv; c["urls"] |= uu
+                placed = True
+                break
+        if not placed:
+            comps.append({"names": {e["person"]}, "edges": [e],
+                          "venues": set(vv), "urls": set(uu)})
+    changed = True
+    while changed:  # transitive closure: an edge can bridge two components
+        changed = False
+        for i in range(len(comps)):
+            for j in range(i + 1, len(comps)):
+                if _venues_touch(comps[i]["venues"], comps[j]["venues"]) \
+                        or comps[i]["urls"] & comps[j]["urls"]:
+                    comps[i]["names"] |= comps[j]["names"]
+                    comps[i]["edges"] += comps[j]["edges"]
+                    comps[i]["venues"] |= comps[j]["venues"]
+                    comps[i]["urls"] |= comps[j]["urls"]
+                    del comps[j]
+                    changed = True
+                    break
+            if changed:
+                break
+    return comps
+
+def identity(edges):
+    """People disambiguation for the dossier.
+
+    1. Group edges by normalized person name (case/quote/nickname variants).
+    2. Within a name key, split into components connected by shared venues or
+       shared source articles. One big component + lone single-mention
+       singletons folds to one card (a lone mention is not evidence of a
+       second chef). Only when two or more MULTI-EDGE components stay
+       unconnected do both get homonym=True — possibly two different people,
+       surfaced, not silently merged.
+    3. Across different name keys, initial-prefix siblings (Jennifer/Jen
+       Biesty) merge when venue/article histories overlap; otherwise both
+       sides carry possible=[other name] — 'possibly the same chef'.
+    """
+    groups = {}
+    for e in edges:
+        p = e.get("person")
+        if not p:
+            continue
+        groups.setdefault(norm_name(p), []).append(e)
+
+    clusters = []
+    for key, g in groups.items():
+        comps = _components(g)
+        comps.sort(key=lambda c: -len(c["edges"]))
+        big, rest = comps[0], comps[1:]
+        split = [c for c in rest if len(c["edges"]) >= 2]
+        lone = [c for c in rest if len(c["edges"]) < 2]
+        # lone mentions fold into the largest component; real splits stay out
+        for c in lone:
+            big["names"] |= c["names"]; big["edges"] += c["edges"]
+            big["venues"] |= c["venues"]; big["urls"] |= c["urls"]
+        big["homonym"] = bool(split)
+        for c in split:
+            c["homonym"] = True
+            clusters.append({"key": key, **c})
+        clusters.append({"key": key, **big})
+
+    # fuzzy siblings across keys: merge on venue/article overlap, else flag
+    merged = True
+    while merged:
+        merged = False
+        for i in range(len(clusters)):
+            for j in range(i + 1, len(clusters)):
+                a, b = clusters[i], clusters[j]
+                if a["key"] != b["key"] and _fuzzy_sibling(a["key"], b["key"]) \
+                        and (_venues_touch(a["venues"], b["venues"]) or a["urls"] & b["urls"]):
+                    a["names"] |= b["names"]; a["edges"] += b["edges"]
+                    a["venues"] |= b["venues"]; a["urls"] |= b["urls"]
+                    a["key"] = a["key"] if len(a["key"]) >= len(b["key"]) else b["key"]
+                    a["homonym"] = a.get("homonym") or b.get("homonym", False)
+                    del clusters[j]
+                    merged = True
+                    break
+            if merged:
+                break
+    for i in range(len(clusters)):
+        for j in range(i + 1, len(clusters)):
+            a, b = clusters[i], clusters[j]
+            # skip pairs sharing a person string: that is the homonym case,
+            # already flagged — cross-referencing variant names here only
+            # produces self-referential badges ("possibly Chris Fernandez"
+            # on a card already named Chris Fernandez)
+            if a["key"] != b["key"] and not (a["names"] & b["names"]) \
+                    and _fuzzy_sibling(a["key"], b["key"]):
+                a.setdefault("possible", set()).add(max(b["names"], key=len))
+                b.setdefault("possible", set()).add(max(a["names"], key=len))
+
+    out = []
+    for c in clusters:
+        counts = {}
+        for e in c["edges"]:
+            counts[e["person"]] = counts.get(e["person"], 0) + 1
+        name = max(sorted(c["names"]), key=lambda n: counts[n])  # most-cited variant
+        aliases = sorted(n for n in c["names"] if n != name)
+        out.append({"name": name, "aliases": aliases,
+                    "homonym": bool(c.get("homonym")),
+                    "possible": sorted(c.get("possible", ())),
+                    "n": len(c["edges"]), "edges": c["edges"]})
+    out.sort(key=lambda c: -c["n"])
+    return out
+
 def pedigree(edges):
     """Weighted credibility score for the queried kitchen/person, 0-100.
 
@@ -133,6 +320,45 @@ def venues_geo(es):
                     if v.get("website"): hit["website"] = v["website"]  # curated metadata wins
     return venues
 
+def _edge_key(e):
+    return (e.get("person"), e.get("from_venue"), e.get("to_venue"),
+            e.get("role"), e.get("action"), e.get("source_url"))
+
+def dedupe(edges):
+    seen, out = set(), []
+    for e in edges:
+        k = _edge_key(person_fix(e))
+        if k in seen:
+            continue
+        seen.add(k)
+        out.append(e)
+    return out
+
+def person_fix(e):
+    return e
+
+def fetch_person_edges(es, names, limit=100):
+    """Full edge set for exact person strings — targeted completion when the
+    search-ranked slice fragments a chef's record (name variants, possible
+    splits). A bridge edge the hybrid ranking missed can reconnect them."""
+    body = {"size": limit, "query": {"bool": {"filter": [
+        {"terms": {"person.keyword": names}}]}},
+        "_source": ["person", "from_venue", "to_venue", "role", "date",
+                    "confidence", "source", "action", "evidence", "source_url"]}
+    r = es.search(index=INDEX, body=body)
+    out = []
+    for h in r["hits"]["hits"]:
+        s = h["_source"]
+        out.append({
+            "person": s.get("person"), "from_venue": s.get("from_venue"),
+            "to_venue": s.get("to_venue"), "role": s.get("role"),
+            "date": s.get("date"), "confidence": s.get("confidence"),
+            "source": s.get("source"), "action": s.get("action"),
+            "evidence": (s.get("evidence") or "")[:220],
+            "source_url": s.get("source_url"), "score": 0,
+        })
+    return out
+
 def stats(es):
     """Top-line corpus stats for the masthead counter."""
     body = {"size": 0, "aggs": {
@@ -171,7 +397,23 @@ class Handler(SimpleHTTPRequestHandler):
         ms = re.search(r"size=(\d+)", self.path)
         size = min(300, int(ms.group(1))) if ms else 25
         lin = lineage(es, q, size=size) if q else []
+        cl = identity(lin) if q else []
+        # targeted completion: fragmented records (name variants, same-chef
+        # candidates) get their full edge set pulled by exact name, then the
+        # whole set is re-clustered — a bridge the hybrid ranking missed can
+        # reconnect components honestly (shared venue or shared article).
+        need = sorted({n for c in cl if c["homonym"] or c["possible"]
+                       for n in [c["name"], *c["aliases"]]})
+        if need:
+            have = {_edge_key(e) for e in lin}
+            extra = [e for e in fetch_person_edges(es, need) if _edge_key(e) not in have]
+            if extra:
+                lin = dedupe(lin + extra)
+                cl = identity(lin)
         self._json({"query": q, "lineage": lin,
+                    "identity": [{"name": c["name"], "aliases": c["aliases"],
+                                  "homonym": c["homonym"], "possible": c["possible"],
+                                  "n": c["n"], "edges": c["edges"]} for c in cl],
                     "pedigree": pedigree(lin) if q else None,
                     "suggestions": suggest(es, q) if q else []})
 
