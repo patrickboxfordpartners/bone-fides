@@ -21,7 +21,7 @@ def main(argv=None):
 
     from src.es import make_client, ensure_index, index_edges, find_edges, INDEX
     if a.cmd == "ingest":
-        from mistralai import Mistral
+        from mistralai.client.sdk import Mistral
         from src.pipeline import run_pipeline
         es = make_client()
         ensure_index(es)

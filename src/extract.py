@@ -65,12 +65,12 @@ def parse_extraction(raw):
 
 def extract_edges(client, article_text, model="mistral-large-latest"):
     """Call Mistral chat with structured output; returns validated edge list."""
-    resp = client.chat.parse(
+    resp = client.chat.complete(
         model=model,
         messages=[
             {"role": "system", "content": SYSTEM},
             {"role": "user", "content": build_edges_prompt(article_text)},
         ],
-        response_format=SCHEMA,
+        response_format={"type": "json_schema", "json_schema": {"name": "edges", "schema": SCHEMA, "strict": True}},
     )
     return parse_extraction(json.loads(resp.choices[0].message.content))

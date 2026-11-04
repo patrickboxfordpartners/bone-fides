@@ -32,7 +32,7 @@ INDEX_SETTINGS = {
             "evidence": {"type": "text"},
             "confidence": {"type": "keyword"},
             "source_url": {"type": "keyword"},
-            "semantic": {"type": "semantic_text"},
+            "semantic": {"type": "semantic_text", "inference_id": ".openai-text-embedding-3-small"},
         }
     }
 }
@@ -56,7 +56,7 @@ def index_edges(es, docs, index=INDEX):
     es.indices.refresh(index=index)
 
 def find_edges(es, query, index=INDEX, size=20):
-    """Hybrid search: fuzzy keyword on names + semantic_text on lineage text."""
+    """Hybrid search: fuzzy keyword on names + sparse_vector on semantic_text field."""
     body = {
         "size": size,
         "retriever": {
@@ -69,9 +69,10 @@ def find_edges(es, query, index=INDEX, size=20):
                             {"match": {"evidence": {"query": query}}},
                         ]},
                     }}},
-                    {"semantic": {"field": "semantic", "query": query}},
+                    {"standard": {"query": {"sparse_vector": {"field": "semantic", "query": query}}}},
                 ],
                 "rank_constant": 20,
+                "rank_window_size": max(50, size),
             }
         },
     }
