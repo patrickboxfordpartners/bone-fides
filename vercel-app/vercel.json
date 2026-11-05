@@ -1,0 +1,17 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "./build.sh",
+  "outputDirectory": ".",
+  "functions": {
+    "api/search.py": {
+      "includeFiles": "city_venues.json, venues_geo.json, _map.js"
+    }
+  },
+  "rewrites": [
+    { "source": "/api/search", "destination": "/api/search" },
+    { "source": "/api/venues", "destination": "/api/search" },
+    { "source": "/api/stats", "destination": "/api/search" },
+    { "source": "/api/map.js", "destination": "/api/search" },
+    { "source": "/((?!api/).*)", "destination": "/index.html" }
+  ]
+}

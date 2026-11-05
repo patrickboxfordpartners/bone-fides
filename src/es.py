@@ -37,6 +37,7 @@ INDEX_SETTINGS = {
             "evidence": {"type": "text"},
             "confidence": {"type": "keyword"},
             "source_url": {"type": "keyword"},
+            "source_image": {"type": "keyword", "index": False, "doc_values": False},
             "source": {"type": "keyword"},
             "semantic": {"type": "semantic_text", "inference_id": ".openai-text-embedding-3-small"},
         }

@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bone Fides — the kitchen lineage of San Francisco</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#171310; --bg2:#1f1a15; --ink:#efe6d3; --dim:#9b8f7c; --faint:rgba(239,230,211,.14);
+    --accent:#d08152; --gold:#c2a05a; --ok:#8fb996; --bad:#d9776b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-font-smoothing: antialiased; }
+  body { font-family: 'Fraunces', Georgia, serif; background: var(--bg); color: var(--ink); overflow: hidden; }
+
+  /* ── App shell: dossier rail | map stage ──── */
+  .app { display: grid; grid-template-columns: clamp(380px, 34vw, 500px) 1fr; height: 100dvh; }
+  .rail { overflow-y: auto; border-right: 1px solid var(--faint); padding: 26px 36px 30px;
+          background: linear-gradient(180deg, rgba(208,129,82,.05), transparent 320px); }
+  .stage { position: relative; }
+  #map { position: absolute; inset: 0; }
+  body.nomap .app { grid-template-columns: 1fr; }
+  body.nomap .stage { display: none; }
+
+  /* ── Rail head ────────────────────────────── */
+  .railmeta { display: flex; justify-content: space-between; gap: 12px; padding-bottom: 12px;
+              border-bottom: 1px solid var(--faint); font-size: 10.5px; color: var(--dim);
+              letter-spacing: .2em; text-transform: uppercase; }
+  .railmeta .stats b { color: var(--gold); font-weight: 600; }
+  h1 { font-size: 42px; line-height: 1; font-weight: 380; letter-spacing: -.01em; margin: 22px 0 10px; }
+  h1 em { color: var(--accent); font-style: italic; font-weight: 500; }
+  .tagline { font-size: 15px; color: var(--dim); line-height: 1.5; font-weight: 350; }
+  .tagline b { color: var(--ink); font-weight: 480; }
+
+  /* ── Search ───────────────────────────────── */
+  .searchbar { display: flex; gap: 12px; margin: 26px 0 0; position: relative; }
+  input#q { flex: 1; font: 350 19px/1 'Fraunces', Georgia, serif; padding: 13px 2px;
+            border: 0; border-bottom: 1px solid var(--faint); background: transparent; color: var(--ink); }
+  input#q::placeholder { color: #7d7361; font-style: italic; }
+  input#q:focus { outline: none; border-bottom-color: var(--accent); }
+  button.go { font: 500 12px/1 'Fraunces', Georgia, serif; padding: 0 24px; background: transparent; color: var(--dim);
+              border: 1px solid var(--faint); border-radius: 999px; cursor: pointer; letter-spacing: .2em; text-transform: uppercase; }
+  button.go:hover { color: var(--accent); border-color: var(--accent); }
+  .sugg { position: absolute; top: calc(100% + 6px); left: 0; right: 110px; background: var(--bg2); border: 1px solid var(--faint);
+          border-radius: 6px; z-index: 30; display: none; box-shadow: 0 18px 44px rgba(0,0,0,.5); overflow: hidden; }
+  .sugg div { padding: 11px 18px; cursor: pointer; font-size: 15px; font-weight: 380; }
+  .sugg div + div { border-top: 1px solid var(--faint); }
+  .sugg div:hover, .sugg div[aria-selected="true"] { background: rgba(208,129,82,.14); color: var(--accent); }
+  .chips { display: flex; gap: 4px 16px; flex-wrap: wrap; margin: 16px 0 30px; align-items: baseline; }
+  .chips .lbl { font-size: 10.5px; letter-spacing: .22em; text-transform: uppercase; color: var(--dim); margin-right: 4px; }
+  .chip { font: 400 14.5px 'Fraunces', Georgia, serif; border: 0; background: none; cursor: pointer; color: var(--dim);
+          padding: 0; border-bottom: 1px solid transparent; }
+  .chip:hover { color: var(--accent); border-bottom-color: var(--accent); }
+  .chips .chip:not(:last-of-type)::after { content: '·'; color: #54493a; margin-left: 16px; }
+
+  /* ── Dossier ──────────────────────────────── */
+  .card { padding: 0; }
+  .kicker { font-size: 10.5px; letter-spacing: .3em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+  .card h2 { font-size: 40px; font-weight: 380; line-height: 1; letter-spacing: -.01em; }
+  .card .sub { color: var(--dim); font-size: 14px; margin-top: 10px; font-style: italic; font-weight: 340; }
+  .card .sub b { color: var(--ink); font-style: normal; font-weight: 500; }
+  .dossier { margin-top: 26px; }
+  .chef { padding: 18px 0 22px; border-top: 1px solid var(--faint); }
+  .chef:first-child { border-top-color: var(--ink); border-top-width: 2px; }
+  .chef .who { display: flex; align-items: baseline; gap: 10px; }
+  .chef .pname { font-size: 21px; font-weight: 560; letter-spacing: .01em; }
+  .chef .role { color: var(--dim); font-size: 13.5px; font-style: italic; font-weight: 340; }
+  .idline { margin-top: 5px; font-size: 12.5px; color: var(--dim); font-weight: 340; }
+  .idflag { display: inline-block; padding: 1px 8px 2px; border: 1px solid var(--faint); border-radius: 10px;
+            font-size: 11.5px; font-style: normal; }
+  .idflag.homonym { color: var(--bad); border-color: color-mix(in srgb, var(--bad) 40%, transparent); }
+  .idflag.possible { color: #a07d3f; border-color: color-mix(in srgb, #a07d3f 40%, transparent); }
+  .evrow { display: flex; gap: 12px; margin-top: 8px; align-items: flex-start; }
+  .evimg { width: 88px; height: 88px; object-fit: cover; border-radius: 6px; flex: none;
+           border: 1px solid var(--faint); background: var(--faint); }
+  .evtext { min-width: 0; flex: 1; }
+  .chef .conf { width: 8px; height: 8px; border-radius: 50%; flex: none; align-self: center; }
+  .conf.high { background: var(--ok); } .conf.medium { background: var(--gold); } .conf.low { background: var(--bad); }
+  .chain { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; margin-top: 8px; }
+  .vchip { font: 420 16px 'Fraunces', Georgia, serif; padding: 0; border: 0; background: none; cursor: pointer;
+           color: var(--ink); line-height: 1.4; border-bottom: 1px solid transparent; }
+  .vchip:hover { color: var(--accent); border-bottom-color: var(--accent); }
+  .vchip.here { color: var(--accent); font-weight: 640; cursor: default; }
+  .arr { color: #54493a; font-size: 16px; }
+  .arr .yr { font-size: 12px; color: var(--dim); font-weight: 340; font-style: italic; margin-left: 5px; }
+  .chef .ev { font-size: 14.5px; margin-top: 10px; line-height: 1.5; color: var(--dim); font-weight: 350; font-style: italic; }
+  .chef .src { font-size: 12.5px; margin-top: 8px; color: var(--dim); letter-spacing: .04em; }
+  .srcbadge { display: inline-block; font-size: 10px; font-weight: 560; letter-spacing: .08em;
+              text-transform: uppercase; padding: 1px 7px 2px; border: 1px solid currentColor;
+              border-radius: 99px; margin-left: 8px; vertical-align: 1px; }
+  .srcbadge.sfchronicle { color: #8a2318; }
+  .srcbadge.sfgate { color: #1a5e63; }
+  .chef .src a { color: var(--gold); text-decoration: none; border-bottom: 1px solid rgba(194,160,90,.35); }
+  .chef .src a:hover { color: var(--ink); border-color: var(--ink); }
+  .empty { color: var(--dim); font-size: 16px; padding: 30px 0; font-style: italic; }
+  .loading { color: var(--dim); font-size: 15px; padding: 28px 0; font-style: italic; }
+
+  /* ── Map stage overlays ───────────────────── */
+  .stagehint { position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); z-index: 10; pointer-events: none;
+               background: rgba(23,19,16,.82); backdrop-filter: blur(8px); border: 1px solid var(--faint);
+               border-radius: 999px; padding: 8px 16px; font-size: 12.5px; color: var(--dim); font-style: italic; white-space: nowrap; }
+  .railfoot { margin-top: 30px; padding-top: 16px; border-top: 1px solid var(--faint);
+              color: var(--dim); font-size: 12px; line-height: 1.6; font-weight: 350; }
+  .railfoot b { color: var(--ink); font-weight: 550; }
+
+  .pin { cursor: pointer; }
+  .pin .d { width: 13px; height: 13px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg);
+            box-shadow: 0 0 0 1px var(--accent), 0 2px 8px rgba(0,0,0,.6); transition: all .15s; }
+  .pin.star .d { background: var(--gold); box-shadow: 0 0 0 1px var(--gold), 0 2px 8px rgba(0,0,0,.6); }
+  .pin:hover .d { transform: scale(1.4); box-shadow: 0 0 0 1px var(--accent), 0 0 12px rgba(208,129,82,.5), 0 2px 8px rgba(0,0,0,.6); }
+  .pin.star:hover .d { box-shadow: 0 0 0 1px var(--gold), 0 0 12px rgba(194,160,90,.5), 0 2px 8px rgba(0,0,0,.6); }
+  .pin.active .d { background: var(--accent); transform: scale(1.6); box-shadow: 0 0 0 2px var(--accent), 0 0 18px rgba(208,129,82,.55); }
+  .mappop .badge { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--gold);
+                   margin: -2px 0 6px; }
+  .mappop a.trace { background: var(--accent); color: var(--bg); border-color: var(--accent); font-weight: 600; }
+  .mappop a.trace:hover { background: var(--ink); border-color: var(--ink); }
+  .quiettip { font-family: 'Fraunces', Georgia, serif; font-size: 12.5px; color: var(--ink);
+              background: rgba(23,19,16,.9); padding: 4px 10px; border-radius: 4px; }
+  .mapboxgl-popup-content { background: #1f1a15 !important; color: var(--ink) !important; padding: 14px 18px !important;
+                            border-radius: 8px !important; box-shadow: 0 12px 32px rgba(0,0,0,.55) !important; }
+  .mapboxgl-popup-tip { border-top-color: #1f1a15 !important; border-bottom-color: #1f1a15 !important; }
+  .mapboxgl-popup-close-button { color: var(--dim) !important; font-size: 20px; padding: 2px 9px; }
+  .mapboxgl-popup-close-button:hover { color: var(--ink) !important; background: transparent !important; }
+  .mapboxgl-ctrl-group { background: #1f1a15 !important; border: 1px solid var(--faint) !important; border-radius: 6px; overflow: hidden; }
+  .mapboxgl-ctrl-group button { background-color: transparent !important; }
+  .mapboxgl-ctrl-group button:hover { background-color: rgba(239,230,211,.1) !important; }
+  .mapboxgl-ctrl-group button + button { border-top: 1px solid var(--faint); }
+  .mapboxgl-ctrl-icon { filter: invert(.85); }
+  .mappop { font-family: 'Fraunces', Georgia, serif; min-width: 220px; color: var(--ink); }
+  .mappop .t { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+  .mappop .m { font-size: 13px; color: var(--dim); margin-bottom: 10px; font-style: italic; }
+  .mappop a { display: inline-block; font-size: 13.5px; color: var(--gold); text-decoration: none;
+              border: 1px solid rgba(194,160,90,.45); border-radius: 999px; padding: 4px 14px; margin: 2px 6px 2px 0; }
+  .mappop a:hover { background: var(--gold); color: var(--bg); }
+  .mappop .res { background: var(--accent); color: var(--bg); border-color: var(--accent); font-weight: 600; }
+  .mappop .res:hover { background: var(--ink); border-color: var(--ink); }
+
+  /* ── a11y ─────────────────────────────────── */
+  .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+  :focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+  .err { color: var(--bad); font-size:16px; padding:30px 0; font-style:italic; }
+  .err button { margin-left:10px; font-style:normal; color:var(--accent); border-bottom:1px solid var(--accent); }
+  .legend { display:flex; gap:14px; font-size:12px; color:var(--dim); margin-top:12px; align-items:center; flex-wrap:wrap; }
+  .pedigree { margin-top: 18px; padding: 14px 16px 12px; border: 1px solid var(--faint); border-radius: 8px;
+              background: rgba(208,129,82,.05); }
+  .pedbar { height: 5px; border-radius: 3px; background: var(--faint); overflow: hidden; }
+  .pedbar span { display: block; height: 100%; border-radius: 3px;
+                 background: linear-gradient(90deg, var(--accent), var(--gold)); transition: width .6s ease; }
+  .pedlbl { margin-top: 8px; font-size: 12.5px; color: var(--dim); line-height: 1.5; }
+  .pedlbl b { color: var(--gold); font-weight: 600; font-size: 13.5px; }
+  .legend .conf { display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px; vertical-align:middle; }
+  @media (prefers-reduced-motion: reduce) { * { transition:none !important; } }
+
+  /* ── mobile: stack rail over map ──────────── */
+  @media (max-width: 900px) {
+    body { overflow: auto; }
+    .app { display: block; height: auto; }
+    .rail { border-right: 0; padding: 20px 20px 26px; }
+    h1 { font-size: 34px; }
+    .searchbar { flex-direction: column; gap: 14px; }
+    input#q { font-size: 17px; }
+    button.go { padding: 12px; }
+    .sugg { right: 0; }
+    .stage { height: 58vh; border-top: 1px solid var(--faint); }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="rail">
+    <div class="railmeta">
+      <span id="dateline"></span>
+      <span class="stats" id="stats">Counting…</span>
+    </div>
+    <h1>Bone <em>Fides</em></h1>
+    <p class="tagline">The kitchen lineage of San Francisco. Every chef move — founded, hired, departed —
+       <b>cited to the article that reported it</b>. Type a kitchen; get its papers.</p>
+
+    <form class="searchbar" role="search" onsubmit="event.preventDefault(); run();">
+      <label for="q" class="sr-only">Search a kitchen or chef</label>
+      <input id="q" type="search" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="sugg" placeholder="Try “Betelnut”, “Gitane”, “Cotogna”, a chef’s name…" autocomplete="off" spellcheck="false">
+      <button class="go" type="submit">Trace</button>
+      <div class="sugg" id="sugg" role="listbox" aria-label="Suggestions"></div>
+    </form>
+    <div class="chips" id="chips"></div>
+
+    <div id="card" class="card" aria-live="polite" aria-busy="false">
+      <div class="empty">The graph holds a hundred-odd cited chef moves. Search one kitchen.</div>
+    </div>
+
+    <div class="railfoot">
+      Built tonight at the <b>SF Hackathon with Mistral</b> — <b>Mistral Large</b> reads the articles and
+      extracts the moves; <b>Elasticsearch</b> hybrid search (keyword + vector, RRF) resolves your query to
+      the kitchen. Every edge links to its source.
+    </div>
+  </aside>
+
+  <div class="stage">
+    <div id="map" aria-label="Map of current kitchens"></div>
+    <div class="stagehint" id="stagehint">Every permitted food business in SF — red = cited lineage, gold = Michelin starred</div>
+  </div>
+</div>
+
+<script>
+const Q = document.getElementById('q'), SUGG = document.getElementById('sugg'), CARD = document.getElementById('card');
+const SEEDS = ['Betelnut', 'Gitane', 'Cotogna', 'Outerlands', 'Finn Town', 'China Live', 'Maria Isabel'];
+
+function esc(s){ return (s||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function hostOf(u){ try { return new URL(u).hostname.replace('www.',''); } catch(e){ return u; } }
+function srcBadge(u, source){
+  const h = (() => { try { return new URL(u).hostname; } catch(e){ return ''; } })();
+  const tier = source || (h.includes('sfchronicle') ? 'sfchronicle' : h.includes('sfgate') ? 'sfgate' : h.includes('eater') ? 'eater' : 'eater');
+  if(tier === 'sfchronicle') return '<span class="srcbadge sfchronicle">Chronicle</span>';
+  if(tier === 'sfgate') return '<span class="srcbadge sfgate">SFGate</span>';
+  return '<span class="srcbadge" style="color:var(--dim)">Eater</span>';
+}
+
+// ── rail head ──
+document.getElementById('dateline').textContent =
+  new Date().toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric', year:'numeric' }).toUpperCase();
+fetch('/api/stats').then(r=>r.json()).then(d => {
+  document.getElementById('stats').innerHTML =
+    `<b>${d.edges}</b> moves · <b>${d.people}</b> chefs · <b>${d.venues}</b> kitchens · <b>${d.sources}</b> sources`;
+}).catch(()=>{});
+
+// ── search ──
+let lastFetch = 0;
+async function run(){
+  const q = Q.value.trim(); if(!q){ Q.focus(); return; }
+  hideSugg();
+  CARD.innerHTML = '<div class="loading">Tracing the lineage…</div>';
+  const mine = ++lastFetch;
+  const t0 = performance.now();
+  CARD.setAttribute('aria-busy','true');
+  try { const u = new URL(location); u.searchParams.set('q', q); history.replaceState(null, '', u); } catch(e){}
+  let d;
+  try {
+    const r = await fetch('/api/search?q=' + encodeURIComponent(q));
+    d = await r.json();
+    if(!r.ok || d.error) throw new Error('search failed');
+  } catch(e){
+    if(mine !== lastFetch) return;
+    CARD.setAttribute('aria-busy','false');
+    CARD.innerHTML = '<div class="err" role="alert">Couldn’t reach the lineage index. <button class="chip" type="button" onclick="run()">Try again</button></div>';
+    return;
+  }
+  if(mine !== lastFetch) return;
+  CARD.setAttribute('aria-busy','false');
+  render(q, d.lineage, performance.now() - t0, d.pedigree, d.identity);
+  if(window.__bfHighlight) window.__bfHighlight(q);
+}
+
+async function pick(name){ Q.value = name; run(); }
+window.pick = pick;
+
+function trunc(s, n){
+  s = (s||'').trim(); if(s.length <= n) return s;
+  const cut = s.slice(0, n); return cut.slice(0, cut.lastIndexOf(' ')) + '…';
+}
+
+/* Build one chef's venue chain around the queried kitchen.
+   person_edges: that chef's edges. q: lowercase query. Returns
+   {chain:[venue,...], years:{'a>b':date}, pivot:edge} or null if untouched by q. */
+function buildChain(person_edges, ql){
+  // prefer an exact venue match ("Betelnut") over substring noise ("Betelnut Pejiu Wu")
+  const exact = person_edges.find(e =>
+    (e.from_venue||'').toLowerCase() === ql || (e.to_venue||'').toLowerCase() === ql);
+  const pivot = exact || person_edges.find(e =>
+    (e.from_venue||'').toLowerCase().includes(ql) || (e.to_venue||'').toLowerCase().includes(ql));
+  if(!pivot) return null;
+  const pf = (pivot.from_venue||'').toLowerCase(), pt = (pivot.to_venue||'').toLowerCase();
+  const start = pf === ql ? pivot.from_venue : (pt === ql ? pivot.to_venue :
+               (pf.includes(ql) ? pivot.from_venue : pivot.to_venue));
+  const byFrom = {}, byTo = {};
+  person_edges.forEach(e => {
+    if(e.from_venue) (byFrom[e.from_venue] = byFrom[e.from_venue] || []).push(e);
+    if(e.to_venue)   (byTo[e.to_venue]   = byTo[e.to_venue]   || []).push(e);
+  });
+  const chain = [start], years = {};
+  let cur = start;
+  for(let i = 0; i < 8; i++){
+    const e = (byFrom[cur] || [])[0];
+    if(!e || !e.to_venue || chain.includes(e.to_venue)) break;
+    if(e.date) years[cur + '>' + e.to_venue] = e.date;
+    chain.push(e.to_venue); cur = e.to_venue;
+  }
+  cur = start;
+  for(let i = 0; i < 8; i++){
+    const e = (byTo[cur] || [])[0];
+    if(!e || !e.from_venue || chain.includes(e.from_venue)) break;
+    if(e.date) years[e.from_venue + '>' + cur] = e.date;
+    chain.unshift(e.from_venue); cur = e.from_venue;
+  }
+  return { chain, years, pivot };
+}
+
+function render(q, edges, ms, ped, identity){
+  if(!edges || !edges.length){ CARD.innerHTML = '<div class="empty">No lineage found for “'+esc(q)+'” yet. Check the spelling, try a chef’s name, or start with one of the kitchens above.</div>'; return; }
+  const ql = q.toLowerCase();
+  const isPersonQuery = identity && identity.length > 0 && identity[0].n > 0 &&
+    edges.filter(e => e.person && ((e.from_venue||'').toLowerCase().includes(ql) || (e.to_venue||'').toLowerCase().includes(ql))).length === 0;
+
+  // pedigree dial: weighted credibility from source tiers + corroboration
+  let pedHTML = '';
+  if(ped){
+    const tierBits = [];
+    if(ped.tiers.sfchronicle) tierBits.push('<span style="color:#a8543f">'+ped.tiers.sfchronicle+' Chronicle</span>');
+    if(ped.tiers.sfgate) tierBits.push('<span style="color:#1a5e63">'+ped.tiers.sfgate+' SFGate</span>');
+    if(ped.tiers.eater) tierBits.push('<span>'+ped.tiers.eater+' Eater</span>');
+    pedHTML = '<div class="pedigree" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+ped.score+'" title="Credibility score: source authority (Chronicle > SFGate > Eater), independent corroboration across articles, and depth of the verified record">'+
+      '<div class="pedbar" aria-hidden="true"><span style="width:'+ped.score+'%"></span></div>'+
+      '<div class="pedlbl"><b>Bone Fides score '+ped.score+'</b>/100 — '+ped.moves+' move'+(ped.moves===1?'':'s')+', '+ped.sources+' independent source'+(ped.sources===1?'':'s')+' · '+tierBits.join(' · ')+'</div></div>';
+  }
+
+  // one card per identity cluster (server-side people disambiguation)
+  const rows = [];
+  const personQuery = isPersonQuery;
+  (identity || []).forEach(cl => {
+    const pedges = cl.edges;
+    // chain pivots on the queried kitchen, or on the person's own history
+    const c = buildChain(pedges, ql) || (personQuery ? buildPersonChain(pedges) : null);
+    if(!c) return;
+    const pivot = c.pivot;
+    const hereChip = v => v.toLowerCase() === ql ? ' here' : '';
+    const chainHTML = c.chain.map((v, i) => {
+      const yr = i > 0 ? c.years[c.chain[i-1] + '>' + v] : null;
+      return (i > 0 ? `<span class="arr">→${yr ? '<span class="yr">'+esc(yr)+'</span>' : ''}</span>` : '') +
+             (hereChip(v) ? `<span class="vchip here" aria-current="true">${esc(v)}</span>` : `<button type="button" class="vchip" onclick="pick('${esc(v).replace(/'/g,"\\'")}')">${esc(v)}</button>`);
+    }).join('');
+    // identity badges: name variants + homonym / possible-same-chef flags
+    let idBadge = '';
+    const bits = [];
+    if(cl.aliases && cl.aliases.length) bits.push('also cited as ' + cl.aliases.map(a => esc(a)).join(', '));
+    if(cl.homonym) bits.push('<span class="idflag homonym" title="Same name, disjoint venue histories — possibly two different people. Not auto-merged.">possibly two people</span>');
+    if(cl.possible && cl.possible.length) bits.push('<span class="idflag possible" title="Name variants share no cited venue or article, so these stay separate.">possibly ' + cl.possible.map(a => esc(a)).join(' · ') + '</span>');
+    if(bits.length) idBadge = '<div class="idline">'+bits.join(' · ')+'</div>';
+    const meta = [pivot.role, pivot.date && !Object.values(c.years).includes(pivot.date) ? pivot.date : null]
+      .filter(Boolean).join(' · ');
+    // imagery: the cited article's own photo, lazy-loaded, with graceful fallback
+    const img = pivot.source_image ? `<img class="evimg" src="${esc(pivot.source_image)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">` : '';
+    rows.push(`
+    <div class="chef${img ? ' hasimg' : ''}">
+      <div class="who"><span class="conf ${pivot.confidence||'medium'}" title="${esc(pivot.confidence||'medium')} confidence"></span><span class="sr-only">${esc(pivot.confidence||'medium')} confidence</span>
+        <span class="pname">${esc(cl.name)}</span>${meta ? '<span class="role">'+esc(meta)+'</span>' : ''}</div>
+      ${idBadge}
+      <div class="chain">${chainHTML}</div>
+      <div class="evrow">${img}
+      <div class="evtext">
+      ${pivot.evidence ? '<div class="ev">' + esc(trunc(pivot.evidence, 190)) + '</div>' : ''}
+      ${pivot.source_url ? '<div class="src">§ <a href="'+esc(pivot.source_url)+'" target="_blank" rel="noopener">'+esc(hostOf(pivot.source_url))+'</a>' + srcBadge(pivot.source_url, pivot.source) + '</div>' : ''}
+      </div></div>
+    </div>`);
+  });
+
+  if(!rows.length){ CARD.innerHTML = '<div class="empty">Edges matched, but none name a kitchen for “'+esc(q)+'”.</div>'; return; }
+  CARD.innerHTML = `
+    <div class="kicker">Kitchen dossier</div>
+    <h2>${esc(q)}</h2>
+    <div class="sub"><b>${rows.length}</b> chef${rows.length===1?'':'s'} in the record${ms ? ' · resolved in ' + Math.round(ms) + ' ms by hybrid search' : ''} · <i>click any kitchen to keep tracing</i></div>
+    ${pedHTML}
+    <div class="legend" aria-hidden="true"><span><span class="conf high"></span>High confidence</span><span><span class="conf medium"></span>Medium</span><span><span class="conf low"></span>Low</span></div>
+    <div class="dossier">${rows.join('')}</div>`;
+}
+
+/* Person-query chain: no venue pivot exists, so lay the chef's cited moves
+   out as a timeline of venue chips (each venue once, corpus order). */
+function buildPersonChain(pedges){
+  const seen = new Set(), stops = [];
+  pedges.forEach(e => {
+    [e.from_venue, e.to_venue].forEach(v => {
+      if(v && !seen.has(v)){ seen.add(v); stops.push(v); }
+    });
+  });
+  if(!stops.length) return null;
+  const years = {};
+  pedges.forEach(e => { if(e.from_venue && e.to_venue && e.date) years[e.from_venue+'>'+e.to_venue] = e.date; });
+  return { chain: stops, years, pivot: pedges[0] };
+}
+
+// ── autosuggest ──
+let sugTimer;
+Q.addEventListener('input', () => {
+  clearTimeout(sugTimer);
+  const v = Q.value.trim();
+  if(v.length < 2){ hideSugg(); return; }
+  sugTimer = setTimeout(async () => {
+    const r = await fetch('/api/search?q=' + encodeURIComponent(v));
+    const d = await r.json();
+    if(d.suggestions && d.suggestions.length){
+      SUGG.innerHTML = d.suggestions.map((s,i) => `<div role="option" id="sg${i}" aria-selected="false" onclick="pick('${esc(s).replace(/'/g,"\\'")}')">${esc(s)}</div>`).join('');
+      SUGG.style.display = 'block'; Q.setAttribute('aria-expanded','true'); sugIdx = -1;
+    } else hideSugg();
+  }, 220);
+});
+document.addEventListener('click', e => { if(!SUGG.contains(e.target) && e.target !== Q) SUGG.style.display='none'; });
+let sugIdx = -1;
+function hideSugg(){ SUGG.style.display='none'; Q.setAttribute('aria-expanded','false'); Q.removeAttribute('aria-activedescendant'); sugIdx=-1; }
+Q.addEventListener('keydown', e => {
+  const opts = [...SUGG.querySelectorAll('[role=option]')];
+  if(e.key === 'Escape'){ hideSugg(); return; }
+  if(SUGG.style.display !== 'block' || !opts.length) return;
+  if(e.key === 'ArrowDown' || e.key === 'ArrowUp'){
+    e.preventDefault();
+    sugIdx = (sugIdx + (e.key === 'ArrowDown' ? 1 : -1) + opts.length) % opts.length;
+    opts.forEach((o,i) => o.setAttribute('aria-selected', i === sugIdx));
+    Q.setAttribute('aria-activedescendant', opts[sugIdx].id);
+  } else if(e.key === 'Enter' && sugIdx >= 0){ e.preventDefault(); pick(opts[sugIdx].textContent); }
+});
+
+// ── seed chips ──
+document.getElementById('chips').innerHTML =
+  '<span class="lbl">Start here</span>' + SEEDS.map(s => `<button type="button" class="chip" onclick="pick('${s}')">${s}</button>`).join('');
+
+// ── map (always via /api/map.js: the server injects the token there, so it
+// works on both the local server and Vercel; map.js itself hides the panel
+// when no token is configured) ──
+{
+  const s = document.createElement('script');
+  s.src = '/api/map.js';
+  document.head.appendChild(s);
+}
+const initQ = new URLSearchParams(location.search).get('q');
+if(initQ){ Q.value = initQ; run(); }
+</script>
+</body>
+</html>

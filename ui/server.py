@@ -45,6 +45,7 @@ def lineage(es, query, size=25):
             "action": s.get("action"),
             "evidence": (s.get("evidence") or "")[:220],
             "source_url": s.get("source_url"),
+            "source_image": s.get("source_image"),
             "score": h.get("_score", 0),
         })
     return edges
@@ -355,7 +356,8 @@ def fetch_person_edges(es, names, limit=100):
             "date": s.get("date"), "confidence": s.get("confidence"),
             "source": s.get("source"), "action": s.get("action"),
             "evidence": (s.get("evidence") or "")[:220],
-            "source_url": s.get("source_url"), "score": 0,
+            "source_url": s.get("source_url"),
+            "source_image": s.get("source_image"), "score": 0,
         })
     return out
 
@@ -384,6 +386,8 @@ class Handler(SimpleHTTPRequestHandler):
             self._safe(lambda: self._search(es))
         elif path.startswith("/api/venues"):
             self._safe(lambda: self._json({"venues": venues_geo(es)}))
+        elif path.startswith("/api/map.js"):
+            self._serve_mapjs()
         elif path.startswith("/api/stats"):
             self._safe(lambda: self._json(stats(es)))
         elif path in ("/", "/index.html"):
@@ -439,6 +443,23 @@ class Handler(SimpleHTTPRequestHandler):
         body = html.encode()
         self.send_response(200)
         self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
+    def _serve_mapjs(self):
+        """map.js with the Mapbox token injected — local twin of the Vercel
+        /api/map.js handler, so both front-ends load the script identically."""
+        try:
+            with open(os.path.join(ROOT, "map.js")) as f:
+                js = f.read()
+        except OSError:
+            self.send_error(404)
+            return
+        inject = "window.MAPBOX_TOKEN = %s;\n" % json.dumps(os.environ.get("MAPBOX_TOKEN", ""))
+        body = (inject + js).encode()
+        self.send_response(200)
+        self.send_header("Content-Type", "application/javascript; charset=utf-8")
         self.send_header("Content-Length", str(len(body)))
         self.end_headers()
         self.wfile.write(body)

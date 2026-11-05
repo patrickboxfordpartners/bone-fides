@@ -73,6 +73,10 @@
             font-size: 11.5px; font-style: normal; }
   .idflag.homonym { color: var(--bad); border-color: color-mix(in srgb, var(--bad) 40%, transparent); }
   .idflag.possible { color: #a07d3f; border-color: color-mix(in srgb, #a07d3f 40%, transparent); }
+  .evrow { display: flex; gap: 12px; margin-top: 8px; align-items: flex-start; }
+  .evimg { width: 88px; height: 88px; object-fit: cover; border-radius: 6px; flex: none;
+           border: 1px solid var(--faint); background: var(--faint); }
+  .evtext { min-width: 0; flex: 1; }
   .chef .conf { width: 8px; height: 8px; border-radius: 50%; flex: none; align-self: center; }
   .conf.high { background: var(--ok); } .conf.medium { background: var(--gold); } .conf.low { background: var(--bad); }
   .chain { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; margin-top: 8px; }
@@ -335,14 +339,19 @@ function render(q, edges, ms, ped, identity){
     if(bits.length) idBadge = '<div class="idline">'+bits.join(' · ')+'</div>';
     const meta = [pivot.role, pivot.date && !Object.values(c.years).includes(pivot.date) ? pivot.date : null]
       .filter(Boolean).join(' · ');
+    // imagery: the cited article's own photo, lazy-loaded, with graceful fallback
+    const img = pivot.source_image ? `<img class="evimg" src="${esc(pivot.source_image)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">` : '';
     rows.push(`
-    <div class="chef">
+    <div class="chef${img ? ' hasimg' : ''}">
       <div class="who"><span class="conf ${pivot.confidence||'medium'}" title="${esc(pivot.confidence||'medium')} confidence"></span><span class="sr-only">${esc(pivot.confidence||'medium')} confidence</span>
         <span class="pname">${esc(cl.name)}</span>${meta ? '<span class="role">'+esc(meta)+'</span>' : ''}</div>
       ${idBadge}
       <div class="chain">${chainHTML}</div>
+      <div class="evrow">${img}
+      <div class="evtext">
       ${pivot.evidence ? '<div class="ev">' + esc(trunc(pivot.evidence, 190)) + '</div>' : ''}
       ${pivot.source_url ? '<div class="src">§ <a href="'+esc(pivot.source_url)+'" target="_blank" rel="noopener">'+esc(hostOf(pivot.source_url))+'</a>' + srcBadge(pivot.source_url, pivot.source) + '</div>' : ''}
+      </div></div>
     </div>`);
   });
 
@@ -405,10 +414,12 @@ Q.addEventListener('keydown', e => {
 document.getElementById('chips').innerHTML =
   '<span class="lbl">Start here</span>' + SEEDS.map(s => `<button type="button" class="chip" onclick="pick('${s}')">${s}</button>`).join('');
 
-// ── map (loads only when the server injected a token) ──
-if(window.MAPBOX_TOKEN){
+// ── map (always via /api/map.js: the server injects the token there, so it
+// works on both the local server and Vercel; map.js itself hides the panel
+// when no token is configured) ──
+{
   const s = document.createElement('script');
-  s.src = 'map.js';
+  s.src = '/api/map.js';
   document.head.appendChild(s);
 }
 const initQ = new URLSearchParams(location.search).get('q');

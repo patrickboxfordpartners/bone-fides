@@ -1,0 +1,142 @@
+{
+ "venues": [
+  {
+   "name": "Assembly",
+   "lat": 37.7753958,
+   "lng": -122.4377141,
+   "website": null
+  },
+  {
+   "name": "China Live",
+   "lat": 37.7979135,
+   "lng": -122.407877,
+   "website": "https://chinalivesf.com/"
+  },
+  {
+   "name": "Comstock Saloon",
+   "lat": 37.7969638,
+   "lng": -122.4056426,
+   "website": null
+  },
+  {
+   "name": "Cotogna",
+   "lat": 37.7974414,
+   "lng": -122.4035292,
+   "website": "https://www.cotognasf.com/"
+  },
+  {
+   "name": "Dalida",
+   "lat": 37.7998115,
+   "lng": -122.4597643,
+   "website": "https://www.dalidasf.com/"
+  },
+  {
+   "name": "Fat Cat x the Mantis",
+   "lat": 37.7452716,
+   "lng": -122.4199359,
+   "website": "https://www.fatcatsf.com/"
+  },
+  {
+   "name": "Fish & Farm",
+   "lat": 37.7951108,
+   "lng": -122.4006469,
+   "website": "https://www.fishandfarmsf.com/"
+  },
+  {
+   "name": "Lazy Bear",
+   "lat": 37.7603171,
+   "lng": -122.4197672,
+   "website": null
+  },
+  {
+   "name": "Maria Isabel",
+   "lat": 37.7871223,
+   "lng": -122.4466183,
+   "website": "https://www.mariaisabelsf.com/"
+  },
+  {
+   "name": "Miller & Lux Provisions",
+   "lat": 37.7880986,
+   "lng": -122.4069703,
+   "website": "https://millerandluxrestaurant.com/pages/provisions"
+  },
+  {
+   "name": "Mister Jiu's",
+   "lat": 37.7937168,
+   "lng": -122.4066622,
+   "website": null
+  },
+  {
+   "name": "One Market",
+   "lat": 37.79382,
+   "lng": -122.3948144,
+   "website": null
+  },
+  {
+   "name": "Outerlands",
+   "lat": 37.7603503,
+   "lng": -122.5050056,
+   "website": "https://outerlandssf.com/"
+  },
+  {
+   "name": "Ristorante Milano",
+   "lat": 37.7954499,
+   "lng": -122.4190741,
+   "website": null
+  },
+  {
+   "name": "Ritz Carlton",
+   "lat": 37.7918675,
+   "lng": -122.4070823,
+   "website": "https://www.ritzcarlton.com/en/Properties/SanFrancisco/"
+  },
+  {
+   "name": "Saltwater Bakeshop",
+   "lat": 37.774689,
+   "lng": -122.413303,
+   "website": null
+  },
+  {
+   "name": "Sol Bakery",
+   "lat": 37.7742849,
+   "lng": -122.4442584,
+   "website": null
+  },
+  {
+   "name": "Tartine Bakery",
+   "lat": 37.7614552,
+   "lng": -122.4239452,
+   "website": "https://tartinebakery.com/san-francisco/bakery"
+  },
+  {
+   "name": "There/There",
+   "lat": 37.7719259,
+   "lng": -122.430317,
+   "website": null
+  },
+  {
+   "name": "Betelnut",
+   "lat": 37.7972205,
+   "lng": -122.4328361,
+   "website": null
+  },
+  {
+   "name": "Gitane",
+   "lat": 37.789892,
+   "lng": -122.404336,
+   "website": null
+  },
+  {
+   "name": "Shanghai 1930",
+   "lat": 37.7928578,
+   "lng": -122.3925683,
+   "website": null
+  },
+  {
+   "name": "Stars",
+   "lat": 37.796479,
+   "lng": -122.403667,
+   "website": null
+  }
+ ]
+}
