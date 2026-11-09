@@ -68,15 +68,18 @@
 
     map.on('load', async () => {
       // ── universe layer: every permitted food business as a quiet dot ──
-      // Reuses window.__bfVenues when the Michelin roster already fetched
-      // /api/venues (explorer.html), skipping a duplicate ~1MB payload.
+      // Shares the roster's /api/venues fetch: await the in-flight promise if
+      // one exists (the ~1MB payload downloads once, even when the map loads
+      // mid-fetch); fall back to a direct fetch when this page never started
+      // one (landing-embedded use).
       let all = [];
       try {
         if (Array.isArray(window.__bfVenues)) {
           all = window.__bfVenues.filter(v => typeof v.lat === 'number');
         } else {
-          const r = await fetch('/api/venues');
-          const vd = await r.json();
+          const p = window.__bfVenuesPromise ||
+                    (window.__bfVenuesPromise = fetch('/api/venues').then(r => r.json()));
+          const vd = await p;
           all = (vd.venues || []).filter(v => typeof v.lat === 'number');
         }
       } catch (e) { /* map still loads empty */ }
@@ -147,6 +150,13 @@
           }
         }
       };
+      // a pick that ran before the map finished loading kept its highlight
+      // here; flush it now that the pins exist
+      if (window.__bfPendingHighlight) {
+        const pending = window.__bfPendingHighlight;
+        window.__bfPendingHighlight = null;
+        window.__bfHighlight(pending);
+      }
     });
   }
 

@@ -45,8 +45,22 @@ def main():
     aggs = {"to": {"terms": {"field": "to_venue.keyword", "size": 65536}},
             "fr": {"terms": {"field": "from_venue.keyword", "size": 65536}}}
     r = es.search(index=INDEX, body={"size": 0, "aggs": aggs})
-    lineaged = {b["key"] for b in r["aggregations"]["to"]["buckets"] + r["aggregations"]["fr"]["buckets"] if b["key"]}
-    ling_norm = {norm(v): v for v in lineaged}
+    # canonical graph name per normalization: several variants can share one
+    # norm key ("Atwater Tavern" / "ATwater TAvern", "B. Patisserie" /
+    # "b. patisserie", "LuLu" / "Lulu"), and set-iteration order would pick
+    # stochastically. The variant carrying the most cited edges is the
+    # citable one — it's also what /api/search resolves on.
+    counts = {}
+    for side in ("to", "fr"):
+        for b in r["aggregations"][side]["buckets"]:
+            k = b["key"]
+            if k:
+                counts[k] = counts.get(k, 0) + b["doc_count"]
+    ling_norm = {}
+    for name in counts:
+        k = norm(name)
+        if k not in ling_norm or counts[name] > counts[ling_norm[k]]:
+            ling_norm[k] = name
 
     star_norm = {norm(s): s for s in STARRED}
 
@@ -59,10 +73,17 @@ def main():
         # their bare graph name after the honorific is dropped
         hit = ling_norm.get(n)
         if not hit:
+            # longest prefix wins: ling_norm comes from a set (nondeterministic
+            # order), and first-match lets a generic lineage ("The Kitchen" ->
+            # "kitchen") consume a specific one ("Kitchen Story Cafe").
+            best = None
             for ln, orig in ling_norm.items():
                 if token_prefix_match(n, ln) or \
                         (n.startswith("restaurant ") and n[len("restaurant "):] == ln):
-                    hit = orig; break
+                    if best is None or len(ln) > len(best[0]):
+                        best = (ln, orig)
+            if best:
+                hit = best[1]
         if hit:
             v["lineaged"] = True
             v["lineage_name"] = hit
@@ -79,15 +100,22 @@ def main():
         # city names that carry a leading honorific the guide drops
         # ("Restaurant Naides" → Naides, "Restaurant Nisei" → Nisei)
         HONORIFIC = ("restaurant ",)
+        # exact (incl. honorific) first — unambiguous — then longest prefix
+        # wins, mirroring the lineage loop (star_norm is set-ordered).
+        exact = None
+        plen = 0; pstar = None
         for sn, orig in star_norm.items():
-            matched = n == sn or (n.startswith(sn + " ") and sn not in GENERIC_STAR)
-            if not matched and n.startswith(HONORIFIC) and n[len("restaurant "):] == sn:
-                matched = True
-            if matched:
-                v["michelin"] = True
-                v["star_name"] = orig
-                v.setdefault("lineage_name", orig)
-                break
+            if n == sn or (n.startswith(HONORIFIC) and n[len("restaurant "):] == sn):
+                exact = orig; break
+            if sn in GENERIC_STAR:
+                continue
+            if n.startswith(sn + " ") and len(sn) > plen:
+                plen = len(sn); pstar = orig
+        orig = exact or pstar
+        if orig:
+            v["michelin"] = True
+            v["star_name"] = orig
+            v.setdefault("lineage_name", orig)
 
     # stars belong to the kitchen: where one starred name has both restaurant
     # permit rows and bar/tavern rows (Nisei's side-by-side H25+H86 permits,

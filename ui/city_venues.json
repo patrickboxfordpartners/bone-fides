@@ -2168,7 +2168,7 @@
 "lat": 37.769211000001,
 "lng": -122.451219000002,
 "lineaged": true,
-"lineage_name": "The Alembic"
+"lineage_name": "Alembic"
 },
 {
 "name": "Ales Unlimited Llc",
@@ -3897,7 +3897,7 @@
 "lat": 37.774341000001,
 "lng": -122.387247000002,
 "lineaged": true,
-"lineage_name": "ATwater TAvern"
+"lineage_name": "Atwater Tavern"
 },
 {
 "name": "Au Sushi",
@@ -4234,7 +4234,7 @@
 "lat": 37.787940000001,
 "lng": -122.407515000002,
 "lineaged": true,
-"lineage_name": "b. patisserie"
+"lineage_name": "B. Patisserie"
 },
 {
 "name": "Ba @ Adobe Sf",
@@ -7540,7 +7540,7 @@
 "lat": 37.783819878373,
 "lng": -122.414392485476,
 "lineaged": true,
-"lineage_name": "The Black Cat"
+"lineage_name": "Black Cat"
 },
 {
 "name": "Black Horse London Deli The",
@@ -7830,9 +7830,7 @@
 "address": "1385 4th ST",
 "neighborhood": "Mission Bay",
 "lat": 37.771110000001,
-"lng": -122.391076500002,
-"lineaged": true,
-"lineage_name": "Blue Bottle"
+"lng": -122.391076500002
 },
 {
 "name": "Blue Bottle Coffee Inc",
@@ -12374,9 +12372,7 @@
 "address": "1 WARRIORS WAY STE 300",
 "neighborhood": "Mission Bay",
 "lat": 37.768005000001,
-"lng": -122.387575500002,
-"lineaged": true,
-"lineage_name": "Che"
+"lng": -122.387575500002
 },
 {
 "name": "Cheaper Cigarettes",
@@ -31341,7 +31337,9 @@
 "address": "3499 16TH ST",
 "neighborhood": "Castro/Upper Market",
 "lat": 37.764279000001,
-"lng": -122.430726000002
+"lng": -122.430726000002,
+"lineaged": true,
+"lineage_name": "Kitchen Story"
 },
 {
 "name": "Kitchen Woori",
@@ -35008,7 +35006,7 @@
 "lat": 37.806093000001,
 "lng": -122.405940000002,
 "lineaged": true,
-"lineage_name": "Lulu"
+"lineage_name": "LuLu"
 },
 {
 "name": "Luminara Coffee Llc",
@@ -35414,7 +35412,7 @@
 "lat": 37.770259937251,
 "lng": -122.445253105203,
 "lineaged": true,
-"lineage_name": "Magnolia"
+"lineage_name": "Magnolia Brewing"
 },
 {
 "name": "Mahalo!",
@@ -38571,7 +38569,7 @@
 "lat": 37.779849000001,
 "lng": -122.390226000002,
 "lineaged": true,
-"lineage_name": "MoMo's"
+"lineage_name": "Momo's"
 },
 {
 "name": "Momolicious",
@@ -38587,7 +38585,9 @@
 "address": "414 COLUMBUS AVE",
 "neighborhood": "North Beach",
 "lat": 37.799082000001,
-"lng": -122.408028000002
+"lng": -122.408028000002,
+"lineaged": true,
+"lineage_name": "Mona Lisa Mare e Monti"
 },
 {
 "name": "Mona Lisa Restaurant",
@@ -39551,7 +39551,7 @@
 "lat": 37.774701000001,
 "lng": -122.438038500002,
 "lineaged": true,
-"lineage_name": "Namu"
+"lineage_name": "Namu Stonepot"
 },
 {
 "name": "Nan King Road Bistro",
@@ -40377,7 +40377,7 @@
 "lat": 37.799775000001,
 "lng": -122.408563500002,
 "lineaged": true,
-"lineage_name": "Next"
+"lineage_name": "Next Door"
 },
 {
 "name": "Next Level Burger Company, Inc.",
@@ -40393,7 +40393,9 @@
 "address": "1217 SUTTER ST",
 "neighborhood": "Nob Hill",
 "lat": 37.787445000001,
-"lng": -122.420479500002
+"lng": -122.420479500002,
+"lineaged": true,
+"lineage_name": "Next"
 },
 {
 "name": "Nia Soul Cafe Llc",
@@ -40869,7 +40871,7 @@
 "lat": 37.774836000001,
 "lng": -122.437480500002,
 "lineaged": true,
-"lineage_name": "NoPa"
+"lineage_name": "Nopa"
 },
 {
 "name": "Nopa Corner Market",
@@ -42843,7 +42845,7 @@
 "lat": 37.793934000001,
 "lng": -122.403699000002,
 "lineaged": true,
-"lineage_name": "Palio d'Asti"
+"lineage_name": "Palio D'Asti"
 },
 {
 "name": "Palm City",
@@ -57537,7 +57539,7 @@
 "lat": 37.783485000001,
 "lng": -122.433327000002,
 "lineaged": true,
-"lineage_name": "Anchovy Bar"
+"lineage_name": "The Anchovy Bar"
 },
 {
 "name": "The Arc San Francisco",
@@ -57845,7 +57847,7 @@
 "lat": 37.773198000001,
 "lng": -122.506047000002,
 "lineaged": true,
-"lineage_name": "The Butterfly"
+"lineage_name": "Butterfly"
 },
 {
 "name": "The Cafe",
@@ -58391,7 +58393,7 @@
 "lat": 37.785420000001,
 "lng": -122.397079500002,
 "lineaged": true,
-"lineage_name": "the Fly Trap"
+"lineage_name": "Fly Trap"
 },
 {
 "name": "The Food Pavilion",
@@ -58651,7 +58653,7 @@
 "lat": 37.777482000001,
 "lng": -122.423274000002,
 "lineaged": true,
-"lineage_name": "The Happy Crane"
+"lineage_name": "Happy Crane"
 },
 {
 "name": "The Harlequin Group Llc",
@@ -59428,7 +59430,7 @@
 "lng": -122.433088500002,
 "star_name": "The Progress",
 "lineaged": true,
-"lineage_name": "the Progress",
+"lineage_name": "The Progress",
 "michelin": true
 },
 {
