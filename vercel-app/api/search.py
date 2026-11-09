@@ -355,16 +355,18 @@ def scope_edges(q, lin, cl):
         names = [c["name"], *(c.get("aliases") or [])]
         if any((n or "").lower() == ql and not _is_collective(n) for n in names):
             person_edges.extend(c["edges"])
-    # Competing venue hits exclude the queried person's own edges: a namesake
-    # restaurant touched by one of the chef's own moves must not tip the count
-    # toward the venue bucket (the explorer's venueFlips filter skips the
-    # queried person for the same reason).
+    # The person-vs-venue comparison counts only OTHER chefs' venue hits: a
+    # namesake restaurant touched by the queried chef's own moves must not
+    # tip the count toward the venue bucket (the explorer's venueFlips filter
+    # skips the queried person for the same reason). But when the venue wins
+    # the comparison, the returned restaurant dossier keeps every venue edge
+    # — the chef's own moves are part of the restaurant's record too.
     person_set = {e.get("person") for e in person_edges}
     venue_edges = [e for e in lin
-                   if e.get("person") not in person_set
-                   and (_venue_matches_query(ql, e.get("from_venue"))
-                        or _venue_matches_query(ql, e.get("to_venue")))]
-    if person_edges and len(person_edges) >= len(venue_edges):
+                   if _venue_matches_query(ql, e.get("from_venue"))
+                   or _venue_matches_query(ql, e.get("to_venue"))]
+    competing = sum(1 for e in venue_edges if e.get("person") not in person_set)
+    if person_edges and len(person_edges) >= competing:
         return person_edges
     if venue_edges:
         return venue_edges

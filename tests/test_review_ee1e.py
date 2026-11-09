@@ -140,6 +140,28 @@ def test_venue_query_still_wins_when_it_outnumbers(srv):
     assert {e["person"] for e in d["lineage"]} == {"A", "B", "C", "D"}
 
 
+@pytest.mark.parametrize("srv", SERVERS)
+def test_venue_win_keeps_the_namesake_chefs_moves(srv):
+    # When the restaurant wins the count, its dossier keeps the namesake
+    # chef's restaurant moves: they are part of the restaurant's record.
+    # (A regression of the first exclusion fix, which dropped them.)
+    edges = [
+        _move("Michael Mina", "Aqua", "Michael Mina", "left Aqua to open Michael Mina"),
+        _move("Michael Mina", "Michael Mina", "Bourbon Steak",
+              "left Michael Mina to join Bourbon Steak"),
+        _move("Raj Patel", None, "Michael Mina", "joined Michael Mina as chef de cuisine"),
+        _move("Kim Vo", None, "Michael Mina", "joined Michael Mina to run the bar"),
+        _move("Lee Anne", "Nopa", "Michael Mina", "joined Michael Mina after Nopa"),
+    ]
+    d = srv.assemble_dossier("Michael Mina", edges)
+    assert d["resolved"] is True
+    people = {c["name"] for c in d["identity"]}
+    assert "Michael Mina" in people  # the chef keeps a card
+    assert d["pedigree"]["moves"] == 5
+    assert {e["person"] for e in d["lineage"]} == {
+        "Michael Mina", "Raj Patel", "Kim Vo", "Lee Anne"}
+
+
 # ── finding 4: accented queries keep their letters ──
 
 @pytest.mark.parametrize("srv", SERVERS)
