@@ -281,6 +281,11 @@ def identity(edges):
     out.sort(key=lambda c: -c["n"])
     return out
 
+# Career-move language. Plain career facts the extraction prompt asks for —
+# "worked at Betelnut", "worked under Thomas Keller", "trained at French
+# Laundry" — are accepted: they are the mentor/stint sentences of a lineage.
+# A recipe sentence that merely names a title ("combines it with butter")
+# is not a promotion.
 _MOVE_CUE = re.compile(
     r"\b(join(?:ed|s|ing)?|depart(?:ed|s|ure)?|leav(?:e|es|ing)|left|"
     r"hir(?:ed|es|ing)|appoint(?:ed|s|ment)?|t(?:ook|akes|aking) over|"
@@ -290,7 +295,11 @@ _MOVE_CUE = re.compile(
     r"new executive chef|"
     r"opens?|opened|founded|exit(?:ed|s|ing)?|steps down|"
     r"headed to|lands? at|came from|coming from|went on|goes to|"
-    r"now (?:at|runs|heads)|formerly|previously)\b",
+    r"now (?:at|runs|heads)|formerly|previously|"
+    r"work(?:ed|s|ing) (?:at|under|for|with|in)|"
+    r"train(?:ed|s|ing) (?:at|under|with)|apprenticed? (?:at|under|with)|"
+    r"staged (?:at|under|with)|cook(?:ed|ing) (?:at|for|under)|"
+    r"sous chef under|tenure (?:at|with)|spent .* (?:at|with))\b",
     re.I)
 _PROMO_CUE = re.compile(
     r"\b(promot(?:ed|es|ion)|elevat(?:ed|es|ion)|"
@@ -346,9 +355,15 @@ def scope_edges(q, lin, cl):
         names = [c["name"], *(c.get("aliases") or [])]
         if any((n or "").lower() == ql and not _is_collective(n) for n in names):
             person_edges.extend(c["edges"])
+    # Competing venue hits exclude the queried person's own edges: a namesake
+    # restaurant touched by one of the chef's own moves must not tip the count
+    # toward the venue bucket (the explorer's venueFlips filter skips the
+    # queried person for the same reason).
+    person_set = {e.get("person") for e in person_edges}
     venue_edges = [e for e in lin
-                   if _venue_matches_query(ql, e.get("from_venue"))
-                   or _venue_matches_query(ql, e.get("to_venue"))]
+                   if e.get("person") not in person_set
+                   and (_venue_matches_query(ql, e.get("from_venue"))
+                        or _venue_matches_query(ql, e.get("to_venue")))]
     if person_edges and len(person_edges) >= len(venue_edges):
         return person_edges
     if venue_edges:
@@ -374,6 +389,8 @@ def assemble_dossier(q, lin):
         row = dict(e)
         row["outlet"] = outlet_tier(e.get("source"), e.get("source_url"))
         row["supported"] = True
+        # display cut only: the gate above judged the full quotation
+        row["evidence"] = (row.get("evidence") or "")[:220]
         scoped.append(row)
     cl2 = identity(scoped) if scoped else []
     return {"query": q, "resolved": True, "lineage": scoped,
@@ -409,6 +426,9 @@ def pedigree(edges):
 
 # ── ES query layer ──
 def lineage(es, query, size=25):
+    """evidence is stored in full: citation_supported() must see the whole
+    quotation (a move stated past the display cutoff still counts). The
+    public payload is shortened for display in assemble_dossier()."""
     hits = find_edges(es, query, size=size)
     edges = []
     for h in hits:
@@ -422,7 +442,7 @@ def lineage(es, query, size=25):
             "confidence": s.get("confidence"),
             "source": s.get("source"),
             "action": s.get("action"),
-            "evidence": (s.get("evidence") or "")[:220],
+            "evidence": s.get("evidence") or "",
             "source_url": s.get("source_url"),
             "source_image": s.get("source_image"),
             "score": h.get("_score", 0),
@@ -458,7 +478,7 @@ def fetch_person_edges(es, names, limit=100):
             "to_venue": s.get("to_venue"), "role": s.get("role"),
             "date": s.get("date"), "confidence": s.get("confidence"),
             "source": s.get("source"), "action": s.get("action"),
-            "evidence": (s.get("evidence") or "")[:220],
+            "evidence": s.get("evidence") or "",
             "source_url": s.get("source_url"),
             "source_image": s.get("source_image"), "score": 0,
         })
@@ -480,12 +500,19 @@ def _suggest_top(es, prefix, size):
             names.add(name)
     return sorted(names)[:size]
 
+def _suggest_safe(prefix):
+    """Query for the wildcard matcher: keep every letter (Unicode included —
+    "Jardinière" must not lose its è) plus digits/space/&/', and drop the
+    characters that are special inside an ES wildcard expression."""
+    s = re.sub(r"[*?\[\]\\]", " ", prefix)
+    return re.sub(r"[^\w &'.’\-]", "", s, flags=re.UNICODE)[:40]
+
 def suggest(es, prefix, size=7):
     """Venue names only. Not a hybrid dossier search."""
     prefix = (prefix or "").strip()
     if len(prefix) < 2:
         return []
-    safe = re.sub(r"[^0-9A-Za-z &'’.-]", "", prefix)[:40]
+    safe = _suggest_safe(prefix)
     if len(safe) < 2:
         return _suggest_top(es, prefix, size)
     pattern = "*" + safe + "*"
