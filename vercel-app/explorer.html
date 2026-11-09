@@ -204,9 +204,7 @@
     </div>
 
     <div class="railfoot">
-      Built tonight at the <b>SF Hackathon with Mistral</b> — <b>Mistral Large</b> reads the articles and
-      extracts the moves; <b>Elasticsearch</b> hybrid search (keyword + vector, RRF) resolves your query to
-      the kitchen. Every edge links to its source.
+      Every move is extracted from cited food journalism and every edge links to its source.
     </div>
   </aside>
 
@@ -506,7 +504,7 @@ function render(q, edges, ms, ped, identity){
   CARD.innerHTML = `
     <div class="kicker">Kitchen dossier</div>
     <h2>${esc(q)}</h2>
-    <div class="sub"><b>${rows.length}</b> chef${rows.length===1?'':'s'} in the record${ms ? ' · resolved in ' + Math.round(ms) + ' ms by hybrid search' : ''} · <i>click any kitchen to keep tracing</i></div>
+    <div class="sub"><b>${rows.length}</b> chef${rows.length===1?'':'s'} in the record${ms ? ' · resolved in ' + Math.round(ms) + ' ms' : ''} · <i>click any kitchen to keep tracing</i></div>
     ${pedHTML}
     <div class="legend" aria-hidden="true"><span><span class="conf high"></span>High confidence</span><span><span class="conf medium"></span>Medium</span><span><span class="conf low"></span>Low</span></div>
     <div class="dossier">${rows.join('')}</div>`;
