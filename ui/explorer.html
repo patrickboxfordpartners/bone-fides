@@ -116,8 +116,9 @@
   .srcbadge { display: inline-block; font-size: 10px; font-weight: 560; letter-spacing: .08em;
               text-transform: uppercase; padding: 1px 7px 2px; border: 1px solid currentColor;
               border-radius: 99px; margin-left: 8px; vertical-align: 1px; }
-  .srcbadge.sfchronicle { color: #8a2318; }
-  .srcbadge.sfgate { color: #1a5e63; }
+  .srcbadge.sfchronicle, .tier-chron { color: #e7b0a4; }
+  .srcbadge.sfgate, .tier-sfgate { color: #7dcec8; }
+  .srcbadge.other { color: var(--dim); }
   .chef .src a { color: var(--gold); text-decoration: none; border-bottom: 1px solid rgba(194,160,90,.35); }
   .chef .src a:hover { color: var(--ink); border-color: var(--ink); }
   /* Instagram badge, on the chef's name line — only for handles verified against
@@ -231,7 +232,7 @@
     </div>
 
     <div id="card" class="card" aria-live="polite" aria-busy="false">
-      <div class="empty">The graph holds 9,309 cited chef moves across 3,113 chefs. Search one kitchen.</div>
+      <div class="empty" id="idle-copy">Search one kitchen.</div>
     </div>
 
     <div class="railfoot">
@@ -241,7 +242,7 @@
 
   <div class="stage">
     <div id="map" aria-label="Map of current kitchens"></div>
-    <div class="stagehint" id="stagehint">Every permitted food business in SF — red = cited lineage, gold = Michelin starred</div>
+    <div class="stagehint" id="stagehint">Every permitted food business in SF — orange = cited lineage, champagne = Michelin starred</div>
   </div>
 </div>
 
@@ -251,12 +252,19 @@ const SEEDS = ['Betelnut', 'Gitane', 'Cotogna', 'Outerlands', 'Finn Town', 'Chin
 
 function esc(s){ return (s||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 function hostOf(u){ try { return new URL(u).hostname.replace('www.',''); } catch(e){ return u; } }
-function srcBadge(u, source){
+function srcBadge(u, source, outlet){
   const h = (() => { try { return new URL(u).hostname; } catch(e){ return ''; } })();
-  const tier = source || (h.includes('sfchronicle') ? 'sfchronicle' : h.includes('sfgate') ? 'sfgate' : h.includes('eater') ? 'eater' : 'eater');
+  let tier = outlet;
+  if(tier !== 'sfchronicle' && tier !== 'sfgate' && tier !== 'eater' && tier !== 'other'){
+    tier = (source === 'sfchronicle' || source === 'sfgate' || source === 'eater') ? source : '';
+    if(!tier) tier = h.includes('sfchronicle') ? 'sfchronicle' : h.includes('sfgate') ? 'sfgate' : h.includes('eater') ? 'eater' : 'other';
+  }
+  // A stored "eater" label must not rename a different host.
+  if(tier === 'eater' && h && !h.includes('eater')) tier = 'other';
   if(tier === 'sfchronicle') return '<span class="srcbadge sfchronicle">Chronicle</span>';
   if(tier === 'sfgate') return '<span class="srcbadge sfgate">SFGate</span>';
-  return '<span class="srcbadge" style="color:var(--dim)">Eater</span>';
+  if(tier === 'eater') return '<span class="srcbadge eater">Eater</span>';
+  return '<span class="srcbadge other">Other</span>';
 }
 
 /* Verified Instagram handles, keyed by the exact person.keyword in the corpus.
@@ -363,12 +371,19 @@ document.getElementById('dateline').textContent =
 fetch('/api/stats').then(r=>r.json()).then(d => {
   document.getElementById('stats').innerHTML =
     `<b>${d.edges}</b> moves · <b>${d.people}</b> chefs · <b>${d.venues}</b> kitchens · <b>${d.sources}</b> sources`;
+  const idle = document.getElementById('idle-copy');
+  if(idle && CARD.dataset.mode !== 'result'){
+    const moves = Number(d.edges).toLocaleString('en-US');
+    const chefs = Number(d.people).toLocaleString('en-US');
+    idle.textContent = `The graph holds ${moves} cited chef moves across ${chefs} chefs. Search one kitchen.`;
+  }
 }).catch(()=>{});
 
 // ── search ──
 let lastFetch = 0;
 async function run(){
   const q = Q.value.trim(); if(!q){ Q.focus(); return; }
+  CARD.dataset.mode = 'result';
   hideSugg();
   CARD.innerHTML = '<div class="loading">Tracing the lineage…</div>';
   const mine = ++lastFetch;
@@ -388,9 +403,8 @@ async function run(){
   }
   if(mine !== lastFetch) return;
   CARD.setAttribute('aria-busy','false');
-  /* resolved=false means nothing in the record actually IS the query — hybrid
-     search still returned its 25 nearest records, but showing them as a scored
-     dossier would invent a lineage for a name nobody cited. */
+  /* resolved=false means nothing in the record actually IS the query.
+     The API returns an empty dossier in that case. */
   if(d.resolved === false){
     const close = (d.identity || []).slice(0, 6).map(c =>
       `<button type="button" class="chip" data-pick="${esc(c.name)}">${esc(c.name)}</button>`).join('');
@@ -448,12 +462,13 @@ function buildChain(person_edges, ql){
     if(e.from_venue) (byFrom[e.from_venue] = byFrom[e.from_venue] || []).push(e);
     if(e.to_venue)   (byTo[e.to_venue]   = byTo[e.to_venue]   || []).push(e);
   });
-  const chain = [start], years = {};
+  const chain = [start], years = {}, hasEdge = {};
   let cur = start;
   for(let i = 0; i < 8; i++){
     const e = (byFrom[cur] || [])[0];
     if(!e || !e.to_venue || chain.includes(e.to_venue)) break;
     if(e.date) years[cur + '>' + e.to_venue] = e.date;
+    hasEdge[cur + '>' + e.to_venue] = true;
     chain.push(e.to_venue); cur = e.to_venue;
   }
   cur = start;
@@ -461,13 +476,14 @@ function buildChain(person_edges, ql){
     const e = (byTo[cur] || [])[0];
     if(!e || !e.from_venue || chain.includes(e.from_venue)) break;
     if(e.date) years[e.from_venue + '>' + cur] = e.date;
+    hasEdge[e.from_venue + '>' + cur] = true;
     chain.unshift(e.from_venue); cur = e.from_venue;
   }
-  return { chain, years, pivot };
+  return { chain, years, pivot, hasEdge };
 }
 
 function render(q, edges, ms, ped, identity){
-  if(!edges || !edges.length){ CARD.innerHTML = '<div class="empty">No lineage found for “'+esc(q)+'” yet. Check the spelling, try a chef’s name, or start with one of the kitchens above.</div>'; return; }
+  if(!edges || !edges.length){ CARD.innerHTML = '<div class="empty">“'+esc(q)+'” is in the record, but none of the cited lines state a career move.</div>'; return; }
   const ql = q.toLowerCase();
   // person query when a cluster IS the query (by name) and its edges outnumber
   // docs whose venue field merely contains the name — namesake restaurants
@@ -487,8 +503,8 @@ function render(q, edges, ms, ped, identity){
   let pedHTML = '';
   if(ped){
     const tierBits = [];
-    if(ped.tiers.sfchronicle) tierBits.push('<span style="color:#a8543f">'+ped.tiers.sfchronicle+' Chronicle</span>');
-    if(ped.tiers.sfgate) tierBits.push('<span style="color:#1a5e63">'+ped.tiers.sfgate+' SFGate</span>');
+    if(ped.tiers.sfchronicle) tierBits.push('<span class="tier-chron">'+ped.tiers.sfchronicle+' Chronicle</span>');
+    if(ped.tiers.sfgate) tierBits.push('<span class="tier-sfgate">'+ped.tiers.sfgate+' SFGate</span>');
     if(ped.tiers.eater) tierBits.push('<span>'+ped.tiers.eater+' Eater</span>');
     if(ped.tiers.other) tierBits.push('<span>'+ped.tiers.other+' other</span>');
     pedHTML = '<div class="pedigree" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+ped.score+'" title="Credibility score: source authority (Chronicle > SFGate > Eater), corroboration across cited articles, and depth of the verified record">'+
@@ -508,7 +524,8 @@ function render(q, edges, ms, ped, identity){
     const hereChip = v => v.toLowerCase() === ql ? ' here' : '';
     const chainHTML = c.chain.map((v, i) => {
       const yr = i > 0 ? c.years[c.chain[i-1] + '>' + v] : null;
-      return (i > 0 ? `<span class="arr">→${yr ? '<span class="yr">'+esc(yr)+'</span>' : ''}</span>` : '') +
+      const linked = i > 0 && c.hasEdge && c.hasEdge[c.chain[i-1] + '>' + v];
+      return (linked ? `<span class="arr">→${yr ? '<span class="yr">'+esc(yr)+'</span>' : ''}</span>` : '') +
              (hereChip(v) ? `<span class="vchip here" aria-current="true">${esc(v)}</span>` : `<button type="button" class="vchip" data-pick="${esc(v)}">${esc(v)}</button>`);
     }).join('');
     // identity badges: name variants + homonym / possible-same-chef flags
@@ -531,7 +548,7 @@ function render(q, edges, ms, ped, identity){
       <div class="evrow">${img}
       <div class="evtext">
       ${pivot.evidence ? '<div class="ev">' + esc(trunc(pivot.evidence, 190)) + '</div>' : ''}
-      ${pivot.source_url ? '<div class="src">§ <a href="'+esc(pivot.source_url)+'" target="_blank" rel="noopener">'+esc(hostOf(pivot.source_url))+'</a>' + srcBadge(pivot.source_url, pivot.source) + '</div>' : ''}
+      ${pivot.source_url ? '<div class="src">§ <a href="'+esc(pivot.source_url)+'" target="_blank" rel="noopener">'+esc(hostOf(pivot.source_url))+'</a>' + srcBadge(pivot.source_url, pivot.source, pivot.outlet) + '</div>' : ''}
       </div></div>
     </div>`);
   });
@@ -556,9 +573,14 @@ function buildPersonChain(pedges){
     });
   });
   if(!stops.length) return null;
-  const years = {};
-  pedges.forEach(e => { if(e.from_venue && e.to_venue && e.date) years[e.from_venue+'>'+e.to_venue] = e.date; });
-  return { chain: stops, years, pivot: pedges[0] };
+  const years = {}, hasEdge = {};
+  pedges.forEach(e => {
+    if(e.from_venue && e.to_venue){
+      hasEdge[e.from_venue+'>'+e.to_venue] = true;
+      if(e.date) years[e.from_venue+'>'+e.to_venue] = e.date;
+    }
+  });
+  return { chain: stops, years, pivot: pedges.find(e => e.supported !== false) || pedges[0], hasEdge };
 }
 
 // ── autosuggest ──
@@ -568,7 +590,7 @@ Q.addEventListener('input', () => {
   const v = Q.value.trim();
   if(v.length < 2){ hideSugg(); return; }
   sugTimer = setTimeout(async () => {
-    const r = await fetch('/api/search?q=' + encodeURIComponent(v));
+    const r = await fetch('/api/suggest?q=' + encodeURIComponent(v));
     const d = await r.json();
     if(d.suggestions && d.suggestions.length){
       SUGG.innerHTML = d.suggestions.map((s,i) => `<div role="option" id="sg${i}" aria-selected="false" data-pick="${esc(s)}">${esc(s)}</div>`).join('');

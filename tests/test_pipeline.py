@@ -16,9 +16,9 @@ def test_pipeline_produces_edges_with_source_url():
     assert out[0]["source_url"] == "https://x.com/a"
 
 def test_pipeline_accumulates_across_sources():
-    fetch = lambda url: "TITLE: t\n\nlineage text"
+    fetch = lambda url: "TITLE: t\n\nA joined V2."
     mistral = FakeMistral([{"person": "A", "from_venue": "V1", "to_venue": "V2",
-                            "role": "chef", "evidence": "e", "confidence": "high"}])
+                            "role": "chef", "evidence": "joined V2", "confidence": "high"}])
     out = run_pipeline(["https://x.com/1", "https://x.com/2"], fetch=fetch,
                        extract=mistral.chat_parse)
     assert len(out) == 2

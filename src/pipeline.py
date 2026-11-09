@@ -29,7 +29,7 @@ def run_pipeline(urls=None, fetch=None, extract=None, reading_list="READING-LIST
             continue
         if isinstance(raw, dict):        # raw model output -> validate
             from src.extract import parse_extraction
-            edges = parse_extraction(raw)
+            edges = parse_extraction(raw, article_text=text)
         elif isinstance(raw, list):
             edges = raw
         else:
