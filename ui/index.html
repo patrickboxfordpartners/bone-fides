@@ -76,6 +76,9 @@
   .evrow { display: flex; gap: 12px; margin-top: 8px; align-items: flex-start; }
   .evimg { width: 88px; height: 88px; object-fit: cover; border-radius: 6px; flex: none;
            border: 1px solid var(--faint); background: var(--faint); }
+  .evimg:not([src]) { display: none; }
+  .evimg[src=""] { display: none; }
+  img.evimg.broken { display: none; }
   .evtext { min-width: 0; flex: 1; }
   .chef .conf { width: 8px; height: 8px; border-radius: 50%; flex: none; align-self: center; }
   .conf.high { background: var(--ok); } .conf.medium { background: var(--gold); } .conf.low { background: var(--bad); }
@@ -197,7 +200,7 @@
     <div class="chips" id="chips"></div>
 
     <div id="card" class="card" aria-live="polite" aria-busy="false">
-      <div class="empty">The graph holds a hundred-odd cited chef moves. Search one kitchen.</div>
+      <div class="empty">The graph holds 9,309 cited chef moves across 3,113 chefs. Search one kitchen.</div>
     </div>
 
     <div class="railfoot">
@@ -322,7 +325,7 @@ const IG_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
 function igBadge(name, aliases){
   const h = IG[name] || (aliases || []).find(a => IG[a]);
   if(!h) return '';
-  return ' <a class="igbadge" href="https://www.instagram.com/' + h + '/" target="_blank" rel="noopener" title="' + esc(name) + ' on Instagram ( @' + h + ')">' + IG_SVG + 'ig</a>';
+  return ' <a class="igbadge" href="https://www.instagram.com/' + h + '/" target="_blank" rel="noopener" title="' + esc(name) + ' on Instagram ( @' + h + ')" aria-label="' + esc(name) + ' on Instagram ( @' + h + ')">' + IG_SVG + 'ig</a>';
 }
 
 // ── rail head ──
@@ -351,17 +354,42 @@ async function run(){
   } catch(e){
     if(mine !== lastFetch) return;
     CARD.setAttribute('aria-busy','false');
-    CARD.innerHTML = '<div class="err" role="alert">Couldn’t reach the lineage index. <button class="chip" type="button" onclick="run()">Try again</button></div>';
+    CARD.innerHTML = '<div class="err" role="alert">Couldn’t reach the lineage index. <button class="chip" type="button" data-action="retry">Try again</button></div>';
     return;
   }
   if(mine !== lastFetch) return;
   CARD.setAttribute('aria-busy','false');
+  /* resolved=false means nothing in the record actually IS the query — hybrid
+     search still returned its 25 nearest records, but showing them as a scored
+     dossier would invent a lineage for a name nobody cited. */
+  if(d.resolved === false){
+    const close = (d.identity || []).slice(0, 6).map(c =>
+      `<button type="button" class="chip" data-pick="${esc(c.name)}">${esc(c.name)}</button>`).join('');
+    CARD.innerHTML = '<div class="empty">No kitchen or chef named “' + esc(q) + '” in the record yet.'
+      + (close ? ' Closest cited names:' + close : ' Check the spelling, or start with one of the kitchens above.')
+      + '</div>';
+    return;
+  }
   render(q, d.lineage, performance.now() - t0, d.pedigree, d.identity);
   if(window.__bfHighlight) window.__bfHighlight(q);
 }
 
 async function pick(name){ Q.value = name; run(); }
 window.pick = pick;
+
+/* Click delegation for every dynamic chip: venue chips, suggestions, and the
+   retry button carry data-pick / data-action attributes instead of inline
+   onclick strings, so no venue or suggestion name is ever interpolated into
+   JS source (the string builder was escapable only one apostrophe deep). */
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-pick]');
+  if(t){ e.preventDefault(); pick(t.getAttribute('data-pick')); return; }
+  const a = e.target.closest('[data-action="retry"]');
+  if(a){ run(); }
+});
+document.addEventListener('error', e => {
+  if(e.target && e.target.classList && e.target.classList.contains('evimg')) e.target.classList.add('broken');
+}, true);
 
 function trunc(s, n){
   s = (s||'').trim(); if(s.length <= n) return s;
@@ -407,8 +435,19 @@ function buildChain(person_edges, ql){
 function render(q, edges, ms, ped, identity){
   if(!edges || !edges.length){ CARD.innerHTML = '<div class="empty">No lineage found for “'+esc(q)+'” yet. Check the spelling, try a chef’s name, or start with one of the kitchens above.</div>'; return; }
   const ql = q.toLowerCase();
-  const isPersonQuery = identity && identity.length > 0 && identity[0].n > 0 &&
-    edges.filter(e => e.person && ((e.from_venue||'').toLowerCase().includes(ql) || (e.to_venue||'').toLowerCase().includes(ql))).length === 0;
+  // person query when a cluster IS the query (by name) and its edges outnumber
+  // docs whose venue field merely contains the name — namesake restaurants
+  // (Michael Mina), employer groups ("X's restaurant group"), and the rare
+  // mis-extraction (a person written into from_venue) all live in that venue
+  // bucket; the queried person's own cited moves live in the cluster bucket.
+  const selfEdges = (identity || []).filter(cl =>
+    cl.name && (cl.name.toLowerCase() === ql ||
+      (cl.aliases||[]).some(a => a.toLowerCase() === ql)))
+    .reduce((s, cl) => s + cl.n, 0);
+  const venueFlips = edges.filter(e => e.person &&
+    (e.person||'').toLowerCase() !== ql &&
+    ((e.from_venue||'').toLowerCase().includes(ql) || (e.to_venue||'').toLowerCase().includes(ql))).length;
+  const isPersonQuery = selfEdges > 0 && selfEdges >= venueFlips;
 
   // pedigree dial: weighted credibility from source tiers + corroboration
   let pedHTML = '';
@@ -417,9 +456,10 @@ function render(q, edges, ms, ped, identity){
     if(ped.tiers.sfchronicle) tierBits.push('<span style="color:#a8543f">'+ped.tiers.sfchronicle+' Chronicle</span>');
     if(ped.tiers.sfgate) tierBits.push('<span style="color:#1a5e63">'+ped.tiers.sfgate+' SFGate</span>');
     if(ped.tiers.eater) tierBits.push('<span>'+ped.tiers.eater+' Eater</span>');
-    pedHTML = '<div class="pedigree" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+ped.score+'" title="Credibility score: source authority (Chronicle > SFGate > Eater), independent corroboration across articles, and depth of the verified record">'+
+    if(ped.tiers.other) tierBits.push('<span>'+ped.tiers.other+' other</span>');
+    pedHTML = '<div class="pedigree" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+ped.score+'" title="Credibility score: source authority (Chronicle > SFGate > Eater), corroboration across cited articles, and depth of the verified record">'+
       '<div class="pedbar" aria-hidden="true"><span style="width:'+ped.score+'%"></span></div>'+
-      '<div class="pedlbl"><b>Bone Fides score '+ped.score+'</b>/100 — '+ped.moves+' move'+(ped.moves===1?'':'s')+', '+ped.sources+' independent source'+(ped.sources===1?'':'s')+' · '+tierBits.join(' · ')+'</div></div>';
+      '<div class="pedlbl"><b>Bone Fides score '+ped.score+'</b>/100 — '+ped.moves+' move'+(ped.moves===1?'':'s')+', cited in '+ped.sources+' article'+(ped.sources===1?'':'s')+' · '+tierBits.join(' · ')+'</div></div>';
   }
 
   // one card per identity cluster (server-side people disambiguation)
@@ -435,7 +475,7 @@ function render(q, edges, ms, ped, identity){
     const chainHTML = c.chain.map((v, i) => {
       const yr = i > 0 ? c.years[c.chain[i-1] + '>' + v] : null;
       return (i > 0 ? `<span class="arr">→${yr ? '<span class="yr">'+esc(yr)+'</span>' : ''}</span>` : '') +
-             (hereChip(v) ? `<span class="vchip here" aria-current="true">${esc(v)}</span>` : `<button type="button" class="vchip" onclick="pick('${esc(v).replace(/'/g,"\\'")}')">${esc(v)}</button>`);
+             (hereChip(v) ? `<span class="vchip here" aria-current="true">${esc(v)}</span>` : `<button type="button" class="vchip" data-pick="${esc(v)}">${esc(v)}</button>`);
     }).join('');
     // identity badges: name variants + homonym / possible-same-chef flags
     let idBadge = '';
@@ -447,7 +487,7 @@ function render(q, edges, ms, ped, identity){
     const meta = [pivot.role, pivot.date && !Object.values(c.years).includes(pivot.date) ? pivot.date : null]
       .filter(Boolean).join(' · ');
     // imagery: the cited article's own photo, lazy-loaded, with graceful fallback
-    const img = pivot.source_image ? `<img class="evimg" src="${esc(pivot.source_image)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">` : '';
+    const img = pivot.source_image ? `<img class="evimg" src="${esc(pivot.source_image)}" alt="" loading="lazy" referrerpolicy="no-referrer">` : '';
     rows.push(`
     <div class="chef${img ? ' hasimg' : ''}">
       <div class="who"><span class="conf ${pivot.confidence||'medium'}" title="${esc(pivot.confidence||'medium')} confidence"></span><span class="sr-only">${esc(pivot.confidence||'medium')} confidence</span>
@@ -497,7 +537,7 @@ Q.addEventListener('input', () => {
     const r = await fetch('/api/search?q=' + encodeURIComponent(v));
     const d = await r.json();
     if(d.suggestions && d.suggestions.length){
-      SUGG.innerHTML = d.suggestions.map((s,i) => `<div role="option" id="sg${i}" aria-selected="false" onclick="pick('${esc(s).replace(/'/g,"\\'")}')">${esc(s)}</div>`).join('');
+      SUGG.innerHTML = d.suggestions.map((s,i) => `<div role="option" id="sg${i}" aria-selected="false" data-pick="${esc(s)}">${esc(s)}</div>`).join('');
       SUGG.style.display = 'block'; Q.setAttribute('aria-expanded','true'); sugIdx = -1;
     } else hideSugg();
   }, 220);
@@ -519,7 +559,7 @@ Q.addEventListener('keydown', e => {
 
 // ── seed chips ──
 document.getElementById('chips').innerHTML =
-  '<span class="lbl">Start here</span>' + SEEDS.map(s => `<button type="button" class="chip" onclick="pick('${s}')">${s}</button>`).join('');
+  '<span class="lbl">Start here</span>' + SEEDS.map(s => `<button type="button" class="chip" data-pick="${esc(s)}">${esc(s)}</button>`).join('');
 
 // ── map (always via /api/map.js: the server injects the token there, so it
 // works on both the local server and Vercel; map.js itself hides the panel

@@ -91,7 +91,7 @@
           'circle-stroke-color': 'rgba(239,230,211,.10)', 'circle-stroke-width': 1,
         },
       });
-      // hover a quiet dot → name tooltip
+      // hover a quiet dot → name tooltip; tap does the same on touch screens
       const tip = new mapboxgl.Popup({ closeButton: false, offset: 8, maxWidth: '200px' });
       map.on('mousemove', 'quiet-dots', e => {
         map.getCanvas().style.cursor = 'pointer';
@@ -101,6 +101,16 @@
       });
       map.on('mouseleave', 'quiet-dots', () => {
         map.getCanvas().style.cursor = ''; tip.remove();
+      });
+      map.on('click', 'quiet-dots', e => {
+        const f = e.features && e.features[0];
+        if (f) tip.setLngLat(e.lngLat).setHTML(
+          '<div class="quiettip">' + esc(f.properties.name) + '</div>').addTo(map);
+      });
+      // tap anywhere else on the map closes a touch-opened tooltip
+      map.on('click', e => {
+        const pts = map.queryRenderedFeatures(e.point, { layers: ['quiet-dots'] });
+        if (!pts.length) tip.remove();
       });
 
       // ── lineage + michelin pins (interactive HTML markers) ──

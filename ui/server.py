@@ -1,5 +1,5 @@
 """Bone Fides demo UI: static page + JSON query API against the lineage index."""
-import os, sys, json, re, urllib.parse
+import os, sys, json, re, traceback, urllib.parse
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -254,16 +254,22 @@ def pedigree(edges):
     tiers = {"sfchronicle": 0, "sfgate": 0, "eater": 0}
     total = 0
     urls = set()
+    other = 0
     for e in edges:
-        t = e.get("source") if e.get("source") in TIER_WEIGHT else "eater"
-        tiers[t] += 1
-        total += TIER_WEIGHT[t]
+        t = e.get("source") if e.get("source") in TIER_WEIGHT else "other"
+        if t == "other":
+            other += 1
+            total += 3  # unranked outlets: lighter than Eater, never borrow its weight
+        else:
+            tiers[t] += 1
+            total += TIER_WEIGHT[t]
         if e.get("source_url"):
             urls.add(e["source_url"])
     authority = total / (len(edges) * TIER_WEIGHT["sfchronicle"])
     corroboration = min(1.0, max(0, len(urls) - 1) / 4)
     depth = min(1.0, len(edges) / 12)
     score = round(55 * authority + 25 * corroboration + 20 * depth)
+    tiers["other"] = other
     return {"score": min(100, score),
             "moves": len(edges), "sources": len(urls), "tiers": tiers}
 
@@ -378,6 +384,48 @@ def stats(es):
                 index=INDEX, body={"size": 0, "aggs": {"s": {"cardinality": {"field": "source_url.keyword"}}}}
             )["aggregations"]["s"]["value"]}
 
+MAX_QUERY_LEN = 120  # abuse cap: queries are names, not free-text essays
+
+def _is_collective(name):
+    """Anonymous/collective entity ("chefs", "sous chef", "two chefs"): the
+    corpus honestly records unnamed people, but they are not a chef NAMED
+    the query, so they must not resolve it. A string resolves as a person
+    only if some capitalized token survives stopword stripping."""
+    n = re.sub(r'"[^"]*"', '', name or "")
+    n = re.sub(r"\([^)]*\)", '', n)
+    tokens = [t for t in re.split(r"[\s+'’-]+", n) if t]
+    named = [t for t in tokens if t[:1].isupper() and t.lower() not in
+             ("chef", "chefs", "the", "a", "an", "former", "new", "same",
+              "unknown", "unnamed", "top")]
+    return not named
+
+def resolve_query(q, lin, cl):
+    """Did the query actually name a cited chef or kitchen? Same logic as
+    vercel-app/api/search.py — keep the two in sync."""
+    ql = q.lower().strip()
+    if not ql:
+        return False
+    for c in cl:
+        for n in [c["name"], *(c.get("aliases") or [])]:
+            if n.lower() == ql and not _is_collective(n):
+                return True
+    for e in lin:
+        for k in ("from_venue", "to_venue"):
+            v = e.get(k)
+            if v and v.lower() == ql:
+                return True
+    # prefix tolerance for partial kitchen names ("Finn Town" → "Finn Town
+    # Taproom"). Both directions gated on len>=4 so "nopalera" cannot absorb
+    # "Nopa" (a different venue) — the query must extend the cited name.
+    for e in lin:
+        for k in ("from_venue", "to_venue"):
+            v = e.get(k)
+            if v and len(ql) >= 4:
+                vl = v.lower()
+                if len(vl) >= 4 and (vl.startswith(ql) or ql.startswith(vl)):
+                    return True
+    return False
+
 class Handler(SimpleHTTPRequestHandler):
     def do_GET(self):
         es = self.server.es
@@ -398,6 +446,7 @@ class Handler(SimpleHTTPRequestHandler):
     def _search(self, es):
         m = re.search(r"q=([^&]*)", self.path)
         q = urllib.parse.unquote(m.group(1)) if m else ""
+        q = q.strip()[:MAX_QUERY_LEN]
         ms = re.search(r"size=(\d+)", self.path)
         size = min(300, int(ms.group(1))) if ms else 25
         lin = lineage(es, q, size=size) if q else []
@@ -414,19 +463,22 @@ class Handler(SimpleHTTPRequestHandler):
             if extra:
                 lin = dedupe(lin + extra)
                 cl = identity(lin)
-        self._json({"query": q, "lineage": lin,
+        resolved = resolve_query(q, lin, cl) if q else False
+        self._json({"query": q, "resolved": resolved, "lineage": lin,
                     "identity": [{"name": c["name"], "aliases": c["aliases"],
                                   "homonym": c["homonym"], "possible": c["possible"],
                                   "n": c["n"], "edges": c["edges"]} for c in cl],
-                    "pedigree": pedigree(lin) if q else None,
+                    "pedigree": pedigree(lin) if (q and resolved) else None,
                     "suggestions": suggest(es, q) if q else []})
 
     def _safe(self, fn):
         try:
             fn()
-        except Exception as e:
+        except Exception:
+            traceback.print_exc()  # log the real cause; response stays generic
+            # generic error surface: exception text can leak index names/endpoints
             try:
-                self._json({"error": str(e)}, status=500)
+                self._json({"error": "search temporarily unavailable"}, status=500)
             except Exception:
                 pass
 
