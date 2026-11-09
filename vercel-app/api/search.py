@@ -211,16 +211,22 @@ def pedigree(edges):
     tiers = {"sfchronicle": 0, "sfgate": 0, "eater": 0}
     total = 0
     urls = set()
+    other = 0
     for e in edges:
-        t = e.get("source") if e.get("source") in TIER_WEIGHT else "eater"
-        tiers[t] += 1
-        total += TIER_WEIGHT[t]
+        t = e.get("source") if e.get("source") in TIER_WEIGHT else "other"
+        if t == "other":
+            other += 1
+            total += 3  # unranked outlets: lighter than Eater, never borrow its weight
+        else:
+            tiers[t] += 1
+            total += TIER_WEIGHT[t]
         if e.get("source_url"):
             urls.add(e["source_url"])
     authority = total / (len(edges) * TIER_WEIGHT["sfchronicle"])
     corroboration = min(1.0, max(0, len(urls) - 1) / 4)
     depth = min(1.0, len(edges) / 12)
     score = round(55 * authority + 25 * corroboration + 20 * depth)
+    tiers["other"] = other
     return {"score": min(100, score),
             "moves": len(edges), "sources": len(urls), "tiers": tiers}
 

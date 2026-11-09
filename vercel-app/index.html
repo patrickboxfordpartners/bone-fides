@@ -200,7 +200,7 @@
     <div class="chips" id="chips"></div>
 
     <div id="card" class="card" aria-live="polite" aria-busy="false">
-      <div class="empty">The graph holds a hundred-odd cited chef moves. Search one kitchen.</div>
+      <div class="empty">The graph holds 9,309 cited chef moves across 3,113 chefs. Search one kitchen.</div>
     </div>
 
     <div class="railfoot">
@@ -445,9 +445,10 @@ function render(q, edges, ms, ped, identity){
     if(ped.tiers.sfchronicle) tierBits.push('<span style="color:#a8543f">'+ped.tiers.sfchronicle+' Chronicle</span>');
     if(ped.tiers.sfgate) tierBits.push('<span style="color:#1a5e63">'+ped.tiers.sfgate+' SFGate</span>');
     if(ped.tiers.eater) tierBits.push('<span>'+ped.tiers.eater+' Eater</span>');
-    pedHTML = '<div class="pedigree" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+ped.score+'" title="Credibility score: source authority (Chronicle > SFGate > Eater), independent corroboration across articles, and depth of the verified record">'+
+    if(ped.tiers.other) tierBits.push('<span>'+ped.tiers.other+' other</span>');
+    pedHTML = '<div class="pedigree" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+ped.score+'" title="Credibility score: source authority (Chronicle > SFGate > Eater), corroboration across cited articles, and depth of the verified record">'+
       '<div class="pedbar" aria-hidden="true"><span style="width:'+ped.score+'%"></span></div>'+
-      '<div class="pedlbl"><b>Bone Fides score '+ped.score+'</b>/100 — '+ped.moves+' move'+(ped.moves===1?'':'s')+', '+ped.sources+' independent source'+(ped.sources===1?'':'s')+' · '+tierBits.join(' · ')+'</div></div>';
+      '<div class="pedlbl"><b>Bone Fides score '+ped.score+'</b>/100 — '+ped.moves+' move'+(ped.moves===1?'':'s')+', cited in '+ped.sources+' article'+(ped.sources===1?'':'s')+' · '+tierBits.join(' · ')+'</div></div>';
   }
 
   // one card per identity cluster (server-side people disambiguation)
