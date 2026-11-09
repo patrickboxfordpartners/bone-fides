@@ -69,6 +69,18 @@ def main():
         k = (v["name"].lower(), v["address"].lower())
         if k in seen: continue
         seen.add(k); uniq.append(v)
+    # Two Michelin-starred kitchens have no permit row in the DPH dataset
+    # (Madcap: 3★-adjacent, 2026 guide lists it; San Ho Won: 1★): the DBA
+    # never got filed/recorded. Curated additions so the star roster doesn't
+    # silently drop real starred restaurants.
+    uniq += [
+        {"name": "Madcap", "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
+         "address": "3195 California St", "neighborhood": "Presidio Heights",
+         "lat": 37.7872056, "lng": -122.4465788},
+        {"name": "San Ho Won", "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
+         "address": "1625 Leavenworth St", "neighborhood": "Nob Hill",
+         "lat": 37.7959983, "lng": -122.4169553},
+    ]
     uniq.sort(key=lambda v: v["name"])
     with open(OUT, "w") as f:
         json.dump({"venues": uniq}, f, indent=0)

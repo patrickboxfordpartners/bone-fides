@@ -767,10 +767,11 @@
 "neighborhood": "Japantown",
 "lat": 37.785960000001,
 "lng": -122.432629500002,
-"star_name": "7 Adams",
 "lineaged": true,
 "lineage_name": "7 Adams",
-"michelin": true
+"michelin": true,
+"star_name": "7 Adams",
+"stars": 1
 },
 {
 "name": "7 Eleven #2366-20450C",
@@ -1497,10 +1498,11 @@
 "neighborhood": "Nob Hill",
 "lat": 37.791549000001,
 "lng": -122.421406500002,
-"star_name": "Acquerello",
 "lineaged": true,
 "lineage_name": "Acquerello",
-"michelin": true
+"michelin": true,
+"star_name": "Acquerello",
+"stars": 2
 },
 {
 "name": "Acquolina",
@@ -1957,10 +1959,8 @@
 "neighborhood": "Nob Hill",
 "lat": 37.790595000001,
 "lng": -122.419264500002,
-"star_name": "Akiko's",
 "lineaged": true,
-"lineage_name": "Akiko's",
-"michelin": true
+"lineage_name": "Akiko's"
 },
 {
 "name": "Akiko's",
@@ -2168,7 +2168,7 @@
 "lat": 37.769211000001,
 "lng": -122.451219000002,
 "lineaged": true,
-"lineage_name": "The Alembic"
+"lineage_name": "Alembic"
 },
 {
 "name": "Ales Unlimited Llc",
@@ -2201,6 +2201,14 @@
 "neighborhood": "South of Market",
 "lat": 37.781127000001,
 "lng": -122.403681000002
+},
+{
+"name": "Alfajores Narciso",
+"permit_type": "H74R - CATERER",
+"address": "103   HORNE AVE",
+"neighborhood": "Bayview Hunters Point",
+"lat": 37.726596000001,
+"lng": -122.365624500002
 },
 {
 "name": "Ali Baba Smoke & Gift Shop",
@@ -2519,6 +2527,14 @@
 "lng": -122.420227500002
 },
 {
+"name": "Amawele's South African Kitchen",
+"permit_type": "H74R - CATERER",
+"address": "103   HORNE AVE",
+"neighborhood": "Bayview Hunters Point",
+"lat": 37.726596000001,
+"lng": -122.365624500002
+},
+{
 "name": "Amazing Friend Inc",
 "permit_type": "H31 - TOBACCO SALES - ANNUAL LICENSE FEE",
 "address": "2345 MISSION ST #D",
@@ -2629,7 +2645,7 @@
 {
 "name": "Amici's East Coast Pizzeria",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
-"address": "200  PIER 39 PLZ",
+"address": "200 PIER 39 PLZ",
 "neighborhood": "North Beach",
 "lat": 37.808118000001,
 "lng": -122.409063000002
@@ -3035,10 +3051,11 @@
 "neighborhood": "Financial District/South Beach",
 "lat": 37.793250000001,
 "lng": -122.392435500002,
-"star_name": "Angler",
 "lineaged": true,
 "lineage_name": "Angler",
-"michelin": true
+"michelin": true,
+"star_name": "Angler",
+"stars": 1
 },
 {
 "name": "Angolo Inc",
@@ -3448,10 +3465,7 @@
 "address": "5041 GEARY BLVD",
 "neighborhood": "Outer Richmond",
 "lat": 37.780335000001,
-"lng": -122.473593000002,
-"star_name": "Ariake",
-"michelin": true,
-"lineage_name": "Ariake"
+"lng": -122.473593000002
 },
 {
 "name": "Arizmendi Bakery",
@@ -3868,10 +3882,11 @@
 "neighborhood": "Marina",
 "lat": 37.798371000001,
 "lng": -122.436058500002,
-"star_name": "Atelier Crenn",
 "lineaged": true,
 "lineage_name": "Atelier Crenn",
-"michelin": true
+"michelin": true,
+"star_name": "Atelier Crenn",
+"stars": 3
 },
 {
 "name": "Atlas Bites",
@@ -4132,7 +4147,6 @@
 "neighborhood": "Outer Richmond",
 "lat": 37.780304677265,
 "lng": -122.481597733467,
-"star_name": "Aziza",
 "lineaged": true,
 "lineage_name": "Aziza"
 },
@@ -4234,7 +4248,7 @@
 "lat": 37.787940000001,
 "lng": -122.407515000002,
 "lineaged": true,
-"lineage_name": "B Patisserie"
+"lineage_name": "B. Patisserie"
 },
 {
 "name": "Ba @ Adobe Sf",
@@ -6573,10 +6587,11 @@
 "neighborhood": "Financial District/South Beach",
 "lat": 37.785438000001,
 "lng": -122.399226000002,
-"star_name": "Benu",
 "lineaged": true,
 "lineage_name": "Benu",
-"michelin": true
+"michelin": true,
+"star_name": "Benu",
+"stars": 3
 },
 {
 "name": "Beque",
@@ -7381,10 +7396,11 @@
 "neighborhood": "South of Market",
 "lat": 37.779489000001,
 "lng": -122.410413000002,
-"star_name": "Birdsong",
 "lineaged": true,
 "lineage_name": "Birdsong",
-"michelin": true
+"michelin": true,
+"star_name": "Birdsong",
+"stars": 2
 },
 {
 "name": "Birrieria Lucas",
@@ -8989,6 +9005,14 @@
 "neighborhood": "Outer Mission",
 "lat": 37.716129000001,
 "lng": -122.441670000002
+},
+{
+"name": "Borde & Banter",
+"permit_type": "H74R - CATERER",
+"address": "103 HORNE AVE",
+"neighborhood": "Bayview Hunters Point",
+"lat": 37.726596000001,
+"lng": -122.365624500002
 },
 {
 "name": "Bordj Food",
@@ -11133,10 +11157,11 @@
 "neighborhood": "South of Market",
 "lat": 37.771470000001,
 "lng": -122.412883500002,
-"star_name": "Californios",
 "lineaged": true,
 "lineage_name": "Californios",
-"michelin": true
+"michelin": true,
+"star_name": "Californios",
+"stars": 3
 },
 {
 "name": "Camino Alto",
@@ -14777,10 +14802,8 @@
 "neighborhood": "North Beach",
 "lat": 37.797507000001,
 "lng": -122.403379500002,
-"star_name": "Cotogna",
 "lineaged": true,
-"lineage_name": "Cotogna",
-"michelin": true
+"lineage_name": "Cotogna"
 },
 {
 "name": "Court Restaurant",
@@ -15160,6 +15183,14 @@
 "name": "Ctkempanadas Llc",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "1355 MARKET ST STE 100",
+"neighborhood": "South of Market",
+"lat": 37.777131000001,
+"lng": -122.416483500002
+},
+{
+"name": "Ctkempanadas Llc",
+"permit_type": "H102R - Community Event Food Vendor - High Hazard",
+"address": "1355   MARKET ST STE 100",
 "neighborhood": "South of Market",
 "lat": 37.777131000001,
 "lng": -122.416483500002
@@ -15945,6 +15976,14 @@
 "lng": -122.396967000002
 },
 {
+"name": "Dastahn",
+"permit_type": "H74R - CATERER",
+"address": "103   HORNE AVE",
+"neighborhood": "Bayview Hunters Point",
+"lat": 37.726596000001,
+"lng": -122.365624500002
+},
+{
 "name": "Datam Sf Llc",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "222 MASON ST",
@@ -16245,10 +16284,8 @@
 "neighborhood": "Mission",
 "lat": 37.761363000001,
 "lng": -122.424201000002,
-"star_name": "Delfina",
 "lineaged": true,
-"lineage_name": "Delfina",
-"michelin": true
+"lineage_name": "Delfina"
 },
 {
 "name": "Deli 23",
@@ -18219,6 +18256,14 @@
 "lng": -122.421649500002
 },
 {
+"name": "Eclectic Cookery Inc.",
+"permit_type": "H30R - CATERING FACILITIES",
+"address": "103   HORNE AVE",
+"neighborhood": "Bayview Hunters Point",
+"lat": 37.726596000001,
+"lng": -122.365624500002
+},
+{
 "name": "Eclipse Cafe",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "5 EMBARCADERO CTR",
@@ -18457,6 +18502,16 @@
 "neighborhood": "Bayview Hunters Point",
 "lat": 37.729467000001,
 "lng": -122.392935000002
+},
+{
+"name": "El Buen Comer Llc",
+"permit_type": "H26R - RESTAURANT OVER 2,000 SQFT",
+"address": "3435   MISSION ST",
+"neighborhood": "Bernal Heights",
+"lat": 37.741752000001,
+"lng": -122.422063500002,
+"lineaged": true,
+"lineage_name": "El Buen Comer"
 },
 {
 "name": "El Burrito Express #1",
@@ -18989,6 +19044,14 @@
 "neighborhood": "Portola",
 "lat": 37.725471000001,
 "lng": -122.402857500002
+},
+{
+"name": "El Trebol Sport Bar #2 & Restaurant",
+"permit_type": "H87R- BARS/TAVERNS W/FOOD PREP",
+"address": "3088 24TH ST",
+"neighborhood": "Mission",
+"lat": 37.752642000001,
+"lng": -122.413824000002
 },
 {
 "name": "El Trebol Sports Bar",
@@ -21033,10 +21096,8 @@
 "neighborhood": "Mission",
 "lat": 37.758924000001,
 "lng": -122.412199500002,
-"star_name": "Flour + Water",
 "lineaged": true,
-"lineage_name": "flour + water",
-"michelin": true
+"lineage_name": "Flour + Water"
 },
 {
 "name": "Flour + Water Pizza Shop",
@@ -26587,10 +26648,11 @@
 "neighborhood": "Chinatown",
 "lat": 37.800054000001,
 "lng": -122.411047500002,
-"star_name": "Hilda and Jesse",
 "lineaged": true,
 "lineage_name": "Hilda and Jesse",
-"michelin": true
+"michelin": true,
+"star_name": "Hilda and Jesse",
+"stars": 1
 },
 {
 "name": "Hildas Mart & Bake Shop",
@@ -27441,6 +27503,14 @@
 "lng": -122.410723500002
 },
 {
+"name": "Hotpot Bay",
+"permit_type": "H25R - RESTAURANT 1,000 - 2,000 SQFT",
+"address": "1626   TARAVAL ST",
+"neighborhood": "Sunset/Parkside",
+"lat": 37.742949000001,
+"lng": -122.483758500002
+},
+{
 "name": "Hotpot Champ",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "801 KEARNY ST",
@@ -28015,6 +28085,14 @@
 "neighborhood": "Chinatown",
 "lat": 37.794699000001,
 "lng": -122.407105500002
+},
+{
+"name": "Ichinoba",
+"permit_type": "H24R - RESTAURANT UNDER 1,000 SQFT",
+"address": "1355   MARKET ST STE 100",
+"neighborhood": "South of Market",
+"lat": 37.777131000001,
+"lng": -122.416483500002
 },
 {
 "name": "Icicles",
@@ -29966,10 +30044,7 @@
 "address": "1335 FULTON ST STE 101",
 "neighborhood": "Hayes Valley",
 "lat": 37.776546000001,
-"lng": -122.438844000002,
-"star_name": "Ju-ni",
-"michelin": true,
-"lineage_name": "Ju-ni"
+"lng": -122.438844000002
 },
 {
 "name": "Judah Ninth Ave Liquors",
@@ -30980,10 +31055,11 @@
 "neighborhood": "Hayes Valley",
 "lat": 37.776006000001,
 "lng": -122.420380500002,
-"star_name": "Kiln",
 "lineaged": true,
 "lineage_name": "Kiln",
-"michelin": true
+"michelin": true,
+"star_name": "Kiln",
+"stars": 2
 },
 {
 "name": "Kilowatt",
@@ -31072,10 +31148,11 @@
 "neighborhood": "Tenderloin",
 "lat": 37.784880000001,
 "lng": -122.408977500002,
-"star_name": "Kin Khao",
 "lineaged": true,
 "lineage_name": "Kin Khao",
-"michelin": true
+"michelin": true,
+"star_name": "Kin Khao",
+"stars": 1
 },
 {
 "name": "Kinara Kitchen Inc",
@@ -31321,7 +31398,7 @@
 "lat": 37.782486000001,
 "lng": -122.420484000002,
 "lineaged": true,
-"lineage_name": "the Kitchen"
+"lineage_name": "Kitchen"
 },
 {
 "name": "Kitchen Istanbul",
@@ -31708,10 +31785,8 @@
 "neighborhood": "Chinatown",
 "lat": 37.795716000001,
 "lng": -122.402907000002,
-"star_name": "Kusakabe",
 "lineaged": true,
-"lineage_name": "Kusakabe",
-"michelin": true
+"lineage_name": "Kusakabe"
 },
 {
 "name": "Kushi Tsuru",
@@ -31842,6 +31917,14 @@
 "neighborhood": "Mission",
 "lat": 37.752552000001,
 "lng": -122.409598500002
+},
+{
+"name": "La Altena Restaurant No 2",
+"permit_type": "H26R - RESTAURANT OVER 2,000 SQFT",
+"address": "3346   MISSION ST",
+"neighborhood": "Bernal Heights",
+"lat": 37.743408000001,
+"lng": -122.421685500002
 },
 {
 "name": "La Biang Thai Corp",
@@ -33016,10 +33099,11 @@
 "neighborhood": "Mission",
 "lat": 37.760418000001,
 "lng": -122.419705500002,
-"star_name": "Lazy Bear",
 "lineaged": true,
 "lineage_name": "Lazy Bear",
-"michelin": true
+"michelin": true,
+"star_name": "Lazy Bear",
+"stars": 2
 },
 {
 "name": "Lazy Susan",
@@ -34486,7 +34570,6 @@
 "neighborhood": "Russian Hill",
 "lat": 37.795752000001,
 "lng": -122.421951000002,
-"star_name": "Lord Stanley",
 "lineaged": true,
 "lineage_name": "Lord Stanley"
 },
@@ -34529,6 +34612,14 @@
 "neighborhood": "Mission",
 "lat": 37.764342000001,
 "lng": -122.422140000002
+},
+{
+"name": "Los Andes Organic Coffee",
+"permit_type": "H25R - RESTAURANT 1,000 - 2,000 SQFT",
+"address": "211 OFARRELL ST",
+"neighborhood": "Tenderloin",
+"lat": 37.786257000001,
+"lng": -122.408356500002
 },
 {
 "name": "Los Cilantros",
@@ -34841,10 +34932,8 @@
 "neighborhood": "South of Market",
 "lat": 37.782081000001,
 "lng": -122.404779000002,
-"star_name": "Luce",
 "lineaged": true,
-"lineage_name": "Luce",
-"michelin": true
+"lineage_name": "Luce"
 },
 {
 "name": "Lucho's",
@@ -35283,6 +35372,14 @@
 "lng": -122.410318500002
 },
 {
+"name": "Mach Haus Co.",
+"permit_type": "H74R - CATERER",
+"address": "103 HORNE AVE",
+"neighborhood": "Bayview Hunters Point",
+"lat": 37.726596000001,
+"lng": -122.365624500002
+},
+{
 "name": "Machu Picchu Cafe",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "402 GENEVA AVE",
@@ -35323,6 +35420,19 @@
 "neighborhood": "Financial District/South Beach",
 "lat": 37.788687000001,
 "lng": -122.398339500002
+},
+{
+"name": "Madcap",
+"permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
+"address": "3195 California St",
+"neighborhood": "Presidio Heights",
+"lat": 37.7872056,
+"lng": -122.4465788,
+"lineaged": true,
+"lineage_name": "Madcap",
+"michelin": true,
+"star_name": "Madcap",
+"stars": 1
 },
 {
 "name": "Made In Italy San Francisco",
@@ -36252,10 +36362,7 @@
 "address": "1581 WEBSTER ST STE 235",
 "neighborhood": "Japantown",
 "lat": 37.784979000001,
-"lng": -122.431864500002,
-"star_name": "Marufuku Ramen",
-"michelin": true,
-"lineage_name": "Marufuku Ramen"
+"lng": -122.431864500002
 },
 {
 "name": "Marugame Udon",
@@ -38116,10 +38223,11 @@
 "neighborhood": "Chinatown",
 "lat": 37.793605863595,
 "lng": -122.406678848592,
-"star_name": "Mister Jiu's",
 "lineaged": true,
 "lineage_name": "Mister Jiu's",
-"michelin": true
+"michelin": true,
+"star_name": "Mister Jiu's",
+"stars": 1
 },
 {
 "name": "Mitchells Ice Cream Inc",
@@ -38166,7 +38274,7 @@
 {
 "name": "Mixt Greens/Mixt",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
-"address": "560   MISSION ST STE 125",
+"address": "560 MISSION ST STE 125",
 "neighborhood": "Financial District/South Beach",
 "lat": 37.788714000001,
 "lng": -122.399167500002
@@ -38292,20 +38400,20 @@
 "lng": -122.420533500002
 },
 {
-"name": "Mo's Grill Inc",
-"permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
-"address": "1322 GRANT AVE",
-"neighborhood": "North Beach",
-"lat": 37.799100000001,
-"lng": -122.407060500002
-},
-{
 "name": "Mo'Z Cafe Inc",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "36 5TH ST",
 "neighborhood": "South of Market",
 "lat": 37.783386000001,
 "lng": -122.407528500002
+},
+{
+"name": "Mo's Grill Inc",
+"permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
+"address": "1322 GRANT AVE",
+"neighborhood": "North Beach",
+"lat": 37.799100000001,
+"lng": -122.407060500002
 },
 {
 "name": "Mobilize Love",
@@ -39626,10 +39734,11 @@
 "neighborhood": "Japantown",
 "lat": 37.785564000001,
 "lng": -122.428719000002,
-"star_name": "Nari",
 "lineaged": true,
 "lineage_name": "Nari",
-"michelin": true
+"michelin": true,
+"star_name": "Nari",
+"stars": 1
 },
 {
 "name": "Naser Mini Mart",
@@ -40528,10 +40637,11 @@
 "neighborhood": "Mission Bay",
 "lat": 37.769688000001,
 "lng": -122.403460500002,
-"star_name": "Niku Steakhouse",
 "lineaged": true,
 "lineage_name": "Niku Steakhouse",
-"michelin": true
+"michelin": true,
+"star_name": "Niku Steakhouse",
+"stars": 1
 },
 {
 "name": "Nina's Cafe",
@@ -40871,7 +40981,7 @@
 "lat": 37.774836000001,
 "lng": -122.437480500002,
 "lineaged": true,
-"lineage_name": "NoPa"
+"lineage_name": "Nopa"
 },
 {
 "name": "Nopa Corner Market",
@@ -46432,10 +46542,11 @@
 "neighborhood": "North Beach",
 "lat": 37.797507000001,
 "lng": -122.403379500002,
-"star_name": "Quince",
 "lineaged": true,
 "lineage_name": "Quince",
-"michelin": true
+"michelin": true,
+"star_name": "Quince",
+"stars": 3
 },
 {
 "name": "R & G Lounge",
@@ -47226,10 +47337,11 @@
 "neighborhood": "Nob Hill",
 "lat": 37.790160927656,
 "lng": -122.409031350087,
-"star_name": "Naides",
 "lineaged": true,
 "lineage_name": "Restaurant Naides",
-"michelin": true
+"michelin": true,
+"star_name": "Naides",
+"stars": 1
 },
 {
 "name": "Restaurant Nisei",
@@ -47238,10 +47350,11 @@
 "neighborhood": "Russian Hill",
 "lat": 37.798146000001,
 "lng": -122.421982500002,
-"star_name": "Nisei",
 "lineaged": true,
 "lineage_name": "Nisei",
-"michelin": true
+"michelin": true,
+"star_name": "Nisei",
+"stars": 1
 },
 {
 "name": "Restaurant Nisei",
@@ -47410,7 +47523,6 @@
 "neighborhood": "Hayes Valley",
 "lat": 37.774854000001,
 "lng": -122.422855500002,
-"star_name": "Rich Table",
 "lineaged": true,
 "lineage_name": "Rich Table"
 },
@@ -47559,10 +47671,8 @@
 "neighborhood": "Mission",
 "lat": 37.768815000001,
 "lng": -122.415124500002,
-"star_name": "Rintaro",
 "lineaged": true,
-"lineage_name": "Rintaro",
-"michelin": true
+"lineage_name": "Rintaro"
 },
 {
 "name": "Ripple",
@@ -47809,6 +47919,14 @@
 "neighborhood": "Pacific Heights",
 "lat": 37.787688000001,
 "lng": -122.433867000002
+},
+{
+"name": "Roaming Goat",
+"permit_type": "H26R - RESTAURANT OVER 2,000 SQFT",
+"address": "1830   UNION ST",
+"neighborhood": "Marina",
+"lat": 37.798083000001,
+"lng": -122.429560500002
 },
 {
 "name": "Robberbaron",
@@ -48407,6 +48525,14 @@
 "neighborhood": "Outer Richmond",
 "lat": 37.780155000001,
 "lng": -122.476738500002
+},
+{
+"name": "Rozmary Kitchen",
+"permit_type": "H74R - CATERER",
+"address": "1501   CORTLAND AVE",
+"neighborhood": "Bernal Heights",
+"lat": 37.739889000001,
+"lng": -122.409382500002
 },
 {
 "name": "Rt Bistro",
@@ -49039,10 +49165,11 @@
 "neighborhood": "Financial District/South Beach",
 "lat": 37.779507000001,
 "lng": -122.392242000002,
-"star_name": "Saison",
 "lineaged": true,
 "lineage_name": "Saison",
-"michelin": true
+"michelin": true,
+"star_name": "Saison",
+"stars": 2
 },
 {
 "name": "Saiwaii Ramen",
@@ -49481,20 +49608,20 @@
 "lng": -122.416362000002
 },
 {
-"name": "Sammy's On 2Nd",
-"permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
-"address": "84 2ND STREET ST",
-"neighborhood": "Inner Richmond",
-"lat": 37.786990528057,
-"lng": -122.460391288035
-},
-{
 "name": "Sammy's Cafe",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "1416 BUSH ST",
 "neighborhood": "Nob Hill",
 "lat": 37.788930000001,
 "lng": -122.420637000002
+},
+{
+"name": "Sammy's On 2Nd",
+"permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
+"address": "84 2ND STREET ST",
+"neighborhood": "Inner Richmond",
+"lat": 37.786990528057,
+"lng": -122.460391288035
 },
 {
 "name": "Sammy's On 2Nd",
@@ -49535,6 +49662,14 @@
 "neighborhood": "Financial District/South Beach",
 "lat": 37.790955000001,
 "lng": -122.403424500002
+},
+{
+"name": "Sams Market #1 Sf Llc",
+"permit_type": "H03R - RETAIL MKTS W/O PREP (UNDER 5001)",
+"address": "580 PRECITA AVE",
+"neighborhood": "Bernal Heights",
+"lat": 37.747305000001,
+"lng": -122.409859500002
 },
 {
 "name": "Samsara Inc.",
@@ -49867,6 +50002,19 @@
 "neighborhood": "Inner Sunset",
 "lat": 37.764297000001,
 "lng": -122.466132000002
+},
+{
+"name": "San Ho Won",
+"permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
+"address": "1625 Leavenworth St",
+"neighborhood": "Nob Hill",
+"lat": 37.7959983,
+"lng": -122.4169553,
+"lineaged": true,
+"lineage_name": "San Ho Won",
+"michelin": true,
+"star_name": "San Ho Won",
+"stars": 1
 },
 {
 "name": "San Jose Coin Op",
@@ -52316,7 +52464,10 @@
 "lat": 37.790160927656,
 "lng": -122.409031350087,
 "lineaged": true,
-"lineage_name": "Sons & Daughters"
+"lineage_name": "Sons & Daughters",
+"michelin": true,
+"star_name": "Sons & Daughters",
+"stars": 2
 },
 {
 "name": "Sool Bar And Lounge",
@@ -52360,7 +52511,10 @@
 "lat": 37.788570000001,
 "lng": -122.446201500002,
 "lineaged": true,
-"lineage_name": "Sorrel"
+"lineage_name": "Sorrel",
+"michelin": true,
+"star_name": "Sorrel",
+"stars": 1
 },
 {
 "name": "Sota (School Of The Arts)",
@@ -52813,7 +52967,6 @@
 "neighborhood": "Presidio Heights",
 "lat": 37.787733000001,
 "lng": -122.452771500002,
-"star_name": "Spruce",
 "lineaged": true,
 "lineage_name": "Spruce"
 },
@@ -52881,7 +53034,11 @@
 "address": "2226 POLK ST.",
 "neighborhood": "Russian Hill",
 "lat": 37.797174000001,
-"lng": -122.421888000002
+"lng": -122.421888000002,
+"michelin": true,
+"star_name": "Ssal",
+"stars": 1,
+"lineage_name": "Ssal"
 },
 {
 "name": "St Anthonys Foundation",
@@ -53504,10 +53661,11 @@
 "neighborhood": "Western Addition",
 "lat": 37.783665000001,
 "lng": -122.433088500002,
-"star_name": "State Bird Provisions",
 "lineaged": true,
 "lineage_name": "State Bird Provisions",
-"michelin": true
+"michelin": true,
+"star_name": "State Bird Provisions",
+"stars": 1
 },
 {
 "name": "State Market",
@@ -54662,6 +54820,14 @@
 "neighborhood": "Sunset/Parkside",
 "lat": 37.760688000001,
 "lng": -122.504098500002
+},
+{
+"name": "Sunset29 Bbq",
+"permit_type": "H74R - CATERER",
+"address": "103   HORNE AVE",
+"neighborhood": "Bayview Hunters Point",
+"lat": 37.726596000001,
+"lng": -122.365624500002
 },
 {
 "name": "Sunshine & Baby",
@@ -57539,7 +57705,7 @@
 "lat": 37.783485000001,
 "lng": -122.433327000002,
 "lineaged": true,
-"lineage_name": "Anchovy Bar"
+"lineage_name": "The Anchovy Bar"
 },
 {
 "name": "The Arc San Francisco",
@@ -57805,7 +57971,7 @@
 "lat": 37.797498000001,
 "lng": -122.434578000002,
 "lineaged": true,
-"lineage_name": "The Brixton"
+"lineage_name": "Brixton"
 },
 {
 "name": "The Brixton South",
@@ -57897,7 +58063,7 @@
 "lat": 37.783512000001,
 "lng": -122.406862500002,
 "lineaged": true,
-"lineage_name": "the Cavalier"
+"lineage_name": "The Cavalier"
 },
 {
 "name": "The Cavalier Rest Kitchen",
@@ -57984,7 +58150,7 @@
 {
 "name": "The City Taqueria",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
-"address": "1836   DIVISADERO ST",
+"address": "1836 DIVISADERO ST",
 "neighborhood": "Pacific Heights",
 "lat": 37.786725000001,
 "lng": -122.439793500002
@@ -58393,7 +58559,7 @@
 "lat": 37.785420000001,
 "lng": -122.397079500002,
 "lineaged": true,
-"lineage_name": "the Fly Trap"
+"lineage_name": "Fly Trap"
 },
 {
 "name": "The Food Pavilion",
@@ -58653,7 +58819,7 @@
 "lat": 37.777482000001,
 "lng": -122.423274000002,
 "lineaged": true,
-"lineage_name": "The Happy Crane"
+"lineage_name": "Happy Crane"
 },
 {
 "name": "The Harlequin Group Llc",
@@ -59428,10 +59594,11 @@
 "neighborhood": "Western Addition",
 "lat": 37.783665000001,
 "lng": -122.433088500002,
-"star_name": "The Progress",
 "lineaged": true,
-"lineage_name": "the Progress",
-"michelin": true
+"lineage_name": "The Progress",
+"michelin": true,
+"star_name": "The Progress",
+"stars": 1
 },
 {
 "name": "The Pub At S F S U",
@@ -59458,6 +59625,14 @@
 "lng": -122.419260000002,
 "lineaged": true,
 "lineage_name": "Public"
+},
+{
+"name": "The Rabbit Hole",
+"permit_type": "H25R - RESTAURANT 1,000 - 2,000 SQFT",
+"address": "3472   MISSION ST",
+"neighborhood": "Bernal Heights",
+"lat": 37.741203000001,
+"lng": -122.423049000002
 },
 {
 "name": "The Record Store",
@@ -61008,7 +61183,6 @@
 "neighborhood": "North Beach",
 "lat": 37.797584011125,
 "lng": -122.405741020295,
-"star_name": "Tosca Cafe",
 "lineaged": true,
 "lineage_name": "Tosca Cafe"
 },
@@ -61151,6 +61325,14 @@
 "lng": -122.400468000002,
 "lineaged": true,
 "lineage_name": "Trace"
+},
+{
+"name": "Trad Bone Broth Inc.",
+"permit_type": "H07R - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
+"address": "3903   24TH ST",
+"neighborhood": "Noe Valley",
+"lat": 37.751355000001,
+"lng": -122.429835000002
 },
 {
 "name": "Trade Routes",
@@ -61979,6 +62161,14 @@
 "neighborhood": "Potrero Hill",
 "lat": 37.762731000001,
 "lng": -122.396238000002
+},
+{
+"name": "Umo Bbq, Llc",
+"permit_type": "H74R - CATERER",
+"address": "103   HORNE AVE",
+"neighborhood": "Bayview Hunters Point",
+"lat": 37.726596000001,
+"lng": -122.365624500002
 },
 {
 "name": "Umri Llc",
@@ -64085,7 +64275,7 @@
 {
 "name": "Westin St Francis (Main)",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
-"address": "335   POWELL ST",
+"address": "335 POWELL ST",
 "neighborhood": "Tenderloin",
 "lat": 37.787868000001,
 "lng": -122.408464500002,
@@ -64876,7 +65066,10 @@
 "lat": 37.758051000001,
 "lng": -122.388160500002,
 "lineaged": true,
-"lineage_name": "Wolfsbane"
+"lineage_name": "Wolfsbane",
+"michelin": true,
+"star_name": "Wolfsbane",
+"stars": 1
 },
 {
 "name": "Won Kok Restaurant",
@@ -65619,7 +65812,7 @@
 {
 "name": "Yonkers Cafe Inc",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
-"address": "3815   NORIEGA ST",
+"address": "3815 NORIEGA ST",
 "neighborhood": "Sunset/Parkside",
 "lat": 37.752786000001,
 "lng": -122.504598000002
@@ -66271,7 +66464,6 @@
 "neighborhood": "Hayes Valley",
 "lat": 37.773603000001,
 "lng": -122.421622500002,
-"star_name": "Zuni Cafe",
 "lineaged": true,
 "lineage_name": "Zuni Cafe"
 },
