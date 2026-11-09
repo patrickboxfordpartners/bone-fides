@@ -12,6 +12,7 @@
     { "source": "/api/venues", "destination": "/api/search" },
     { "source": "/api/stats", "destination": "/api/search" },
     { "source": "/api/map.js", "destination": "/api/search" },
+    { "source": "/landing", "destination": "/landing.html" },
     { "source": "/((?!api/).*)", "destination": "/index.html" }
   ]
 }

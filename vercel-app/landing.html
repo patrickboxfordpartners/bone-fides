@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bone Fides — the kitchen lineage of San Francisco</title>
+<meta name="description" content="Type a San Francisco restaurant, get its kitchen's bone fides: where its chefs came from, where its alumni went — every move cited to the article that reported it.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#171310; --bg2:#1f1a15; --ink:#efe6d3; --dim:#9b8f7c; --faint:rgba(239,230,211,.14);
+    --accent:#d08152; --gold:#c2a05a; --ok:#8fb996; --bad:#d9776b;
+    --pad: clamp(20px, 5vw, 72px);
+    --measure: 66ch;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body { font-family: 'Fraunces', Georgia, serif; background: var(--bg); color: var(--ink);
+         font-size: 17px; line-height: 1.6; font-weight: 350; }
+  ::selection { background: rgba(208,129,82,.35); }
+
+  a { color: var(--gold); text-decoration: none; border-bottom: 1px solid rgba(194,160,90,.35); }
+  a:hover { color: var(--ink); border-color: var(--ink); }
+
+  /* .wrap owns horizontal padding only; vertical rhythm lives in per-block
+     padding-top/bottom longhands so no shorthand clobbers the other axis. */
+  .wrap { max-width: 1060px; margin: 0 auto; padding-left: var(--pad); padding-right: var(--pad); }
+
+  /* ── Masthead ─────────────────────────────── */
+  .mast { display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
+          padding: 22px 0 14px; border-bottom: 1px solid var(--faint); }
+  .wordmark { font-size: 19px; font-weight: 560; letter-spacing: .01em; color: var(--ink);
+              border: 0; display: inline-flex; align-items: baseline; gap: 7px; }
+  .wordmark em { color: var(--accent); font-style: italic; font-weight: 500; }
+  .mast .live { font-size: 10.5px; letter-spacing: .22em; text-transform: uppercase; color: var(--dim); }
+  .mast .live b { color: var(--gold); font-weight: 600; }
+
+  /* ── Hero ─────────────────────────────────── */
+  .hero { padding-top: clamp(56px, 9vw, 108px); padding-bottom: clamp(40px, 6vw, 64px); }
+  .kicker { font-size: 11px; letter-spacing: .3em; text-transform: uppercase; color: var(--gold); margin-bottom: 22px; }
+  h1 { font-size: clamp(44px, 7.2vw, 92px); line-height: .98; font-weight: 380; letter-spacing: -.015em;
+       max-width: 12em; text-wrap: balance; }
+  h1 em { color: var(--accent); font-style: italic; font-weight: 500; }
+  .lede { font-size: clamp(19px, 2.2vw, 24px); color: var(--dim); line-height: 1.55; font-weight: 350;
+          max-width: 54ch; margin-top: 28px; }
+  .lede b { color: var(--ink); font-weight: 480; }
+  .lede em { color: var(--gold); font-style: italic; }
+  .herocta { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; margin-top: 38px; }
+  .cta { font: 500 13px/1 'Fraunces', Georgia, serif; letter-spacing: .2em; text-transform: uppercase;
+         padding: 15px 30px; border-radius: 999px; background: var(--accent); color: var(--bg);
+         border: 1px solid var(--accent); cursor: pointer; display: inline-flex; align-items: center; gap: 10px; }
+  .cta:hover { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+  .cta svg { width: 13px; height: 13px; }
+  .ctasecondary { font-size: 13.5px; color: var(--dim); border-bottom: 1px solid var(--faint); }
+  .ctasecondary:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* ── Stat band ────────────────────────────── */
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--faint);
+           border: 1px solid var(--faint); margin: clamp(30px, 5vw, 56px) 0 0; }
+  .stat { background: var(--bg); padding: 24px 22px 20px; }
+  .stat b { display: block; font-size: clamp(30px, 3.6vw, 46px); font-weight: 420; line-height: 1;
+            color: var(--ink); font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+  .stat span { display: block; font-size: 11px; letter-spacing: .18em; text-transform: uppercase;
+               color: var(--dim); margin-top: 10px; }
+  @media (max-width: 640px) { .stats { grid-template-columns: repeat(2, 1fr); } .stat:nth-child(-n+2) { border-bottom: 1px solid var(--faint); } }
+
+  /* ── Section scaffolding ──────────────────── */
+  section { padding-top: clamp(48px, 7vw, 88px); }
+  .slabel { font-size: 10.5px; letter-spacing: .3em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+  .shead { font-size: clamp(27px, 3.4vw, 40px); font-weight: 380; line-height: 1.12; letter-spacing: -.01em; max-width: 22em; }
+  .shead em { color: var(--accent); font-style: italic; font-weight: 500; }
+  .sbody { color: var(--dim); max-width: var(--measure); margin-top: 18px; font-size: 16.5px; }
+  .sbody b { color: var(--ink); font-weight: 480; }
+  .sbody + .sbody { margin-top: 12px; }
+
+  /* ── The Betelnut dossier (real cited moves) ─ */
+  .dossier { border: 1px solid var(--faint); background: var(--bg2); margin-top: 34px; }
+  .dossierhead { padding: 26px 30px 20px; border-bottom: 1px solid var(--faint); display: flex;
+                 justify-content: space-between; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+  .dossierhead .vk { font-size: 10.5px; letter-spacing: .3em; text-transform: uppercase; color: var(--gold); }
+  .dossierhead h3 { font-size: clamp(24px, 2.6vw, 32px); font-weight: 400; margin-top: 8px; }
+  .dossierhead h3 s { text-decoration-color: rgba(217,119,107,.7); text-decoration-thickness: 2px; color: var(--dim); }
+  .pedigree { text-align: right; }
+  .pedigree b { font-size: clamp(26px, 3vw, 36px); font-weight: 420; color: var(--accent); font-variant-numeric: tabular-nums; }
+  .pedigree span { display: block; font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--dim); margin-top: 4px; }
+  .move { display: grid; grid-template-columns: 10px 1fr auto; gap: 4px 16px; padding: 20px 30px;
+          border-top: 1px solid var(--faint); align-items: baseline; }
+  .move:first-of-type { border-top: 0; }
+  .conf { width: 8px; height: 8px; border-radius: 50%; align-self: center; }
+  .conf.high { background: var(--ok); } .conf.medium { background: var(--gold); } .conf.low { background: var(--bad); }
+  .who { font-size: 17px; font-weight: 560; letter-spacing: .01em; }
+  .who .role { color: var(--dim); font-weight: 340; font-style: italic; font-size: 13.5px; margin-left: 8px; }
+  .chainline { grid-column: 2 / -1; font-size: 15px; color: var(--ink); font-weight: 380; }
+  .chainline .v { color: var(--ink); } .chainline .v.origin { color: var(--accent); font-weight: 560; }
+  .chainline .arr { color: #54493a; font-size: 14px; margin: 0 8px; }
+  .chainline .out { color: var(--dim); }
+  .evid { grid-column: 2 / -1; font-size: 13.5px; font-style: italic; color: var(--dim); line-height: 1.5; max-width: 62ch; }
+  .evsrc { grid-column: 2 / -1; font-size: 11.5px; color: var(--dim); letter-spacing: .04em; }
+  .srcbadge { display: inline-block; font-size: 10px; font-weight: 560; letter-spacing: .08em;
+              text-transform: uppercase; padding: 1px 7px 2px; border: 1px solid currentColor;
+              border-radius: 99px; margin-right: 8px; }
+  .srcbadge.sfchronicle { color: #b0685f; }
+  .srcbadge.sfgate { color: #6fa7ad; }
+  .srcbadge.eater { color: var(--gold); }
+  .srcbadge.other { color: var(--dim); }
+  .igbadge { display: inline-flex; align-items: center; gap: 5px; font-size: 10.5px; font-weight: 560;
+             letter-spacing: .06em; color: var(--dim); text-decoration: none; margin-left: 10px; }
+  .igbadge svg { width: 11px; height: 11px; opacity: .75; }
+  .igbadge:hover { color: var(--ink); }
+  .igbadge:hover svg { opacity: 1; }
+  .move a.src { font-size: 12.5px; }
+  @media (max-width: 640px) {
+    .move { grid-template-columns: 1fr; padding: 18px 20px; }
+    .conf { display: none; }
+    .dossierhead, .dossierhead .pedigree { text-align: left; }
+  }
+
+  /* ── How it works ─────────────────────────── */
+  .steps { margin-top: 34px; border-top: 2px solid var(--ink); }
+  .step { display: grid; grid-template-columns: 72px 1fr; gap: 20px; padding: 26px 0 24px; border-top: 1px solid var(--faint); }
+  .step:first-child { border-top: 0; }
+  .step .n { font-size: 15px; color: var(--gold); letter-spacing: .1em; font-weight: 560; padding-top: 5px; }
+  .step h4 { font-size: 21px; font-weight: 480; letter-spacing: -.005em; }
+  .step p { color: var(--dim); font-size: 15.5px; margin-top: 8px; max-width: 58ch; }
+  .step p b { color: var(--ink); font-weight: 480; }
+  @media (max-width: 560px) { .step { grid-template-columns: 1fr; gap: 6px; } }
+
+  /* ── Quote ────────────────────────────────── */
+  .quote { margin-top: 34px; border-left: 2px solid var(--accent); padding: 6px 0 6px 28px; }
+  .quote p { font-size: clamp(19px, 2.4vw, 25px); line-height: 1.5; font-weight: 380; font-style: italic;
+             color: var(--ink); max-width: 30em; }
+  .quote cite { display: block; font-style: normal; font-size: 13px; color: var(--dim); margin-top: 14px;
+                letter-spacing: .04em; }
+
+  /* ── Closing CTA ──────────────────────────── */
+  .closecta { padding-top: clamp(56px, 8vw, 96px); padding-bottom: clamp(64px, 9vw, 110px); }
+  .closecta h2 { font-size: clamp(34px, 5vw, 62px); font-weight: 380; line-height: 1.05; letter-spacing: -.012em; max-width: 14em; }
+  .closecta h2 em { color: var(--accent); font-style: italic; font-weight: 500; }
+  .closecta .sub { color: var(--dim); margin-top: 20px; font-size: 17px; max-width: 52ch; }
+  .closecta .herocta { margin-top: 34px; }
+
+  /* ── Footer ───────────────────────────────── */
+  footer { border-top: 1px solid var(--faint); padding-top: 26px; padding-bottom: 44px; }
+  .footrow { display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap; color: var(--dim); font-size: 12.5px; }
+  .footrow b { color: var(--ink); font-weight: 550; }
+  .footnote { color: var(--dim); font-size: 12px; margin-top: 16px; max-width: 70ch; line-height: 1.6; }
+  .footnote a { color: var(--gold); }
+
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+
+  /* ── Slideshow: one chef's cited career in photos ── */
+  .slide-wrap { margin-top: 34px; border: 1px solid var(--faint); background: var(--bg2); overflow: hidden; }
+  .slide-stage { position: relative; aspect-ratio: 16/8.6; min-height: 300px; background: #100d0a; }
+  .slide-stage > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+                     opacity: 0; transform: scale(1.045); transition: opacity 1s ease, transform 7.5s ease-out; }
+  .slide-stage > img.on { opacity: 1; transform: scale(1); }
+  /* Legibility floor: a solid gradient + extra bottom band so captions always
+     sit on near-solid dark, whatever the photo's brightness in that zone. */
+  .slide-stage::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+                        background: linear-gradient(180deg,
+                          rgba(16,13,10,.30) 0%, rgba(16,13,10,0) 26%,
+                          rgba(16,13,10,0) 38%, rgba(16,13,10,.62) 62%,
+                          rgba(16,13,10,.94) 82%, #171310 100%); }
+  .slide-cap { position: absolute; left: clamp(20px, 3.4vw, 44px); right: clamp(20px, 3.4vw, 44px);
+               bottom: clamp(18px, 2.4vw, 28px); z-index: 2; }
+  .slide-cap .inner { opacity: 0; transform: translateY(10px);
+                      transition: opacity .5s ease, transform .5s ease; }
+  .slide-cap.readable .inner { opacity: 1; transform: none; }
+  .slide-cap .k { font-size: 11px; letter-spacing: .24em; text-transform: uppercase; color: var(--gold);
+                  font-weight: 560; }
+  .slide-cap .v { font-size: clamp(24px, 3vw, 34px); font-weight: 460; margin-top: 8px; color: var(--ink);
+                  letter-spacing: -.005em; text-wrap: balance; line-height: 1.15; }
+  .slide-cap .v .r { font-size: clamp(14px, 1.5vw, 17px); font-style: italic; color: var(--accent);
+                     margin-left: 14px; font-weight: 400; white-space: nowrap; }
+  .slide-cap .e { font-size: clamp(16px, 1.75vw, 19px); font-style: italic; color: rgba(239,230,211,.92);
+                  margin-top: 10px; max-width: 58ch; line-height: 1.5; text-shadow: 0 1px 12px rgba(16,13,10,.8); }
+  .slide-cap .s { margin-top: 12px; font-size: 13px; }
+  .slide-cap .s a { color: var(--gold); font-size: 13px; }
+  .slide-cap .credit { display: inline-block; margin-left: 12px; color: var(--dim); font-size: 11.5px; }
+  .slide-chrome { position: absolute; top: 16px; right: 16px; z-index: 3; display: flex; gap: 8px; }
+  .sbtn { font: 500 11px/1 'Fraunces', Georgia, serif; letter-spacing: .14em; text-transform: uppercase;
+          color: rgba(239,230,211,.85); background: rgba(16,13,10,.72); border: 1px solid rgba(239,230,211,.28);
+          border-radius: 999px; padding: 8px 14px; cursor: pointer; backdrop-filter: blur(6px); }
+  .sbtn:hover { color: var(--ink); border-color: rgba(239,230,211,.55); }
+  .sbtn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  /* Archival plate: a low-res portrait from the citing profile article, too
+     small to blow up fullscreen — mounted instead, letterboxed on the dark
+     stage like a photo tacked to the wall of the story. */
+  .plate { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .plate img { max-height: 66%; max-width: 46%; object-fit: cover; border: 1px solid rgba(239,230,211,.22);
+               box-shadow: 0 18px 60px rgba(0,0,0,.55), 0 2px 10px rgba(0,0,0,.4); }
+  /* Typographic chapter card for cited moves whose article carries no photo. */
+  .chapter { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center;
+             justify-content: center; text-align: center; padding: 24px 24px 150px;
+             background: radial-gradient(120% 130% at 50% 18%, #241d16 0%, #1b1610 55%, #171310 100%); }
+  .chapter .rn { font-size: clamp(40px, 5vw, 58px); font-weight: 300; color: rgba(208,129,82,.5);
+                 line-height: 1; font-variant-numeric: oldstyle-nums; }
+  .chapter .cv { font-size: clamp(20px, 2.4vw, 27px); font-style: italic; color: var(--ink);
+                 max-width: 24em; line-height: 1.4; margin-top: 14px; }
+  .slide-rail { display: flex; border-top: 1px solid var(--faint); }
+  .sthumb { flex: 1; position: relative; background: #14100c; border: 0; border-right: 1px solid var(--faint);
+            cursor: pointer; padding: 0; overflow: hidden; min-height: 58px; }
+  .sthumb:last-child { border-right: 0; }
+  .sthumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .34;
+                filter: saturate(.6) brightness(.8); transition: opacity .4s, filter .4s; }
+  .sthumb:hover img { opacity: .6; }
+  .sthumb.on img { opacity: 1; filter: none; }
+  /* Chapter thumbs without a photo: serif roman numeral instead of image. */
+  .sthumb.typed .rn { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+                      font-size: 22px; font-weight: 300; color: rgba(208,129,82,.55); opacity: .5; transition: opacity .4s; }
+  .sthumb.typed.on .rn { opacity: 1; }
+  .sthumb .tn { position: relative; z-index: 1; display: block; text-align: left; font-size: 10.5px;
+                letter-spacing: .1em; text-transform: uppercase; color: rgba(239,230,211,.85); padding: 9px 12px 8px;
+                text-shadow: 0 1px 6px rgba(16,13,10,.9); }
+  .sthumb.on .tn { color: var(--ink); }
+  .sthumb .prog { position: absolute; left: 0; bottom: 0; height: 2px; width: 0%; background: var(--accent); z-index: 2; }
+  .slide-foot { margin-top: 18px; font-size: 13.5px; color: var(--dim); }
+  @media (max-width: 640px) {
+    .slide-cap .v .r { display: block; margin: 5px 0 0; }
+    .sthumb .tn { display: none; }
+    .sthumb { min-height: 44px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .slide-stage img { transition: opacity .3s ease; transform: none; }
+  }
+  /* Pretext-measured headlines get their height set by JS. */
+  [data-pretext] { will-change: height; }
+</style>
+</head>
+<body>
+
+<header class="wrap">
+  <div class="mast">
+    <a class="wordmark" href="https://bone-fides-pat-mitchells-projects.vercel.app/">Bone <em>Fides</em></a>
+    <span class="live" id="livelink"><a href="https://bone-fides-pat-mitchells-projects.vercel.app/">Open the explorer</a></span>
+  </div>
+</header>
+
+<main>
+  <!-- ── Hero ─────────────────────────────────── -->
+  <div class="wrap hero">
+    <p class="kicker">The kitchen lineage of San Francisco</p>
+    <h1 data-pretext>Your favorite restaurant has Yelp stars. <em>Its kitchen</em> has bone fides.</h1>
+    <p class="lede" data-pretext-lede>Where did this kitchen's chefs train? Where did its alumni go?
+       <b>Bone Fides answers with receipts</b> — every chef move cited to the article that reported it.
+       Built from public food journalism, <em>never</em> from reviews.</p>
+    <div class="herocta">
+      <a class="cta" href="https://bone-fides-pat-mitchells-projects.vercel.app/">Trace a kitchen
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h9M8 3.5 12.5 8 8 12.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a class="ctasecondary" href="#betelnut">See the Betelnut dossier ↓</a>
+    </div>
+    <div class="stats" id="stats" aria-label="Corpus size">
+      <div class="stat"><b id="n-edges">9,309</b><span>Cited chef moves</span></div>
+      <div class="stat"><b id="n-people">3,113</b><span>Chefs named</span></div>
+      <div class="stat"><b id="n-venues">799</b><span>SF kitchens</span></div>
+      <div class="stat"><b id="n-sources">2,219</b><span>Journalism sources</span></div>
+    </div>
+  </div>
+
+  <!-- ── The problem ─────────────────────────── -->
+  <section class="wrap" id="why">
+    <p class="slabel">Why this exists</p>
+    <h2 class="shead" data-pretext>San Francisco's restaurant memory is <em>evaporating</em>.</h2>
+    <p class="sbody" data-pretext-p>Kitchens close every month, and when one closes, decades of culinary
+       lineage vanish with it: who trained there, where they went, what they carried with them. The
+       Chronicle tracks the closures; nobody tracked the lineage.</p>
+    <p class="sbody" data-pretext-p>On the other side of the table, a resident spending real money on dinner
+       can look up vibe and service in seconds — but a kitchen's <b>craft pedigree</b> was unlook-upable.
+       Bone Fides fixes both halves with one artifact: a cited, growing map of who cooked where.</p>
+    <div class="quote">
+      <p>"Betelnut closed after twenty years. Where did its chefs go?"</p>
+      <cite>The question the whole project answers — type it, get a cited answer</cite>
+    </div>
+  </section>
+
+
+  <!-- ── Slideshow: one chef, cited ───────────── -->
+  <section class="wrap" id="journey">
+    <p class="slabel">One chef, the whole career</p>
+    <h2 class="shead" data-pretext>The whole career, chapter by chapter. Every one cited.</h2>
+    <p class="sbody" data-pretext-p>A kitchen dossier shows who passed through. Flip it around and you can
+       follow <b>one chef</b> instead — the whole career of executive chef <b>Alexander Ong</b>, chapter
+       by chapter: from a busboy talking his way into a Kuala Lumpur kitchen to Jeremiah Tower's Stars,
+       thirteen years leading <b>Betelnut</b>, and a teaching chair in Massachusetts. Where the cited
+       article carries its artwork, you see it; where the venue itself is the story, a credited photo
+       of the place; where nothing exists, the chapter stands on its quote.</p>
+    <div class="slide-wrap">
+      <div class="slide-stage" id="slide-stage" aria-live="polite"></div>
+      <div class="slide-rail" id="slide-rail" role="tablist" aria-label="Career stops"></div>
+    </div>
+    <p class="slide-foot" data-pretext-p>Nine chapters, nine cited articles, one loop. Every picture
+       is the artwork of the article that reported the move, or a credited photo of the place itself —
+       no stock, no reviews, just the record.
+       <a href="https://bone-fides-pat-mitchells-projects.vercel.app/?q=Alexander%20Ong">Follow Ong in the explorer →</a></p>
+  </section>
+
+  <!-- ── The Betelnut dossier ────────────────── -->
+  <section class="wrap" id="betelnut">
+    <p class="slabel">The Betelnut test</p>
+    <h2 class="shead" data-pretext>One query. Every move on the record.</h2>
+    <p class="sbody" data-pretext-p>This is the actual dossier the explorer returns — real rows, real
+       receipts. A confidence dot on every move, and the article it came from one click away.</p>
+    <div class="dossier" role="table" aria-label="Betelnut cited lineage sample">
+      <div class="dossierhead">
+        <div>
+          <div class="vk">Dossier</div>
+          <h3><s>Betelnut</s> · closed 2013</h3>
+        </div>
+        <div class="pedigree">
+          <b>73</b>
+          <span>Pedigree score</span>
+        </div>
+      </div>
+      <div class="move" role="row">
+        <span class="conf high" title="High confidence"></span>
+        <div class="who">George Chen <span class="role">owner</span><a class="igbadge" href="https://www.instagram.com/chinalivechen/" target="_blank" rel="noopener" title="George Chen on Instagram (@chinalivechen)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1.3" fill="currentColor" stroke="none"/></svg>ig</a></div>
+        <div class="chainline"><span class="v origin">Betelnut</span><span class="arr">→</span><span class="v">Asia Live</span></div>
+        <p class="evid">"With Asia Live, George will in a sense be revisiting the original Betelnut concept, only writ large."</p>
+        <p class="evsrc"><span class="srcbadge eater">Joe Content</span><a class="src" href="https://www.joecontent.net/china-lives-george-chen-north-beach-new-launches-the-road-back" target="_blank" rel="noopener">china-lives-george-chen… ↗</a></p>
+      </div>
+      <div class="move" role="row">
+        <span class="conf high" title="High confidence"></span>
+        <div class="who">Mario Tolentino <span class="role">culinary director</span><a class="igbadge" href="https://www.instagram.com/chefmariotolentino/" target="_blank" rel="noopener" title="Mario Tolentino on Instagram (@chefmariotolentino)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1.3" fill="currentColor" stroke="none"/></svg>ig</a></div>
+        <div class="chainline"><span class="v origin">Betelnut</span><span class="arr">→</span><span class="v">The Market</span></div>
+        <p class="evid">"Former Betelnut chef Mario Tolentino named culinary director for The Market."</p>
+        <p class="evsrc"><span class="srcbadge eater">Eater SF</span><a class="src" href="https://sf.eater.com/2015/10/1/9434459/mario-tolentino-the-market" target="_blank" rel="noopener">sf.eater.com ↗</a></p>
+      </div>
+      <div class="move" role="row">
+        <span class="conf high" title="High confidence"></span>
+        <div class="who">Alexander Ong <span class="role">chef</span><a class="igbadge" href="https://www.instagram.com/chefalexong/" target="_blank" rel="noopener" title="Alexander Ong on Instagram (@chefalexong)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1.3" fill="currentColor" stroke="none"/></svg>ig</a></div>
+        <div class="chainline"><span class="v">Hutong</span><span class="arr">→</span><span class="v origin">Betelnut</span></div>
+        <p class="evid">Ong's decade at the stoves — exec chef 2001–2013, the kitchen's defining run.</p>
+        <p class="evsrc"><span class="srcbadge sfgate">SFGATE</span><a class="src" href="https://www.sfgate.com/restaurants/diningout/article/DINING-OUT-Asian-Cuisine-With-Integrity-and-3020826.php" target="_blank" rel="noopener">sfgate.com ↗</a></p>
+      </div>
+      <div class="move" role="row">
+        <span class="conf high" title="High confidence"></span>
+        <div class="who">Wilder Marroquin <span class="role">chef</span><a class="igbadge" href="https://www.instagram.com/chefwildergramer/" target="_blank" rel="noopener" title="Wilder Marroquin on Instagram (@chefwildergramer)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1.3" fill="currentColor" stroke="none"/></svg>ig</a></div>
+        <div class="chainline"><span class="v origin">Betelnut</span><span class="arr">→</span><span class="v">Bon Voyage</span><span class="out"> · via China Live</span></div>
+        <p class="evid">"Chef Wilder Marroquin (Betelnut, China Live), has created a menu of Chinese dishes."</p>
+        <p class="evsrc"><span class="srcbadge eater">Eater SF</span><a class="src" href="https://sf.eater.com/2018/10/15/17979010/bon-voyage" target="_blank" rel="noopener">sf.eater.com ↗</a></p>
+      </div>
+    </div>
+    <p class="sbody" style="margin-top:20px" data-pretext-p>The dossier keeps going — <a href="https://bone-fides-pat-mitchells-projects.vercel.app/?q=Betelnut">25 cited moves on Betelnut alone</a>. Some lineage left the city; the dossier shows you which, because that's part of the answer too.</p>
+  </section>
+
+  <!-- ── How it works ────────────────────────── -->
+  <section class="wrap" id="how">
+    <p class="slabel">How it works</p>
+    <h2 class="shead" data-pretext>Reads the journalism. Cites every move.</h2>
+    <div class="steps">
+      <div class="step">
+        <span class="n">01</span>
+        <div>
+          <h4>Public food journalism, nothing else</h4>
+          <p><b>2,219 articles</b> from Eater SF, SFGATE, the Chronicle and independent writers —
+             closures, openings, chef-shuffle roundups, profiles. No review data, no proprietary anything.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="n">02</span>
+        <div>
+          <h4>Reading, with structure</h4>
+          <p><b>Mistral Large</b> reads each article the way a food editor would, extracting structured
+             moves — person, from-kitchen, to-kitchen, role — plus the evidence sentence that justifies them.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="n">03</span>
+        <div>
+          <h4>Search that survives nicknames</h4>
+          <p><b>Elasticsearch</b> hybrid search (keyword + vector, RRF) resolves your query to the right
+             kitchen — "Tartine" and "Tartine Bakery" land in the same place, and homonymous chefs get flagged.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="n">04</span>
+        <div>
+          <h4>A dossier with receipts</h4>
+          <p>Every move carries a <b>confidence dot</b> and a link to its source. The pedigree score weighs
+             source tiers. If a claim is thin, the dossier says so.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Who it's for ────────────────────────── -->
+  <section class="wrap" id="who">
+    <p class="slabel">Who it's for</p>
+    <h2 class="shead" data-pretext>For the people who live here.</h2>
+    <p class="sbody" data-pretext-p>The resident booking Friday dinner can finally check a kitchen's papers,
+       not just its stars. The loyal regular watching a favorite close can follow the chefs to what's next.
+       The curious can see how the city's kitchens are one long conversation — Tartine alumni scattered
+       across the Bay, the Betelnut thread running through China Live and Asia Live, a generation of
+       cooks tracing back to the same few stoves.</p>
+    <p class="sbody" data-pretext-p>And the industry economics are real: in an industry bleeding out,
+       <b>visibility of genuine pedigree is survival</b>. The chef who trained under a master finally has a
+       legible advantage over a marketing budget.</p>
+  </section>
+
+  <!-- ── Closing CTA ─────────────────────────── -->
+  <section class="wrap closecta">
+    <h2 data-pretext>The next time a kitchen closes, ask its <em>bone fides</em>.</h2>
+    <p class="sub" data-pretext-p>The explorer is live. Start with the kitchen that started this.</p>
+    <div class="herocta">
+      <a class="cta" href="https://bone-fides-pat-mitchells-projects.vercel.app/?q=Betelnut">Open the dossier
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h9M8 3.5 12.5 8 8 12.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a class="ctasecondary" href="https://bone-fides-pat-mitchells-projects.vercel.app/">Browse all 799 kitchens</a>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <div class="footrow">
+    <span><b>Bone Fides</b> — the kitchen lineage of San Francisco</span>
+    <span><a href="https://bone-fides-pat-mitchells-projects.vercel.app/">Explorer</a> · <a href="#how">Method</a> · <a href="#betelnut">Betelnut</a></span>
+  </div>
+  <p class="footnote">Lineage is reconstructed from public reporting and can be incomplete or contested —
+     every claim on this page links to the article behind it, so you can read the same evidence we did.
+     Confidence dots are heuristic, not verdicts: green = corroborated, gold = single strong source,
+     red = thin. Corrections and source tips welcome.</p>
+</footer>
+
+<script>var x0=["BN","BN","BN","BN","BN","BN","BN","BN","BN","S","B","S","WS","B","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","B","B","B","S","WS","ON","ON","ET","ET","ET","ON","ON","ON","ON","ON","ON","CS","ON","CS","ON","EN","EN","EN","EN","EN","EN","EN","EN","EN","EN","ON","ON","ON","ON","ON","ON","ON","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","ON","ON","ON","ON","ON","ON","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","ON","ON","ON","ON","BN","BN","BN","BN","BN","BN","B","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","CS","ON","ET","ET","ET","ET","ON","ON","ON","ON","L","ON","ON","ON","ON","ON","ET","ET","EN","EN","ON","L","ON","ON","ON","EN","L","ON","ON","ON","ON","ON","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","ON","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","ON","L","L","L","L","L","L","L","L"],g0=["AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","CS","AL","ON","ON","NSM","NSM","NSM","NSM","NSM","NSM","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","AL","AL","AL","AL","AL","AL","AL","AN","AN","AN","AN","AN","AN","AN","AN","AN","AN","ET","AN","AN","AL","AL","AL","NSM","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","ON","NSM","NSM","NSM","NSM","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL"];function m0(O){if(O<=255)return x0[O];if(1424<=O&&O<=1524)return"R";if(1536<=O&&O<=1791)return g0[O&255];if(1792<=O&&O<=2220)return"AL";return"L"}function r0(O){let _=O.length;if(_===0)return null;let J=Array(_),Y=0;for(let V=0;V<_;V++){let $=m0(O.charCodeAt(V));if($==="R"||$==="AL"||$==="AN")Y++;J[V]=$}if(Y===0)return null;let X=_/Y<0.3?0:1,R=new Int8Array(_);for(let V=0;V<_;V++)R[V]=X;let Z=X&1?"R":"L",Q=Z,f=Q;for(let V=0;V<_;V++)if(J[V]==="NSM")J[V]=f;else f=J[V];f=Q;for(let V=0;V<_;V++){let $=J[V];if($==="EN")J[V]=f==="AL"?"AN":"EN";else if($==="R"||$==="L"||$==="AL")f=$}for(let V=0;V<_;V++)if(J[V]==="AL")J[V]="R";for(let V=1;V<_-1;V++){if(J[V]==="ES"&&J[V-1]==="EN"&&J[V+1]==="EN")J[V]="EN";if(J[V]==="CS"&&(J[V-1]==="EN"||J[V-1]==="AN")&&J[V+1]===J[V-1])J[V]=J[V-1]}for(let V=0;V<_;V++){if(J[V]!=="EN")continue;let $;for($=V-1;$>=0&&J[$]==="ET";$--)J[$]="EN";for($=V+1;$<_&&J[$]==="ET";$++)J[$]="EN"}for(let V=0;V<_;V++){let $=J[V];if($==="WS"||$==="ES"||$==="ET"||$==="CS")J[V]="ON"}f=Q;for(let V=0;V<_;V++){let $=J[V];if($==="EN")J[V]=f==="L"?"L":"EN";else if($==="R"||$==="L")f=$}for(let V=0;V<_;V++){if(J[V]!=="ON")continue;let $=V+1;while($<_&&J[$]==="ON")$++;let u=V>0?J[V-1]:Q,q=$<_?J[$]:Q,D=u!=="L"?"R":"L";if(D===(q!=="L"?"R":"L"))for(let K=V;K<$;K++)J[K]=D;V=$-1}for(let V=0;V<_;V++)if(J[V]==="ON")J[V]=Z;for(let V=0;V<_;V++){let $=J[V];if((R[V]&1)===0){if($==="R")R[V]++;else if($==="AN"||$==="EN")R[V]+=2}else if($==="L"||$==="AN"||$==="EN")R[V]++}return R}function u0(O,_){let J=r0(O);if(J===null)return null;let Y=new Int8Array(_.length);for(let X=0;X<_.length;X++)Y[X]=J[_[X]];return Y}var a0=/[ \t\n\r\f]+/g,s0=/[\t\n\r\f]| {2,}|^ | $/;function d0(O){let _=O??"normal";return _==="pre-wrap"?{mode:_,preserveOrdinarySpaces:!0,preserveHardBreaks:!0}:{mode:_,preserveOrdinarySpaces:!1,preserveHardBreaks:!1}}function i0(O){if(!s0.test(O))return O;let _=O.replace(a0," ");if(_.charCodeAt(0)===32)_=_.slice(1);if(_.length>0&&_.charCodeAt(_.length-1)===32)_=_.slice(0,-1);return _}function t0(O){if(!/[\r\f]/.test(O))return O.replace(/\r\n/g,`
+`);return O.replace(/\r\n/g,`
+`).replace(/[\r\f]/g,`
+`)}var d=null,V0;function n0(){if(d===null)d=new Intl.Segmenter(V0,{granularity:"word"});return d}function z0(){d=null}function j0(O){let _=O&&O.length>0?O:void 0;if(V0===_)return;V0=_,d=null}var e0=/\p{Script=Arabic}/u,O0=/\p{M}/u,b0=/\p{Nd}/u;function X0(O){return e0.test(O)}function p(O){for(let _ of O){let J=_.codePointAt(0);if(J>=19968&&J<=40959||J>=13312&&J<=19903||J>=131072&&J<=173791||J>=173824&&J<=177983||J>=177984&&J<=178207||J>=178208&&J<=183983||J>=183984&&J<=191471||J>=196608&&J<=201551||J>=63744&&J<=64255||J>=194560&&J<=195103||J>=12288&&J<=12351||J>=12352&&J<=12447||J>=12448&&J<=12543||J>=44032&&J<=55215||J>=65280&&J<=65519)return!0}return!1}var $0=new Set(["，","．","！","：","；","？","、","。","・","）","〕","〉","》","」","』","】","〗","〙","〛","ー","々","〻","ゝ","ゞ","ヽ","ヾ"]),i=new Set(['"',"(","[","{","“","‘","«","‹","（","〔","〈","《","「","『","【","〖","〘","〚"]),Q0=new Set(["'","’"]),r=new Set([".",",","!","?",":",";","،","؛","؟","।","॥","၊","။","၌","၍","၏",")","]","}","%",'"',"”","’","»","›","…"]),OO=new Set([":",".","،","؛"]),_O=new Set(["၏"]),JO=new Set(["”","’","»","›","」","』","】","》","〉","〕","）"]);function RO(O){if(q0(O))return!0;let _=!1;for(let J of O){if(r.has(J)){_=!0;continue}if(_&&O0.test(J))continue;return!1}return _}function VO(O){for(let _ of O)if(!$0.has(_)&&!r.has(_))return!1;return O.length>0}function XO(O){if(q0(O))return!0;for(let _ of O)if(!i.has(_)&&!Q0.has(_)&&!O0.test(_))return!1;return O.length>0}function q0(O){let _=!1;for(let J of O){if(J==="\\"||O0.test(J))continue;if(i.has(J)||r.has(J)||Q0.has(J)){_=!0;continue}return!1}return _}function YO(O){let _=Array.from(O),J=_.length;while(J>0){let Y=_[J-1];if(O0.test(Y)){J--;continue}if(i.has(Y)||Q0.has(Y)){J--;continue}break}if(J<=0||J===_.length)return null;return{head:_.slice(0,J).join(""),tail:_.slice(J).join("")}}function ZO(O,_){if(O.length===0)return!1;for(let J of O)if(J!==_)return!1;return!0}function $O(O){if(!X0(O)||O.length===0)return!1;return OO.has(O[O.length-1])}function QO(O){if(O.length===0)return!1;return _O.has(O[O.length-1])}function qO(O){if(O.length<2||O[0]!==" ")return null;let _=O.slice(1);if(/^\p{M}+$/u.test(_))return{space:" ",marks:_};return null}function D0(O){for(let _=O.length-1;_>=0;_--){let J=O[_];if(JO.has(J))return!0;if(!r.has(J))return!1}return!1}function DO(O,_){if(_.preserveOrdinarySpaces||_.preserveHardBreaks){if(O===" ")return"preserved-space";if(O==="\t")return"tab";if(_.preserveHardBreaks&&O===`
+`)return"hard-break"}if(O===" ")return"space";if(O===" "||O===" "||O==="⁠"||O==="\uFEFF")return"glue";if(O==="​")return"zero-width-break";if(O==="­")return"soft-hyphen";return"text"}function NO(O,_,J,Y){let X=[],R=null,Z="",Q=J,f=!1,V=0;for(let $ of O){let u=DO($,Y),q=u==="text"&&_;if(R!==null&&u===R&&q===f){Z+=$,V+=$.length;continue}if(R!==null)X.push({text:Z,isWordLike:f,kind:R,start:Q});R=u,Z=$,Q=J+V,f=q,V+=$.length}if(R!==null)X.push({text:Z,isWordLike:f,kind:R,start:Q});return X}function Y0(O){return O==="space"||O==="preserved-space"||O==="zero-width-break"||O==="hard-break"}var fO=/^[A-Za-z][A-Za-z0-9+.-]*:$/;function HO(O,_){let J=O.texts[_];if(J.startsWith("www."))return!0;return fO.test(J)&&_+1<O.len&&O.kinds[_+1]==="text"&&O.texts[_+1]==="//"}function UO(O){return O.includes("?")&&(O.includes("://")||O.startsWith("www."))}function MO(O){let _=O.texts.slice(),J=O.isWordLike.slice(),Y=O.kinds.slice(),X=O.starts.slice();for(let Z=0;Z<O.len;Z++){if(Y[Z]!=="text"||!HO(O,Z))continue;let Q=Z+1;while(Q<O.len&&!Y0(Y[Q])){_[Z]+=_[Q],J[Z]=!0;let f=_[Q].includes("?");if(Y[Q]="text",_[Q]="",Q++,f)break}}let R=0;for(let Z=0;Z<_.length;Z++){let Q=_[Z];if(Q.length===0)continue;if(R!==Z)_[R]=Q,J[R]=J[Z],Y[R]=Y[Z],X[R]=X[Z];R++}return _.length=R,J.length=R,Y.length=R,X.length=R,{len:R,texts:_,isWordLike:J,kinds:Y,starts:X}}function CO(O){let _=[],J=[],Y=[],X=[];for(let R=0;R<O.len;R++){let Z=O.texts[R];if(_.push(Z),J.push(O.isWordLike[R]),Y.push(O.kinds[R]),X.push(O.starts[R]),!UO(Z))continue;let Q=R+1;if(Q>=O.len||Y0(O.kinds[Q]))continue;let f="",V=O.starts[Q],$=Q;while($<O.len&&!Y0(O.kinds[$]))f+=O.texts[$],$++;if(f.length>0)_.push(f),J.push(!0),Y.push("text"),X.push(V),R=$-1}return{len:_.length,texts:_,isWordLike:J,kinds:Y,starts:X}}var FO=new Set([":","-","/","×",",",".","+","–","—"]),K0=/^[A-Za-z0-9_]+[,:;]*$/,vO=/[,:;]+$/;function E0(O){for(let _ of O)if(b0.test(_))return!0;return!1}function Z0(O){if(O.length===0)return!1;for(let _ of O){if(b0.test(_)||FO.has(_))continue;return!1}return!0}function uO(O){let _=[],J=[],Y=[],X=[];for(let R=0;R<O.len;R++){let Z=O.texts[R],Q=O.kinds[R];if(Q==="text"&&Z0(Z)&&E0(Z)){let f=Z,V=R+1;while(V<O.len&&O.kinds[V]==="text"&&Z0(O.texts[V]))f+=O.texts[V],V++;_.push(f),J.push(!0),Y.push("text"),X.push(O.starts[R]),R=V-1;continue}_.push(Z),J.push(O.isWordLike[R]),Y.push(Q),X.push(O.starts[R])}return{len:_.length,texts:_,isWordLike:J,kinds:Y,starts:X}}function KO(O){let _=[],J=[],Y=[],X=[];for(let R=0;R<O.len;R++){let Z=O.texts[R],Q=O.kinds[R],f=O.isWordLike[R];if(Q==="text"&&f&&K0.test(Z)){let V=Z,$=R+1;while(vO.test(V)&&$<O.len&&O.kinds[$]==="text"&&O.isWordLike[$]&&K0.test(O.texts[$]))V+=O.texts[$],$++;_.push(V),J.push(!0),Y.push("text"),X.push(O.starts[R]),R=$-1;continue}_.push(Z),J.push(f),Y.push(Q),X.push(O.starts[R])}return{len:_.length,texts:_,isWordLike:J,kinds:Y,starts:X}}function zO(O){let _=[],J=[],Y=[],X=[];for(let R=0;R<O.len;R++){let Z=O.texts[R];if(O.kinds[R]==="text"&&Z.includes("-")){let Q=Z.split("-"),f=Q.length>1;for(let V=0;V<Q.length;V++){let $=Q[V];if(!f)break;if($.length===0||!E0($)||!Z0($))f=!1}if(f){let V=0;for(let $=0;$<Q.length;$++){let u=Q[$],q=$<Q.length-1?`${u}-`:u;_.push(q),J.push(!0),Y.push("text"),X.push(O.starts[R]+V),V+=q.length}continue}}_.push(Z),J.push(O.isWordLike[R]),Y.push(O.kinds[R]),X.push(O.starts[R])}return{len:_.length,texts:_,isWordLike:J,kinds:Y,starts:X}}function jO(O){let _=[],J=[],Y=[],X=[],R=0;while(R<O.len){let Z=O.texts[R],Q=O.isWordLike[R],f=O.kinds[R],V=O.starts[R];if(f==="glue"){let $=Z,u=V;R++;while(R<O.len&&O.kinds[R]==="glue")$+=O.texts[R],R++;if(R<O.len&&O.kinds[R]==="text")Z=$+O.texts[R],Q=O.isWordLike[R],f="text",V=u,R++;else{_.push($),J.push(!1),Y.push("glue"),X.push(u);continue}}else R++;if(f==="text")while(R<O.len&&O.kinds[R]==="glue"){let $="";while(R<O.len&&O.kinds[R]==="glue")$+=O.texts[R],R++;if(R<O.len&&O.kinds[R]==="text"){Z+=$+O.texts[R],Q=Q||O.isWordLike[R],R++;continue}Z+=$}_.push(Z),J.push(Q),Y.push(f),X.push(V)}return{len:_.length,texts:_,isWordLike:J,kinds:Y,starts:X}}function bO(O){let _=O.texts.slice(),J=O.isWordLike.slice(),Y=O.kinds.slice(),X=O.starts.slice();for(let R=0;R<_.length-1;R++){if(Y[R]!=="text"||Y[R+1]!=="text")continue;if(!p(_[R])||!p(_[R+1]))continue;let Z=YO(_[R]);if(Z===null)continue;_[R]=Z.head,_[R+1]=Z.tail+_[R+1],X[R+1]=X[R]+Z.head.length}return{len:_.length,texts:_,isWordLike:J,kinds:Y,starts:X}}function EO(O,_,J){let Y=n0(),X=0,R=[],Z=[],Q=[],f=[];for(let q of Y.segment(O))for(let D of NO(q.segment,q.isWordLike??!1,q.index,J)){let b=D.kind==="text";if(_.carryCJKAfterClosingQuote&&b&&X>0&&Q[X-1]==="text"&&p(D.text)&&p(R[X-1])&&D0(R[X-1]))R[X-1]+=D.text,Z[X-1]=Z[X-1]||D.isWordLike;else if(b&&X>0&&Q[X-1]==="text"&&VO(D.text)&&p(R[X-1]))R[X-1]+=D.text,Z[X-1]=Z[X-1]||D.isWordLike;else if(b&&X>0&&Q[X-1]==="text"&&QO(R[X-1]))R[X-1]+=D.text,Z[X-1]=Z[X-1]||D.isWordLike;else if(b&&X>0&&Q[X-1]==="text"&&D.isWordLike&&X0(D.text)&&$O(R[X-1]))R[X-1]+=D.text,Z[X-1]=!0;else if(b&&!D.isWordLike&&X>0&&Q[X-1]==="text"&&D.text.length===1&&D.text!=="-"&&D.text!=="—"&&ZO(R[X-1],D.text))R[X-1]+=D.text;else if(b&&!D.isWordLike&&X>0&&Q[X-1]==="text"&&(RO(D.text)||D.text==="-"&&Z[X-1]))R[X-1]+=D.text;else R[X]=D.text,Z[X]=D.isWordLike,Q[X]=D.kind,f[X]=D.start,X++}for(let q=1;q<X;q++)if(Q[q]==="text"&&!Z[q]&&q0(R[q])&&Q[q-1]==="text")R[q-1]+=R[q],Z[q-1]=Z[q-1]||Z[q],R[q]="";for(let q=X-2;q>=0;q--)if(Q[q]==="text"&&!Z[q]&&XO(R[q])){let D=q+1;while(D<X&&R[D]==="")D++;if(D<X&&Q[D]==="text")R[D]=R[q]+R[D],f[D]=f[q],R[q]=""}let V=0;for(let q=0;q<X;q++){let D=R[q];if(D.length===0)continue;if(V!==q)R[V]=D,Z[V]=Z[q],Q[V]=Q[q],f[V]=f[q];V++}R.length=V,Z.length=V,Q.length=V,f.length=V;let $=jO({len:V,texts:R,isWordLike:Z,kinds:Q,starts:f}),u=bO(KO(zO(uO(CO(MO($))))));for(let q=0;q<u.len-1;q++){let D=qO(u.texts[q]);if(D===null)continue;if(u.kinds[q]!=="space"&&u.kinds[q]!=="preserved-space"||u.kinds[q+1]!=="text"||!X0(u.texts[q+1]))continue;u.texts[q]=D.space,u.isWordLike[q]=!1,u.kinds[q]=u.kinds[q]==="preserved-space"?"preserved-space":"space",u.texts[q+1]=D.marks+u.texts[q+1],u.starts[q+1]=u.starts[q]+D.space.length}return u}function GO(O,_){if(O.len===0)return[];if(!_.preserveHardBreaks)return[{startSegmentIndex:0,endSegmentIndex:O.len,consumedEndSegmentIndex:O.len}];let J=[],Y=0;for(let X=0;X<O.len;X++){if(O.kinds[X]!=="hard-break")continue;J.push({startSegmentIndex:Y,endSegmentIndex:X,consumedEndSegmentIndex:X+1}),Y=X+1}if(Y<O.len)J.push({startSegmentIndex:Y,endSegmentIndex:O.len,consumedEndSegmentIndex:O.len});return J}function N0(O,_,J="normal"){let Y=d0(J),X=Y.mode==="pre-wrap"?t0(O):i0(O);if(X.length===0)return{normalized:X,chunks:[],len:0,texts:[],isWordLike:[],kinds:[],starts:[]};let R=EO(X,_,Y);return{normalized:X,chunks:GO(R,Y),...R}}var a=null,f0=new Map,s=null,PO=/\p{Emoji_Presentation}/u,AO=/[\p{Emoji_Presentation}\p{Extended_Pictographic}\p{Regional_Indicator}\uFE0F\u20E3]/u,_0=null,H0=new Map;function U0(){if(a!==null)return a;if(typeof OffscreenCanvas<"u")return a=new OffscreenCanvas(1,1).getContext("2d"),a;if(typeof document<"u")return a=document.createElement("canvas").getContext("2d"),a;throw Error("Text measurement requires OffscreenCanvas or a DOM canvas context.")}function BO(O){let _=f0.get(O);if(!_)_=new Map,f0.set(O,_);return _}function x(O,_){let J=_.get(O);if(J===void 0)J={width:U0().measureText(O).width,containsCJK:p(O)},_.set(O,J);return J}function h(){if(s!==null)return s;if(typeof navigator>"u")return s={lineFitEpsilon:0.005,carryCJKAfterClosingQuote:!1,preferPrefixWidthsForBreakableRuns:!1,preferEarlySoftHyphenBreak:!1},s;let O=navigator.userAgent,J=navigator.vendor==="Apple Computer, Inc."&&O.includes("Safari/")&&!O.includes("Chrome/")&&!O.includes("Chromium/")&&!O.includes("CriOS/")&&!O.includes("FxiOS/")&&!O.includes("EdgiOS/"),Y=O.includes("Chrome/")||O.includes("Chromium/")||O.includes("CriOS/")||O.includes("Edg/");return s={lineFitEpsilon:J?0.015625:0.005,carryCJKAfterClosingQuote:Y,preferPrefixWidthsForBreakableRuns:J,preferEarlySoftHyphenBreak:J},s}function TO(O){let _=O.match(/(\d+(?:\.\d+)?)\s*px/);return _?parseFloat(_[1]):16}function M0(){if(_0===null)_0=new Intl.Segmenter(void 0,{granularity:"grapheme"});return _0}function wO(O){return PO.test(O)||O.includes("️")}function G0(O){return AO.test(O)}function yO(O,_){let J=H0.get(O);if(J!==void 0)return J;let Y=U0();Y.font=O;let X=Y.measureText("\uD83D\uDE00").width;if(J=0,X>_+0.5&&typeof document<"u"&&document.body!==null){let R=document.createElement("span");R.style.font=O,R.style.display="inline-block",R.style.visibility="hidden",R.style.position="absolute",R.textContent="\uD83D\uDE00",document.body.appendChild(R);let Z=R.getBoundingClientRect().width;if(document.body.removeChild(R),X-Z>0.5)J=X-Z}return H0.set(O,J),J}function LO(O){let _=0,J=M0();for(let Y of J.segment(O))if(wO(Y.segment))_++;return _}function WO(O,_){if(_.emojiCount===void 0)_.emojiCount=LO(O);return _.emojiCount}function g(O,_,J){if(J===0)return _.width;return _.width-WO(O,_)*J}function P0(O,_,J,Y){if(_.graphemeWidths!==void 0)return _.graphemeWidths;let X=[],R=M0();for(let Z of R.segment(O)){let Q=x(Z.segment,J);X.push(g(Z.segment,Q,Y))}return _.graphemeWidths=X.length>1?X:null,_.graphemeWidths}function A0(O,_,J,Y){if(_.graphemePrefixWidths!==void 0)return _.graphemePrefixWidths;let X=[],R=M0(),Z="";for(let Q of R.segment(O)){Z+=Q.segment;let f=x(Z,J);X.push(g(Z,f,Y))}return _.graphemePrefixWidths=X.length>1?X:null,_.graphemePrefixWidths}function B0(O,_){let J=U0();J.font=O;let Y=BO(O),X=TO(O),R=_?yO(O,X):0;return{cache:Y,fontSize:X,emojiCorrection:R}}function T0(){f0.clear(),H0.clear(),_0=null}function m(O){return O==="space"||O==="preserved-space"||O==="tab"||O==="zero-width-break"||O==="soft-hyphen"}function SO(O){return O==="space"}function w0(O,_){if(_<=0)return 0;let J=O%_;if(Math.abs(J)<=0.000001)return _;return _-J}function t(O,_,J,Y){if(!Y||_===null)return O[J];return _[J]-(J>0?_[J-1]:0)}function y0(O,_,J,Y,X,R){let Z=0,Q=_;while(Z<O.length){let f=R?_+O[Z]:Q+O[Z];if((Z+1<O.length?f+X:f)>J+Y)break;Q=f,Z++}return{fitCount:Z,fittedWidth:Q}}function L0(O,_){for(let J=0;J<O.chunks.length;J++){let Y=O.chunks[J];if(_<Y.consumedEndSegmentIndex)return J}return-1}function kO(O,_){let{segmentIndex:J,graphemeIndex:Y}=_;if(J>=O.widths.length)return null;if(Y>0)return _;let X=L0(O,J);if(X<0)return null;let R=O.chunks[X];if(R.startSegmentIndex===R.endSegmentIndex&&J===R.startSegmentIndex)return{segmentIndex:J,graphemeIndex:0};if(J<R.startSegmentIndex)J=R.startSegmentIndex;while(J<R.endSegmentIndex){let Z=O.kinds[J];if(Z!=="space"&&Z!=="zero-width-break"&&Z!=="soft-hyphen")return{segmentIndex:J,graphemeIndex:0};J++}if(R.consumedEndSegmentIndex>=O.widths.length)return null;return{segmentIndex:R.consumedEndSegmentIndex,graphemeIndex:0}}function W0(O,_){if(O.simpleLineWalkFastPath)return IO(O,_);return J0(O,_)}function IO(O,_){let{widths:J,kinds:Y,breakableWidths:X,breakablePrefixWidths:R}=O;if(J.length===0)return 0;let Z=h(),Q=Z.lineFitEpsilon,f=0,V=0,$=!1;function u(q){let D=J[q];if(D>_&&X[q]!==null){let b=X[q],K=R[q]??null;V=0;for(let j=0;j<b.length;j++){let B=t(b,K,j,Z.preferPrefixWidthsForBreakableRuns);if(V>0&&V+B>_+Q)f++,V=B;else{if(V===0)f++;V+=B}}}else V=D,f++;$=!0}for(let q=0;q<J.length;q++){let D=J[q],b=Y[q];if(!$){u(q);continue}let K=V+D;if(K>_+Q){if(SO(b))continue;V=0,$=!1,u(q);continue}V=K}if(!$)return f+1;return f}function cO(O,_,J){let{widths:Y,kinds:X,breakableWidths:R,breakablePrefixWidths:Z}=O;if(Y.length===0)return 0;let Q=h(),f=Q.lineFitEpsilon,V=0,$=0,u=!1,q=0,D=0,b=0,K=0,j=-1,B=0;function k(){j=-1,B=0}function y(H=b,z=K,W=$){V++,J?.({startSegmentIndex:q,startGraphemeIndex:D,endSegmentIndex:H,endGraphemeIndex:z,width:W}),$=0,u=!1,k()}function A(H,z){u=!0,q=H,D=0,b=H+1,K=0,$=z}function T(H,z,W){u=!0,q=H,D=z,b=H,K=z+1,$=W}function L(H,z){if(!u){A(H,z);return}$+=z,b=H+1,K=0}function C(H,z){if(!m(X[H]))return;j=H+1,B=$-z}function F(H){P(H,0)}function P(H,z){let W=R[H],c=Z[H]??null;for(let I=z;I<W.length;I++){let o=t(W,c,I,Q.preferPrefixWidthsForBreakableRuns);if(!u){T(H,I,o);continue}if($+o>_+f)y(),T(H,I,o);else $+=o,b=H,K=I+1}if(u&&b===H&&K===W.length)b=H+1,K=0}let E=0;while(E<Y.length){let H=Y[E],z=X[E];if(!u){if(H>_&&R[E]!==null)F(E);else A(E,H);C(E,H),E++;continue}if($+H>_+f){if(m(z)){L(E,H),y(E+1,0,$-H),E++;continue}if(j>=0){y(j,0,B);continue}if(H>_&&R[E]!==null){y(),F(E),E++;continue}y();continue}L(E,H),C(E,H),E++}if(u)y();return V}function J0(O,_,J){if(O.simpleLineWalkFastPath)return cO(O,_,J);let{widths:Y,lineEndFitAdvances:X,lineEndPaintAdvances:R,kinds:Z,breakableWidths:Q,breakablePrefixWidths:f,discretionaryHyphenWidth:V,tabStopAdvance:$,chunks:u}=O;if(Y.length===0||u.length===0)return 0;let q=h(),D=q.lineFitEpsilon,b=0,K=0,j=!1,B=0,k=0,y=0,A=0,T=-1,L=0,C=0,F=null;function P(){T=-1,L=0,C=0,F=null}function E(N=y,M=A,v=K){b++,J?.({startSegmentIndex:B,startGraphemeIndex:k,endSegmentIndex:N,endGraphemeIndex:M,width:v}),K=0,j=!1,P()}function H(N,M){j=!0,B=N,k=0,y=N+1,A=0,K=M}function z(N,M,v){j=!0,B=N,k=M,y=N,A=M+1,K=v}function W(N,M){if(!j){H(N,M);return}K+=M,y=N+1,A=0}function c(N,M){if(!m(Z[N]))return;let v=Z[N]==="tab"?0:X[N],w=Z[N]==="tab"?M:R[N];T=N+1,L=K-M+v,C=K-M+w,F=Z[N]}function I(N){o(N,0)}function o(N,M){let v=Q[N],w=f[N]??null;for(let G=M;G<v.length;G++){let l=t(v,w,G,q.preferPrefixWidthsForBreakableRuns);if(!j){z(N,G,l);continue}if(K+l>_+D)E(),z(N,G,l);else K+=l,y=N,A=G+1}if(j&&y===N&&A===v.length)y=N+1,A=0}function S(N){if(F!=="soft-hyphen")return!1;let M=Q[N];if(M===null)return!1;let v=q.preferPrefixWidthsForBreakableRuns?f[N]??M:M,w=v!==M,{fitCount:G,fittedWidth:l}=y0(v,K,_,D,V,w);if(G===0)return!1;if(K=l,y=N,A=G,P(),G===M.length)return y=N+1,A=0,!0;return E(N,G,l+V),o(N,G),!0}function U(N){b++,J?.({startSegmentIndex:N.startSegmentIndex,startGraphemeIndex:0,endSegmentIndex:N.consumedEndSegmentIndex,endGraphemeIndex:0,width:0}),P()}for(let N=0;N<u.length;N++){let M=u[N];if(M.startSegmentIndex===M.endSegmentIndex){U(M);continue}j=!1,K=0,B=M.startSegmentIndex,k=0,y=M.startSegmentIndex,A=0,P();let v=M.startSegmentIndex;while(v<M.endSegmentIndex){let w=Z[v],G=w==="tab"?w0(K,$):Y[v];if(w==="soft-hyphen"){if(j)y=v+1,A=0,T=v+1,L=K+V,C=K+V,F=w;v++;continue}if(!j){if(G>_&&Q[v]!==null)I(v);else H(v,G);c(v,G),v++;continue}if(K+G>_+D){let n=K+(w==="tab"?0:X[v]),e=K+(w==="tab"?G:R[v]);if(F==="soft-hyphen"&&q.preferEarlySoftHyphenBreak&&L<=_+D){E(T,0,C);continue}if(F==="soft-hyphen"&&S(v)){v++;continue}if(m(w)&&n<=_+D){W(v,G),E(v+1,0,e),v++;continue}if(T>=0&&L<=_+D){E(T,0,C);continue}if(G>_&&Q[v]!==null){E(),I(v),v++;continue}E();continue}W(v,G),c(v,G),v++}if(j){let w=T===M.consumedEndSegmentIndex?C:K;E(M.consumedEndSegmentIndex,0,w)}}return b}function S0(O,_,J){let Y=kO(O,_);if(Y===null)return null;if(O.simpleLineWalkFastPath)return oO(O,Y,J);let X=L0(O,Y.segmentIndex);if(X<0)return null;let R=O.chunks[X];if(R.startSegmentIndex===R.endSegmentIndex)return{startSegmentIndex:R.startSegmentIndex,startGraphemeIndex:0,endSegmentIndex:R.consumedEndSegmentIndex,endGraphemeIndex:0,width:0};let{widths:Z,lineEndFitAdvances:Q,lineEndPaintAdvances:f,kinds:V,breakableWidths:$,breakablePrefixWidths:u,discretionaryHyphenWidth:q,tabStopAdvance:D}=O,b=h(),K=b.lineFitEpsilon,j=0,B=!1,k=Y.segmentIndex,y=Y.graphemeIndex,A=k,T=y,L=-1,C=0,F=0,P=null;function E(){L=-1,C=0,F=0,P=null}function H(U=A,N=T,M=j){if(!B)return null;return{startSegmentIndex:k,startGraphemeIndex:y,endSegmentIndex:U,endGraphemeIndex:N,width:M}}function z(U,N){B=!0,A=U+1,T=0,j=N}function W(U,N,M){B=!0,A=U,T=N+1,j=M}function c(U,N){if(!B){z(U,N);return}j+=N,A=U+1,T=0}function I(U,N){if(!m(V[U]))return;let M=V[U]==="tab"?0:Q[U],v=V[U]==="tab"?N:f[U];L=U+1,C=j-N+M,F=j-N+v,P=V[U]}function o(U,N){let M=$[U],v=u[U]??null;for(let w=N;w<M.length;w++){let G=t(M,v,w,b.preferPrefixWidthsForBreakableRuns);if(!B){W(U,w,G);continue}if(j+G>J+K)return H();j+=G,A=U,T=w+1}if(B&&A===U&&T===M.length)A=U+1,T=0;return null}function S(U){if(P!=="soft-hyphen"||L<0)return null;let N=$[U]??null;if(N!==null){let M=b.preferPrefixWidthsForBreakableRuns?u[U]??N:N,v=M!==N,{fitCount:w,fittedWidth:G}=y0(M,j,J,K,q,v);if(w===N.length)return j=G,A=U+1,T=0,E(),null;if(w>0)return H(U,w,G+q)}if(C<=J+K)return H(L,0,F);return null}for(let U=Y.segmentIndex;U<R.endSegmentIndex;U++){let N=V[U],M=U===Y.segmentIndex?Y.graphemeIndex:0,v=N==="tab"?w0(j,D):Z[U];if(N==="soft-hyphen"&&M===0){if(B)A=U+1,T=0,L=U+1,C=j+q,F=j+q,P=N;continue}if(!B){if(M>0){let G=o(U,M);if(G!==null)return G}else if(v>J&&$[U]!==null){let G=o(U,0);if(G!==null)return G}else z(U,v);I(U,v);continue}if(j+v>J+K){let G=j+(N==="tab"?0:Q[U]),l=j+(N==="tab"?v:f[U]);if(P==="soft-hyphen"&&b.preferEarlySoftHyphenBreak&&C<=J+K)return H(L,0,F);let n=S(U);if(n!==null)return n;if(m(N)&&G<=J+K)return c(U,v),H(U+1,0,l);if(L>=0&&C<=J+K)return H(L,0,F);if(v>J&&$[U]!==null){let e=H();if(e!==null)return e;let v0=o(U,0);if(v0!==null)return v0}return H()}c(U,v),I(U,v)}if(L===R.consumedEndSegmentIndex&&T===0)return H(R.consumedEndSegmentIndex,0,F);return H(R.consumedEndSegmentIndex,0,j)}function oO(O,_,J){let{widths:Y,kinds:X,breakableWidths:R,breakablePrefixWidths:Z}=O,Q=h(),f=Q.lineFitEpsilon,V=0,$=!1,u=_.segmentIndex,q=_.graphemeIndex,D=u,b=q,K=-1,j=0;function B(C=D,F=b,P=V){if(!$)return null;return{startSegmentIndex:u,startGraphemeIndex:q,endSegmentIndex:C,endGraphemeIndex:F,width:P}}function k(C,F){$=!0,D=C+1,b=0,V=F}function y(C,F,P){$=!0,D=C,b=F+1,V=P}function A(C,F){if(!$){k(C,F);return}V+=F,D=C+1,b=0}function T(C,F){if(!m(X[C]))return;K=C+1,j=V-F}function L(C,F){let P=R[C],E=Z[C]??null;for(let H=F;H<P.length;H++){let z=t(P,E,H,Q.preferPrefixWidthsForBreakableRuns);if(!$){y(C,H,z);continue}if(V+z>J+f)return B();V+=z,D=C,b=H+1}if($&&D===C&&b===P.length)D=C+1,b=0;return null}for(let C=_.segmentIndex;C<Y.length;C++){let F=Y[C],P=X[C],E=C===_.segmentIndex?_.graphemeIndex:0;if(!$){if(E>0){let z=L(C,E);if(z!==null)return z}else if(F>J&&R[C]!==null){let z=L(C,0);if(z!==null)return z}else k(C,F);T(C,F);continue}if(V+F>J+f){if(m(P))return A(C,F),B(C+1,0,V-F);if(K>=0)return B(K,0,j);if(F>J&&R[C]!==null){let z=B();if(z!==null)return z;let W=L(C,0);if(W!==null)return W}return B()}A(C,F),T(C,F)}return B()}var R0=null,C0=new WeakMap;function I0(){if(R0===null)R0=new Intl.Segmenter(void 0,{granularity:"grapheme"});return R0}function lO(O){if(O)return{widths:[],lineEndFitAdvances:[],lineEndPaintAdvances:[],kinds:[],simpleLineWalkFastPath:!0,segLevels:null,breakableWidths:[],breakablePrefixWidths:[],discretionaryHyphenWidth:0,tabStopAdvance:0,chunks:[],segments:[]};return{widths:[],lineEndFitAdvances:[],lineEndPaintAdvances:[],kinds:[],simpleLineWalkFastPath:!0,segLevels:null,breakableWidths:[],breakablePrefixWidths:[],discretionaryHyphenWidth:0,tabStopAdvance:0,chunks:[]}}function c0(O,_,J){let Y=I0(),X=h(),{cache:R,emojiCorrection:Z}=B0(_,G0(O.normalized)),Q=g("-",x("-",R),Z),V=g(" ",x(" ",R),Z)*8;if(O.len===0)return lO(J);let $=[],u=[],q=[],D=[],b=O.chunks.length<=1,K=J?[]:null,j=[],B=[],k=J?[]:null,y=Array.from({length:O.len}),A=Array.from({length:O.len});function T(F,P,E,H,z,W,c,I){if(z!=="text"&&z!=="space"&&z!=="zero-width-break")b=!1;if($.push(P),u.push(E),q.push(H),D.push(z),K?.push(W),j.push(c),B.push(I),k!==null)k.push(F)}for(let F=0;F<O.len;F++){y[F]=$.length;let P=O.texts[F],E=O.isWordLike[F],H=O.kinds[F],z=O.starts[F];if(H==="soft-hyphen"){T(P,0,Q,Q,H,z,null,null),A[F]=$.length;continue}if(H==="hard-break"){T(P,0,0,0,H,z,null,null),A[F]=$.length;continue}if(H==="tab"){T(P,0,0,0,H,z,null,null),A[F]=$.length;continue}let W=x(P,R);if(H==="text"&&W.containsCJK){let S="",U=0;for(let N of Y.segment(P)){let M=N.segment;if(S.length===0){S=M,U=N.index;continue}if(i.has(S)||$0.has(M)||r.has(M)||X.carryCJKAfterClosingQuote&&p(M)&&D0(S)){S+=M;continue}let v=x(S,R),w=g(S,v,Z);T(S,w,w,w,"text",z+U,null,null),S=M,U=N.index}if(S.length>0){let N=x(S,R),M=g(S,N,Z);T(S,M,M,M,"text",z+U,null,null)}A[F]=$.length;continue}let c=g(P,W,Z),I=H==="space"||H==="preserved-space"||H==="zero-width-break"?0:c,o=H==="space"||H==="zero-width-break"?0:c;if(E&&P.length>1){let S=P0(P,W,R,Z),U=X.preferPrefixWidthsForBreakableRuns?A0(P,W,R,Z):null;T(P,c,I,o,H,z,S,U)}else T(P,c,I,o,H,z,null,null);A[F]=$.length}let L=hO(O.chunks,y,A),C=K===null?null:u0(O.normalized,K);if(k!==null)return{widths:$,lineEndFitAdvances:u,lineEndPaintAdvances:q,kinds:D,simpleLineWalkFastPath:b,segLevels:C,breakableWidths:j,breakablePrefixWidths:B,discretionaryHyphenWidth:Q,tabStopAdvance:V,chunks:L,segments:k};return{widths:$,lineEndFitAdvances:u,lineEndPaintAdvances:q,kinds:D,simpleLineWalkFastPath:b,segLevels:C,breakableWidths:j,breakablePrefixWidths:B,discretionaryHyphenWidth:Q,tabStopAdvance:V,chunks:L}}function hO(O,_,J){let Y=[];for(let X=0;X<O.length;X++){let R=O[X],Z=R.startSegmentIndex<_.length?_[R.startSegmentIndex]:J[J.length-1]??0,Q=R.endSegmentIndex<_.length?_[R.endSegmentIndex]:J[J.length-1]??0,f=R.consumedEndSegmentIndex<_.length?_[R.consumedEndSegmentIndex]:J[J.length-1]??0;Y.push({startSegmentIndex:Z,endSegmentIndex:Q,consumedEndSegmentIndex:f})}return Y}function o0(O,_,J,Y){let X=N0(O,h(),Y?.whiteSpace);return c0(X,_,J)}function V1(O,_,J){let Y=performance.now(),X=N0(O,h(),J?.whiteSpace),R=performance.now(),Z=c0(X,_,!1),Q=performance.now(),f=0;for(let V of Z.breakableWidths)if(V!==null)f++;return{analysisMs:R-Y,measureMs:Q-R,totalMs:Q-Y,analysisSegments:X.len,preparedSegments:Z.widths.length,breakableSegments:f}}function X1(O,_,J){return o0(O,_,!1,J)}function Y1(O,_,J){return o0(O,_,!0,J)}function F0(O){return O}function Z1(O,_,J){let Y=W0(F0(O),_);return{lineCount:Y,height:Y*J}}function k0(O,_,J){let Y=J.get(O);if(Y!==void 0)return Y;Y=[];let X=I0();for(let R of X.segment(_[O]))Y.push(R.segment);return J.set(O,Y),Y}function l0(O){let _=C0.get(O);if(_!==void 0)return _;return _=new Map,C0.set(O,_),_}function pO(O,_,J,Y){return Y>0&&O[Y-1]==="soft-hyphen"&&!(_===Y&&J>0)}function xO(O,_,J,Y,X,R,Z){let Q="",f=pO(_,Y,X,R);for(let V=Y;V<R;V++){if(_[V]==="soft-hyphen"||_[V]==="hard-break")continue;if(V===Y&&X>0)Q+=k0(V,O,J).slice(X).join("");else Q+=O[V]}if(Z>0){if(f)Q+="-";Q+=k0(R,O,J).slice(Y===R?X:0,Z).join("")}else if(f)Q+="-";return Q}function h0(O,_,J,Y,X,R,Z){return{text:xO(O.segments,O.kinds,_,Y,X,R,Z),width:J,start:{segmentIndex:Y,graphemeIndex:X},end:{segmentIndex:R,graphemeIndex:Z}}}function gO(O,_,J){return h0(O,_,J.width,J.startSegmentIndex,J.startGraphemeIndex,J.endSegmentIndex,J.endGraphemeIndex)}function p0(O){return{width:O.width,start:{segmentIndex:O.startSegmentIndex,graphemeIndex:O.startGraphemeIndex},end:{segmentIndex:O.endSegmentIndex,graphemeIndex:O.endGraphemeIndex}}}function mO(O,_,J){let Y=S0(O,_,J);if(Y===null)return null;return p0(Y)}function rO(O,_){return h0(O,l0(O),_.width,_.start.segmentIndex,_.start.graphemeIndex,_.end.segmentIndex,_.end.graphemeIndex)}function $1(O,_,J){if(O.widths.length===0)return 0;return J0(F0(O),_,(Y)=>{J(p0(Y))})}function Q1(O,_,J){let Y=mO(O,_,J);if(Y===null)return null;return rO(O,Y)}function q1(O,_,J){let Y=[];if(O.widths.length===0)return{lineCount:0,height:0,lines:Y};let X=l0(O),R=J0(F0(O),_,(Z)=>{Y.push(gO(O,X,Z))});return{lineCount:R,height:R*J,lines:Y}}function aO(){z0(),R0=null,C0=new WeakMap,T0()}function D1(O){j0(O),aO()}
+window.Pretext = {walkLineRanges: $1, setLocale: D1, profilePrepare: V1, prepareWithSegments: Y1, prepare: X1, layoutWithLines: q1, layoutNextLine: Q1, layout: Z1, clearCache: aO};
+</script>
+<script>
+(async function(){
+  await document.fonts.ready;
+  const { prepare, layout } = window.Pretext;
+  const prepared = new Map();
+
+  function fontOf(el){ return getComputedStyle(el).font; }
+
+  function prepareEl(el){
+    prepared.set(el, prepare(el.textContent, fontOf(el)));
+  }
+
+  // Measure every [data-pretext*] element: headline height must match its font.
+  function scan(){
+    document.querySelectorAll('[data-pretext]').forEach(el => { if(!prepared.has(el)) prepareEl(el); });
+    document.querySelectorAll('.lede, .sbody, .step p, .sub, .footnote').forEach(el => {
+      // Body copy is allowed to wrap naturally; Pretext headlines only need heights.
+    });
+    relayout();
+  }
+
+  function relayout(){
+    for (const [el, handle] of prepared){
+      const cs = getComputedStyle(el);
+      const lh = parseFloat(cs.lineHeight) || parseFloat(cs.fontSize) * 1.1;
+      const { height } = layout(handle, el.clientWidth, lh);
+      el.style.minHeight = Math.ceil(height) + 'px';
+    }
+  }
+
+  scan();
+  new ResizeObserver(() => relayout()).observe(document.body);
+  window.addEventListener('load', scan);
+
+  // contenteditable free-form copy editing with live relayout
+  document.querySelectorAll('h1, .shead, .lede, .sbody').forEach(el => {
+    el.contentEditable = 'true';
+    el.spellcheck = false;
+    new MutationObserver(() => { prepareEl(el); relayout(); }).observe(el, { characterData:true, subtree:true, childList:true });
+  });
+
+
+  // ── Slideshow: cited career in photos ──
+  (function(){
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // Photos are the article art carried by the cited edge itself (source_image),
+    // verified reachable; the first slide is the chef's profile portrait from the
+    // profile article that anchors the Kuala Lumpur story.
+    // The full career, nine cited chapters. Every picture is honest to its move:
+    // full-bleed photos are the artwork of the exact article that reported the
+    // move, or a credited Wikimedia Commons photo of the venue itself; portraits
+    // from the citing profiles are too low-res to blow up fullscreen, so they are
+    // mounted as archival plates; chapters with no art at all keep a typographic
+    // card. No photo is ever reused for a different move.
+    const PROFILE = 'https://www.potatoglory.com/council/alexander-ong';
+    const AF = 'http://asian-fusion.com/373/chef-alexander-ong';
+    const SLIDES = [
+      { venue: 'Shangri-La, Kuala Lumpur', role: 'the beginning', type: 'plate',
+        ev: 'I was working as a part time waiter at the Shangri-la Hotel in KL & thought that the cooks in their white coats & hats looked good & talked my way in.',
+        src: 'Asian Fusion', url: AF,
+        img: 'https://asian-fusion.com/wp-content/uploads/2014/01/People20130531141506ChefAlexanderOng2.jpg', alt: 'Archival portrait of Alexander Ong in chef whites, from the Asian Fusion interview that tells this story' },
+      { venue: 'Ritz-Carlton, across America', role: 'the touring years', type: 'photo',
+        ev: 'He traveled the United States as a chef for Ritz Carlton, finally landing in San Francisco, where he built his legacy.',
+        src: 'Chef profile', url: PROFILE,
+        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Ritz-Carlton_Club_and_Residences%2C_San_Francisco.jpg/1280px-Ritz-Carlton_Club_and_Residences%2C_San_Francisco.jpg', alt: 'The Ritz-Carlton building in San Francisco, where his touring years ended', credit: 'Photo: Minesweeper, Wikimedia Commons (CC BY-SA 3.0)' },
+      { venue: 'Stars, San Francisco', role: 'with Jeremiah Tower \u00b7 1995', type: 'photo',
+        ev: 'In 1995, he moved to San Francisco where he worked with chef Jeremiah Tower at Stars for 3 years.',
+        src: 'Asian Fusion', url: AF,
+        img: 'https://asian-fusion.com/wp-content/uploads/2011/10/ChefAlexanderOng.jpg', alt: 'Portrait of chef Alexander Ong in whites' },
+      { venue: 'Xanadu, Berkeley', role: 'the pan-Asian kitchen', type: 'chapter', rn: '04',
+        ev: 'then went on to helm the kitchen at Berkeley\u2019s acclaimed pan-Asian destination Xanadu.',
+        src: 'Chef profile', url: PROFILE },
+      { venue: 'Betelnut', role: 'chef/partner \u00b7 the defining run', type: 'plate',
+        ev: 'setting the stage for his wildly successful turn as chef/partner of San Francisco\u2019s Betelnut Pejiu Wu.',
+        src: 'Chef profile', url: PROFILE, ig: 'chefalexong',
+        img: 'https://www.potatoglory.com/wp-content/uploads/2022/12/HEADSHOT-Alexander-Ong.jpg', alt: 'Portrait of Alexander Ong, from the profile that tells the Betelnut story' },
+      { venue: 'Hutong', role: 'the reinvention \u00b7 2013', type: 'photo',
+        ev: 'The Real Restaurants group and chef Alexander Ong remain on board, and the vibe has shifted from haute Chinese to graffiti-splattered.',
+        src: 'Eater SF', url: 'https://sf.eater.com/2013/3/15/6466079/inside-hutong-the-reborn-betelnut',
+        img: 'https://platform.sf.eater.com/wp-content/uploads/sites/28/chorus/uploads/chorus_asset/file/12812231/IMG_9293.0.0.1413310606.jpg?quality=90&strip=all&crop=0,17.277486910995,100,65.44502617801', alt: 'Graffiti-walled dining room of Hutong' },
+      { venue: 'Betelnut, again', role: 'the return \u00b7 2013', type: 'photo',
+        ev: 'they decided to switch back to their original concept. If you call the restaurant today, the Betelnut name is already back in action.',
+        src: 'SFGATE', url: 'https://www.sfgate.com/food/insidescoop/article/Beloved-Betelnut-back-after-Hutong-flails-4480549.php',
+        img: 'https://s.hdnux.com/photos/21/21/54/4528925/4/rawImage.jpg', alt: 'Clay-pot noodles, the cooking Betelnut returned to' },
+      { venue: 'The end of the run', role: 'the closure \u00b7 2015', type: 'photo',
+        ev: 'shortly thereafter longtime executive chef Alexander Ong left.',
+        src: 'Eater SF', url: 'https://sf.eater.com/2015/9/23/9389543/say-bye-to-betelnut-closing-after-20-years-in-cow-hollow',
+        img: 'https://platform.sf.eater.com/wp-content/uploads/sites/28/chorus/uploads/chorus_asset/file/15515618/betelnut.0.0.1443051158.jpg?quality=90&strip=all&crop=0,23.821989528796,100,52.356020942408', alt: 'The Cow Hollow storefront as the end neared' },
+      { venue: 'UMass Amherst', role: 'teaching the next generation \u00b7 now', type: 'photo',
+        ev: 'Chef Ong has shifted his focus to inspiring and informing the next generation of diners, and now serves as the Director of Culinary Excellence at the University of Massachusetts Amherst.',
+        src: 'Chef profile', url: PROFILE,
+        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Umass_Amherst_Skyline.jpg/1280px-Umass_Amherst_Skyline.jpg', alt: 'The University of Massachusetts Amherst campus, where Ong teaches now', credit: 'Photo: Eraboin, Wikimedia Commons (CC BY 2.5)' },
+    ];
+    const stage = document.getElementById('slide-stage'), rail = document.getElementById('slide-rail');
+    if (!stage) return;
+    const HOLD = reduce ? 5200 : 5600, FADE = reduce ? 300 : 1100;
+
+    // Build slide layers: photo layer for photo slides, chapter card otherwise.
+    const layers = SLIDES.map(s => {
+      if (s.type === 'photo') {
+        const im = new Image(); im.referrerPolicy = 'no-referrer'; im.decoding = 'async'; im.alt = s.alt;
+        im.src = s.img; return im;
+      }
+      if (s.type === 'plate') {
+        const dv = document.createElement('div');
+        dv.className = 'plate';
+        const im = new Image(); im.referrerPolicy = 'no-referrer'; im.decoding = 'async'; im.alt = s.alt;
+        im.src = s.img; dv.appendChild(im);
+        return dv;
+      }
+      const dv = document.createElement('div');
+      dv.className = 'chapter';
+      dv.setAttribute('role', 'img'); dv.setAttribute('aria-label', s.alt || s.venue);
+      dv.innerHTML = '<div class="rn">' + s.rn + '</div>';
+      return dv;
+    });
+
+    // Caption lives outside the crossfade so it never photographs mid-fade.
+    const cap = document.createElement('div');
+    cap.className = 'slide-cap';
+    cap.innerHTML = '<div class="inner"></div>';
+    stage.appendChild(cap);
+    const inner = cap.querySelector('.inner');
+    const chrome = document.createElement('div');
+    chrome.className = 'slide-chrome';
+    chrome.innerHTML = '<button class="sbtn" id="splay" type="button" aria-pressed="true">Pause</button>' +
+                       '<button class="sbtn" id="sprev" type="button" aria-label="Previous slide">\u2190</button>' +
+                       '<button class="sbtn" id="snext" type="button" aria-label="Next slide">\u2192</button>';
+    stage.appendChild(chrome);
+
+    const thumbs = SLIDES.map((s, i) => {
+      const b = document.createElement('button');
+      b.className = 'sthumb' + (s.type === 'chapter' ? ' typed' : ''); b.type = 'button';
+      b.setAttribute('role', 'tab');
+      b.setAttribute('aria-label', 'Chapter ' + (i+1) + ': ' + s.venue);
+      b.innerHTML = (s.type !== 'chapter'
+          ? '<img src="' + s.img + '" alt="" referrerpolicy="no-referrer" loading="lazy">'
+          : '<span class="rn">' + s.rn + '</span>')
+        + '<span class="tn">' + s.venue + '</span><span class="prog"></span>';
+      b.addEventListener('click', () => go(i, true));
+      rail.appendChild(b);
+      return b;
+    });
+
+    let cur = -1, playing = true, raf = null, toId = null, capTimer = null;
+    function show(i){
+      SLIDES.forEach((s, k) => {
+        const el = layers[k];
+        const on = k === i;
+        if (s.type === 'photo') {
+          el.className = on ? 'on' : '';
+          if (on && el.parentNode !== stage) stage.insertBefore(el, cap);
+        } else {
+          // plate and chapter cards crossfade by opacity instead of the .on class
+          el.style.opacity = on ? '1' : '0';
+          el.style.transition = 'opacity ' + (reduce ? 300 : 1000) + 'ms ease';
+          if (on && el.parentNode !== stage) stage.insertBefore(el, cap);
+        }
+      });
+      cur = i;
+      thumbs.forEach((t, k) => {
+        t.classList.toggle('on', k === i);
+        const p = t.querySelector('.prog');
+        p.style.transition = 'none'; p.style.width = '0%';
+      });
+      // Caption is withheld until the incoming slide has finished fading, so the
+      // text never appears over a half-transitioned (low-contrast) photo.
+      clearTimeout(capTimer);
+      cap.classList.remove('readable');
+      capTimer = setTimeout(() => {
+        const s = SLIDES[i];
+        inner.innerHTML = '<div class="k">Chapter ' + (i+1) + ' of ' + SLIDES.length + ' \u00b7 cited</div>' +
+          '<div class="v">' + s.venue + '<span class="r">' + s.role + '</span></div>' +
+          '<div class="e">\u201c' + s.ev + '\u201d</div>' +
+          '<div class="s"><span class="srcbadge eater">' + s.src + '</span><a href="' + s.url + '" target="_blank" rel="noopener">read the source \u2197</a>' +
+          (s.credit ? '<span class="credit">' + s.credit + '</span>' : '') +
+          (s.ig ? ' <a class="igbadge" href="https://www.instagram.com/' + s.ig + '/" target="_blank" rel="noopener" title="' + s.venue + ' on Instagram ( @' + s.ig + ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1.3" fill="currentColor" stroke="none"/></svg>ig</a>' : '') + '</div>';
+        cap.classList.add('readable');
+      }, reduce ? 80 : 1050);
+      if (playing && i < SLIDES.length - 1) startProg(i);
+      else if (playing && i === SLIDES.length - 1) toId = setTimeout(() => go(0, false), HOLD);
+    }
+    function startProg(i){
+      const p = thumbs[i].querySelector('.prog');
+      const t0 = performance.now();
+      function frame(t){
+        if (!playing || cur !== i) return;
+        const k = Math.min(1, (t - t0) / HOLD);
+        p.style.width = (k * 100) + '%';
+        if (k < 1) raf = requestAnimationFrame(frame);
+      }
+      raf = requestAnimationFrame(frame);
+      toId = setTimeout(() => { if (playing && cur === i) go(i + 1, false); }, HOLD);
+    }
+    function go(i, manual){
+      clearTimeout(toId); if (raf) cancelAnimationFrame(raf);
+      if (manual && !playing) { playing = true; document.getElementById('splay').textContent = 'Pause'; document.getElementById('splay').setAttribute('aria-pressed', 'true'); }
+      show(i);
+    }
+    document.getElementById('splay').addEventListener('click', () => {
+      playing = !playing;
+      const b = document.getElementById('splay');
+      b.textContent = playing ? 'Pause' : 'Play';
+      b.setAttribute('aria-pressed', String(playing));
+      if (playing) { show(cur < 0 ? 0 : cur); } else { clearTimeout(toId); if (raf) cancelAnimationFrame(raf); }
+    });
+    document.getElementById('sprev').addEventListener('click', () => go((cur - 1 + SLIDES.length) % SLIDES.length, true));
+    document.getElementById('snext').addEventListener('click', () => go((cur + 1) % SLIDES.length, true));
+
+    // Begin once the first chapter has rendered (no photo to wait for).
+    show(0);
+  })();
+  // Live stats straight from the explorer's API
+  fetch('https://bone-fides-pat-mitchells-projects.vercel.app/api/stats').then(r => r.json()).then(d => {
+    document.getElementById('n-edges').textContent = d.edges.toLocaleString('en-US');
+    document.getElementById('n-people').textContent = d.people.toLocaleString('en-US');
+    document.getElementById('n-venues').textContent = d.venues.toLocaleString('en-US');
+    document.getElementById('n-sources').textContent = d.sources.toLocaleString('en-US');
+  }).catch(() => { /* baked-in numbers stay */ });
+})();
+</script>
+</body>
+</html>
