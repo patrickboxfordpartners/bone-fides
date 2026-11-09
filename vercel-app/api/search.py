@@ -17,6 +17,19 @@ INDEX = "bone-fides-edges"
 
 MAX_QUERY_LEN = 120  # abuse cap: queries are names, not free-text essays
 
+def _is_collective(name):
+    """Anonymous/collective entity ("chefs", "sous chef", "two chefs"): the
+    corpus honestly records unnamed people, but they are not a chef NAMED
+    the query, so they must not resolve it. A string resolves as a person
+    only if some capitalized token survives stopword stripping."""
+    n = re.sub(r'"[^"]*"', '', name or "")
+    n = re.sub(r"\([^)]*\)", '', n)
+    tokens = [t for t in re.split(r"[\s+'’-]+", n) if t]
+    named = [t for t in tokens if t[:1].isupper() and t.lower() not in
+             ("chef", "chefs", "the", "a", "an", "former", "new", "same",
+              "unknown", "unnamed", "top")]
+    return not named
+
 def make_client(endpoint=None, api_key=None):
     from elasticsearch import Elasticsearch
     return Elasticsearch(
@@ -393,7 +406,7 @@ def resolve_query(q, lin, cl):
     for c in cl:
         for n in [c["name"], *(c.get("aliases") or [])]:
             nl = n.lower()
-            if nl == ql:
+            if nl == ql and not _is_collective(n):
                 return True
     for e in lin:
         for k in ("from_venue", "to_venue"):

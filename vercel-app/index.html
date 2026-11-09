@@ -435,8 +435,18 @@ function buildChain(person_edges, ql){
 function render(q, edges, ms, ped, identity){
   if(!edges || !edges.length){ CARD.innerHTML = '<div class="empty">No lineage found for “'+esc(q)+'” yet. Check the spelling, try a chef’s name, or start with one of the kitchens above.</div>'; return; }
   const ql = q.toLowerCase();
-  const isPersonQuery = identity && identity.length > 0 && identity[0].n > 0 &&
-    edges.filter(e => e.person && ((e.from_venue||'').toLowerCase().includes(ql) || (e.to_venue||'').toLowerCase().includes(ql))).length === 0;
+  // person query when a cluster IS the query (by name) and its edges outnumber
+  // docs whose venue field merely contains the name — namesake restaurants
+  // (Michael Mina), employer groups ("X's restaurant group"), and the rare
+  // mis-extraction (a person written into from_venue) all live in that venue
+  // bucket; the queried person's own cited moves live in the cluster bucket.
+  const selfEdges = (identity || []).filter(cl =>
+    cl.name && cl.name.toLowerCase() === ql)
+    .reduce((s, cl) => s + cl.n, 0);
+  const venueFlips = edges.filter(e => e.person &&
+    (e.person||'').toLowerCase() !== ql &&
+    ((e.from_venue||'').toLowerCase().includes(ql) || (e.to_venue||'').toLowerCase().includes(ql))).length;
+  const isPersonQuery = selfEdges > 0 && selfEdges >= venueFlips;
 
   // pedigree dial: weighted credibility from source tiers + corroboration
   let pedHTML = '';
