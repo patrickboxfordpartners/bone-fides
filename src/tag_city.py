@@ -59,10 +59,17 @@ def main():
         # their bare graph name after the honorific is dropped
         hit = ling_norm.get(n)
         if not hit:
+            # longest prefix wins: ling_norm comes from a set (nondeterministic
+            # order), and first-match lets a generic lineage ("The Kitchen" ->
+            # "kitchen") consume a specific one ("Kitchen Story Cafe").
+            best = None
             for ln, orig in ling_norm.items():
                 if token_prefix_match(n, ln) or \
                         (n.startswith("restaurant ") and n[len("restaurant "):] == ln):
-                    hit = orig; break
+                    if best is None or len(ln) > len(best[0]):
+                        best = (ln, orig)
+            if best:
+                hit = best[1]
         if hit:
             v["lineaged"] = True
             v["lineage_name"] = hit
@@ -79,15 +86,22 @@ def main():
         # city names that carry a leading honorific the guide drops
         # ("Restaurant Naides" → Naides, "Restaurant Nisei" → Nisei)
         HONORIFIC = ("restaurant ",)
+        # exact (incl. honorific) first — unambiguous — then longest prefix
+        # wins, mirroring the lineage loop (star_norm is set-ordered).
+        exact = None
+        plen = 0; pstar = None
         for sn, orig in star_norm.items():
-            matched = n == sn or (n.startswith(sn + " ") and sn not in GENERIC_STAR)
-            if not matched and n.startswith(HONORIFIC) and n[len("restaurant "):] == sn:
-                matched = True
-            if matched:
-                v["michelin"] = True
-                v["star_name"] = orig
-                v.setdefault("lineage_name", orig)
-                break
+            if n == sn or (n.startswith(HONORIFIC) and n[len("restaurant "):] == sn):
+                exact = orig; break
+            if sn in GENERIC_STAR:
+                continue
+            if n.startswith(sn + " ") and len(sn) > plen:
+                plen = len(sn); pstar = orig
+        orig = exact or pstar
+        if orig:
+            v["michelin"] = True
+            v["star_name"] = orig
+            v.setdefault("lineage_name", orig)
 
     # stars belong to the kitchen: where one starred name has both restaurant
     # permit rows and bar/tavern rows (Nisei's side-by-side H25+H86 permits,
@@ -114,6 +128,11 @@ def main():
     # Folsom St sushi; Saison: dining room 178 Townsend + cellar annex 234
     # Townsend): the guide stars the dining room, so annexes/branches keep
     # lineage but lose the star. Curated: starred address per star_name.
+    # Compared on normalized whitespace/case: the dataset mixes "2316 Polk ST"
+    # with "2316 POLK ST" and pads some addresses.
+    def addr_norm(a):
+        return re.sub(r"\s+", " ", (a or "").strip().upper())
+
     STARRED_ADDR = {"Akiko's": "1501 CALIFORNIA ST",
                     "Saison": "178 TOWNSEND ST"}
     for sn, rows in by_star.items():
@@ -121,7 +140,7 @@ def main():
         if want is None:
             continue
         for r in rows:
-            if r.get("michelin") and r.get("address") != want:
+            if r.get("michelin") and addr_norm(r.get("address")) != addr_norm(want):
                 r.pop("michelin", None); r.pop("star_name", None)
 
     # one pin per lineage name: keep the row with the shortest name (the

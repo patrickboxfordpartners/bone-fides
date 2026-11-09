@@ -397,10 +397,15 @@ async function run(){
     CARD.innerHTML = '<div class="empty">No kitchen or chef named “' + esc(q) + '” in the record yet.'
       + (close ? ' Closest cited names:' + close : ' Check the spelling, or start with one of the kitchens above.')
       + '</div>';
+    // an untraced starred kitchen still has a star pin on the map — highlight
+    // it even though there's no dossier to render
+    if(window.__bfHighlight) window.__bfHighlight(q);
+    else window.__bfPendingHighlight = q;
     return;
   }
   render(q, d.lineage, performance.now() - t0, d.pedigree, d.identity);
   if(window.__bfHighlight) window.__bfHighlight(q);
+  else window.__bfPendingHighlight = q;
 }
 
 async function pick(name){ Q.value = name; run(); }
@@ -597,10 +602,13 @@ document.getElementById('chips').innerHTML =
 (async function(){
   const head = document.getElementById('rosterhead'), list = document.getElementById('rosterlist');
   if(!head || !list) return;
+  // one shared promise: map.js may run while this fetch is still pending, and
+  // awaiting the same promise (not a stale window.__bfVenues) is what keeps
+  // the ~1MB payload to a single request
+  window.__bfVenuesPromise = window.__bfVenuesPromise || fetch('/api/venues').then(r => r.json());
   let starred = [];
   try {
-    const r = await fetch('/api/venues');
-    const d = await r.json();
+    const d = await window.__bfVenuesPromise;
     starred = (d.venues || []).filter(v => v.michelin && typeof v.lat === 'number');
     // map.js reuses this payload instead of refetching ~1MB of venue data
     window.__bfVenues = d.venues || [];
@@ -613,18 +621,27 @@ document.getElementById('chips').innerHTML =
     if(!byStar.has(key)) byStar.set(key, v);
   });
   const rows = [...byStar.entries()].sort((a, b) => a[0].localeCompare(b[0], 'en', { sensitivity: 'base' }));
-  if(!rows.length){ head.querySelector('.cnt').textContent = '★ 0'; list.remove(); return; }
-  document.getElementById('roster-count').textContent = '★ ' + rows.length;
-  list.innerHTML = rows.map(([star, v]) => {
-    const q = v.lineage_name || star;
-    return `<button type="button" role="listitem" data-pick="${esc(q)}" title="${esc(v.name)}${v.neighborhood ? ' · ' + esc(v.neighborhood) : ''}">` +
-      `<span>${esc(star)}</span>` +
-      (v.lineaged ? '<span class="lg" title="This kitchen is in the lineage graph — click to trace it">trace</span>' : '') +
-      `<span class="nb">${esc(v.neighborhood || '')}</span></button>`;
-  }).join('');
+  // the toggle listener attaches before any early return: an empty roster
+  // ("★ 0") still toggles the (now empty) section without a dead button
   head.addEventListener('click', () => {
     const open = document.getElementById('roster').classList.toggle('open');
     head.setAttribute('aria-expanded', String(open));
+  });
+  if(!rows.length){ head.querySelector('.cnt').textContent = '★ 0'; list.remove(); return; }
+  document.getElementById('roster-count').textContent = '★ ' + rows.length;
+  // buttons wrapped in real <li> elements: role="listitem" on the button
+  // would replace its native button role for screen readers
+  list.innerHTML = rows.map(([star, v]) => {
+    const q = v.lineage_name || star;
+    return `<li role="listitem">` +
+      `<button type="button" data-pick="${esc(q)}" title="${esc(v.name)}${v.neighborhood ? ' · ' + esc(v.neighborhood) : ''}">` +
+      `<span>${esc(star)}</span>` +
+      (v.lineaged ? '<span class="lg" title="This kitchen is in the lineage graph — click to trace it">trace</span>' : '') +
+      `<span class="nb">${esc(v.neighborhood || '')}</span></button></li>`;
+  }).join('');
+  // <li> defaults don't apply to buttons' flex layout — list keeps spacing
+  list.querySelectorAll('li').forEach(li => {
+    li.style.listStyle = 'none'; li.style.padding = '0'; li.style.margin = '0';
   });
 })();
 
