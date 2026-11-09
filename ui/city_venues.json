@@ -113,7 +113,7 @@
 "lng": -122.415291000002
 },
 {
-"name": "122 - Karl'S Cocktail",
+"name": "122 - Karl's Cocktail",
 "permit_type": "H36 - STADIUM CONCESSIONS (PERM)",
 "address": "24 WILLIE MAYS PLZ # PROMEN",
 "neighborhood": "Mission Bay",
@@ -247,7 +247,7 @@
 "lng": -122.420164500002
 },
 {
-"name": "1945 Restaurant Bar & Lounge (Formerly Under Dba Luxi Q'S)",
+"name": "1945 Restaurant Bar & Lounge (Formerly Under Dba Luxi Q's)",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "5 LELAND AVE",
 "neighborhood": "Visitacion Valley",
@@ -767,6 +767,7 @@
 "neighborhood": "Japantown",
 "lat": 37.785960000001,
 "lng": -122.432629500002,
+"star_name": "7 Adams",
 "lineaged": true,
 "lineage_name": "7 Adams",
 "michelin": true
@@ -1314,7 +1315,7 @@
 "lng": -122.407670150013
 },
 {
-"name": "Abe'S Pizza",
+"name": "Abe's Pizza",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "940 MARKET ST",
 "neighborhood": "Tenderloin",
@@ -1456,7 +1457,7 @@
 "lng": -122.418531000002
 },
 {
-"name": "Ace'S",
+"name": "Ace's",
 "permit_type": "H86 - BARS/TAVERNS W/O FOOD PREP",
 "address": "998 SUTTER ST",
 "neighborhood": "Nob Hill",
@@ -1496,8 +1497,10 @@
 "neighborhood": "Nob Hill",
 "lat": 37.791549000001,
 "lng": -122.421406500002,
+"star_name": "Acquerello",
 "lineaged": true,
-"lineage_name": "Acquerello"
+"lineage_name": "Acquerello",
+"michelin": true
 },
 {
 "name": "Acquolina",
@@ -1508,7 +1511,7 @@
 "lng": -122.408973000002
 },
 {
-"name": "Adam'S Grub Shack",
+"name": "Adam's Grub Shack",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "1136 VALENCIA ST",
 "neighborhood": "Mission",
@@ -1516,7 +1519,7 @@
 "lng": -122.421213000002
 },
 {
-"name": "Adam'S Grub Truck",
+"name": "Adam's Grub Truck",
 "permit_type": "H79 - MOBILE FOOD FACILITY CLASS 5",
 "address": "374 JOOST AVE",
 "neighborhood": "West of Twin Peaks",
@@ -1532,7 +1535,7 @@
 "lng": -122.424327000002
 },
 {
-"name": "Adelita'S Antojitos",
+"name": "Adelita's Antojitos",
 "permit_type": "H74 - CATERER",
 "address": "101 HYDE ST",
 "neighborhood": "Tenderloin",
@@ -1612,7 +1615,7 @@
 "lng": -122.447641500002
 },
 {
-"name": "Afc Sushi @ Mollie Stone'S #10",
+"name": "Afc Sushi @ Mollie Stone's #10",
 "permit_type": "H28 - TAKE-OUTS",
 "address": "635 PORTOLA DR",
 "neighborhood": "West of Twin Peaks",
@@ -1620,7 +1623,7 @@
 "lng": -122.452299000002
 },
 {
-"name": "Afc Sushi @ Mollie Stone'S #2",
+"name": "Afc Sushi @ Mollie Stone's #2",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "2435 CALIFORNIA ST",
 "neighborhood": "Pacific Heights",
@@ -1628,7 +1631,7 @@
 "lng": -122.434753500002
 },
 {
-"name": "Afc Sushi @ Mollie Stone'S #9",
+"name": "Afc Sushi @ Mollie Stone's #9",
 "permit_type": "H28 - TAKE-OUTS",
 "address": "4201 18TH ST",
 "neighborhood": "Castro/Upper Market",
@@ -1748,7 +1751,7 @@
 "lng": -122.408307000002
 },
 {
-"name": "Affi'S Marin Gourmet Inc",
+"name": "Affi's Marin Gourmet Inc",
 "permit_type": "H34 - PUSHCARTS (RETAIL FOOD VEHICLE)",
 "address": "1 FERRY BUILDING",
 "neighborhood": "Financial District/South Beach",
@@ -1796,7 +1799,7 @@
 "lng": -122.407632000002
 },
 {
-"name": "Ah Ma'S Kitchen",
+"name": "Ah Ma's Kitchen",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "1115 CLEMENT ST",
 "neighborhood": "Inner Richmond",
@@ -1884,7 +1887,7 @@
 "lng": -122.434245000002
 },
 {
-"name": "Aj'S Bar",
+"name": "Aj's Bar",
 "permit_type": "H86 - BARS/TAVERNS W/O FOOD PREP",
 "address": "1250 MARKET ST STE 101",
 "neighborhood": "Tenderloin",
@@ -1948,24 +1951,24 @@
 "lng": -122.408842500002
 },
 {
-"name": "Akiko'S",
+"name": "Akiko's",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "1501 CALIFORNIA ST",
 "neighborhood": "Nob Hill",
 "lat": 37.790595000001,
 "lng": -122.419264500002,
+"star_name": "Akiko's",
 "lineaged": true,
 "lineage_name": "Akiko's",
 "michelin": true
 },
 {
-"name": "Akiko'S",
+"name": "Akiko's",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "430 FOLSOM ST",
 "neighborhood": "Financial District/South Beach",
 "lat": 37.787814000001,
-"lng": -122.394109500002,
-"michelin": true
+"lng": -122.394109500002
 },
 {
 "name": "Akikos Sushi Bar",
@@ -2018,7 +2021,7 @@
 "lng": -122.391405000002
 },
 {
-"name": "Al'S Super Cafe",
+"name": "Al's Super Cafe",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "3286 MISSION ST",
 "neighborhood": "Bernal Heights",
@@ -2165,7 +2168,7 @@
 "lat": 37.769211000001,
 "lng": -122.451219000002,
 "lineaged": true,
-"lineage_name": "Alembic"
+"lineage_name": "The Alembic"
 },
 {
 "name": "Ales Unlimited Llc",
@@ -2176,7 +2179,7 @@
 "lng": -122.432652000002
 },
 {
-"name": "Alexander'S Steakhouse",
+"name": "Alexander's Steakhouse",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "165 O'FARRELL ST",
 "neighborhood": "Financial District/South Beach",
@@ -2184,7 +2187,7 @@
 "lng": -122.407362000002
 },
 {
-"name": "Alexander'S Steakhouse Inc",
+"name": "Alexander's Steakhouse Inc",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "448 BRANNAN ST",
 "neighborhood": "South of Market",
@@ -2290,7 +2293,7 @@
 "lng": -122.389735500002
 },
 {
-"name": "All My Uso'S",
+"name": "All My Uso's",
 "permit_type": "H23R- FOOD PREP AND SERVICE (FEE EXEMPT)",
 "address": "150 EXECUTIVE PARK BLVD STE 3000",
 "neighborhood": "Bayview Hunters Point",
@@ -2370,7 +2373,7 @@
 "lng": -122.415354000002
 },
 {
-"name": "Alma'S Smokes",
+"name": "Alma's Smokes",
 "permit_type": "H31 - TOBACCO SALES - ANNUAL LICENSE FEE",
 "address": "808 LARKIN ST",
 "neighborhood": "Tenderloin",
@@ -2476,7 +2479,7 @@
 "lng": -122.421442500002
 },
 {
-"name": "Amal'S Deli",
+"name": "Amal's Deli",
 "permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
 "address": "1416 HAIGHT ST",
 "neighborhood": "Haight Ashbury",
@@ -2624,7 +2627,7 @@
 "lineage_name": "Americana Grill"
 },
 {
-"name": "Amici'S East Coast Pizzeria",
+"name": "Amici's East Coast Pizzeria",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "200  PIER 39 PLZ",
 "neighborhood": "North Beach",
@@ -2632,7 +2635,7 @@
 "lng": -122.409063000002
 },
 {
-"name": "Amici'S East Coast Pizzeria",
+"name": "Amici's East Coast Pizzeria",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "2200 LOMBARD ST",
 "neighborhood": "Marina",
@@ -2640,7 +2643,7 @@
 "lng": -122.438034000002
 },
 {
-"name": "Amici'S East Coast Pizzeria, Inc.",
+"name": "Amici's East Coast Pizzeria, Inc.",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "1200 MARKET ST UNIT 103",
 "neighborhood": "Tenderloin",
@@ -2664,7 +2667,7 @@
 "lng": -122.414728500002
 },
 {
-"name": "Amigo'S Market",
+"name": "Amigo's Market",
 "permit_type": "H31 - TOBACCO SALES - ANNUAL LICENSE FEE",
 "address": "500 ELLIS ST",
 "neighborhood": "Tenderloin",
@@ -2768,7 +2771,7 @@
 "lng": -122.415709500002
 },
 {
-"name": "Anan'S Deli Kitchen",
+"name": "Anan's Deli Kitchen",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "6900 GEARY BLVD",
 "neighborhood": "Outer Richmond",
@@ -2840,7 +2843,7 @@
 "lng": -122.417446500002
 },
 {
-"name": "Andi'S Market",
+"name": "Andi's Market",
 "permit_type": "H31 - TOBACCO SALES - ANNUAL LICENSE FEE",
 "address": "820 CORTLAND AVE",
 "neighborhood": "Bernal Heights",
@@ -2866,7 +2869,7 @@
 "lng": -122.414211000002
 },
 {
-"name": "Andrea'S Bakery",
+"name": "Andrea's Bakery",
 "permit_type": "H88 - RETAIL BAKERIES WITH FOOD PREP",
 "address": "4511 MISSION ST",
 "neighborhood": "Excelsior",
@@ -2882,7 +2885,7 @@
 "lng": -122.406772500002
 },
 {
-"name": "Andronico'S Community Markets",
+"name": "Andronico's Community Markets",
 "permit_type": "H08 - RETAIL MKTS W/FOOD PREP (10001 - 20000)",
 "address": "1200 IRVING ST",
 "neighborhood": "Inner Sunset",
@@ -2890,7 +2893,7 @@
 "lng": -122.471181000002
 },
 {
-"name": "Andronico'S Community Markets #3066",
+"name": "Andronico's Community Markets #3066",
 "permit_type": "H81 - SUPERMARKETS W/4+ FOOD PREP",
 "address": "375 32nd AVE",
 "neighborhood": "Outer Richmond",
@@ -2978,7 +2981,7 @@
 "lng": -122.439568500002
 },
 {
-"name": "Angela'S Organic Ice Cream",
+"name": "Angela's Organic Ice Cream",
 "permit_type": "H03 - RETAIL MKTS W/O PREP (UNDER 5001)",
 "address": "3751 24TH ST",
 "neighborhood": "Noe Valley",
@@ -2986,7 +2989,7 @@
 "lng": -122.426487000002
 },
 {
-"name": "Angelina'S",
+"name": "Angelina's",
 "permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
 "address": "6000 CALIFORNIA ST",
 "neighborhood": "Outer Richmond",
@@ -2994,7 +2997,7 @@
 "lng": -122.481999000002
 },
 {
-"name": "Angelina'S Deli-Cafe",
+"name": "Angelina's Deli-Cafe",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "6000 CALIFORNIA ST",
 "neighborhood": "Outer Richmond",
@@ -3010,7 +3013,7 @@
 "lng": -122.451655500002
 },
 {
-"name": "Angie'S Pizza",
+"name": "Angie's Pizza",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "3228 16TH STREET ST",
 "neighborhood": "Mission",
@@ -3032,6 +3035,7 @@
 "neighborhood": "Financial District/South Beach",
 "lat": 37.793250000001,
 "lng": -122.392435500002,
+"star_name": "Angler",
 "lineaged": true,
 "lineage_name": "Angler",
 "michelin": true
@@ -3077,7 +3081,7 @@
 "lng": -122.421289500002
 },
 {
-"name": "Anna'S Seafood, Inc",
+"name": "Anna's Seafood, Inc",
 "permit_type": "H34 - PUSHCARTS (RETAIL FOOD VEHICLE)",
 "address": "725 GREENWICH ST",
 "neighborhood": "North Beach",
@@ -3111,7 +3115,7 @@
 "lineage_name": "Anomaly"
 },
 {
-"name": "Anthony'S Cookies Inc",
+"name": "Anthony's Cookies Inc",
 "permit_type": "H88 - RETAIL BAKERIES WITH FOOD PREP",
 "address": "1417 VALENCIA ST",
 "neighborhood": "Mission",
@@ -3159,7 +3163,7 @@
 "lng": -122.407087500002
 },
 {
-"name": "Antoine'S Cookie Shop",
+"name": "Antoine's Cookie Shop",
 "permit_type": "H88 - RETAIL BAKERIES WITH FOOD PREP",
 "address": "2073 MARKET ST",
 "neighborhood": "Castro/Upper Market",
@@ -3445,6 +3449,7 @@
 "neighborhood": "Outer Richmond",
 "lat": 37.780335000001,
 "lng": -122.473593000002,
+"star_name": "Ariake",
 "michelin": true,
 "lineage_name": "Ariake"
 },
@@ -3621,7 +3626,7 @@
 "lng": -122.418045000002
 },
 {
-"name": "Art'S Cafe",
+"name": "Art's Cafe",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "747 IRVING ST",
 "neighborhood": "Inner Sunset",
@@ -3629,7 +3634,7 @@
 "lng": -122.465767500002
 },
 {
-"name": "Art'S Valero",
+"name": "Art's Valero",
 "permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
 "address": "2985 SAN BRUNO AVE",
 "neighborhood": "Portola",
@@ -3773,7 +3778,7 @@
 "lng": -122.446656000002
 },
 {
-"name": "Ashley'S Cafe",
+"name": "Ashley's Cafe",
 "permit_type": "H28 - TAKE-OUTS",
 "address": "4454 CALIFORNIA ST",
 "neighborhood": "Inner Richmond",
@@ -3833,7 +3838,7 @@
 "lineage_name": "Asiento"
 },
 {
-"name": "Aslam'S Rasoi Inc",
+"name": "Aslam's Rasoi Inc",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "1037 VALENCIA ST",
 "neighborhood": "Mission",
@@ -3863,6 +3868,7 @@
 "neighborhood": "Marina",
 "lat": 37.798371000001,
 "lng": -122.436058500002,
+"star_name": "Atelier Crenn",
 "lineaged": true,
 "lineage_name": "Atelier Crenn",
 "michelin": true
@@ -3926,7 +3932,7 @@
 "lng": -122.487943500002
 },
 {
-"name": "Aunt Charlie'S Lounge",
+"name": "Aunt Charlie's Lounge",
 "permit_type": "H87R- BARS/TAVERNS W/FOOD PREP",
 "address": "133   TURK ST",
 "neighborhood": "Tenderloin",
@@ -3950,7 +3956,7 @@
 "lng": -122.409063000002
 },
 {
-"name": "Aunty Vicky'S",
+"name": "Aunty Vicky's",
 "permit_type": "H79 - MOBILE FOOD FACILITY CLASS 5",
 "address": "431 2ND ST",
 "neighborhood": "Financial District/South Beach",
@@ -4000,7 +4006,7 @@
 "lng": -122.395000500002
 },
 {
-"name": "Autumn'S Cafe",
+"name": "Autumn's Cafe",
 "permit_type": "H25R - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "2071 THIRD ST",
 "neighborhood": "Potrero Hill",
@@ -4016,7 +4022,7 @@
 "lng": -122.425497000002
 },
 {
-"name": "Avedano'S",
+"name": "Avedano's",
 "permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
 "address": "235 CORTLAND AVE",
 "neighborhood": "Bernal Heights",
@@ -4112,7 +4118,7 @@
 "lng": -122.404329000002
 },
 {
-"name": "Azalina'S",
+"name": "Azalina's",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "499 ELLIS ST",
 "neighborhood": "Tenderloin",
@@ -4126,9 +4132,9 @@
 "neighborhood": "Outer Richmond",
 "lat": 37.780304677265,
 "lng": -122.481597733467,
+"star_name": "Aziza",
 "lineaged": true,
-"lineage_name": "Aziza",
-"michelin": true
+"lineage_name": "Aziza"
 },
 {
 "name": "Azucar Lounge Llc",
@@ -4228,7 +4234,7 @@
 "lat": 37.787940000001,
 "lng": -122.407515000002,
 "lineaged": true,
-"lineage_name": "B. Patisserie"
+"lineage_name": "b. patisserie"
 },
 {
 "name": "Ba @ Adobe Sf",
@@ -4679,7 +4685,7 @@
 "lng": -122.411079000002
 },
 {
-"name": "Baby'S Eatery And Palabok",
+"name": "Baby's Eatery And Palabok",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "4609 MISSION STREET",
 "neighborhood": "Excelsior",
@@ -5535,7 +5541,7 @@
 "lng": -122.447196000002
 },
 {
-"name": "Barney'S Gourmet Hamburger",
+"name": "Barney's Gourmet Hamburger",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "4138 24TH ST",
 "neighborhood": "Noe Valley",
@@ -5567,7 +5573,7 @@
 "lng": -122.446044000002
 },
 {
-"name": "Barrera'S Cocina Llc.",
+"name": "Barrera's Cocina Llc.",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "900 STANYAN ST",
 "neighborhood": "Haight Ashbury",
@@ -5575,7 +5581,7 @@
 "lng": -122.452785000002
 },
 {
-"name": "Barrera'S Taqueria",
+"name": "Barrera's Taqueria",
 "permit_type": "H79 - MOBILE FOOD FACILITY CLASS 5",
 "address": "3236 24TH ST",
 "neighborhood": "Mission",
@@ -5591,7 +5597,7 @@
 "lng": -122.423197500002
 },
 {
-"name": "Barry'S Castro",
+"name": "Barry's Castro",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "2280   MARKET ST",
 "neighborhood": "Castro/Upper Market",
@@ -5599,7 +5605,7 @@
 "lng": -122.432841000002
 },
 {
-"name": "Barry'S Fidi",
+"name": "Barry's Fidi",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "333 BUSH ST",
 "neighborhood": "Financial District/South Beach",
@@ -5607,7 +5613,7 @@
 "lng": -122.403069000002
 },
 {
-"name": "Barry'S Marina",
+"name": "Barry's Marina",
 "permit_type": "H28 - TAKE-OUTS",
 "address": "2246 LOMBARD ST",
 "neighborhood": "Marina",
@@ -6035,7 +6041,7 @@
 "lng": -122.38766603283
 },
 {
-"name": "Bayview Hunter'S Point Ymca",
+"name": "Bayview Hunter's Point Ymca",
 "permit_type": "H23 - FOOD PREP AND SERVICE (FEE EXEMPT)",
 "address": "1601   LANE ST",
 "neighborhood": "Bayview Hunters Point",
@@ -6291,7 +6297,7 @@
 "lng": -122.402821500002
 },
 {
-"name": "Bee'S",
+"name": "Bee's",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "3232 16TH ST",
 "neighborhood": "Mission",
@@ -6299,7 +6305,7 @@
 "lng": -122.424916500002
 },
 {
-"name": "Beep'S Burgers",
+"name": "Beep's Burgers",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "1051 OCEAN AVE",
 "neighborhood": "Oceanview/Merced/Ingleside",
@@ -6469,7 +6475,7 @@
 "lng": -122.476608000002
 },
 {
-"name": "Ben & Jerry'S",
+"name": "Ben & Jerry's",
 "permit_type": "H28 - TAKE-OUTS",
 "address": "1480 HAIGHT ST",
 "neighborhood": "Haight Ashbury",
@@ -6493,7 +6499,7 @@
 "lng": -122.420664000002
 },
 {
-"name": "Ben'S Fast Food - K4",
+"name": "Ben's Fast Food - K4",
 "permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
 "address": "475 6TH STREET K4",
 "neighborhood": "South of Market",
@@ -6567,6 +6573,7 @@
 "neighborhood": "Financial District/South Beach",
 "lat": 37.785438000001,
 "lng": -122.399226000002,
+"star_name": "Benu",
 "lineaged": true,
 "lineage_name": "Benu",
 "michelin": true
@@ -6698,7 +6705,7 @@
 "lng": -122.421757500002
 },
 {
-"name": "Bernie'S",
+"name": "Bernie's",
 "permit_type": "H28 - TAKE-OUTS",
 "address": "3966 24TH ST",
 "neighborhood": "Noe Valley",
@@ -6804,7 +6811,7 @@
 "lng": -122.411466000002
 },
 {
-"name": "Betty Lou'S Seafood & Grill",
+"name": "Betty Lou's Seafood & Grill",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "318 COLUMBUS AVE",
 "neighborhood": "North Beach",
@@ -7138,7 +7145,7 @@
 "lng": -122.412064500002
 },
 {
-"name": "Big Joe'S Goodtime Deli And Grill Inc",
+"name": "Big Joe's Goodtime Deli And Grill Inc",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "717 MONTEREY BLVD",
 "neighborhood": "West of Twin Peaks",
@@ -7162,7 +7169,7 @@
 "lng": -122.420389500002
 },
 {
-"name": "Big Nate'S Bbq 311S",
+"name": "Big Nate's Bbq 311S",
 "permit_type": "H36 - STADIUM CONCESSIONS (PERM)",
 "address": "1 WARRIORS WAY, LVL 300 SOUTH",
 "neighborhood": "Mission Bay",
@@ -7170,7 +7177,7 @@
 "lng": -122.38766603283
 },
 {
-"name": "Big Nate'S Bbq 320N",
+"name": "Big Nate's Bbq 320N",
 "permit_type": "H36 - STADIUM CONCESSIONS (PERM)",
 "address": "1 WARRIORS WAY, LVL 300 NORTH",
 "neighborhood": "Mission Bay",
@@ -7178,7 +7185,7 @@
 "lng": -122.38766603283
 },
 {
-"name": "Big Nate'S/City Bistro 643E",
+"name": "Big Nate's/City Bistro 643E",
 "permit_type": "H36 - STADIUM CONCESSIONS (PERM)",
 "address": "1 WARRIORS WAY, LVL 600 EAST",
 "neighborhood": "Mission Bay",
@@ -7218,7 +7225,7 @@
 "lng": -122.417329500002
 },
 {
-"name": "Bill'S Place",
+"name": "Bill's Place",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "2315 CLEMENT ST",
 "neighborhood": "Outer Richmond",
@@ -7242,7 +7249,7 @@
 "lng": -122.428768500002
 },
 {
-"name": "Billy'S Cleaners",
+"name": "Billy's Cleaners",
 "permit_type": "H46 - AUTOMATIC LAUNDRY - FACILITIES",
 "address": "1503 20TH ST",
 "neighborhood": "Potrero Hill",
@@ -7250,7 +7257,7 @@
 "lng": -122.396544000002
 },
 {
-"name": "Bimbo'S 365 Club",
+"name": "Bimbo's 365 Club",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "1025 COLUMBUS AVE",
 "neighborhood": "Russian Hill",
@@ -7374,8 +7381,10 @@
 "neighborhood": "South of Market",
 "lat": 37.779489000001,
 "lng": -122.410413000002,
+"star_name": "Birdsong",
 "lineaged": true,
-"lineage_name": "Birdsong"
+"lineage_name": "Birdsong",
+"michelin": true
 },
 {
 "name": "Birrieria Lucas",
@@ -7531,7 +7540,7 @@
 "lat": 37.783819878373,
 "lng": -122.414392485476,
 "lineaged": true,
-"lineage_name": "Black Cat"
+"lineage_name": "The Black Cat"
 },
 {
 "name": "Black Horse London Deli The",
@@ -7586,7 +7595,7 @@
 "lng": -122.467050000002
 },
 {
-"name": "Blackwell'S Wines & Spirits",
+"name": "Blackwell's Wines & Spirits",
 "permit_type": "H03 - RETAIL MKTS W/O PREP (UNDER 5001)",
 "address": "5620 GEARY BLVD",
 "neighborhood": "Outer Richmond",
@@ -7676,7 +7685,7 @@
 "lng": -122.393358000002
 },
 {
-"name": "Blondie'S Bar",
+"name": "Blondie's Bar",
 "permit_type": "H86 - BARS/TAVERNS W/O FOOD PREP",
 "address": "540 VALENCIA ST",
 "neighborhood": "Mission",
@@ -8004,7 +8013,7 @@
 "lng": -122.417829000002
 },
 {
-"name": "Boa'S",
+"name": "Boa's",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "3951 BALBOA ST",
 "neighborhood": "Outer Richmond",
@@ -8020,7 +8029,7 @@
 "lng": -122.419417500002
 },
 {
-"name": "Bob'S Bread Co.",
+"name": "Bob's Bread Co.",
 "permit_type": "H99 - COTTAGE FOOD OPERATIONS - TIER B (INDIRECT SALES)",
 "address": "3717   21ST ST",
 "neighborhood": "Noe Valley",
@@ -8028,7 +8037,7 @@
 "lng": -122.430546000002
 },
 {
-"name": "Bob'S Donuts & Pastries",
+"name": "Bob's Donuts & Pastries",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "1621 POLK ST",
 "neighborhood": "Nob Hill",
@@ -8036,7 +8045,7 @@
 "lng": -122.421289500002
 },
 {
-"name": "Bob'S Donuts On Polk",
+"name": "Bob's Donuts On Polk",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "1720 POLK ST",
 "neighborhood": "Russian Hill",
@@ -8132,7 +8141,7 @@
 "lng": -122.504598000002
 },
 {
-"name": "Bobo'S Bistro",
+"name": "Bobo's Bistro",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "600 YORK ST",
 "neighborhood": "Mission",
@@ -9042,7 +9051,7 @@
 "lng": -122.412456000002
 },
 {
-"name": "Bottle'S & Bites",
+"name": "Bottle's & Bites",
 "permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
 "address": "1799 UNION ST",
 "neighborhood": "Marina",
@@ -9122,7 +9131,7 @@
 "lng": -122.416185039289
 },
 {
-"name": "Boulette'S Larder",
+"name": "Boulette's Larder",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "1 FERRY BLDG 48",
 "neighborhood": "Financial District/South Beach",
@@ -9222,7 +9231,7 @@
 "lng": -122.392467000002
 },
 {
-"name": "Brandy Ho'S Hunan Food",
+"name": "Brandy Ho's Hunan Food",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "217 COLUMBUS AVE",
 "neighborhood": "Chinatown",
@@ -9304,7 +9313,7 @@
 "lng": -122.479677000002
 },
 {
-"name": "Breakfast At Tiffany'S",
+"name": "Breakfast At Tiffany's",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "2499 SAN BRUNO AVE",
 "neighborhood": "Portola",
@@ -9320,7 +9329,7 @@
 "lng": -122.420322000002
 },
 {
-"name": "Breck'S",
+"name": "Breck's",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "2   CLEMENT ST",
 "neighborhood": "Inner Richmond",
@@ -9328,7 +9337,7 @@
 "lng": -122.459260500002
 },
 {
-"name": "Brenda'S French Soul Food",
+"name": "Brenda's French Soul Food",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "652 B POLK ST",
 "neighborhood": "Tenderloin",
@@ -9338,7 +9347,7 @@
 "lineage_name": "Brenda's French Soul Food"
 },
 {
-"name": "Brenda'S Meat & Three",
+"name": "Brenda's Meat & Three",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "919 DIVISADERO ST",
 "neighborhood": "Western Addition",
@@ -9346,7 +9355,7 @@
 "lng": -122.438812500002
 },
 {
-"name": "Bret Harte Children'S Center",
+"name": "Bret Harte Children's Center",
 "permit_type": "PUBLIC SCHOOL CAFETERIA WITH FOOD PREP",
 "address": "950 HOLLISTER AVE",
 "neighborhood": "Bayview Hunters Point",
@@ -9410,7 +9419,7 @@
 "lng": -122.449347000002
 },
 {
-"name": "Bris'S Creations",
+"name": "Bris's Creations",
 "permit_type": "H89 - RETAIL BAKERIES W/O FOOD PREP",
 "address": "2782 24TH ST",
 "neighborhood": "Mission",
@@ -9538,7 +9547,7 @@
 "lng": -122.483965500002
 },
 {
-"name": "Bruno'S Italian Taste",
+"name": "Bruno's Italian Taste",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "49 S Van Ness Ave 7th Floor",
 "neighborhood": "Mission",
@@ -9556,7 +9565,7 @@
 "lng": -122.405773500002
 },
 {
-"name": "Bryan'S",
+"name": "Bryan's",
 "permit_type": "H09 - RETAIL MKTS W/FOOD PREP (5001 - 10000)",
 "address": "3445 CALIFORNIA ST",
 "neighborhood": "Presidio Heights",
@@ -10008,7 +10017,7 @@
 "lng": -122.410885500002
 },
 {
-"name": "Buster'S Cheese Steak",
+"name": "Buster's Cheese Steak",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "366 COLUMBUS ST",
 "neighborhood": "North Beach",
@@ -11126,8 +11135,10 @@
 "neighborhood": "South of Market",
 "lat": 37.771470000001,
 "lng": -122.412883500002,
+"star_name": "Californios",
 "lineaged": true,
-"lineage_name": "Californios"
+"lineage_name": "Californios",
+"michelin": true
 },
 {
 "name": "Camino Alto",
@@ -11156,7 +11167,7 @@
 "lng": -122.440216500002
 },
 {
-"name": "Canchola'S Bar",
+"name": "Canchola's Bar",
 "permit_type": "H87 - BARS/TAVERNS W/FOOD PREP",
 "address": "3775 MISSION ST",
 "neighborhood": "Bernal Heights",
@@ -11300,7 +11311,7 @@
 "lng": -122.392296000002
 },
 {
-"name": "Canteen @ Lowe'S 3095",
+"name": "Canteen @ Lowe's 3095",
 "permit_type": "H61 - VENDING MACHINES - COMPANIES",
 "address": "491 BAY SHORE BLVD",
 "neighborhood": "Bayview Hunters Point",
@@ -11342,7 +11353,7 @@
 "lng": -122.414139000002
 },
 {
-"name": "Cap'N Mike'S Holy Smoke Llc",
+"name": "Cap'N Mike's Holy Smoke Llc",
 "permit_type": "H34 - PUSHCARTS (RETAIL FOOD VEHICLE)",
 "address": "244 CLEMENT ST",
 "neighborhood": "Inner Richmond",
@@ -11382,7 +11393,7 @@
 "lng": -122.407074000002
 },
 {
-"name": "Capo'S",
+"name": "Capo's",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "641 VALLEJO ST",
 "neighborhood": "Chinatown",
@@ -11398,7 +11409,7 @@
 "lng": -122.406705000002
 },
 {
-"name": "Capurro'S",
+"name": "Capurro's",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "498 JEFFERSON ST",
 "neighborhood": "Russian Hill",
@@ -11430,7 +11441,7 @@
 "lng": -122.413342500002
 },
 {
-"name": "Cardona'S Food Truck",
+"name": "Cardona's Food Truck",
 "permit_type": "H79 - MOBILE FOOD FACILITY CLASS 5",
 "address": "1800 MISSION ST",
 "neighborhood": "Mission",
@@ -11446,7 +11457,7 @@
 "lng": -122.459092694707
 },
 {
-"name": "Carlin'S Corner Coffeeshop Llc",
+"name": "Carlin's Corner Coffeeshop Llc",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "298 VALENCIA ST",
 "neighborhood": "Mission",
@@ -11454,7 +11465,7 @@
 "lng": -122.422545000002
 },
 {
-"name": "Carlin'S Corner Laundromat Llc",
+"name": "Carlin's Corner Laundromat Llc",
 "permit_type": "H46 - AUTOMATIC LAUNDRY - FACILITIES",
 "address": "290 VALENCIA ST",
 "neighborhood": "Mission",
@@ -11462,7 +11473,7 @@
 "lng": -122.422414500002
 },
 {
-"name": "Carlotta'S At Hotel Julian",
+"name": "Carlotta's At Hotel Julian",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "940 SUTTER ST",
 "neighborhood": "Nob Hill",
@@ -11494,7 +11505,7 @@
 "lng": -122.39622230419
 },
 {
-"name": "Carmelina'S Cafe",
+"name": "Carmelina's Cafe",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "49 S Van Ness Ave 7th Floor",
 "neighborhood": "Mission",
@@ -11502,7 +11513,7 @@
 "lng": -122.418045000002
 },
 {
-"name": "Carmelina'S Taqueria",
+"name": "Carmelina's Taqueria",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "500 PARNASSUS AVE",
 "neighborhood": "Inner Sunset",
@@ -11646,7 +11657,7 @@
 "lng": -122.398325540622
 },
 {
-"name": "Casement'S",
+"name": "Casement's",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "2351 MISSION ST",
 "neighborhood": "Mission",
@@ -11654,7 +11665,7 @@
 "lng": -122.418558000002
 },
 {
-"name": "Casey'S Pizza",
+"name": "Casey's Pizza",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "1170 4TH ST",
 "neighborhood": "Mission Bay",
@@ -11728,7 +11739,7 @@
 "lng": -122.434159500002
 },
 {
-"name": "Castro Farmer'S Market",
+"name": "Castro Farmer's Market",
 "permit_type": "H14 - CERTIFIED FARMERS MARKETS",
 "address": "270 NOE ST",
 "neighborhood": "Castro/Upper Market",
@@ -12070,7 +12081,7 @@
 "lng": -122.437885500002
 },
 {
-"name": "Chadwick'S",
+"name": "Chadwick's",
 "permit_type": "H34 - PUSHCARTS (RETAIL FOOD VEHICLE)",
 "address": "3251 20TH AVE",
 "neighborhood": "Lakeshore",
@@ -12078,7 +12089,7 @@
 "lng": -122.476837500002
 },
 {
-"name": "Chadwick'S",
+"name": "Chadwick's",
 "permit_type": "H28 - TAKE-OUTS",
 "address": "2375 MARKET ST",
 "neighborhood": "Castro/Upper Market",
@@ -12184,7 +12195,7 @@
 "lng": -122.408491500002
 },
 {
-"name": "Chang'S Kitchen",
+"name": "Chang's Kitchen",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "1030 IRVING ST",
 "neighborhood": "Inner Sunset",
@@ -12232,7 +12243,7 @@
 "lng": -122.408842500002
 },
 {
-"name": "Charley'S Philly Steak",
+"name": "Charley's Philly Steak",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "425 MISSION ST STE 139",
 "neighborhood": "Financial District/South Beach",
@@ -12240,7 +12251,7 @@
 "lng": -122.396314500002
 },
 {
-"name": "Charlie'S Market",
+"name": "Charlie's Market",
 "permit_type": "H03 - RETAIL MKTS W/O PREP (UNDER 5001)",
 "address": "3400 JUDAH ST",
 "neighborhood": "Sunset/Parkside",
@@ -12314,7 +12325,7 @@
 "lng": -122.474443500002
 },
 {
-"name": "Chava'S Mexican Restaurant",
+"name": "Chava's Mexican Restaurant",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "2839 MISSION ST",
 "neighborhood": "Mission",
@@ -12330,7 +12341,7 @@
 "lng": -122.415322500002
 },
 {
-"name": "Chavita'S Mexican Restaurant",
+"name": "Chavita's Mexican Restaurant",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "3006 MISSION ST",
 "neighborhood": "Mission",
@@ -12426,7 +12437,7 @@
 "lng": -122.394265021381
 },
 {
-"name": "Cheezy'S Artisan Pizza",
+"name": "Cheezy's Artisan Pizza",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "945 MARKET ST STE 102",
 "neighborhood": "South of Market",
@@ -12442,7 +12453,7 @@
 "lng": -122.409940500002
 },
 {
-"name": "Chef Li'S Cafe",
+"name": "Chef Li's Cafe",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "2726 SAN BRUNO AVE",
 "neighborhood": "Portola",
@@ -12522,7 +12533,7 @@
 "lng": -122.462725500002
 },
 {
-"name": "Chevio'S Food Truck",
+"name": "Chevio's Food Truck",
 "permit_type": "H79 - MOBILE FOOD FACILITY CLASS 5",
 "address": "388 POTRERO AVE",
 "neighborhood": "Mission",
@@ -12530,7 +12541,7 @@
 "lng": -122.407798500002
 },
 {
-"name": "Chevio'S Food Truck",
+"name": "Chevio's Food Truck",
 "permit_type": "H79 - MOBILE FOOD FACILITY CLASS 5",
 "address": "107 S LINDEN AVE",
 "neighborhood": "",
@@ -12610,7 +12621,7 @@
 "lng": -122.422626000002
 },
 {
-"name": "Cheyo'S Catering",
+"name": "Cheyo's Catering",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "622 GREEN ST",
 "neighborhood": "Chinatown",
@@ -12678,7 +12689,7 @@
 "lineage_name": "Chicano Nuevo"
 },
 {
-"name": "Chicken G'S",
+"name": "Chicken G's",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "346 KEARNY ST",
 "neighborhood": "Financial District/South Beach",
@@ -12702,7 +12713,7 @@
 "lng": -122.414211000002
 },
 {
-"name": "Chico'S Pizza",
+"name": "Chico's Pizza",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "468 ELLIS ST",
 "neighborhood": "Tenderloin",
@@ -12726,7 +12737,7 @@
 "lng": -122.403766500002
 },
 {
-"name": "Chief Sullivan'S",
+"name": "Chief Sullivan's",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "622 GREEN ST",
 "neighborhood": "Chinatown",
@@ -12848,7 +12859,7 @@
 "lng": -122.444289000002
 },
 {
-"name": "Chino'S Taqueria Inc",
+"name": "Chino's Taqueria Inc",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "3416 BALBOA ST",
 "neighborhood": "Outer Richmond",
@@ -12946,7 +12957,7 @@
 "lng": -122.414850000002
 },
 {
-"name": "Chloe'S Cafe",
+"name": "Chloe's Cafe",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "1399 CHURCH STREET",
 "neighborhood": "Noe Valley",
@@ -13026,7 +13037,7 @@
 "lng": -122.459535000002
 },
 {
-"name": "Chouquet'S",
+"name": "Chouquet's",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "2500 WASHINGTON ST",
 "neighborhood": "Pacific Heights",
@@ -13066,7 +13077,7 @@
 "lng": -122.442025500002
 },
 {
-"name": "Christine'S Cookie Co Llc",
+"name": "Christine's Cookie Co Llc",
 "permit_type": "H99 - COTTAGE FOOD OPERATIONS - TIER B (INDIRECT SALES)",
 "address": "2823 18TH ST APT 107",
 "neighborhood": "Mission",
@@ -13090,7 +13101,7 @@
 "lng": -122.495247000002
 },
 {
-"name": "Chuck'S Takeaway",
+"name": "Chuck's Takeaway",
 "permit_type": "H28 - TAKE-OUTS",
 "address": "3332 18TH ST",
 "neighborhood": "Mission",
@@ -13188,7 +13199,7 @@
 "lng": -122.405310000002
 },
 {
-"name": "Chuy'S Fiestas Restaurant Inc",
+"name": "Chuy's Fiestas Restaurant Inc",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "2341 FOLSOM ST",
 "neighborhood": "Mission",
@@ -13196,7 +13207,7 @@
 "lng": -122.414436000002
 },
 {
-"name": "Chuy'S Fiestas Taqueria",
+"name": "Chuy's Fiestas Taqueria",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "710 POST ST",
 "neighborhood": "Nob Hill",
@@ -13292,7 +13303,7 @@
 "lng": -122.463756000002
 },
 {
-"name": "Cindy'S Market",
+"name": "Cindy's Market",
 "permit_type": "H31 - TOBACCO SALES - ANNUAL LICENSE FEE",
 "address": "2084 HAYES ST",
 "neighborhood": "Lone Mountain/USF",
@@ -13316,7 +13327,7 @@
 "lng": -122.412645000002
 },
 {
-"name": "Cioppino'S",
+"name": "Cioppino's",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "400 JEFFERSON ST",
 "neighborhood": "Russian Hill",
@@ -13672,7 +13683,7 @@
 "lng": -122.457807000002
 },
 {
-"name": "Clancey'S Market-Deli",
+"name": "Clancey's Market-Deli",
 "permit_type": "H31 - TOBACCO SALES - ANNUAL LICENSE FEE",
 "address": "3960 IRVING ST",
 "neighborhood": "Sunset/Parkside",
@@ -13978,7 +13989,7 @@
 "lng": -122.438065500002
 },
 {
-"name": "Cobb'S Comedy Club",
+"name": "Cobb's Comedy Club",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "915 COLUMBUS AVE",
 "neighborhood": "Russian Hill",
@@ -14234,7 +14245,7 @@
 "lng": -122.418081000002
 },
 {
-"name": "Colombian'S Food Factory",
+"name": "Colombian's Food Factory",
 "permit_type": "H79 - MOBILE FOOD FACILITY CLASS 5",
 "address": "1233 FOLSOM ST",
 "neighborhood": "South of Market",
@@ -14242,7 +14253,7 @@
 "lng": -122.410431000002
 },
 {
-"name": "Colombian'S Food Factory",
+"name": "Colombian's Food Factory",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "1200 MARKET ST UNIT 107",
 "neighborhood": "Tenderloin",
@@ -14250,7 +14261,7 @@
 "lng": -122.415291000002
 },
 {
-"name": "Colombo'S",
+"name": "Colombo's",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "1 S PARK ST",
 "neighborhood": "Financial District/South Beach",
@@ -14412,7 +14423,7 @@
 "lng": -122.398249500002
 },
 {
-"name": "Compton'S Coffee House",
+"name": "Compton's Coffee House",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "1910 Fillmore ST",
 "neighborhood": "Pacific Heights",
@@ -14420,7 +14431,7 @@
 "lng": -122.433291000002
 },
 {
-"name": "Compton'S Coffee House",
+"name": "Compton's Coffee House",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "543 COLUMBUS AVE",
 "neighborhood": "Chinatown",
@@ -14674,7 +14685,7 @@
 "lng": -122.436283500002
 },
 {
-"name": "Corey'S Pizza",
+"name": "Corey's Pizza",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "49 S Van Ness Ave 7th Floor",
 "neighborhood": "Mission",
@@ -14770,6 +14781,7 @@
 "neighborhood": "North Beach",
 "lat": 37.797507000001,
 "lng": -122.403379500002,
+"star_name": "Cotogna",
 "lineaged": true,
 "lineage_name": "Cotogna",
 "michelin": true
@@ -14979,7 +14991,7 @@
 "lineage_name": "Credo"
 },
 {
-"name": "Creighton'S Bakery Cafe",
+"name": "Creighton's Bakery Cafe",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "5214 DIAMOND HEIGHTS BLVD #D",
 "neighborhood": "Glen Park",
@@ -14987,7 +14999,7 @@
 "lng": -122.439982500002
 },
 {
-"name": "Creighton'S Fine Pastries Llc",
+"name": "Creighton's Fine Pastries Llc",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "673   PORTOLA DR",
 "neighborhood": "West of Twin Peaks",
@@ -15415,7 +15427,7 @@
 "lng": -122.475883500002
 },
 {
-"name": "Cybelle'S Front Room",
+"name": "Cybelle's Front Room",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "1385 9TH AVE",
 "neighborhood": "Inner Sunset",
@@ -15503,7 +15515,7 @@
 "lng": -122.373789969563
 },
 {
-"name": "D'S Corner",
+"name": "D's Corner",
 "permit_type": "H03 - RETAIL MKTS W/O PREP (UNDER 5001)",
 "address": "700 NAPLES ST",
 "neighborhood": "Excelsior",
@@ -15611,7 +15623,7 @@
 "lng": -122.435788500002
 },
 {
-"name": "Daddy'S Bar",
+"name": "Daddy's Bar",
 "permit_type": "H86 - BARS/TAVERNS W/O FOOD PREP",
 "address": "440 CASTRO ST",
 "neighborhood": "Castro/Upper Market",
@@ -15739,7 +15751,7 @@
 "lng": -122.428706010072
 },
 {
-"name": "Dalda'S Community Market",
+"name": "Dalda's Community Market",
 "permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
 "address": "186 EDDY ST",
 "neighborhood": "Tenderloin",
@@ -15781,7 +15793,7 @@
 "lng": -122.404261500002
 },
 {
-"name": "Dan'S Deluxe Phatburgers",
+"name": "Dan's Deluxe Phatburgers",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "708 POST ST",
 "neighborhood": "Nob Hill",
@@ -15881,7 +15893,7 @@
 "lng": -122.395855500002
 },
 {
-"name": "Danny'S Coffee Shop",
+"name": "Danny's Coffee Shop",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "2798 SAN BRUNO AVE",
 "neighborhood": "Portola",
@@ -15889,7 +15901,7 @@
 "lng": -122.403402000002
 },
 {
-"name": "Danny'S San Francisco Treats",
+"name": "Danny's San Francisco Treats",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "2737 HYDE ST",
 "neighborhood": "Russian Hill",
@@ -15897,7 +15909,7 @@
 "lng": -122.420745000002
 },
 {
-"name": "Dante'S Inferno",
+"name": "Dante's Inferno",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "49 S Van Ness Ave 7th Floor",
 "neighborhood": "Mission",
@@ -15961,7 +15973,7 @@
 "lng": -122.476837500002
 },
 {
-"name": "David'S Deli&Bistro",
+"name": "David's Deli&Bistro",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "474 GEARY ST",
 "neighborhood": "Tenderloin",
@@ -15969,7 +15981,7 @@
 "lng": -122.411025000002
 },
 {
-"name": "David'S Food Store",
+"name": "David's Food Store",
 "permit_type": "H03 - RETAIL MKTS W/O PREP (UNDER 5001)",
 "address": "612 KEARNY ST",
 "neighborhood": "Chinatown",
@@ -16097,7 +16109,7 @@
 "lng": -122.419723500002
 },
 {
-"name": "Deena'S Market & Smoke Shop",
+"name": "Deena's Market & Smoke Shop",
 "permit_type": "H31 - TOBACCO SALES - ANNUAL LICENSE FEE",
 "address": "600 OFARRELL ST",
 "neighborhood": "Tenderloin",
@@ -16105,7 +16117,7 @@
 "lng": -122.414913000002
 },
 {
-"name": "Deena'S Market And Smoke Shop",
+"name": "Deena's Market And Smoke Shop",
 "permit_type": "H28 - TAKE-OUTS",
 "address": "600 OFARRELL ST",
 "neighborhood": "Tenderloin",
@@ -16237,6 +16249,7 @@
 "neighborhood": "Mission",
 "lat": 37.761363000001,
 "lng": -122.424201000002,
+"star_name": "Delfina",
 "lineaged": true,
 "lineage_name": "Delfina",
 "michelin": true
@@ -16346,7 +16359,7 @@
 "lng": -122.426383500002
 },
 {
-"name": "Delilah'S Low Proof Cocktail & Wine Bar",
+"name": "Delilah's Low Proof Cocktail & Wine Bar",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "2336 CHESTNUT ST",
 "neighborhood": "Marina",
@@ -16386,7 +16399,7 @@
 "lng": -122.405314500002
 },
 {
-"name": "Denny'S Restaurant",
+"name": "Denny's Restaurant",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "816 MISSION ST",
 "neighborhood": "South of Market",
@@ -16466,7 +16479,7 @@
 "lng": -122.391855000002
 },
 {
-"name": "Derby Grill/Tony'S Pizza Stand- Promenade, Sec 103",
+"name": "Derby Grill/Tony's Pizza Stand- Promenade, Sec 103",
 "permit_type": "H36 - STADIUM CONCESSIONS (PERM)",
 "address": "24 WILLIE MAYS PLZ # PROMEN",
 "neighborhood": "Mission Bay",
@@ -16474,7 +16487,7 @@
 "lng": -122.391855000002
 },
 {
-"name": "Derby Grill/Tony'S Pizza Stand- Sec 103",
+"name": "Derby Grill/Tony's Pizza Stand- Sec 103",
 "permit_type": "H36 - STADIUM CONCESSIONS (PERM)",
 "address": "24 WILLIE MAYS PLZ # PROMEN",
 "neighborhood": "Mission Bay",
@@ -16522,7 +16535,7 @@
 "lng": -122.422171500002
 },
 {
-"name": "Devil'S Teeth",
+"name": "Devil's Teeth",
 "permit_type": "H88 - RETAIL BAKERIES WITH FOOD PREP",
 "address": "1 EMBARCADERO CTR",
 "neighborhood": "Financial District/South Beach",
@@ -16530,7 +16543,7 @@
 "lng": -122.39966003336
 },
 {
-"name": "Devil'S Teeth Inc",
+"name": "Devil's Teeth Inc",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "3876 NORIEGA ST",
 "neighborhood": "Sunset/Parkside",
@@ -16690,7 +16703,7 @@
 "lng": -122.429997000002
 },
 {
-"name": "Dina'S Kosher Catering",
+"name": "Dina's Kosher Catering",
 "permit_type": "H74 - CATERER",
 "address": "351 FOURTH AVE",
 "neighborhood": "Inner Richmond",
@@ -16878,7 +16891,7 @@
 "lng": -122.421141000002
 },
 {
-"name": "Doc'S Clock",
+"name": "Doc's Clock",
 "permit_type": "H86 - BARS/TAVERNS W/O FOOD PREP",
 "address": "2417 MISSION ST",
 "neighborhood": "Mission",
@@ -17054,7 +17067,7 @@
 "lng": -122.391855000002
 },
 {
-"name": "Doggie Diner/Garlic Fries/Tony'S Pizza",
+"name": "Doggie Diner/Garlic Fries/Tony's Pizza",
 "permit_type": "H36 - STADIUM CONCESSIONS (PERM)",
 "address": "24 WILLIE MAYS PLZ LOWR LOW",
 "neighborhood": "Mission Bay",
@@ -17144,7 +17157,7 @@
 "lng": -122.388277500002
 },
 {
-"name": "Domingo'S International Kitchen & Fusion # 2",
+"name": "Domingo's International Kitchen & Fusion # 2",
 "permit_type": "H79 - MOBILE FOOD FACILITY CLASS 5",
 "address": "601 MISSION BAY N BLVD",
 "neighborhood": "Mission Bay",
@@ -17152,7 +17165,7 @@
 "lng": -122.391432021927
 },
 {
-"name": "Domingo'S International Kitchen And Fusion",
+"name": "Domingo's International Kitchen And Fusion",
 "permit_type": "H79 - MOBILE FOOD FACILITY CLASS 5",
 "address": "428 11TH ST",
 "neighborhood": "Mission",
@@ -17160,7 +17173,7 @@
 "lng": -122.411911500002
 },
 {
-"name": "Dominic'S Food Truck",
+"name": "Dominic's Food Truck",
 "permit_type": "H79 - MOBILE FOOD FACILITY CLASS 5",
 "address": "2 MARINA BLVD STE 307",
 "neighborhood": "Marina",
@@ -17218,7 +17231,7 @@
 "lng": -122.429146500002
 },
 {
-"name": "Don Pisto'S",
+"name": "Don Pisto's",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "510 UNION ST",
 "neighborhood": "North Beach",
@@ -17226,7 +17239,7 @@
 "lng": -122.407857000002
 },
 {
-"name": "Don Pisto'S",
+"name": "Don Pisto's",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "570 GREEN ST",
 "neighborhood": "North Beach",
@@ -17276,7 +17289,7 @@
 "lng": -122.408266500002
 },
 {
-"name": "Donna'S Tamales",
+"name": "Donna's Tamales",
 "permit_type": "H34 - PUSHCARTS (RETAIL FOOD VEHICLE)",
 "address": "270 NOE ST",
 "neighborhood": "Castro/Upper Market",
@@ -17284,7 +17297,7 @@
 "lng": -122.433471000002
 },
 {
-"name": "Donna'S Tamales",
+"name": "Donna's Tamales",
 "permit_type": "H34 - PUSHCARTS (RETAIL FOOD VEHICLE)",
 "address": "725 GREENWICH ST",
 "neighborhood": "North Beach",
@@ -17864,7 +17877,7 @@
 "lng": -122.409765000002
 },
 {
-"name": "Durty Nelly'S Llc",
+"name": "Durty Nelly's Llc",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "2328 IRVING ST",
 "neighborhood": "Sunset/Parkside",
@@ -18002,7 +18015,7 @@
 "lng": -122.469367500002
 },
 {
-"name": "Earth'S Coffee",
+"name": "Earth's Coffee",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "3400 GEARY BLVD",
 "neighborhood": "Presidio Heights",
@@ -18258,7 +18271,7 @@
 "lng": -122.411569500002
 },
 {
-"name": "Eddie'S Cafe",
+"name": "Eddie's Cafe",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "800 DIVISADERO ST",
 "neighborhood": "Western Addition",
@@ -18274,7 +18287,7 @@
 "lng": -122.411124000002
 },
 {
-"name": "Eddy'S Market",
+"name": "Eddy's Market",
 "permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
 "address": "951 IRVING ST",
 "neighborhood": "Inner Sunset",
@@ -18290,7 +18303,7 @@
 "lng": -122.395927500002
 },
 {
-"name": "Edgewood Children'S Center",
+"name": "Edgewood Children's Center",
 "permit_type": "H91 - SCHOOL CAFETERIAS (PRIVATE W/FOOD PREP)",
 "address": "1801 VICENTE ST",
 "neighborhood": "Sunset/Parkside",
@@ -18490,7 +18503,7 @@
 "lng": -122.411911500002
 },
 {
-"name": "El Capitan Taqueria & Anton'S Pizza",
+"name": "El Capitan Taqueria & Anton's Pizza",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "1198 FOLSOM ST",
 "neighborhood": "South of Market",
@@ -19006,7 +19019,7 @@
 "lng": -122.417923500002
 },
 {
-"name": "Elaine'S Kitchen",
+"name": "Elaine's Kitchen",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "434 BROADWAY ST",
 "neighborhood": "North Beach",
@@ -19074,7 +19087,7 @@
 "lineage_name": "Elixir"
 },
 {
-"name": "Eliza'S Restaurant",
+"name": "Eliza's Restaurant",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "2877 CALIFORNIA ST",
 "neighborhood": "Pacific Heights",
@@ -19098,7 +19111,7 @@
 "lng": -122.405796000002
 },
 {
-"name": "Elsy'S Restaurant",
+"name": "Elsy's Restaurant",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "2893 MISSION ST",
 "neighborhood": "Mission",
@@ -19162,7 +19175,7 @@
 "lng": -122.502433500002
 },
 {
-"name": "Emperor Norton'S Boozeland",
+"name": "Emperor Norton's Boozeland",
 "permit_type": "H86 - BARS/TAVERNS W/O FOOD PREP",
 "address": "510 LARKIN ST",
 "neighborhood": "Tenderloin",
@@ -19178,7 +19191,7 @@
 "lng": -122.464575000002
 },
 {
-"name": "Emperor'S Kitchen",
+"name": "Emperor's Kitchen",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "418 LARKIN ST",
 "neighborhood": "Tenderloin",
@@ -19424,7 +19437,7 @@
 "lng": -122.433084000002
 },
 {
-"name": "Eric'S Restaurant",
+"name": "Eric's Restaurant",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "1500 CHURCH ST",
 "neighborhood": "Noe Valley",
@@ -19432,7 +19445,7 @@
 "lng": -122.427256500002
 },
 {
-"name": "Erik'S Delicafe",
+"name": "Erik's Delicafe",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "425   MISSION ST STE 139",
 "neighborhood": "Financial District/South Beach",
@@ -19490,7 +19503,7 @@
 "lng": -122.422077000002
 },
 {
-"name": "Esposto'S Delicatessen",
+"name": "Esposto's Delicatessen",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "1700 OWENS ST STE 155",
 "neighborhood": "Mission Bay",
@@ -19506,7 +19519,7 @@
 "lng": -122.410732500002
 },
 {
-"name": "Estela'S Fresh Sandwiches",
+"name": "Estela's Fresh Sandwiches",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "250 FILLMORE ST",
 "neighborhood": "Hayes Valley",
@@ -20134,7 +20147,7 @@
 "lng": -122.394265021381
 },
 {
-"name": "Farley'S",
+"name": "Farley's",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "1315 18TH ST",
 "neighborhood": "Potrero Hill",
@@ -20168,7 +20181,7 @@
 "lng": -122.39291115874
 },
 {
-"name": "Farmer'S Market-Sec 219",
+"name": "Farmer's Market-Sec 219",
 "permit_type": "H36 - STADIUM CONCESSIONS (PERM)",
 "address": "24 WILLIE MAYS PLZ # CLUB L",
 "neighborhood": "Mission Bay",
@@ -20302,7 +20315,7 @@
 "lng": -122.404405500002
 },
 {
-"name": "Feng'S Kitchen",
+"name": "Feng's Kitchen",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "380 BUSH ST STE 6",
 "neighborhood": "Financial District/South Beach",
@@ -20730,7 +20743,7 @@
 "lng": -122.439991500002
 },
 {
-"name": "Fisherman'S Grotto #9",
+"name": "Fisherman's Grotto #9",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "49 S Van Ness Ave 7th Floor",
 "neighborhood": "Mission",
@@ -20738,7 +20751,7 @@
 "lng": -122.418045000002
 },
 {
-"name": "Fisherman'S Wharf Community Benefit District",
+"name": "Fisherman's Wharf Community Benefit District",
 "permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
 "address": "2801   LEAVENWORTH ST STE B16",
 "neighborhood": "Russian Hill",
@@ -20746,7 +20759,7 @@
 "lng": -122.419485000002
 },
 {
-"name": "Fisherman'S Wharf Gas & Services",
+"name": "Fisherman's Wharf Gas & Services",
 "permit_type": "H31 - TOBACCO SALES - ANNUAL LICENSE FEE",
 "address": "490 BAY STREET",
 "neighborhood": "North Beach",
@@ -20777,7 +20790,7 @@
 "lat": 37.736820000001,
 "lng": -122.405310000002,
 "lineaged": true,
-"lineage_name": "Five"
+"lineage_name": "FIVE"
 },
 {
 "name": "Five Markets",
@@ -20836,7 +20849,7 @@
 "lng": -122.473836000002
 },
 {
-"name": "Flanahan'S",
+"name": "Flanahan's",
 "permit_type": "H86 - BARS/TAVERNS W/O FOOD PREP",
 "address": "3805 NORIEGA ST",
 "neighborhood": "Sunset/Parkside",
@@ -21024,8 +21037,9 @@
 "neighborhood": "Mission",
 "lat": 37.758924000001,
 "lng": -122.412199500002,
+"star_name": "Flour + Water",
 "lineaged": true,
-"lineage_name": "flour + water",
+"lineage_name": "Flour + Water",
 "michelin": true
 },
 {
@@ -21036,8 +21050,7 @@
 "lat": 37.774802391886,
 "lng": -122.389012923155,
 "lineaged": true,
-"lineage_name": "Flour + Water Pizza Shop",
-"michelin": true
+"lineage_name": "Flour + Water Pizza Shop"
 },
 {
 "name": "Flour + Water Pizzeria",
@@ -21047,8 +21060,7 @@
 "lat": 37.800072000001,
 "lng": -122.409427500002,
 "lineaged": true,
-"lineage_name": "Flour + Water Pizzeria",
-"michelin": true
+"lineage_name": "Flour + Water Pizzeria"
 },
 {
 "name": "Fluff N Fold",
@@ -21375,7 +21387,7 @@
 "lng": -122.417266500002
 },
 {
-"name": "Fool'S Errand",
+"name": "Fool's Errand",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "639 DIVISADERO ST UNIT A",
 "neighborhood": "Hayes Valley",
@@ -21569,7 +21581,7 @@
 "lng": -122.411605500002
 },
 {
-"name": "Franco'S Latin Table",
+"name": "Franco's Latin Table",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "24 WEST PORTAL AVE",
 "neighborhood": "West of Twin Peaks",
@@ -21577,7 +21589,7 @@
 "lng": -122.466429000002
 },
 {
-"name": "Frank Grizzly'S",
+"name": "Frank Grizzly's",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "5698 3RD ST",
 "neighborhood": "Bayview Hunters Point",
@@ -21585,7 +21597,7 @@
 "lng": -122.394060000002
 },
 {
-"name": "Frank'S Market & Liquor",
+"name": "Frank's Market & Liquor",
 "permit_type": "H31 - TOBACCO SALES - ANNUAL LICENSE FEE",
 "address": "4799 MISSION ST",
 "neighborhood": "Excelsior",
@@ -21593,7 +21605,7 @@
 "lng": -122.436949500002
 },
 {
-"name": "Frankie'S Java House",
+"name": "Frankie's Java House",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "40 Pier",
 "neighborhood": "Mission Bay",
@@ -21667,7 +21679,7 @@
 "lng": -122.40992884937
 },
 {
-"name": "Fred'S Liquor Store",
+"name": "Fred's Liquor Store",
 "permit_type": "H31 - TOBACCO SALES - ANNUAL LICENSE FEE",
 "address": "300 MASON ST",
 "neighborhood": "Tenderloin",
@@ -21675,7 +21687,7 @@
 "lng": -122.409531000002
 },
 {
-"name": "Fred'S Liquors & Delicatessen",
+"name": "Fred's Liquors & Delicatessen",
 "permit_type": "H31 - TOBACCO SALES - ANNUAL LICENSE FEE",
 "address": "200 VALENCIA ST",
 "neighborhood": "Mission",
@@ -22071,7 +22083,7 @@
 "lng": -122.420524500002
 },
 {
-"name": "Fun Food Partners/Aunt Fanny'S Aka Old Thyme Treats",
+"name": "Fun Food Partners/Aunt Fanny's Aka Old Thyme Treats",
 "permit_type": "H78 - MOBILE FOOD FACILITY CLASS 4",
 "address": "39 PIER 167",
 "neighborhood": "Financial District/South Beach",
@@ -22191,7 +22203,7 @@
 "lng": -122.407519500002
 },
 {
-"name": "Gabby'S Market & Deli",
+"name": "Gabby's Market & Deli",
 "permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
 "address": "201 HARRISON ST STE C",
 "neighborhood": "Financial District/South Beach",
@@ -22311,7 +22323,7 @@
 "lng": -122.425933500002
 },
 {
-"name": "Ganim'S Market",
+"name": "Ganim's Market",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "1135 18TH ST",
 "neighborhood": "Potrero Hill",
@@ -22451,7 +22463,7 @@
 "lineage_name": "Gary Danko"
 },
 {
-"name": "Gaspare'S Pizza House And Restaurant",
+"name": "Gaspare's Pizza House And Restaurant",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "5546 GEARY BLVD",
 "neighborhood": "Outer Richmond",
@@ -22501,7 +22513,7 @@
 "lineage_name": "Gather"
 },
 {
-"name": "Gaucho'S Table Llc",
+"name": "Gaucho's Table Llc",
 "permit_type": "H79 - MOBILE FOOD FACILITY CLASS 5",
 "address": "601 601 MISSION BAY BOULEVARD NORTH",
 "neighborhood": "Mission Bay",
@@ -22621,7 +22633,7 @@
 "lng": -122.410516500002
 },
 {
-"name": "Gene'S Liquor",
+"name": "Gene's Liquor",
 "permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
 "address": "2201 TARAVAL ST",
 "neighborhood": "Sunset/Parkside",
@@ -22653,7 +22665,7 @@
 "lng": -122.441427000002
 },
 {
-"name": "Genie'S Cookie Kingdom Llc",
+"name": "Genie's Cookie Kingdom Llc",
 "permit_type": "H98 - COTTAGE FOOD OPERATIONS - TIER A (DIRECT SALES)",
 "address": "98 OTTAWA AVE",
 "neighborhood": "Outer Mission",
@@ -22741,7 +22753,7 @@
 "lng": -122.491755000002
 },
 {
-"name": "George'S Doughnuts",
+"name": "George's Doughnuts",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "163 WEST PORTAL AVE",
 "neighborhood": "West of Twin Peaks",
@@ -22749,7 +22761,7 @@
 "lng": -122.467446000002
 },
 {
-"name": "George'S Market",
+"name": "George's Market",
 "permit_type": "H03 - RETAIL MKTS W/O PREP (UNDER 5001)",
 "address": "3149 24TH ST",
 "neighborhood": "Mission",
@@ -22757,7 +22769,7 @@
 "lng": -122.414994000002
 },
 {
-"name": "George'S Market",
+"name": "George's Market",
 "permit_type": "H03 - RETAIL MKTS W/O PREP (UNDER 5001)",
 "address": "2268 MISSION ST",
 "neighborhood": "Mission",
@@ -22765,7 +22777,7 @@
 "lng": -122.419557000002
 },
 {
-"name": "George'S Zoo",
+"name": "George's Zoo",
 "permit_type": "H31 - TOBACCO SALES - ANNUAL LICENSE FEE",
 "address": "2560 SLOAT BLVD",
 "neighborhood": "Sunset/Parkside",
@@ -22797,7 +22809,7 @@
 "lng": -122.501547000002
 },
 {
-"name": "Gery'S Deli Cafe",
+"name": "Gery's Deli Cafe",
 "permit_type": "H24R - RESTAURANT UNDER 1,000 SQFT",
 "address": "200   6TH AVE",
 "neighborhood": "Inner Richmond",
@@ -22919,7 +22931,7 @@
 "lng": -122.41675686084
 },
 {
-"name": "Gigi'S Wine Lounge",
+"name": "Gigi's Wine Lounge",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "295 DIVISADERO ST",
 "neighborhood": "Haight Ashbury",
@@ -22975,7 +22987,7 @@
 "lng": -122.408158500002
 },
 {
-"name": "Gino'S Grocery Company",
+"name": "Gino's Grocery Company",
 "permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
 "address": "2500 FILLMORE ST",
 "neighborhood": "Pacific Heights",
@@ -23023,7 +23035,7 @@
 "lng": -122.391184500002
 },
 {
-"name": "Giuliana'S Just For You Cafe",
+"name": "Giuliana's Just For You Cafe",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "732 22ND ST",
 "neighborhood": "Potrero Hill",
@@ -23929,7 +23941,7 @@
 "lng": -122.391855000002
 },
 {
-"name": "Gott'S Roadside - Mission Bay",
+"name": "Gott's Roadside - Mission Bay",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "151 WARRIORS WAY 102 - 3",
 "neighborhood": "Mission Bay",
@@ -23937,7 +23949,7 @@
 "lng": -122.388348990301
 },
 {
-"name": "Gott'S Roadside Tray Gourmet",
+"name": "Gott's Roadside Tray Gourmet",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "1 FERRY BUILDING 6",
 "neighborhood": "Financial District/South Beach",
@@ -24109,7 +24121,7 @@
 "lng": -122.394265021381
 },
 {
-"name": "Grandeho'S Kamekyo",
+"name": "Grandeho's Kamekyo",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "2721   HYDE ST",
 "neighborhood": "Russian Hill",
@@ -24117,7 +24129,7 @@
 "lng": -122.420704500002
 },
 {
-"name": "Grandma'S Deli & Cafe",
+"name": "Grandma's Deli & Cafe",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "1551 MISSION ST",
 "neighborhood": "Mission",
@@ -24125,7 +24137,7 @@
 "lng": -122.417883000002
 },
 {
-"name": "Grandma'S Saloon",
+"name": "Grandma's Saloon",
 "permit_type": "H86 - BARS/TAVERNS W/O FOOD PREP",
 "address": "1016 TARAVAL ST",
 "neighborhood": "Sunset/Parkside",
@@ -24471,7 +24483,7 @@
 "lng": -122.481139500002
 },
 {
-"name": "Guardino'S",
+"name": "Guardino's",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "2801 TAYLOR ST",
 "neighborhood": "North Beach",
@@ -24991,7 +25003,7 @@
 "lng": -122.469070500002
 },
 {
-"name": "Gus'S Community Market",
+"name": "Gus's Community Market",
 "permit_type": "H08 - RETAIL MKTS W/FOOD PREP (10001 - 20000)",
 "address": "3701 Noriega ST",
 "neighborhood": "Sunset/Parkside",
@@ -24999,7 +25011,7 @@
 "lng": -122.503585500002
 },
 {
-"name": "Gus'S Community Market Llc",
+"name": "Gus's Community Market Llc",
 "permit_type": "H81 - SUPERMARKETS W/4+ FOOD PREP",
 "address": "2111 HARRISON ST",
 "neighborhood": "Mission",
@@ -25007,7 +25019,7 @@
 "lng": -122.412820500002
 },
 {
-"name": "Gus'S Community Market, Llc",
+"name": "Gus's Community Market, Llc",
 "permit_type": "H09 - RETAIL MKTS W/FOOD PREP (5001 - 10000)",
 "address": "1101 4TH ST",
 "neighborhood": "Mission Bay",
@@ -25015,7 +25027,7 @@
 "lng": -122.391463500002
 },
 {
-"name": "Gus'S Market Gp, Llc",
+"name": "Gus's Market Gp, Llc",
 "permit_type": "H09 - RETAIL MKTS W/FOOD PREP (5001 - 10000)",
 "address": "2815 DIAMOND ST",
 "neighborhood": "Glen Park",
@@ -25197,7 +25209,7 @@
 "lng": -122.444685000002
 },
 {
-"name": "Habibi'S Birria Inc",
+"name": "Habibi's Birria Inc",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "998 MARKET ST",
 "neighborhood": "Tenderloin",
@@ -25223,7 +25235,7 @@
 "lng": -122.426325000002
 },
 {
-"name": "Hahn'S Hibachi #6",
+"name": "Hahn's Hibachi #6",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "535 IRVING ST",
 "neighborhood": "Inner Sunset",
@@ -25441,7 +25453,7 @@
 "lng": -122.467882500002
 },
 {
-"name": "Hamburger Mary'S Patio Cafe",
+"name": "Hamburger Mary's Patio Cafe",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "531 CASTRO ST",
 "neighborhood": "Castro/Upper Market",
@@ -25581,7 +25593,7 @@
 "lng": -122.406619500002
 },
 {
-"name": "Hanoli Inc Dba Olivier'S Butchery",
+"name": "Hanoli Inc Dba Olivier's Butchery",
 "permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
 "address": "1192 ILLINOIS ST",
 "neighborhood": "Potrero Hill",
@@ -25867,7 +25879,7 @@
 "lineage_name": "Harper and Rye"
 },
 {
-"name": "Harrington'S Bar & Grill",
+"name": "Harrington's Bar & Grill",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "245 FRONT ST",
 "neighborhood": "Financial District/South Beach",
@@ -25893,7 +25905,7 @@
 "lng": -122.408491500002
 },
 {
-"name": "Harry'S Bar",
+"name": "Harry's Bar",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "2020 FILLMORE ST",
 "neighborhood": "Pacific Heights",
@@ -26291,7 +26303,7 @@
 "lng": -122.407920000002
 },
 {
-"name": "Henry'S House Of Coffee",
+"name": "Henry's House Of Coffee",
 "permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
 "address": "1618 NORIEGA ST",
 "neighborhood": "Sunset/Parkside",
@@ -26579,8 +26591,10 @@
 "neighborhood": "Chinatown",
 "lat": 37.800054000001,
 "lng": -122.411047500002,
+"star_name": "Hilda and Jesse",
 "lineaged": true,
-"lineage_name": "Hilda and Jesse"
+"lineage_name": "Hilda and Jesse",
+"michelin": true
 },
 {
 "name": "Hildas Mart & Bake Shop",
@@ -26983,7 +26997,7 @@
 "lineage_name": "Holy Water"
 },
 {
-"name": "Hom'S Grocery",
+"name": "Hom's Grocery",
 "permit_type": "H31 - TOBACCO SALES - ANNUAL LICENSE FEE",
 "address": "499 GUERRERO ST",
 "neighborhood": "Mission",
@@ -27041,7 +27055,7 @@
 "lng": -122.423742000002
 },
 {
-"name": "Hon'S Wun Tun House",
+"name": "Hon's Wun Tun House",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "648 KEARNY ST",
 "neighborhood": "Chinatown",
@@ -27049,7 +27063,7 @@
 "lng": -122.404558500002
 },
 {
-"name": "Hon'S Wun Tun House",
+"name": "Hon's Wun Tun House",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "733 WASHINGTON ST",
 "neighborhood": "Chinatown",
@@ -27139,7 +27153,7 @@
 "lng": -122.491066500002
 },
 {
-"name": "Hong'S Kitchen",
+"name": "Hong's Kitchen",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "3917 NORIEGA ST",
 "neighborhood": "Sunset/Parkside",
@@ -27277,7 +27291,7 @@
 "lng": -122.38766603283
 },
 {
-"name": "Hot Johnnie'S",
+"name": "Hot Johnnie's",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "4077 18TH ST",
 "neighborhood": "Castro/Upper Market",
@@ -27783,7 +27797,7 @@
 "lng": -122.418985500002
 },
 {
-"name": "Hyatt Centric Fisherman'S Wharf San Francisco",
+"name": "Hyatt Centric Fisherman's Wharf San Francisco",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "555 N POINT ST",
 "neighborhood": "North Beach",
@@ -27791,7 +27805,7 @@
 "lng": -122.415957000002
 },
 {
-"name": "Hyatt Fisherman'S Wharf",
+"name": "Hyatt Fisherman's Wharf",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "555 N POINT ST",
 "neighborhood": "North Beach",
@@ -28079,7 +28093,7 @@
 "lng": -122.49654603307
 },
 {
-"name": "Ike'S Kitchen",
+"name": "Ike's Kitchen",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "800 VAN NESS AVE BLDG",
 "neighborhood": "Tenderloin",
@@ -28087,7 +28101,7 @@
 "lng": -122.420455032224
 },
 {
-"name": "Ike'S Love & Sandwiches",
+"name": "Ike's Love & Sandwiches",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "1090 Dr Maya Angelou Wy Ste G",
 "neighborhood": "Mission Bay",
@@ -28643,7 +28657,7 @@
 "lng": -122.461434000002
 },
 {
-"name": "Irma'S Pampanga Restaurant",
+"name": "Irma's Pampanga Restaurant",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "2901 16TH ST",
 "neighborhood": "Mission",
@@ -28701,7 +28715,7 @@
 "lineage_name": "Isa"
 },
 {
-"name": "Isaac'S Market",
+"name": "Isaac's Market",
 "permit_type": "H03 - RETAIL MKTS W/O PREP (UNDER 5001)",
 "address": "2601 FOLSOM ST",
 "neighborhood": "Mission",
@@ -28851,7 +28865,7 @@
 "lng": -122.468364000002
 },
 {
-"name": "Izzy'S Cheesesteaks Food Truck, Llc",
+"name": "Izzy's Cheesesteaks Food Truck, Llc",
 "permit_type": "H79 - MOBILE FOOD FACILITY CLASS 5",
 "address": "601 MISSION BAY N BLVD",
 "neighborhood": "Mission Bay",
@@ -28955,7 +28969,7 @@
 "lng": -122.427454500002
 },
 {
-"name": "J&D'S Bbq",
+"name": "J&D's Bbq",
 "permit_type": "H79 - MOBILE FOOD FACILITY CLASS 5",
 "address": "601 MISSION BAY N BLVD",
 "neighborhood": "Mission Bay",
@@ -29011,7 +29025,7 @@
 "lng": -122.469295500002
 },
 {
-"name": "Jack'S Laundry",
+"name": "Jack's Laundry",
 "permit_type": "H48 - WASH LAUNDRIES",
 "address": "196 NOE ST",
 "neighborhood": "Castro/Upper Market",
@@ -29019,7 +29033,7 @@
 "lng": -122.433588000002
 },
 {
-"name": "Jack'S Market",
+"name": "Jack's Market",
 "permit_type": "H31 - TOBACCO SALES - ANNUAL LICENSE FEE",
 "address": "471 3RD ST",
 "neighborhood": "Financial District/South Beach",
@@ -29121,7 +29135,7 @@
 "lng": -122.432503500002
 },
 {
-"name": "Jake'S Steaks",
+"name": "Jake's Steaks",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "581 VALENCIA ST",
 "neighborhood": "Mission",
@@ -29129,7 +29143,7 @@
 "lng": -122.421487500002
 },
 {
-"name": "Jake'S Steaks",
+"name": "Jake's Steaks",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "3301 BUCHANAN ST",
 "neighborhood": "Marina",
@@ -29297,7 +29311,7 @@
 "lng": -122.420142000002
 },
 {
-"name": "Jasper'S Corner Tap And Kitchen",
+"name": "Jasper's Corner Tap And Kitchen",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "401 TAYLOR ST",
 "neighborhood": "Tenderloin",
@@ -29363,7 +29377,7 @@
 "lng": -122.420583000002
 },
 {
-"name": "Jay'S Cheesesteaks",
+"name": "Jay's Cheesesteaks",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "3285 21ST ST",
 "neighborhood": "Mission",
@@ -29427,7 +29441,7 @@
 "lng": -122.415984000002
 },
 {
-"name": "Jenny'S Burger",
+"name": "Jenny's Burger",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "1233 9TH AVE",
 "neighborhood": "Inner Sunset",
@@ -29443,7 +29457,7 @@
 "lng": -122.417820000002
 },
 {
-"name": "Jeong'S K-Food",
+"name": "Jeong's K-Food",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "3995 ALEMANY BLVD",
 "neighborhood": "Oceanview/Merced/Ingleside",
@@ -29499,7 +29513,7 @@
 "lng": -122.436684000002
 },
 {
-"name": "Jewish Family & Children'S Services",
+"name": "Jewish Family & Children's Services",
 "permit_type": "H23 - FOOD PREP AND SERVICE (FEE EXEMPT)",
 "address": "2534 JUDAH ST",
 "neighborhood": "Sunset/Parkside",
@@ -29539,7 +29553,7 @@
 "lng": -122.478799500002
 },
 {
-"name": "Jim Georgie'S Donut",
+"name": "Jim Georgie's Donut",
 "permit_type": "H28 - TAKE-OUTS",
 "address": "2799 16TH ST",
 "neighborhood": "Mission",
@@ -29547,7 +29561,7 @@
 "lng": -122.415070500002
 },
 {
-"name": "Jim'S Restaurant",
+"name": "Jim's Restaurant",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "2420 MISSION ST",
 "neighborhood": "Mission",
@@ -29693,7 +29707,7 @@
 "lng": -122.397363000002
 },
 {
-"name": "Joe'S Coffee Shop",
+"name": "Joe's Coffee Shop",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "6134 GEARY BLVD",
 "neighborhood": "Outer Richmond",
@@ -29701,7 +29715,7 @@
 "lng": -122.485387500002
 },
 {
-"name": "Joe'S Commissary Llc",
+"name": "Joe's Commissary Llc",
 "permit_type": "H33R - COMMISSARIES",
 "address": "2565 3RD ST STE 308",
 "neighborhood": "Potrero Hill",
@@ -29709,7 +29723,7 @@
 "lng": -122.387989500002
 },
 {
-"name": "Joe'S Ice Cream",
+"name": "Joe's Ice Cream",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "5420 GEARY BLVD",
 "neighborhood": "Outer Richmond",
@@ -29717,7 +29731,7 @@
 "lng": -122.477787000002
 },
 {
-"name": "Joey And Pat'S Bakery & Coffee",
+"name": "Joey And Pat's Bakery & Coffee",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "2499 FOLSOM ST",
 "neighborhood": "Mission",
@@ -29725,7 +29739,7 @@
 "lng": -122.414256000002
 },
 {
-"name": "Joey The Cat'S Arcade",
+"name": "Joey The Cat's Arcade",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "3252 19TH ST",
 "neighborhood": "Mission",
@@ -29757,7 +29771,7 @@
 "lng": -122.428692000002
 },
 {
-"name": "John'S Grill Inc",
+"name": "John's Grill Inc",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "63 ELLIS ST",
 "neighborhood": "Financial District/South Beach",
@@ -29805,7 +29819,7 @@
 "lng": -122.416101000002
 },
 {
-"name": "Jolene'S",
+"name": "Jolene's",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "2700 16TH ST",
 "neighborhood": "Mission",
@@ -29821,7 +29835,7 @@
 "lng": -122.418045000002
 },
 {
-"name": "Jolly'S Old-Fashioned Teas Cream",
+"name": "Jolly's Old-Fashioned Teas Cream",
 "permit_type": "H79 - MOBILE FOOD FACILITY CLASS 5",
 "address": "601 MISSION BAY N BLVD",
 "neighborhood": "Mission Bay",
@@ -29853,7 +29867,7 @@
 "lng": -122.404549500002
 },
 {
-"name": "Joy'S Place",
+"name": "Joy's Place",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "611 POST ST",
 "neighborhood": "Tenderloin",
@@ -29957,6 +29971,7 @@
 "neighborhood": "Hayes Valley",
 "lat": 37.776546000001,
 "lng": -122.438844000002,
+"star_name": "Ju-ni",
 "michelin": true,
 "lineage_name": "Ju-ni"
 },
@@ -30051,7 +30066,7 @@
 "lineage_name": "Jules"
 },
 {
-"name": "Julie'S Kitchen",
+"name": "Julie's Kitchen",
 "permit_type": "H28 - TAKE-OUTS",
 "address": "50 POST ST #62-A",
 "neighborhood": "Financial District/South Beach",
@@ -30365,7 +30380,7 @@
 "lng": -122.392269000002
 },
 {
-"name": "Kal'S Cafe",
+"name": "Kal's Cafe",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "835 GEARY ST",
 "neighborhood": "Tenderloin",
@@ -30477,7 +30492,7 @@
 "lng": -122.404095000002
 },
 {
-"name": "Kara'S Cupcakes",
+"name": "Kara's Cupcakes",
 "permit_type": "H88 - RETAIL BAKERIES WITH FOOD PREP",
 "address": "3249   SCOTT ST",
 "neighborhood": "Marina",
@@ -30493,7 +30508,7 @@
 "lng": -122.420799000002
 },
 {
-"name": "Karina'S Laundrymat Center",
+"name": "Karina's Laundrymat Center",
 "permit_type": "H46 - AUTOMATIC LAUNDRY - FACILITIES",
 "address": "5044 MISSION ST",
 "neighborhood": "Outer Mission",
@@ -30501,7 +30516,7 @@
 "lng": -122.440185000002
 },
 {
-"name": "Karl'S Beacon",
+"name": "Karl's Beacon",
 "permit_type": "H87 - BARS/TAVERNS W/FOOD PREP",
 "address": "1355 TARAVAL ST",
 "neighborhood": "Sunset/Parkside",
@@ -30581,7 +30596,7 @@
 "lng": -122.426388000002
 },
 {
-"name": "Kawashima'S Kitchen",
+"name": "Kawashima's Kitchen",
 "permit_type": "H30 - CATERING FACILITIES",
 "address": "5800 3RD ST #1001",
 "neighborhood": "Bayview Hunters Point",
@@ -30713,7 +30728,7 @@
 "lng": -122.38766603283
 },
 {
-"name": "Keiko'S Coffee Shop Llc",
+"name": "Keiko's Coffee Shop Llc",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "3926 MISSION ST",
 "neighborhood": "Bernal Heights",
@@ -30923,7 +30938,7 @@
 "lng": -122.453487000002
 },
 {
-"name": "Kiem'S Seafood",
+"name": "Kiem's Seafood",
 "permit_type": "H34 - PUSHCARTS (RETAIL FOOD VEHICLE)",
 "address": "6300 3RD ST #A",
 "neighborhood": "Bayview Hunters Point",
@@ -30969,6 +30984,7 @@
 "neighborhood": "Hayes Valley",
 "lat": 37.776006000001,
 "lng": -122.420380500002,
+"star_name": "Kiln",
 "lineaged": true,
 "lineage_name": "Kiln",
 "michelin": true
@@ -31060,8 +31076,10 @@
 "neighborhood": "Tenderloin",
 "lat": 37.784880000001,
 "lng": -122.408977500002,
+"star_name": "Kin Khao",
 "lineaged": true,
-"lineage_name": "Kin Khao"
+"lineage_name": "Kin Khao",
+"michelin": true
 },
 {
 "name": "Kinara Kitchen Inc",
@@ -31088,7 +31106,7 @@
 "lng": -122.477418000002
 },
 {
-"name": "King Lee'S Chinese Restaurant",
+"name": "King Lee's Chinese Restaurant",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "1426 A FILLMORE ST",
 "neighborhood": "Western Addition",
@@ -31136,7 +31154,7 @@
 "lng": -122.409648000002
 },
 {
-"name": "King'S Market",
+"name": "King's Market",
 "permit_type": "H03 - RETAIL MKTS W/O PREP (UNDER 5001)",
 "address": "2398 BRYANT ST",
 "neighborhood": "Mission",
@@ -31144,7 +31162,7 @@
 "lng": -122.409688500002
 },
 {
-"name": "King'S Thai Cuisine",
+"name": "King's Thai Cuisine",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "346 CLEMENT ST",
 "neighborhood": "Inner Richmond",
@@ -31307,7 +31325,7 @@
 "lat": 37.782486000001,
 "lng": -122.420484000002,
 "lineaged": true,
-"lineage_name": "the Kitchen"
+"lineage_name": "Kitchen"
 },
 {
 "name": "Kitchen Istanbul",
@@ -31323,9 +31341,7 @@
 "address": "3499 16TH ST",
 "neighborhood": "Castro/Upper Market",
 "lat": 37.764279000001,
-"lng": -122.430726000002,
-"lineaged": true,
-"lineage_name": "Kitchen Story"
+"lng": -122.430726000002
 },
 {
 "name": "Kitchen Woori",
@@ -31524,7 +31540,7 @@
 "lng": -122.373789969563
 },
 {
-"name": "Kona'S Street Market",
+"name": "Kona's Street Market",
 "permit_type": "H87 - BARS/TAVERNS W/FOOD PREP",
 "address": "32 3RD STREET",
 "neighborhood": "Financial District/South Beach",
@@ -31694,6 +31710,7 @@
 "neighborhood": "Chinatown",
 "lat": 37.795716000001,
 "lng": -122.402907000002,
+"star_name": "Kusakabe",
 "lineaged": true,
 "lineage_name": "Kusakabe",
 "michelin": true
@@ -31821,7 +31838,7 @@
 "lng": -122.442151500002
 },
 {
-"name": "L'S Caffe",
+"name": "L's Caffe",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "2871 24TH ST",
 "neighborhood": "Mission",
@@ -32593,7 +32610,7 @@
 "lng": -122.485828500002
 },
 {
-"name": "Lala'S Bakery",
+"name": "Lala's Bakery",
 "permit_type": "H99 - COTTAGE FOOD OPERATIONS - TIER B (INDIRECT SALES)",
 "address": "428 YALE ST",
 "neighborhood": "Portola",
@@ -32657,7 +32674,7 @@
 "lng": -122.413216500002
 },
 {
-"name": "Lappert'S Ice Cream On Pier 39",
+"name": "Lappert's Ice Cream On Pier 39",
 "permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
 "address": "PIER 39 Q-112",
 "neighborhood": "North Beach",
@@ -32699,7 +32716,7 @@
 "lng": -122.412996000002
 },
 {
-"name": "Larry Flint'S Hustler Club",
+"name": "Larry Flint's Hustler Club",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "1031 KEARNY ST",
 "neighborhood": "North Beach",
@@ -33001,8 +33018,10 @@
 "neighborhood": "Mission",
 "lat": 37.760418000001,
 "lng": -122.419705500002,
+"star_name": "Lazy Bear",
 "lineaged": true,
-"lineage_name": "Lazy Bear"
+"lineage_name": "Lazy Bear",
+"michelin": true
 },
 {
 "name": "Lazy Susan",
@@ -33177,7 +33196,7 @@
 "lng": -122.435514000002
 },
 {
-"name": "Lee'S Food Market",
+"name": "Lee's Food Market",
 "permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
 "address": "1397 REVERE AVE",
 "neighborhood": "Bayview Hunters Point",
@@ -33185,7 +33204,7 @@
 "lng": -122.386486500002
 },
 {
-"name": "Lee'S Sandwiches",
+"name": "Lee's Sandwiches",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "625 LARKIN ST",
 "neighborhood": "Tenderloin",
@@ -33225,7 +33244,7 @@
 "lng": -122.403734156742
 },
 {
-"name": "Lelenita'S Cakes, Inc",
+"name": "Lelenita's Cakes, Inc",
 "permit_type": "H88 - RETAIL BAKERIES WITH FOOD PREP",
 "address": "3743 MISSION ST",
 "neighborhood": "Bernal Heights",
@@ -33257,7 +33276,7 @@
 "lng": -122.478547500002
 },
 {
-"name": "Leo'S Tacos San Francisco",
+"name": "Leo's Tacos San Francisco",
 "permit_type": "H79 - MOBILE FOOD FACILITY CLASS 5",
 "address": "1234 Great HWY",
 "neighborhood": "Sunset/Parkside",
@@ -33273,7 +33292,7 @@
 "lng": -122.405566500002
 },
 {
-"name": "Leonore'S Deli & Tacqueria Llc",
+"name": "Leonore's Deli & Tacqueria Llc",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "601 VAN NESS AVE STE K",
 "neighborhood": "Western Addition",
@@ -33281,7 +33300,7 @@
 "lng": -122.421420000002
 },
 {
-"name": "Leopold'S",
+"name": "Leopold's",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "2400 POLK ST",
 "neighborhood": "Russian Hill",
@@ -33289,7 +33308,7 @@
 "lng": -122.422086000002
 },
 {
-"name": "Leopold'S Wursthaus",
+"name": "Leopold's Wursthaus",
 "permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
 "address": "90 CHARTER OAK AVE",
 "neighborhood": "Bayview Hunters Point",
@@ -33355,7 +33374,7 @@
 "lng": -122.412976984687
 },
 {
-"name": "Let'S Eat",
+"name": "Let's Eat",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "5130 3RD ST",
 "neighborhood": "Bayview Hunters Point",
@@ -33363,7 +33382,7 @@
 "lng": -122.392044000002
 },
 {
-"name": "Let'S Roll",
+"name": "Let's Roll",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "2421 CLEMENT ST",
 "neighborhood": "Outer Richmond",
@@ -33479,7 +33498,7 @@
 "lng": -122.435496000002
 },
 {
-"name": "Lillie Coit'S",
+"name": "Lillie Coit's",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "1707 POWELL ST",
 "neighborhood": "Chinatown",
@@ -33577,7 +33596,7 @@
 "lng": -122.423710500002
 },
 {
-"name": "Lin'S Kitchen",
+"name": "Lin's Kitchen",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "337 JONES ST",
 "neighborhood": "Tenderloin",
@@ -33635,7 +33654,7 @@
 "lng": -122.464579500002
 },
 {
-"name": "Linda'S Deli And Liquor",
+"name": "Linda's Deli And Liquor",
 "permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
 "address": "1026 TARAVAL ST",
 "neighborhood": "Sunset/Parkside",
@@ -33643,7 +33662,7 @@
 "lng": -122.477418000002
 },
 {
-"name": "Linda'S Liquor",
+"name": "Linda's Liquor",
 "permit_type": "H31 - TOBACCO SALES - ANNUAL LICENSE FEE",
 "address": "1026 TARAVAL ST",
 "neighborhood": "Sunset/Parkside",
@@ -33741,7 +33760,7 @@
 "lng": -122.450998500002
 },
 {
-"name": "Lion'S Den Bar And Lounge",
+"name": "Lion's Den Bar And Lounge",
 "permit_type": "H86 - BARS/TAVERNS W/O FOOD PREP",
 "address": "57 WENTWORTH PL",
 "neighborhood": "Chinatown",
@@ -33877,7 +33896,7 @@
 "lng": -122.419449000002
 },
 {
-"name": "Little Henry'S",
+"name": "Little Henry's",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "3600 BALBOA ST",
 "neighborhood": "Outer Richmond",
@@ -33893,7 +33912,7 @@
 "lng": -122.452771500002
 },
 {
-"name": "Little Joe'S Annex",
+"name": "Little Joe's Annex",
 "permit_type": "H03 - RETAIL MKTS W/O PREP (UNDER 5001)",
 "address": "3208 SCOTT ST",
 "neighborhood": "Marina",
@@ -33909,7 +33928,7 @@
 "lng": -122.439843000002
 },
 {
-"name": "Little Original Joe'S",
+"name": "Little Original Joe's",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "393 WEST PORTAL AVE",
 "neighborhood": "West of Twin Peaks",
@@ -34259,7 +34278,7 @@
 "lng": -122.441499000002
 },
 {
-"name": "Lojo'S Taco Shop",
+"name": "Lojo's Taco Shop",
 "permit_type": "H74 - CATERER",
 "address": "103   HORNE AVE",
 "neighborhood": "Bayview Hunters Point",
@@ -34283,7 +34302,7 @@
 "lng": -122.478687000002
 },
 {
-"name": "Lola'S Gelato On Pier 39",
+"name": "Lola's Gelato On Pier 39",
 "permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
 "address": "PIER 39 SPACE B-4",
 "neighborhood": "North Beach",
@@ -34421,7 +34440,7 @@
 "lng": -122.388291000002
 },
 {
-"name": "Long Hua'S Grocery Store",
+"name": "Long Hua's Grocery Store",
 "permit_type": "H03 - RETAIL MKTS W/O PREP (UNDER 5001)",
 "address": "906 STOCKTON ST",
 "neighborhood": "Chinatown",
@@ -34469,9 +34488,9 @@
 "neighborhood": "Russian Hill",
 "lat": 37.795752000001,
 "lng": -122.421951000002,
+"star_name": "Lord Stanley",
 "lineaged": true,
-"lineage_name": "Lord Stanley",
-"michelin": true
+"lineage_name": "Lord Stanley"
 },
 {
 "name": "Lore Escapes Llc",
@@ -34482,7 +34501,7 @@
 "lng": -122.421010500002
 },
 {
-"name": "Lori'S Diner",
+"name": "Lori's Diner",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "500 SUTTER ST",
 "neighborhood": "Nob Hill",
@@ -34674,7 +34693,7 @@
 "lng": -122.408757000002
 },
 {
-"name": "Lou'S Cafe",
+"name": "Lou's Cafe",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "5017 GEARY BLVD",
 "neighborhood": "Outer Richmond",
@@ -34682,7 +34701,7 @@
 "lng": -122.473147500002
 },
 {
-"name": "Lou'S Cafe",
+"name": "Lou's Cafe",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "1508 TARAVAL ST",
 "neighborhood": "Sunset/Parkside",
@@ -34690,7 +34709,7 @@
 "lng": -122.482426500002
 },
 {
-"name": "Lou'S Cafe",
+"name": "Lou's Cafe",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "100 PINE ST #102",
 "neighborhood": "Financial District/South Beach",
@@ -34698,7 +34717,7 @@
 "lng": -122.398983000002
 },
 {
-"name": "Lou'S Cafe",
+"name": "Lou's Cafe",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "275 BATTERY ST",
 "neighborhood": "Financial District/South Beach",
@@ -34706,7 +34725,7 @@
 "lng": -122.400387000002
 },
 {
-"name": "Louie'S",
+"name": "Louie's",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "55   STEVENSON ST",
 "neighborhood": "Financial District/South Beach",
@@ -34714,7 +34733,7 @@
 "lng": -122.399590500002
 },
 {
-"name": "Louie'S Original",
+"name": "Louie's Original",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "1685 MARIPOSA ST",
 "neighborhood": "Potrero Hill",
@@ -34730,7 +34749,7 @@
 "lng": -122.404401000002
 },
 {
-"name": "Lovejoy'S Tea Room",
+"name": "Lovejoy's Tea Room",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "1351 CHURCH ST",
 "neighborhood": "Noe Valley",
@@ -34824,12 +34843,13 @@
 "neighborhood": "South of Market",
 "lat": 37.782081000001,
 "lng": -122.404779000002,
+"star_name": "Luce",
 "lineaged": true,
 "lineage_name": "Luce",
 "michelin": true
 },
 {
-"name": "Lucho'S",
+"name": "Lucho's",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "2675 OCEAN AVENUE",
 "neighborhood": "West of Twin Peaks",
@@ -34837,7 +34857,7 @@
 "lng": -122.474358000002
 },
 {
-"name": "Lucinda'S Deli And More",
+"name": "Lucinda's Deli And More",
 "permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
 "address": "535 SCOTT ST BLDG",
 "neighborhood": "Hayes Valley",
@@ -34845,7 +34865,7 @@
 "lng": -122.436329015734
 },
 {
-"name": "Lucita'S Bar",
+"name": "Lucita's Bar",
 "permit_type": "H86 - BARS/TAVERNS W/O FOOD PREP",
 "address": "5163 MISSION ST",
 "neighborhood": "Excelsior",
@@ -34933,7 +34953,7 @@
 "lng": -122.392557000002
 },
 {
-"name": "Luisa'S Restaurant Wine-Champagne Bar Since 1959",
+"name": "Luisa's Restaurant Wine-Champagne Bar Since 1959",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "759 COLUMBUS AVE",
 "neighborhood": "Chinatown",
@@ -34941,7 +34961,7 @@
 "lng": -122.412348000002
 },
 {
-"name": "Luke'S Lobster",
+"name": "Luke's Lobster",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "92 2ND ST",
 "neighborhood": "Financial District/South Beach",
@@ -34949,7 +34969,7 @@
 "lng": -122.400112500002
 },
 {
-"name": "Luke'S Local Grocery",
+"name": "Luke's Local Grocery",
 "permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
 "address": "49 S Van Ness Ave 7th Floor",
 "neighborhood": "Mission",
@@ -34957,7 +34977,7 @@
 "lng": -122.418045000002
 },
 {
-"name": "Luke'S Local Inc",
+"name": "Luke's Local Inc",
 "permit_type": "H09 - RETAIL MKTS W/FOOD PREP (5001 - 10000)",
 "address": "580 GREEN ST",
 "neighborhood": "North Beach",
@@ -34965,7 +34985,7 @@
 "lng": -122.408788500002
 },
 {
-"name": "Luke'S Local Inc",
+"name": "Luke's Local Inc",
 "permit_type": "H33 - COMMISSARIES",
 "address": "1750 CESAR CHAVEZ",
 "neighborhood": "Bayview Hunters Point",
@@ -34973,7 +34993,7 @@
 "lng": -122.394357061962
 },
 {
-"name": "Luke'S Local Inc",
+"name": "Luke's Local Inc",
 "permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
 "address": "960 COLE ST",
 "neighborhood": "Haight Ashbury",
@@ -34988,7 +35008,7 @@
 "lat": 37.806093000001,
 "lng": -122.405940000002,
 "lineaged": true,
-"lineage_name": "LuLu"
+"lineage_name": "Lulu"
 },
 {
 "name": "Luminara Coffee Llc",
@@ -34999,7 +35019,7 @@
 "lng": -122.415421500002
 },
 {
-"name": "Luna'S Coffee House",
+"name": "Luna's Coffee House",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "1101 POTRERO AVE",
 "neighborhood": "Mission",
@@ -35081,7 +35101,7 @@
 "lng": -122.491183500002
 },
 {
-"name": "Ly'S Vietnamese Cuisine",
+"name": "Ly's Vietnamese Cuisine",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "1779 LOMBARD ST",
 "neighborhood": "Marina",
@@ -35257,7 +35277,7 @@
 "lng": -122.421267000002
 },
 {
-"name": "Ma'S Dim Sum And Cafe",
+"name": "Ma's Dim Sum And Cafe",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "1315 POWELL ST",
 "neighborhood": "Chinatown",
@@ -35283,7 +35303,7 @@
 "lineage_name": "Macondray"
 },
 {
-"name": "Macy'S",
+"name": "Macy's",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "170 OFARRELL ST",
 "neighborhood": "Financial District/South Beach",
@@ -35291,7 +35311,7 @@
 "lng": -122.407375500002
 },
 {
-"name": "Macy'S Starbucks",
+"name": "Macy's Starbucks",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "170 OFARRELL ST",
 "neighborhood": "Financial District/South Beach",
@@ -35394,7 +35414,7 @@
 "lat": 37.770259937251,
 "lng": -122.445253105203,
 "lineaged": true,
-"lineage_name": "Magnolia Brewing"
+"lineage_name": "Magnolia"
 },
 {
 "name": "Mahalo!",
@@ -35535,7 +35555,7 @@
 "lng": -122.381028000002
 },
 {
-"name": "Malone'S",
+"name": "Malone's",
 "permit_type": "H26R - RESTAURANT OVER 2,000 SQFT",
 "address": "216 TOWNSEND ST",
 "neighborhood": "South of Market",
@@ -35543,7 +35563,7 @@
 "lng": -122.393358000002
 },
 {
-"name": "Mama Ji'S",
+"name": "Mama Ji's",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "4416 18TH ST",
 "neighborhood": "Castro/Upper Market",
@@ -35559,7 +35579,7 @@
 "lng": -122.402614500002
 },
 {
-"name": "Mama Mu'S Bistro",
+"name": "Mama Mu's Bistro",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "1316 NORIEGA ST",
 "neighborhood": "Sunset/Parkside",
@@ -35575,7 +35595,7 @@
 "lng": -122.402614500002
 },
 {
-"name": "Mama'S Kitchen",
+"name": "Mama's Kitchen",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "403 EDDY ST",
 "neighborhood": "Tenderloin",
@@ -35583,7 +35603,7 @@
 "lng": -122.414490000002
 },
 {
-"name": "Mama'S Laundry Room",
+"name": "Mama's Laundry Room",
 "permit_type": "H46 - AUTOMATIC LAUNDRY - FACILITIES",
 "address": "600 CORTLAND AVE",
 "neighborhood": "Bernal Heights",
@@ -35591,7 +35611,7 @@
 "lng": -122.415705000002
 },
 {
-"name": "Mama'S Market",
+"name": "Mama's Market",
 "permit_type": "H03 - RETAIL MKTS W/O PREP (UNDER 5001)",
 "address": "240   LEAVENWORTH ST",
 "neighborhood": "Tenderloin",
@@ -35733,7 +35753,7 @@
 "lng": -122.467099500002
 },
 {
-"name": "Manny'S",
+"name": "Manny's",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "3092 16TH ST",
 "neighborhood": "Mission",
@@ -35789,7 +35809,7 @@
 "lng": -122.409414000002
 },
 {
-"name": "Marcela'S Taqueria",
+"name": "Marcela's Taqueria",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "595 GEARY ST",
 "neighborhood": "Tenderloin",
@@ -35797,7 +35817,7 @@
 "lng": -122.412982500002
 },
 {
-"name": "Marcella'S Lasagneria E Cucina",
+"name": "Marcella's Lasagneria E Cucina",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "1099 TENNESSEE ST",
 "neighborhood": "Potrero Hill",
@@ -35813,7 +35833,7 @@
 "lng": -122.389141500002
 },
 {
-"name": "Marcello'S Pizza",
+"name": "Marcello's Pizza",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "420 CASTRO ST",
 "neighborhood": "Castro/Upper Market",
@@ -36005,7 +36025,7 @@
 "lng": -122.410471500002
 },
 {
-"name": "Marinko'S Desserts",
+"name": "Marinko's Desserts",
 "permit_type": "H101 - Community Event Food Vendor - Low Hazard",
 "address": "147 FULTON ST",
 "neighborhood": "Tenderloin",
@@ -36063,7 +36083,7 @@
 "lng": -122.461816500002
 },
 {
-"name": "Marley'S Streats",
+"name": "Marley's Streats",
 "permit_type": "H77 - MOBILE FOOD FACILITY CLASS 3",
 "address": "428 11TH ST",
 "neighborhood": "Mission",
@@ -36171,7 +36191,7 @@
 "lng": -122.428723500002
 },
 {
-"name": "Martha'S Restaurant",
+"name": "Martha's Restaurant",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "2034 MISSION ST",
 "neighborhood": "Mission",
@@ -36211,7 +36231,7 @@
 "lng": -122.449023000002
 },
 {
-"name": "Martuni'S",
+"name": "Martuni's",
 "permit_type": "H86 - BARS/TAVERNS W/O FOOD PREP",
 "address": "4 VALENCIA ST",
 "neighborhood": "Mission",
@@ -36235,6 +36255,7 @@
 "neighborhood": "Japantown",
 "lat": 37.784979000001,
 "lng": -122.431864500002,
+"star_name": "Marufuku Ramen",
 "michelin": true,
 "lineage_name": "Marufuku Ramen"
 },
@@ -36271,7 +36292,7 @@
 "lng": -122.396994000002
 },
 {
-"name": "Marvin'S Cleaner",
+"name": "Marvin's Cleaner",
 "permit_type": "H48 - WASH LAUNDRIES",
 "address": "2052 POLK ST",
 "neighborhood": "Russian Hill",
@@ -36409,7 +36430,7 @@
 "lng": -122.402304000002
 },
 {
-"name": "Mastro'S",
+"name": "Mastro's",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "399 GEARY ST STE A",
 "neighborhood": "Tenderloin",
@@ -36449,7 +36470,7 @@
 "lng": -122.441440500002
 },
 {
-"name": "Mateo'S Bay Area Hot Dogs",
+"name": "Mateo's Bay Area Hot Dogs",
 "permit_type": "H79 - MOBILE FOOD FACILITY CLASS 5",
 "address": "110 MAIN ST",
 "neighborhood": "Financial District/South Beach",
@@ -36525,7 +36546,7 @@
 "lng": -122.435838000002
 },
 {
-"name": "Maurice'S Corner",
+"name": "Maurice's Corner",
 "permit_type": "H31 - TOBACCO SALES - ANNUAL LICENSE FEE",
 "address": "3046 24TH ST",
 "neighborhood": "Mission",
@@ -36549,7 +36570,7 @@
 "lng": -122.433417000002
 },
 {
-"name": "Max'S Opera Cafe",
+"name": "Max's Opera Cafe",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "601 VAN NESS AVE",
 "neighborhood": "Western Addition",
@@ -36557,7 +36578,7 @@
 "lng": -122.421420000002
 },
 {
-"name": "Maxfield'S",
+"name": "Maxfield's",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "2 NEW MONTGOMERY ST",
 "neighborhood": "Financial District/South Beach",
@@ -36565,7 +36586,7 @@
 "lng": -122.401962000002
 },
 {
-"name": "Maxfield'S House Of Caffeine",
+"name": "Maxfield's House Of Caffeine",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "398 DOLORES ST",
 "neighborhood": "Castro/Upper Market",
@@ -36581,7 +36602,7 @@
 "lng": -122.418913500002
 },
 {
-"name": "Mayah'S Restaurant Cocina Yucateca",
+"name": "Mayah's Restaurant Cocina Yucateca",
 "permit_type": "H25R - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "407 ELLIS ST",
 "neighborhood": "Tenderloin",
@@ -36653,7 +36674,7 @@
 "lng": -122.441953500002
 },
 {
-"name": "Mccarthy'S Iris Bar",
+"name": "Mccarthy's Iris Bar",
 "permit_type": "H86 - BARS/TAVERNS W/O FOOD PREP",
 "address": "46 WEST PORTAL AVE",
 "neighborhood": "West of Twin Peaks",
@@ -36669,7 +36690,7 @@
 "lng": -122.423197500002
 },
 {
-"name": "Mcdonald'S",
+"name": "Mcdonald's",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "441 SUTTER ST",
 "neighborhood": "Financial District/South Beach",
@@ -36679,7 +36700,7 @@
 "lineage_name": "McDonald's"
 },
 {
-"name": "Mcdonald'S",
+"name": "Mcdonald's",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "5411 3RD ST",
 "neighborhood": "Bayview Hunters Point",
@@ -36687,7 +36708,7 @@
 "lng": -122.392633500002
 },
 {
-"name": "Mcdonald'S",
+"name": "Mcdonald's",
 "permit_type": "H29 - FAST FOOD OUTLETS",
 "address": "5454 MISSION ST",
 "neighborhood": "Outer Mission",
@@ -36695,7 +36716,7 @@
 "lng": -122.444604000002
 },
 {
-"name": "Mcdonald'S",
+"name": "Mcdonald's",
 "permit_type": "H29 - FAST FOOD OUTLETS",
 "address": "255 WINSTON DR UNIT",
 "neighborhood": "Lakeshore",
@@ -36703,7 +36724,7 @@
 "lng": -122.476628032735
 },
 {
-"name": "Mcdonald'S",
+"name": "Mcdonald's",
 "permit_type": "H29 - FAST FOOD OUTLETS",
 "address": "2805 MISSION ST",
 "neighborhood": "Mission",
@@ -36711,7 +36732,7 @@
 "lng": -122.418099000002
 },
 {
-"name": "Mcdonald'S",
+"name": "Mcdonald's",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "1201 OCEAN AVE",
 "neighborhood": "Oceanview/Merced/Ingleside",
@@ -36719,7 +36740,7 @@
 "lng": -122.455521000002
 },
 {
-"name": "Mcdonald'S",
+"name": "Mcdonald's",
 "permit_type": "H29 - FAST FOOD OUTLETS",
 "address": "1100 FILLMORE ST",
 "neighborhood": "Western Addition",
@@ -36727,7 +36748,7 @@
 "lng": -122.431675500002
 },
 {
-"name": "Mcdonald'S",
+"name": "Mcdonald's",
 "permit_type": "H28 - TAKE-OUTS",
 "address": "609 MARKET ST",
 "neighborhood": "Financial District/South Beach",
@@ -36767,7 +36788,7 @@
 "lng": -122.436459000002
 },
 {
-"name": "Mcteague'S Saloon",
+"name": "Mcteague's Saloon",
 "permit_type": "H86 - BARS/TAVERNS W/O FOOD PREP",
 "address": "1237 POLK ST",
 "neighborhood": "Nob Hill",
@@ -36871,7 +36892,7 @@
 "lng": -122.406052500002
 },
 {
-"name": "Mei'S Groceries",
+"name": "Mei's Groceries",
 "permit_type": "H03 - RETAIL MKTS W/O PREP (UNDER 5001)",
 "address": "1037 STOCKTON ST",
 "neighborhood": "Chinatown",
@@ -36895,7 +36916,7 @@
 "lng": -122.421798817434
 },
 {
-"name": "Mel'S Drive In",
+"name": "Mel's Drive In",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "833 MISSION ST O & N",
 "neighborhood": "South of Market",
@@ -36959,7 +36980,7 @@
 "lng": -122.433786000002
 },
 {
-"name": "Memphis Minnie'S Bbq Joint",
+"name": "Memphis Minnie's Bbq Joint",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "576 HAIGHT ST",
 "neighborhood": "Hayes Valley",
@@ -37357,7 +37378,7 @@
 "lineage_name": "Miette"
 },
 {
-"name": "Mike'S Groceries & Liquors",
+"name": "Mike's Groceries & Liquors",
 "permit_type": "H31 - TOBACCO SALES - ANNUAL LICENSE FEE",
 "address": "2499 MISSION ST",
 "neighborhood": "Mission",
@@ -37365,7 +37386,7 @@
 "lng": -122.418616500002
 },
 {
-"name": "Mike'S Groceries And Liquors",
+"name": "Mike's Groceries And Liquors",
 "permit_type": "H03 - RETAIL MKTS W/O PREP (UNDER 5001)",
 "address": "2499 MISSION ST",
 "neighborhood": "Mission",
@@ -37373,7 +37394,7 @@
 "lng": -122.418616500002
 },
 {
-"name": "Mike'S Market",
+"name": "Mike's Market",
 "permit_type": "H31 - TOBACCO SALES - ANNUAL LICENSE FEE",
 "address": "2200 SILVER AVE",
 "neighborhood": "Bayview Hunters Point",
@@ -37591,7 +37612,7 @@
 "lng": -122.490225000002
 },
 {
-"name": "Ming'S Diner",
+"name": "Ming's Diner",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "2129 TARAVAL ST",
 "neighborhood": "Sunset/Parkside",
@@ -37599,7 +37620,7 @@
 "lng": -122.489077500002
 },
 {
-"name": "Ming'S Poultry Inc",
+"name": "Ming's Poultry Inc",
 "permit_type": "H03 - RETAIL MKTS W/O PREP (UNDER 5001)",
 "address": "1136 GRANT AVE",
 "neighborhood": "Chinatown",
@@ -37663,7 +37684,7 @@
 "lng": -122.389393500002
 },
 {
-"name": "Minnie Bell'S Soul Movement",
+"name": "Minnie Bell's Soul Movement",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "1375 FILLMORE ST",
 "neighborhood": "Western Addition",
@@ -37711,7 +37732,7 @@
 "lng": -122.453680500002
 },
 {
-"name": "Miss Q'S Convenience Llc",
+"name": "Miss Q's Convenience Llc",
 "permit_type": "H03 - RETAIL MKTS W/O PREP (UNDER 5001)",
 "address": "838 WASHINGTON ST",
 "neighborhood": "Chinatown",
@@ -38091,12 +38112,13 @@
 "lng": -122.392350000002
 },
 {
-"name": "Mister Jiu'S",
+"name": "Mister Jiu's",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "28 WAVERLY PL",
 "neighborhood": "Chinatown",
 "lat": 37.793605863595,
 "lng": -122.406678848592,
+"star_name": "Mister Jiu's",
 "lineaged": true,
 "lineage_name": "Mister Jiu's",
 "michelin": true
@@ -38248,7 +38270,7 @@
 "lng": -122.464867500002
 },
 {
-"name": "Mj'S",
+"name": "Mj's",
 "permit_type": "H24R - RESTAURANT UNDER 1,000 SQFT",
 "address": "969 HYDE ST",
 "neighborhood": "Nob Hill",
@@ -38272,7 +38294,7 @@
 "lng": -122.420533500002
 },
 {
-"name": "Mo'S Grill Inc",
+"name": "Mo's Grill Inc",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "1322 GRANT AVE",
 "neighborhood": "North Beach",
@@ -38420,7 +38442,7 @@
 "lng": -122.421132000002
 },
 {
-"name": "Moki'S Sushi And Pacific Grill",
+"name": "Moki's Sushi And Pacific Grill",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "615 CORTLAND AVE",
 "neighborhood": "Bernal Heights",
@@ -38454,7 +38476,7 @@
 "lineage_name": "Molinari Delicatessen"
 },
 {
-"name": "Mollie Stone'S Castro Market",
+"name": "Mollie Stone's Castro Market",
 "permit_type": "H09 - RETAIL MKTS W/FOOD PREP (5001 - 10000)",
 "address": "4201 18TH ST",
 "neighborhood": "Castro/Upper Market",
@@ -38478,7 +38500,7 @@
 "lng": -122.452299000002
 },
 {
-"name": "Molly'S Kookies",
+"name": "Molly's Kookies",
 "permit_type": "H98 - COTTAGE FOOD OPERATIONS - TIER A (DIRECT SALES)",
 "address": "1402 GOLDEN GATE AVE",
 "neighborhood": "Western Addition",
@@ -38486,7 +38508,7 @@
 "lng": -122.433835500002
 },
 {
-"name": "Molotov'S",
+"name": "Molotov's",
 "permit_type": "H86 - BARS/TAVERNS W/O FOOD PREP",
 "address": "582 HAIGHT ST",
 "neighborhood": "Hayes Valley",
@@ -38542,7 +38564,7 @@
 "lng": -122.463886500002
 },
 {
-"name": "Momo'S",
+"name": "Momo's",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "760 2ND ST",
 "neighborhood": "Mission Bay",
@@ -38565,9 +38587,7 @@
 "address": "414 COLUMBUS AVE",
 "neighborhood": "North Beach",
 "lat": 37.799082000001,
-"lng": -122.408028000002,
-"lineaged": true,
-"lineage_name": "Mona Lisa Mare e Monti"
+"lng": -122.408028000002
 },
 {
 "name": "Mona Lisa Restaurant",
@@ -38604,7 +38624,7 @@
 "lng": -122.425294500002
 },
 {
-"name": "Monchi'S Restaurant",
+"name": "Monchi's Restaurant",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "301 S VAN NESS AVE",
 "neighborhood": "Mission",
@@ -38790,7 +38810,7 @@
 "lng": -122.465920500002
 },
 {
-"name": "Morton'S Of Chicago-Steakhouse",
+"name": "Morton's Of Chicago-Steakhouse",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "400 POST ST",
 "neighborhood": "Nob Hill",
@@ -38798,7 +38818,7 @@
 "lng": -122.408617500002
 },
 {
-"name": "Morty'S Delicatessen",
+"name": "Morty's Delicatessen",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "280 GOLDEN GATE AVE",
 "neighborhood": "Tenderloin",
@@ -39050,7 +39070,7 @@
 "lineage_name": "Mr. Pollo"
 },
 {
-"name": "Mr Tipple'S Recording Studio",
+"name": "Mr Tipple's Recording Studio",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "39 FELL ST",
 "neighborhood": "Tenderloin",
@@ -39058,7 +39078,7 @@
 "lng": -122.418589500002
 },
 {
-"name": "Mr. B'S All American Hotdog'S",
+"name": "Mr. B's All American Hotdog's",
 "permit_type": "H78 - MOBILE FOOD FACILITY CLASS 4",
 "address": "PIER EMDARCADERO PIER 39",
 "neighborhood": "North Beach",
@@ -39098,7 +39118,7 @@
 "lng": -122.477247000002
 },
 {
-"name": "Mr. Digby'S",
+"name": "Mr. Digby's",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "1199 CHURCH ST",
 "neighborhood": "Noe Valley",
@@ -39114,7 +39134,7 @@
 "lng": -122.403852000002
 },
 {
-"name": "Mr. Mahjong'S",
+"name": "Mr. Mahjong's",
 "permit_type": "H86 - BARS/TAVERNS W/O FOOD PREP",
 "address": "260 KEARNY ST",
 "neighborhood": "Financial District/South Beach",
@@ -39122,7 +39142,7 @@
 "lng": -122.403762000002
 },
 {
-"name": "Mr. Nova'S Ice Cream Cart",
+"name": "Mr. Nova's Ice Cream Cart",
 "permit_type": "H77 - MOBILE FOOD FACILITY CLASS 3",
 "address": "103 HORNE AVE",
 "neighborhood": "Bayview Hunters Point",
@@ -39138,7 +39158,7 @@
 "lng": -122.408388000002
 },
 {
-"name": "Mr. Singh'S Curry Pizza",
+"name": "Mr. Singh's Curry Pizza",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "2241 JUDAH ST",
 "neighborhood": "Sunset/Parkside",
@@ -39170,7 +39190,7 @@
 "lng": -122.421082500002
 },
 {
-"name": "Mrs Field'S Cookies Pier 39",
+"name": "Mrs Field's Cookies Pier 39",
 "permit_type": "H29 - FAST FOOD OUTLETS",
 "address": "PIER 39 B-06",
 "neighborhood": "North Beach",
@@ -39202,7 +39222,7 @@
 "lng": -122.481972000002
 },
 {
-"name": "Mulan'S Market",
+"name": "Mulan's Market",
 "permit_type": "H03 - RETAIL MKTS W/O PREP (UNDER 5001)",
 "address": "2570 NORIEGA ST",
 "neighborhood": "Sunset/Parkside",
@@ -39234,7 +39254,7 @@
 "lng": -122.461776000002
 },
 {
-"name": "Muracci'S Japanese Restaurant",
+"name": "Muracci's Japanese Restaurant",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "307 KEARNY ST",
 "neighborhood": "Financial District/South Beach",
@@ -39250,7 +39270,7 @@
 "lng": -122.419080000002
 },
 {
-"name": "Murio'S",
+"name": "Murio's",
 "permit_type": "H86 - BARS/TAVERNS W/O FOOD PREP",
 "address": "1811 HAIGHT ST",
 "neighborhood": "Haight Ashbury",
@@ -39258,7 +39278,7 @@
 "lng": -122.452218000002
 },
 {
-"name": "Murph'S Pub Guiness Club House",
+"name": "Murph's Pub Guiness Club House",
 "permit_type": "H36 - STADIUM CONCESSIONS (PERM)",
 "address": "24 WILLIE MAYS PLZ # VIEW 3",
 "neighborhood": "Mission Bay",
@@ -39266,7 +39286,7 @@
 "lng": -122.391855000002
 },
 {
-"name": "Murph'S Pub Guiness Club House-Sec 302",
+"name": "Murph's Pub Guiness Club House-Sec 302",
 "permit_type": "H36 - STADIUM CONCESSIONS (PERM)",
 "address": "24 WILLIE MAYS PLZ # VIEW 3",
 "neighborhood": "Mission Bay",
@@ -39386,7 +39406,7 @@
 "lng": -122.474254500002
 },
 {
-"name": "My Father'S Kitchen Llc",
+"name": "My Father's Kitchen Llc",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "1655 DIVISADERO ST",
 "neighborhood": "Japantown",
@@ -39468,7 +39488,7 @@
 "lng": -122.476837500002
 },
 {
-"name": "Nafisa'S Table, Llc",
+"name": "Nafisa's Table, Llc",
 "permit_type": "H102 - Community Event Food Vendor - High Hazard",
 "address": "103 HORNE AVE",
 "neighborhood": "Bayview Hunters Point",
@@ -39606,6 +39626,7 @@
 "neighborhood": "Japantown",
 "lat": 37.785564000001,
 "lng": -122.428719000002,
+"star_name": "Nari",
 "lineaged": true,
 "lineage_name": "Nari",
 "michelin": true
@@ -39627,7 +39648,7 @@
 "lng": -122.394265021381
 },
 {
-"name": "Natan'S Catering",
+"name": "Natan's Catering",
 "permit_type": "H76 - MOBILE FOOD FACILITY CLASS 2",
 "address": "2344 14TH AVE",
 "neighborhood": "West of Twin Peaks",
@@ -39635,7 +39656,7 @@
 "lng": -122.469993000002
 },
 {
-"name": "Nation'S Giant Hamburgers",
+"name": "Nation's Giant Hamburgers",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "49 S Van Ness Ave 7th Floor",
 "neighborhood": "Mission",
@@ -39643,7 +39664,7 @@
 "lng": -122.418045000002
 },
 {
-"name": "Nation'S Giant Hamburgers No. 49",
+"name": "Nation's Giant Hamburgers No. 49",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "145 JEFFERSON ST STE 200",
 "neighborhood": "North Beach",
@@ -39683,7 +39704,7 @@
 "lng": -122.432134500002
 },
 {
-"name": "Nature'S Edge Spa",
+"name": "Nature's Edge Spa",
 "permit_type": "H67 - MASSAGE ESTABLISHMENT",
 "address": "404 BALBOA ST",
 "neighborhood": "Inner Richmond",
@@ -39715,7 +39736,7 @@
 "lng": -122.419377000002
 },
 {
-"name": "Naya Delights At Hotc Farmer'S Market",
+"name": "Naya Delights At Hotc Farmer's Market",
 "permit_type": "H34 - PUSHCARTS (RETAIL FOOD VEHICLE)",
 "address": "147 FULTON ST",
 "neighborhood": "Tenderloin",
@@ -39731,7 +39752,7 @@
 "lng": -122.424970500002
 },
 {
-"name": "Naz'S Halal Food",
+"name": "Naz's Halal Food",
 "permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
 "address": "475 6TH ST",
 "neighborhood": "South of Market",
@@ -39771,7 +39792,7 @@
 "lng": -122.438664000002
 },
 {
-"name": "Neill'S Grocery & Liquor",
+"name": "Neill's Grocery & Liquor",
 "permit_type": "H03 - RETAIL MKTS W/O PREP (UNDER 5001)",
 "address": "521 3RD ST",
 "neighborhood": "Financial District/South Beach",
@@ -39891,7 +39912,7 @@
 "lng": -122.409013500002
 },
 {
-"name": "New Emmy'S Restaurant Llc",
+"name": "New Emmy's Restaurant Llc",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "1923 OCEAN AVE",
 "neighborhood": "West of Twin Peaks",
@@ -40019,7 +40040,7 @@
 "lng": -122.430478500002
 },
 {
-"name": "New Louie'S Inc",
+"name": "New Louie's Inc",
 "permit_type": "H03 - RETAIL MKTS W/O PREP (UNDER 5001)",
 "address": "1213 STOCKTON ST",
 "neighborhood": "Chinatown",
@@ -40259,7 +40280,7 @@
 "lng": -122.445238500002
 },
 {
-"name": "New Wayne'S Liquor Inc",
+"name": "New Wayne's Liquor Inc",
 "permit_type": "H03 - RETAIL MKTS W/O PREP (UNDER 5001)",
 "address": "911 KEARNY ST",
 "neighborhood": "Chinatown",
@@ -40267,7 +40288,7 @@
 "lng": -122.405395500002
 },
 {
-"name": "New Wayne'S Liquor, Inc.",
+"name": "New Wayne's Liquor, Inc.",
 "permit_type": "H31 - TOBACCO SALES - ANNUAL LICENSE FEE",
 "address": "911 KEARNY ST",
 "neighborhood": "Chinatown",
@@ -40333,7 +40354,7 @@
 "lineage_name": "New York"
 },
 {
-"name": "Newkirk'S",
+"name": "Newkirk's",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "1002 POTRERO AVE",
 "neighborhood": "Mission",
@@ -40356,7 +40377,7 @@
 "lat": 37.799775000001,
 "lng": -122.408563500002,
 "lineaged": true,
-"lineage_name": "Next Door"
+"lineage_name": "Next"
 },
 {
 "name": "Next Level Burger Company, Inc.",
@@ -40372,9 +40393,7 @@
 "address": "1217 SUTTER ST",
 "neighborhood": "Nob Hill",
 "lat": 37.787445000001,
-"lng": -122.420479500002,
-"lineaged": true,
-"lineage_name": "Next"
+"lng": -122.420479500002
 },
 {
 "name": "Nia Soul Cafe Llc",
@@ -40409,7 +40428,7 @@
 "lng": -122.392764000002
 },
 {
-"name": "Nick'S Corner",
+"name": "Nick's Corner",
 "permit_type": "H03 - RETAIL MKTS W/O PREP (UNDER 5001)",
 "address": "342 COLUMBUS AVE",
 "neighborhood": "North Beach",
@@ -40417,7 +40436,7 @@
 "lng": -122.407362000002
 },
 {
-"name": "Nick'S Foods",
+"name": "Nick's Foods",
 "permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
 "address": "1659 MARKET ST",
 "neighborhood": "Mission",
@@ -40425,7 +40444,7 @@
 "lng": -122.421312000002
 },
 {
-"name": "Nick'S Lighthouse",
+"name": "Nick's Lighthouse",
 "permit_type": "H33 - COMMISSARIES",
 "address": "45 PIER SHED B SPACE 1A",
 "neighborhood": "Financial District/South Beach",
@@ -40433,7 +40452,7 @@
 "lng": -122.396187814992
 },
 {
-"name": "Nick'S Lighthouse",
+"name": "Nick's Lighthouse",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "2815 TAYLOR ST",
 "neighborhood": "North Beach",
@@ -40441,7 +40460,7 @@
 "lng": -122.415874237396
 },
 {
-"name": "Nick'S Super Market",
+"name": "Nick's Super Market",
 "permit_type": "H03 - RETAIL MKTS W/O PREP (UNDER 5001)",
 "address": "144 PAGE ST",
 "neighborhood": "Hayes Valley",
@@ -40449,7 +40468,7 @@
 "lng": -122.423247000002
 },
 {
-"name": "Nickie'S Irish Pub",
+"name": "Nickie's Irish Pub",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "466 HAIGHT ST",
 "neighborhood": "Hayes Valley",
@@ -40493,7 +40512,7 @@
 "lng": -122.430564000002
 },
 {
-"name": "Nikki'S Oriental Massages",
+"name": "Nikki's Oriental Massages",
 "permit_type": "H67 - MASSAGE ESTABLISHMENT",
 "address": "1172 SUTTER ST",
 "neighborhood": "Nob Hill",
@@ -40507,12 +40526,13 @@
 "neighborhood": "Mission Bay",
 "lat": 37.769688000001,
 "lng": -122.403460500002,
+"star_name": "Niku Steakhouse",
 "lineaged": true,
 "lineage_name": "Niku Steakhouse",
 "michelin": true
 },
 {
-"name": "Nina'S Cafe",
+"name": "Nina's Cafe",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "201 FELL ST",
 "neighborhood": "Hayes Valley",
@@ -40568,7 +40588,7 @@
 "lng": -122.416011000002
 },
 {
-"name": "Nizario'S Pizza",
+"name": "Nizario's Pizza",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "3840   GEARY BLVD",
 "neighborhood": "Inner Richmond",
@@ -40608,7 +40628,7 @@
 "lng": -122.434812000002
 },
 {
-"name": "Noah'S New York Bagels #2103",
+"name": "Noah's New York Bagels #2103",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "2075 CHESTNUT ST",
 "neighborhood": "Marina",
@@ -40616,7 +40636,7 @@
 "lng": -122.437350000002
 },
 {
-"name": "Noah'S New York Bagels #2105",
+"name": "Noah's New York Bagels #2105",
 "permit_type": "H28 - TAKE-OUTS",
 "address": "1521 SLOAT BLVD",
 "neighborhood": "Sunset/Parkside",
@@ -40624,7 +40644,7 @@
 "lng": -122.489923500002
 },
 {
-"name": "Noah'S New York Bagels #2113",
+"name": "Noah's New York Bagels #2113",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "100 BUSH ST",
 "neighborhood": "Financial District/South Beach",
@@ -40632,7 +40652,7 @@
 "lng": -122.399977500002
 },
 {
-"name": "Noah'S New York Bagels #2147",
+"name": "Noah's New York Bagels #2147",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "2300 16TH ST",
 "neighborhood": "Mission",
@@ -40826,7 +40846,7 @@
 "lng": -122.402614500002
 },
 {
-"name": "Noor'S Snacks",
+"name": "Noor's Snacks",
 "permit_type": "H03 - RETAIL MKTS W/O PREP (UNDER 5001)",
 "address": "565 ELLIS ST BLDG B",
 "neighborhood": "Tenderloin",
@@ -40942,7 +40962,7 @@
 "lng": -122.482638000002
 },
 {
-"name": "Norman'S Ice Cream & Freezes",
+"name": "Norman's Ice Cream & Freezes",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "2801 LEAVENWORTH ST",
 "neighborhood": "Russian Hill",
@@ -41224,7 +41244,7 @@
 "lng": -122.387373000002
 },
 {
-"name": "Nute'S",
+"name": "Nute's",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "903 CORTLAND AVE",
 "neighborhood": "Bernal Heights",
@@ -41248,7 +41268,7 @@
 "lng": -122.407362000002
 },
 {
-"name": "O'Brien'S Irish Pub",
+"name": "O'Brien's Irish Pub",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "1940 TARAVAL ST",
 "neighborhood": "Sunset/Parkside",
@@ -41264,7 +41284,7 @@
 "lng": -122.411547000002
 },
 {
-"name": "O'Keeffe'S Bar",
+"name": "O'Keeffe's Bar",
 "permit_type": "H86 - BARS/TAVERNS W/O FOOD PREP",
 "address": "598   5TH AVE",
 "neighborhood": "Inner Richmond",
@@ -41272,7 +41292,7 @@
 "lng": -122.462815500002
 },
 {
-"name": "O'Reilly'S Pub",
+"name": "O'Reilly's Pub",
 "permit_type": "H86 - BARS/TAVERNS W/O FOOD PREP",
 "address": "1840   HAIGHT ST",
 "neighborhood": "Haight Ashbury",
@@ -41734,7 +41754,7 @@
 "lng": -122.395995000002
 },
 {
-"name": "Olivier'S Butchery",
+"name": "Olivier's Butchery",
 "permit_type": "H03R - RETAIL MKTS W/O PREP (UNDER 5001)",
 "address": "1192 ILLINOIS ST",
 "neighborhood": "Potrero Hill",
@@ -42074,7 +42094,7 @@
 "lng": -122.415403500002
 },
 {
-"name": "Onyia'S Rehabilitative Massage",
+"name": "Onyia's Rehabilitative Massage",
 "permit_type": "H70 - SOLO MASSAGE ESTABLISHMENT",
 "address": "2209 IRVING ST STE 207",
 "neighborhood": "Sunset/Parkside",
@@ -42180,7 +42200,7 @@
 "lineage_name": "Orchids"
 },
 {
-"name": "Oren'S Hummus",
+"name": "Oren's Hummus",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "71 THIRD ST",
 "neighborhood": "Financial District/South Beach",
@@ -42212,7 +42232,7 @@
 "lng": -122.442376500002
 },
 {
-"name": "Original Joe'S",
+"name": "Original Joe's",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "601 UNION ST",
 "neighborhood": "North Beach",
@@ -42222,7 +42242,7 @@
 "lineage_name": "Original Joe's"
 },
 {
-"name": "Orlando'S/Baby Bull/Fish Tacos",
+"name": "Orlando's/Baby Bull/Fish Tacos",
 "permit_type": "H36 - STADIUM CONCESSIONS (PERM)",
 "address": "24 WILLIE MAYS PLZ UPPR UPP",
 "neighborhood": "Mission Bay",
@@ -42230,7 +42250,7 @@
 "lng": -122.391855000002
 },
 {
-"name": "Orphan Andy'S",
+"name": "Orphan Andy's",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "3991 A 17TH ST",
 "neighborhood": "Castro/Upper Market",
@@ -42932,7 +42952,7 @@
 "lng": -122.432148000002
 },
 {
-"name": "Panchita'S At Mid Market",
+"name": "Panchita's At Mid Market",
 "permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
 "address": "1200 MARKET ST UNIT K20",
 "neighborhood": "Tenderloin",
@@ -42940,7 +42960,7 @@
 "lng": -122.415291000002
 },
 {
-"name": "Panchita'S Restaurant",
+"name": "Panchita's Restaurant",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "49 S Van Ness Ave 7th Floor",
 "neighborhood": "Mission",
@@ -42964,7 +42984,7 @@
 "lng": -122.421096000002
 },
 {
-"name": "Pancho'S",
+"name": "Pancho's",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "3440 GEARY BLVD",
 "neighborhood": "Presidio Heights",
@@ -43060,7 +43080,7 @@
 "lng": -122.399532000002
 },
 {
-"name": "Papa John'S Pizza",
+"name": "Papa John's Pizza",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "969 SUTTER ST",
 "neighborhood": "Nob Hill",
@@ -43076,7 +43096,7 @@
 "lng": -122.473953000002
 },
 {
-"name": "Papa Mak'S Burgers",
+"name": "Papa Mak's Burgers",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "3755 NOREIGA ST",
 "neighborhood": "Sunset/Parkside",
@@ -43092,7 +43112,7 @@
 "lng": -122.399973000002
 },
 {
-"name": "Papa'S Kitchen",
+"name": "Papa's Kitchen",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "1705 HAIGHT ST",
 "neighborhood": "Haight Ashbury",
@@ -43460,7 +43480,7 @@
 "lng": -122.414611500002
 },
 {
-"name": "Paula'S Cafe",
+"name": "Paula's Cafe",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "488 HAIGHT ST",
 "neighborhood": "Hayes Valley",
@@ -43568,7 +43588,7 @@
 "lineage_name": "Pearl"
 },
 {
-"name": "Pearl'S Burgers",
+"name": "Pearl's Burgers",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "708 POST ST",
 "neighborhood": "Nob Hill",
@@ -43592,7 +43612,7 @@
 "lng": -122.390311500002
 },
 {
-"name": "Pebble'S Cafe Sf",
+"name": "Pebble's Cafe Sf",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "2852 DIAMOND ST",
 "neighborhood": "Glen Park",
@@ -43608,7 +43628,7 @@
 "lng": -122.372924612189
 },
 {
-"name": "Pedrito'S",
+"name": "Pedrito's",
 "permit_type": "H31 - TOBACCO SALES - ANNUAL LICENSE FEE",
 "address": "3254 23RD ST",
 "neighborhood": "Mission",
@@ -43624,7 +43644,7 @@
 "lng": -122.417788500002
 },
 {
-"name": "Peet'S Coffee & Tea",
+"name": "Peet's Coffee & Tea",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "773 MARKET ST",
 "neighborhood": "Financial District/South Beach",
@@ -43632,7 +43652,7 @@
 "lng": -122.405112000002
 },
 {
-"name": "Peet'S Coffee & Tea",
+"name": "Peet's Coffee & Tea",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "625 8TH ST STE B1",
 "neighborhood": "South of Market",
@@ -43640,7 +43660,7 @@
 "lng": -122.404995000002
 },
 {
-"name": "Peet'S Coffee Inc",
+"name": "Peet's Coffee Inc",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "3419 CALIFORNIA ST",
 "neighborhood": "Presidio Heights",
@@ -43648,7 +43668,7 @@
 "lng": -122.450422500002
 },
 {
-"name": "Peet'S Coffee Inc",
+"name": "Peet's Coffee Inc",
 "permit_type": "H28 - TAKE-OUTS",
 "address": "54 WEST PORTAL AVE",
 "neighborhood": "West of Twin Peaks",
@@ -43656,7 +43676,7 @@
 "lng": -122.466762000002
 },
 {
-"name": "Peet'S Coffee Inc",
+"name": "Peet's Coffee Inc",
 "permit_type": "H28 - TAKE-OUTS",
 "address": "2257 MARKET ST",
 "neighborhood": "Castro/Upper Market",
@@ -43664,7 +43684,7 @@
 "lng": -122.431851000002
 },
 {
-"name": "Peet'S Coffee Inc",
+"name": "Peet's Coffee Inc",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "2139 POLK ST #C",
 "neighborhood": "Russian Hill",
@@ -43672,7 +43692,7 @@
 "lng": -122.422185000002
 },
 {
-"name": "Peet'S Coffee Inc",
+"name": "Peet's Coffee Inc",
 "permit_type": "H28 - TAKE-OUTS",
 "address": "2300 16TH ST STE 240",
 "neighborhood": "Mission",
@@ -43680,7 +43700,7 @@
 "lng": -122.410422000002
 },
 {
-"name": "Peet'S Coffee Inc",
+"name": "Peet's Coffee Inc",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "2197 FILLMORE ST",
 "neighborhood": "Pacific Heights",
@@ -43688,7 +43708,7 @@
 "lng": -122.434294500002
 },
 {
-"name": "Peet'S Coffee Inc",
+"name": "Peet's Coffee Inc",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "2 EMBARCADERO CTR #R2113",
 "neighborhood": "Financial District/South Beach",
@@ -43696,7 +43716,7 @@
 "lng": -122.398472988232
 },
 {
-"name": "Peet'S Coffee Inc",
+"name": "Peet's Coffee Inc",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "601 VAN NESS AVE",
 "neighborhood": "Western Addition",
@@ -43704,7 +43724,7 @@
 "lng": -122.421420000002
 },
 {
-"name": "Peet'S Coffee Inc",
+"name": "Peet's Coffee Inc",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "5201 GEARY BLVD",
 "neighborhood": "Outer Richmond",
@@ -43712,7 +43732,7 @@
 "lng": -122.475280500002
 },
 {
-"name": "Peet'S Coffee Inc",
+"name": "Peet's Coffee Inc",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "595 MARKET ST",
 "neighborhood": "Financial District/South Beach",
@@ -43720,7 +43740,7 @@
 "lng": -122.400958500002
 },
 {
-"name": "Peet'S Coffee Inc",
+"name": "Peet's Coffee Inc",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "1509 SLOAT BLVD",
 "neighborhood": "Sunset/Parkside",
@@ -43728,7 +43748,7 @@
 "lng": -122.489730000002
 },
 {
-"name": "Peet'S Coffee Inc",
+"name": "Peet's Coffee Inc",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "3251 20TH AVE",
 "neighborhood": "Lakeshore",
@@ -43736,7 +43756,7 @@
 "lng": -122.476837500002
 },
 {
-"name": "Peet'S Coffee Inc",
+"name": "Peet's Coffee Inc",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "919   COLE ST",
 "neighborhood": "Haight Ashbury",
@@ -43744,7 +43764,7 @@
 "lng": -122.450197500002
 },
 {
-"name": "Peet'S Coffee Inc",
+"name": "Peet's Coffee Inc",
 "permit_type": "H29 - FAST FOOD OUTLETS",
 "address": "2080   CHESTNUT ST",
 "neighborhood": "Marina",
@@ -43752,7 +43772,7 @@
 "lng": -122.437894500002
 },
 {
-"name": "Peet'S Coffee Inc",
+"name": "Peet's Coffee Inc",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "155 MONTGOMERY ST",
 "neighborhood": "Financial District/South Beach",
@@ -43808,7 +43828,7 @@
 "lng": -122.394755030618
 },
 {
-"name": "Penelope'S Coffee & Tea",
+"name": "Penelope's Coffee & Tea",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "121 SPEAR ST STE B12",
 "neighborhood": "Financial District/South Beach",
@@ -43998,7 +44018,7 @@
 "lng": -122.410422000002
 },
 {
-"name": "Pete'S Deli & Cafe",
+"name": "Pete's Deli & Cafe",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "1661 DIVISADERO ST",
 "neighborhood": "Japantown",
@@ -44483,7 +44503,7 @@
 "lat": 37.80369701693,
 "lng": -122.399606975913,
 "lineaged": true,
-"lineage_name": "Pier 23"
+"lineage_name": "Pier 23 Cafe"
 },
 {
 "name": "Pier 39 Ice Cream",
@@ -44634,7 +44654,7 @@
 "lng": -122.416483500002
 },
 {
-"name": "Pinoy'S Place By Kusina",
+"name": "Pinoy's Place By Kusina",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "406 CLEMENT ST",
 "neighborhood": "Inner Richmond",
@@ -44642,7 +44662,7 @@
 "lng": -122.463792000002
 },
 {
-"name": "Pinoy'S Place By Kusina",
+"name": "Pinoy's Place By Kusina",
 "permit_type": "H24R - RESTAURANT UNDER 1,000 SQFT",
 "address": "1849   LINCOLN WAY",
 "neighborhood": "Sunset/Parkside",
@@ -44876,7 +44896,7 @@
 "lng": -122.418045000002
 },
 {
-"name": "Plan Check - Meyer'S Delicatessen",
+"name": "Plan Check - Meyer's Delicatessen",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "49 S Van Ness Ave 7th Floor",
 "neighborhood": "Mission",
@@ -45306,7 +45326,7 @@
 "lng": -122.441350500002
 },
 {
-"name": "Popi'S Oysterette",
+"name": "Popi's Oysterette",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "2095 CHESTNUT ST",
 "neighborhood": "Marina",
@@ -46226,7 +46246,7 @@
 "lng": -122.405760000002
 },
 {
-"name": "Q'S Sandwich Shop",
+"name": "Q's Sandwich Shop",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "258 DIVISADERO",
 "neighborhood": "Haight Ashbury",
@@ -46242,7 +46262,7 @@
 "lng": -122.466703500002
 },
 {
-"name": "Qiong'S Company",
+"name": "Qiong's Company",
 "permit_type": "H03 - RETAIL MKTS W/O PREP (UNDER 5001)",
 "address": "850 JACKSON ST",
 "neighborhood": "Chinatown",
@@ -46362,7 +46382,7 @@
 "lng": -122.423337000002
 },
 {
-"name": "Queen'S Louisiana Po-Boy Cafe, Llc",
+"name": "Queen's Louisiana Po-Boy Cafe, Llc",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "PIER 33 NORTH THE EMBARCADERO 101",
 "neighborhood": "Financial District/South Beach",
@@ -46410,6 +46430,7 @@
 "neighborhood": "North Beach",
 "lat": 37.797507000001,
 "lng": -122.403379500002,
+"star_name": "Quince",
 "lineaged": true,
 "lineage_name": "Quince",
 "michelin": true
@@ -46531,7 +46552,7 @@
 "lng": -122.403330000002
 },
 {
-"name": "Radman'S Produce Market",
+"name": "Radman's Produce Market",
 "permit_type": "H31 - TOBACCO SALES - ANNUAL LICENSE FEE",
 "address": "201 TURK ST #D",
 "neighborhood": "Tenderloin",
@@ -46595,7 +46616,7 @@
 "lng": -122.481956030503
 },
 {
-"name": "Raising Cane'S",
+"name": "Raising Cane's",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "49 S Van Ness Ave 7th Floor",
 "neighborhood": "Mission",
@@ -46671,7 +46692,7 @@
 "lng": -122.496597000002
 },
 {
-"name": "Randa'S Market",
+"name": "Randa's Market",
 "permit_type": "H03 - RETAIL MKTS W/O PREP (UNDER 5001)",
 "address": "3131 16TH ST",
 "neighborhood": "Mission",
@@ -46777,7 +46798,7 @@
 "lng": -122.414260500002
 },
 {
-"name": "Ray'S Pizzeria",
+"name": "Ray's Pizzeria",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "2414 SAN BRUNO AVE",
 "neighborhood": "Portola",
@@ -46989,7 +47010,7 @@
 "lineage_name": "The Red Tavern"
 },
 {
-"name": "Red'S Java House Inc",
+"name": "Red's Java House Inc",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "30 PIER",
 "neighborhood": "Financial District/South Beach",
@@ -46997,7 +47018,7 @@
 "lng": -122.387316004553
 },
 {
-"name": "Red'S Place",
+"name": "Red's Place",
 "permit_type": "H86 - BARS/TAVERNS W/O FOOD PREP",
 "address": "672 JACKSON ST",
 "neighborhood": "Chinatown",
@@ -47037,7 +47058,7 @@
 "lng": -122.433480000002
 },
 {
-"name": "Reem'S California, Llc",
+"name": "Reem's California, Llc",
 "permit_type": "H28 - TAKE-OUTS",
 "address": "1 FERRY PLZ BLDG 19",
 "neighborhood": "Financial District/South Beach",
@@ -47047,7 +47068,7 @@
 "lineage_name": "Reem's California"
 },
 {
-"name": "Reem'S Mission",
+"name": "Reem's Mission",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "2901 MISSION ST",
 "neighborhood": "Mission",
@@ -47107,7 +47128,7 @@
 "lng": -122.404486500002
 },
 {
-"name": "Reina'S Restaurant",
+"name": "Reina's Restaurant",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "5479 MISSION ST",
 "neighborhood": "Excelsior",
@@ -47147,7 +47168,7 @@
 "lng": -122.388885000002
 },
 {
-"name": "Reno'S Liquor",
+"name": "Reno's Liquor",
 "permit_type": "H31 - TOBACCO SALES - ANNUAL LICENSE FEE",
 "address": "728 22ND ST",
 "neighborhood": "Potrero Hill",
@@ -47176,7 +47197,9 @@
 "address": "2700 JONES ST",
 "neighborhood": "North Beach",
 "lat": 37.806525000001,
-"lng": -122.417005500002
+"lng": -122.417005500002,
+"lineaged": true,
+"lineage_name": "Abaca"
 },
 {
 "name": "Restaurant Depot",
@@ -47201,8 +47224,10 @@
 "neighborhood": "Nob Hill",
 "lat": 37.790160927656,
 "lng": -122.409031350087,
+"star_name": "Naides",
 "lineaged": true,
-"lineage_name": "Restaurant Naides"
+"lineage_name": "Restaurant Naides",
+"michelin": true
 },
 {
 "name": "Restaurant Nisei",
@@ -47210,7 +47235,11 @@
 "address": "2316 Polk ST",
 "neighborhood": "Russian Hill",
 "lat": 37.798146000001,
-"lng": -122.421982500002
+"lng": -122.421982500002,
+"star_name": "Nisei",
+"lineaged": true,
+"lineage_name": "Nisei",
+"michelin": true
 },
 {
 "name": "Restaurant Nisei",
@@ -47325,7 +47354,7 @@
 "lng": -122.387391000002
 },
 {
-"name": "Rhea'S Market & Deli",
+"name": "Rhea's Market & Deli",
 "permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
 "address": "800 VALENCIA ST",
 "neighborhood": "Mission",
@@ -47341,7 +47370,7 @@
 "lng": -122.437629000002
 },
 {
-"name": "Ricci'S Market",
+"name": "Ricci's Market",
 "permit_type": "H31 - TOBACCO SALES - ANNUAL LICENSE FEE",
 "address": "2790 24TH ST",
 "neighborhood": "Mission",
@@ -47349,7 +47378,7 @@
 "lng": -122.408032500002
 },
 {
-"name": "Ricci'S Mrket",
+"name": "Ricci's Mrket",
 "permit_type": "H03 - RETAIL MKTS W/O PREP (UNDER 5001)",
 "address": "2790 24TH ST",
 "neighborhood": "Mission",
@@ -47379,9 +47408,9 @@
 "neighborhood": "Hayes Valley",
 "lat": 37.774854000001,
 "lng": -122.422855500002,
+"star_name": "Rich Table",
 "lineaged": true,
-"lineage_name": "Rich Table",
-"michelin": true
+"lineage_name": "Rich Table"
 },
 {
 "name": "Richland Market",
@@ -47434,7 +47463,7 @@
 "lng": -122.495994000002
 },
 {
-"name": "Rick And Roxy'S (Formerly Del Mar 2)",
+"name": "Rick And Roxy's (Formerly Del Mar 2)",
 "permit_type": "H86 - BARS/TAVERNS W/O FOOD PREP",
 "address": "2135 LOMBARD ST",
 "neighborhood": "Marina",
@@ -47466,7 +47495,7 @@
 "lng": -122.444838000002
 },
 {
-"name": "Rikki'S",
+"name": "Rikki's",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "2223 MARKET ST",
 "neighborhood": "Castro/Upper Market",
@@ -47474,7 +47503,7 @@
 "lng": -122.431477500002
 },
 {
-"name": "Rin'S",
+"name": "Rin's",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "4301 24TH ST",
 "neighborhood": "Noe Valley",
@@ -47482,7 +47511,7 @@
 "lng": -122.438614500002
 },
 {
-"name": "Rin'S Thai",
+"name": "Rin's Thai",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "4301 24TH ST",
 "neighborhood": "Noe Valley",
@@ -47528,6 +47557,7 @@
 "neighborhood": "Mission",
 "lat": 37.768815000001,
 "lng": -122.415124500002,
+"star_name": "Rintaro",
 "lineaged": true,
 "lineage_name": "Rintaro",
 "michelin": true
@@ -47623,7 +47653,7 @@
 "lng": -122.415363000002
 },
 {
-"name": "Rita'S Catering Trucks",
+"name": "Rita's Catering Trucks",
 "permit_type": "H79 - MOBILE FOOD FACILITY CLASS 5",
 "address": "100 ALEMANY BLVD",
 "neighborhood": "Bernal Heights",
@@ -47673,7 +47703,7 @@
 "lineage_name": "Ritz-Carlton (San Francisco)"
 },
 {
-"name": "Riu Plaza Fisherman'S Wharf",
+"name": "Riu Plaza Fisherman's Wharf",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "2500 MASON ST",
 "neighborhood": "North Beach",
@@ -47713,7 +47743,7 @@
 "lng": -122.461816500002
 },
 {
-"name": "Rj'S Market @ Levi Plaza",
+"name": "Rj's Market @ Levi Plaza",
 "permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
 "address": "1425 SANSOME ST",
 "neighborhood": "Financial District/South Beach",
@@ -47745,7 +47775,7 @@
 "lng": -122.38766603283
 },
 {
-"name": "Roadside Rosy'S",
+"name": "Roadside Rosy's",
 "permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
 "address": "1018 COLUMBUS AVE",
 "neighborhood": "North Beach",
@@ -47805,7 +47835,7 @@
 "lng": -122.416461000002
 },
 {
-"name": "Robinson'S Cafe",
+"name": "Robinson's Cafe",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "1101 POLK ST",
 "neighborhood": "Nob Hill",
@@ -47895,7 +47925,7 @@
 "lng": -122.440077000002
 },
 {
-"name": "Rome'S Kitchen Llc",
+"name": "Rome's Kitchen Llc",
 "permit_type": "H79 - MOBILE FOOD FACILITY CLASS 5",
 "address": "1195 Evans AVE",
 "neighborhood": "Bayview Hunters Point",
@@ -47903,7 +47933,7 @@
 "lng": -122.380908683699
 },
 {
-"name": "Ron'S Pit Stop Bbq",
+"name": "Ron's Pit Stop Bbq",
 "permit_type": "H23 - FOOD PREP AND SERVICE (FEE EXEMPT)",
 "address": "103 HORNE AVE",
 "neighborhood": "Bayview Hunters Point",
@@ -48081,7 +48111,7 @@
 "lineage_name": "Rose Pizzeria"
 },
 {
-"name": "Rose'S Cafe",
+"name": "Rose's Cafe",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "2298 UNION ST",
 "neighborhood": "Marina",
@@ -48139,7 +48169,7 @@
 "lng": -122.410422000002
 },
 {
-"name": "Rossi'S Deli",
+"name": "Rossi's Deli",
 "permit_type": "H31 - TOBACCO SALES - ANNUAL LICENSE FEE",
 "address": "426 CASTRO ST",
 "neighborhood": "Castro/Upper Market",
@@ -48403,7 +48433,7 @@
 "lng": -122.421087000002
 },
 {
-"name": "Rubin'S Market",
+"name": "Rubin's Market",
 "permit_type": "H31 - TOBACCO SALES - ANNUAL LICENSE FEE",
 "address": "2997 FOLSOM ST",
 "neighborhood": "Mission",
@@ -48427,7 +48457,7 @@
 "lng": -122.396836500002
 },
 {
-"name": "Ruby'S",
+"name": "Ruby's",
 "permit_type": "H25R - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "4300   JUDAH ST",
 "neighborhood": "Sunset/Parkside",
@@ -48435,7 +48465,7 @@
 "lng": -122.508270000002
 },
 {
-"name": "Rudi'S Sports Bar & Restaurant",
+"name": "Rudi's Sports Bar & Restaurant",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "3108 16TH ST",
 "neighborhood": "Mission",
@@ -48509,7 +48539,7 @@
 "lng": -122.502240000002
 },
 {
-"name": "Ruth'S",
+"name": "Ruth's",
 "permit_type": "H87 - BARS/TAVERNS W/FOOD PREP",
 "address": "3050 24TH ST",
 "neighborhood": "Mission",
@@ -48517,7 +48547,7 @@
 "lng": -122.413230000002
 },
 {
-"name": "Ryan'S Laundry",
+"name": "Ryan's Laundry",
 "permit_type": "H48 - WASH LAUNDRIES",
 "address": "240 LEAVENWORTH ST",
 "neighborhood": "Tenderloin",
@@ -48921,7 +48951,7 @@
 "lng": -122.417392500002
 },
 {
-"name": "Sai'S Vietnamese Restaurant",
+"name": "Sai's Vietnamese Restaurant",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "42 COLUMBUS AVE",
 "neighborhood": "Chinatown",
@@ -48990,8 +49020,7 @@
 "address": "228 TOWNSEND ST",
 "neighborhood": "South of Market",
 "lat": 37.778274000001,
-"lng": -122.393893500002,
-"michelin": true
+"lng": -122.393893500002
 },
 {
 "name": "Saison Cellar Sf Llc",
@@ -48999,8 +49028,7 @@
 "address": "234 TOWNSEND ST",
 "neighborhood": "South of Market",
 "lat": 37.778274000001,
-"lng": -122.393893500002,
-"michelin": true
+"lng": -122.393893500002
 },
 {
 "name": "Saison Restaurant",
@@ -49009,6 +49037,7 @@
 "neighborhood": "Financial District/South Beach",
 "lat": 37.779507000001,
 "lng": -122.392242000002,
+"star_name": "Saison",
 "lineaged": true,
 "lineage_name": "Saison",
 "michelin": true
@@ -49254,7 +49283,7 @@
 "lng": -122.409382500002
 },
 {
-"name": "Salty'S",
+"name": "Salty's",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "748 VAN NESS AVE",
 "neighborhood": "Tenderloin",
@@ -49312,7 +49341,7 @@
 "lng": -122.460795000002
 },
 {
-"name": "Sam Troung'S 76",
+"name": "Sam Troung's 76",
 "permit_type": "H31 - TOBACCO SALES - ANNUAL LICENSE FEE",
 "address": "1855 TARAVAL ST",
 "neighborhood": "Sunset/Parkside",
@@ -49320,7 +49349,7 @@
 "lng": -122.486076000002
 },
 {
-"name": "Sam Truong'S 76",
+"name": "Sam Truong's 76",
 "permit_type": "H03 - RETAIL MKTS W/O PREP (UNDER 5001)",
 "address": "1855 TARAVAL ST",
 "neighborhood": "Sunset/Parkside",
@@ -49338,7 +49367,7 @@
 "lineage_name": "Sam Wo"
 },
 {
-"name": "Sam'S",
+"name": "Sam's",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "618 BROADWAY ST",
 "neighborhood": "Chinatown",
@@ -49346,7 +49375,7 @@
 "lng": -122.407399659983
 },
 {
-"name": "Sam'S & Tacolicious North 300",
+"name": "Sam's & Tacolicious North 300",
 "permit_type": "H36 - STADIUM CONCESSIONS (PERM)",
 "address": "1 WARRIORS WAY, LVL 300 NORTH",
 "neighborhood": "Mission Bay",
@@ -49354,7 +49383,7 @@
 "lng": -122.38766603283
 },
 {
-"name": "Sam'S Bakery",
+"name": "Sam's Bakery",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "753 POLK ST",
 "neighborhood": "Tenderloin",
@@ -49362,7 +49391,7 @@
 "lng": -122.419467000002
 },
 {
-"name": "Sam'S Cable Car Lounge",
+"name": "Sam's Cable Car Lounge",
 "permit_type": "H87 - BARS/TAVERNS W/FOOD PREP",
 "address": "222 POWELL ST",
 "neighborhood": "Financial District/South Beach",
@@ -49370,7 +49399,7 @@
 "lng": -122.407866000002
 },
 {
-"name": "Sam'S Chowder Mobile",
+"name": "Sam's Chowder Mobile",
 "permit_type": "H79 - MOBILE FOOD FACILITY CLASS 5",
 "address": "4210 CABRILLO N HWY",
 "neighborhood": "Outer Richmond",
@@ -49378,7 +49407,7 @@
 "lng": -122.50382302541
 },
 {
-"name": "Sam'S Chowder Mobile",
+"name": "Sam's Chowder Mobile",
 "permit_type": "H79 - MOBILE FOOD FACILITY CLASS 5",
 "address": "1 GOLDEN GATE PARK",
 "neighborhood": "Tenderloin",
@@ -49386,7 +49415,7 @@
 "lng": -122.41042189067
 },
 {
-"name": "Sam'S East",
+"name": "Sam's East",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "620 BROADWAY",
 "neighborhood": "Chinatown",
@@ -49394,7 +49423,7 @@
 "lng": -122.407510500002
 },
 {
-"name": "Sam'S Gourmet Jams",
+"name": "Sam's Gourmet Jams",
 "permit_type": "H101 - Community Event Food Vendor - Low Hazard",
 "address": "103 HORNE AVE",
 "neighborhood": "Bayview Hunters Point",
@@ -49402,7 +49431,7 @@
 "lng": -122.365624500002
 },
 {
-"name": "Sam'S Market",
+"name": "Sam's Market",
 "permit_type": "H28 - TAKE-OUTS",
 "address": "580 PRECITA AVE",
 "neighborhood": "Bernal Heights",
@@ -49410,7 +49439,7 @@
 "lng": -122.409859500002
 },
 {
-"name": "Sam'S/Sarap Shop 649S",
+"name": "Sam's/Sarap Shop 649S",
 "permit_type": "H36 - STADIUM CONCESSIONS (PERM)",
 "address": "1 WARRIORS WAY, LVL 600 SOUTH",
 "neighborhood": "Mission Bay",
@@ -49450,7 +49479,7 @@
 "lng": -122.416362000002
 },
 {
-"name": "Sammy''S On 2Nd",
+"name": "Sammy's On 2Nd",
 "permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
 "address": "84 2ND STREET ST",
 "neighborhood": "Inner Richmond",
@@ -49458,7 +49487,7 @@
 "lng": -122.460391288035
 },
 {
-"name": "Sammy'S Cafe",
+"name": "Sammy's Cafe",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "1416 BUSH ST",
 "neighborhood": "Nob Hill",
@@ -49466,7 +49495,7 @@
 "lng": -122.420637000002
 },
 {
-"name": "Sammy'S On 2Nd",
+"name": "Sammy's On 2Nd",
 "permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
 "address": "84 2ND ST",
 "neighborhood": "Financial District/South Beach",
@@ -49482,7 +49511,7 @@
 "lng": -122.423471008625
 },
 {
-"name": "Sampler'S House",
+"name": "Sampler's House",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "1234 POLK ST",
 "neighborhood": "Nob Hill",
@@ -49548,7 +49577,7 @@
 "lng": -122.401858500002
 },
 {
-"name": "Samy'S Liquor",
+"name": "Samy's Liquor",
 "permit_type": "H31 - TOBACCO SALES - ANNUAL LICENSE FEE",
 "address": "2847 24TH ST",
 "neighborhood": "Mission",
@@ -49678,7 +49707,7 @@
 "lng": -122.453014500002
 },
 {
-"name": "San Francisco Marriott Fisherman'S Wharf",
+"name": "San Francisco Marriott Fisherman's Wharf",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "1250 COLUMBUS AVE",
 "neighborhood": "North Beach",
@@ -49830,7 +49859,7 @@
 "lng": -122.469021000002
 },
 {
-"name": "San Francisco'S Hometown Creamery",
+"name": "San Francisco's Hometown Creamery",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "1290 9TH AVE",
 "neighborhood": "Inner Sunset",
@@ -49854,7 +49883,7 @@
 "lng": -122.405368500002
 },
 {
-"name": "San Pancho'S Tacos",
+"name": "San Pancho's Tacos",
 "permit_type": "H79 - MOBILE FOOD FACILITY CLASS 5",
 "address": "175 LAURA ST",
 "neighborhood": "Outer Mission",
@@ -49918,7 +49947,7 @@
 "lng": -122.392764000002
 },
 {
-"name": "Sandy'S",
+"name": "Sandy's",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "1457   HAIGHT ST",
 "neighborhood": "Haight Ashbury",
@@ -49974,7 +50003,7 @@
 "lng": -122.435239500002
 },
 {
-"name": "Sarita'S Grill & Beer",
+"name": "Sarita's Grill & Beer",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "995 VALENCIA ST",
 "neighborhood": "Mission",
@@ -50136,7 +50165,7 @@
 "lng": -122.463792000002
 },
 {
-"name": "Schlok'S Bagel & Lox Production Kitchen",
+"name": "Schlok's Bagel & Lox Production Kitchen",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "49 S Van Ness Ave 7th Floor",
 "neighborhood": "Mission",
@@ -50144,7 +50173,7 @@
 "lng": -122.418045000002
 },
 {
-"name": "Schlok'S Bagels & Lox",
+"name": "Schlok's Bagels & Lox",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "315 CALIFORNIA ST",
 "neighborhood": "Financial District/South Beach",
@@ -50152,7 +50181,7 @@
 "lng": -122.400220500002
 },
 {
-"name": "Schlok'S Bagels & Lox",
+"name": "Schlok's Bagels & Lox",
 "permit_type": "H88 - RETAIL BAKERIES WITH FOOD PREP",
 "address": "1275 FELL ST",
 "neighborhood": "Hayes Valley",
@@ -50160,7 +50189,7 @@
 "lng": -122.438992500002
 },
 {
-"name": "Schlok'S Bagels & Lox",
+"name": "Schlok's Bagels & Lox",
 "permit_type": "H88 - RETAIL BAKERIES WITH FOOD PREP",
 "address": "1263 FELL ST",
 "neighborhood": "Hayes Valley",
@@ -50176,7 +50205,7 @@
 "lng": -122.433723688398
 },
 {
-"name": "Schroeder'S",
+"name": "Schroeder's",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "240 FRONT ST",
 "neighborhood": "Financial District/South Beach",
@@ -50186,7 +50215,7 @@
 "lineage_name": "Schroeder's"
 },
 {
-"name": "Schubert'S Bakery",
+"name": "Schubert's Bakery",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "521 CLEMENT ST",
 "neighborhood": "Inner Richmond",
@@ -50194,7 +50223,7 @@
 "lng": -122.464962000002
 },
 {
-"name": "Sco'S",
+"name": "Sco's",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "1730 YOSEMITE AVE",
 "neighborhood": "Bayview Hunters Point",
@@ -50220,7 +50249,7 @@
 "lineage_name": "Scopo Divino"
 },
 {
-"name": "Scott'S Chowder House",
+"name": "Scott's Chowder House",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "334 GRANT AVE",
 "neighborhood": "Financial District/South Beach",
@@ -50390,7 +50419,7 @@
 "lng": -122.365624500002
 },
 {
-"name": "Seniore'S Pizza",
+"name": "Seniore's Pizza",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "456 HAIGHT ST",
 "neighborhood": "Hayes Valley",
@@ -50464,7 +50493,7 @@
 "lng": -122.433633000002
 },
 {
-"name": "Serrano'S Pizza Inc",
+"name": "Serrano's Pizza Inc",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "3274 21ST ST",
 "neighborhood": "Mission",
@@ -50818,7 +50847,7 @@
 "lng": -122.376955010404
 },
 {
-"name": "Sf Rec And Park - St. Mary'S Rec. Center",
+"name": "Sf Rec And Park - St. Mary's Rec. Center",
 "permit_type": "Summer Meals",
 "address": "95 JUSTIN DR",
 "neighborhood": "Bernal Heights",
@@ -50906,7 +50935,7 @@
 "lng": -122.413081500002
 },
 {
-"name": "Sfpl Main Children'S Center",
+"name": "Sfpl Main Children's Center",
 "permit_type": "Summer Meals",
 "address": "100 Larkin St",
 "neighborhood": "Tenderloin",
@@ -51036,7 +51065,7 @@
 "lineage_name": "Shanghai"
 },
 {
-"name": "Shanghai Kelly'S",
+"name": "Shanghai Kelly's",
 "permit_type": "H86 - BARS/TAVERNS W/O FOOD PREP",
 "address": "2064 POLK ST",
 "neighborhood": "Russian Hill",
@@ -51416,7 +51445,7 @@
 "lng": -122.463886500002
 },
 {
-"name": "Signy'S Pizza",
+"name": "Signy's Pizza",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "4097 19TH AVE",
 "neighborhood": "Oceanview/Merced/Ingleside",
@@ -51796,7 +51825,7 @@
 "lng": -122.434731000002
 },
 {
-"name": "Smokin D'S Bbq",
+"name": "Smokin D's Bbq",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "2181 IRVING ST",
 "neighborhood": "Sunset/Parkside",
@@ -51828,7 +51857,7 @@
 "lng": -122.419732500002
 },
 {
-"name": "Smuggler'S Cove",
+"name": "Smuggler's Cove",
 "permit_type": "H87 - BARS/TAVERNS W/FOOD PREP",
 "address": "650 GOUGH ST",
 "neighborhood": "Hayes Valley",
@@ -52102,7 +52131,7 @@
 "lng": -122.399955000002
 },
 {
-"name": "Sodini'S Restaurant",
+"name": "Sodini's Restaurant",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "510 GREEN ST",
 "neighborhood": "North Beach",
@@ -52534,7 +52563,7 @@
 "lng": -122.474124000002
 },
 {
-"name": "Spangler'S Market",
+"name": "Spangler's Market",
 "permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
 "address": "186 WEST PORTAL AVE",
 "neighborhood": "West of Twin Peaks",
@@ -52558,7 +52587,7 @@
 "lng": -122.404243500002
 },
 {
-"name": "Specialty'S 150 Spear, Llc",
+"name": "Specialty's 150 Spear, Llc",
 "permit_type": "H88 - RETAIL BAKERIES WITH FOOD PREP",
 "address": "150   SPEAR ST",
 "neighborhood": "Financial District/South Beach",
@@ -52648,7 +52677,7 @@
 "lng": -122.406795000002
 },
 {
-"name": "Spike'S Coffee & Teas",
+"name": "Spike's Coffee & Teas",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "4117 19TH ST",
 "neighborhood": "Castro/Upper Market",
@@ -52782,9 +52811,9 @@
 "neighborhood": "Presidio Heights",
 "lat": 37.787733000001,
 "lng": -122.452771500002,
+"star_name": "Spruce",
 "lineaged": true,
-"lineage_name": "Spruce",
-"michelin": true
+"lineage_name": "Spruce"
 },
 {
 "name": "Square Pie Guys",
@@ -52885,7 +52914,7 @@
 "lng": -122.445778381722
 },
 {
-"name": "St Mary'S Medical Center",
+"name": "St Mary's Medical Center",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "450 STANYAN ST",
 "neighborhood": "Lone Mountain/USF",
@@ -52893,7 +52922,7 @@
 "lng": -122.454202500002
 },
 {
-"name": "St Peter'S Parish School",
+"name": "St Peter's Parish School",
 "permit_type": "H91 - SCHOOL CAFETERIAS (PRIVATE W/FOOD PREP)",
 "address": "1266 FLORIDA ST",
 "neighborhood": "Mission",
@@ -52911,7 +52940,7 @@
 "lineage_name": "St. Vincent"
 },
 {
-"name": "St. Anthony'S Elementary",
+"name": "St. Anthony's Elementary",
 "permit_type": "H91 - SCHOOL CAFETERIAS (PRIVATE W/FOOD PREP)",
 "address": "299 PRECITA AVE",
 "neighborhood": "Bernal Heights",
@@ -53473,6 +53502,7 @@
 "neighborhood": "Western Addition",
 "lat": 37.783665000001,
 "lng": -122.433088500002,
+"star_name": "State Bird Provisions",
 "lineaged": true,
 "lineage_name": "State Bird Provisions",
 "michelin": true
@@ -53592,7 +53622,7 @@
 "lng": -122.404923000002
 },
 {
-"name": "Steve & Kate'S Camp - Cathedral Hill",
+"name": "Steve & Kate's Camp - Cathedral Hill",
 "permit_type": "Summer Meals",
 "address": "888 TURK ST",
 "neighborhood": "Western Addition",
@@ -53600,7 +53630,7 @@
 "lng": -122.423715000002
 },
 {
-"name": "Steve & Kate'S Camp - Noe Valley",
+"name": "Steve & Kate's Camp - Noe Valley",
 "permit_type": "Child and Adult Care Food Program",
 "address": "625 DOUGLASS ST",
 "neighborhood": "Noe Valley",
@@ -53608,7 +53638,7 @@
 "lng": -122.438601000002
 },
 {
-"name": "Steve & Kate'S Camp - Potrero Hill",
+"name": "Steve & Kate's Camp - Potrero Hill",
 "permit_type": "Summer Meals",
 "address": "1555   MARIPOSA ST",
 "neighborhood": "Potrero Hill",
@@ -53624,7 +53654,7 @@
 "lng": -122.492547000002
 },
 {
-"name": "Stewart'S Market",
+"name": "Stewart's Market",
 "permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
 "address": "2498 SUTTER ST",
 "neighborhood": "Pacific Heights",
@@ -53679,7 +53709,7 @@
 "lat": 37.771461000001,
 "lng": -122.433867000002,
 "lineaged": true,
-"lineage_name": "Stoa"
+"lineage_name": "STOA"
 },
 {
 "name": "Stockton Bakery",
@@ -53716,7 +53746,7 @@
 "lineage_name": "Stonemill Matcha"
 },
 {
-"name": "Stookey'S Club Moderne",
+"name": "Stookey's Club Moderne",
 "permit_type": "H86 - BARS/TAVERNS W/O FOOD PREP",
 "address": "895 BUSH ST",
 "neighborhood": "Nob Hill",
@@ -54272,7 +54302,7 @@
 "lng": -122.38766603283
 },
 {
-"name": "Sully'S Marina Lounge",
+"name": "Sully's Marina Lounge",
 "permit_type": "H87 - BARS/TAVERNS W/FOOD PREP",
 "address": "2138 CHESTNUT ST",
 "neighborhood": "Marina",
@@ -55316,7 +55346,7 @@
 "lng": -122.406133500002
 },
 {
-"name": "Sweet T'S Granola",
+"name": "Sweet T's Granola",
 "permit_type": "H74 - CATERER",
 "address": "900 D AVE",
 "neighborhood": "Treasure Island",
@@ -55324,7 +55354,7 @@
 "lng": -122.373789969563
 },
 {
-"name": "Sweet T'S Granola",
+"name": "Sweet T's Granola",
 "permit_type": "H34 - PUSHCARTS (RETAIL FOOD VEHICLE)",
 "address": "3251 20TH AVE",
 "neighborhood": "Lakeshore",
@@ -55524,7 +55554,7 @@
 "lng": -122.401926000002
 },
 {
-"name": "Tabita'S Cafe",
+"name": "Tabita's Cafe",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "1101 TARAVAL ST",
 "neighborhood": "Sunset/Parkside",
@@ -55868,7 +55898,7 @@
 "lng": -122.399262000002
 },
 {
-"name": "Tad'S Steakhouse",
+"name": "Tad's Steakhouse",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "38/44 ELLIS ST",
 "neighborhood": "Financial District/South Beach",
@@ -55924,7 +55954,7 @@
 "lng": -122.414148000002
 },
 {
-"name": "Taffi'S Cafe",
+"name": "Taffi's Cafe",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "1748 CHURCH ST",
 "neighborhood": "Noe Valley",
@@ -56114,7 +56144,7 @@
 "lng": -122.397403500002
 },
 {
-"name": "Tallio'S Coffee & Tea",
+"name": "Tallio's Coffee & Tea",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "4732   THIRD ST",
 "neighborhood": "Bayview Hunters Point",
@@ -56242,7 +56272,7 @@
 "lng": -122.464881000002
 },
 {
-"name": "Taqueria Angelica'S",
+"name": "Taqueria Angelica's",
 "permit_type": "H79 - MOBILE FOOD FACILITY CLASS 5",
 "address": "107 S LINDEN AVE",
 "neighborhood": "",
@@ -56860,7 +56890,7 @@
 "lng": -122.418045000002
 },
 {
-"name": "Tbd (Formerly The Frida'S Closet Sf)",
+"name": "Tbd (Formerly The Frida's Closet Sf)",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "49 S Van Ness Ave 7th Floor",
 "neighborhood": "Mission",
@@ -57052,7 +57082,7 @@
 "lng": -122.441517000002
 },
 {
-"name": "Ted'S Market",
+"name": "Ted's Market",
 "permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
 "address": "1530 HOWARD ST",
 "neighborhood": "Mission",
@@ -57060,7 +57090,7 @@
 "lng": -122.416240500002
 },
 {
-"name": "Teddy'S Market",
+"name": "Teddy's Market",
 "permit_type": "H03 - RETAIL MKTS W/O PREP (UNDER 5001)",
 "address": "298 TEDDY AVE",
 "neighborhood": "Visitacion Valley",
@@ -57176,7 +57206,7 @@
 "lineage_name": "Tender"
 },
 {
-"name": "Tenderloin Children'S Playground",
+"name": "Tenderloin Children's Playground",
 "permit_type": "H23R- FOOD PREP AND SERVICE (FEE EXEMPT)",
 "address": "570 ELLIS ST",
 "neighborhood": "Tenderloin",
@@ -57460,7 +57490,7 @@
 "lng": -122.402304000002
 },
 {
-"name": "That'S Amore Sf",
+"name": "That's Amore Sf",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "1901 OCEAN AVE",
 "neighborhood": "West of Twin Peaks",
@@ -57468,7 +57498,7 @@
 "lng": -122.462509500002
 },
 {
-"name": "That'S It Market",
+"name": "That's It Market",
 "permit_type": "H28 - TAKE-OUTS",
 "address": "2699 MISSION ST",
 "neighborhood": "Mission",
@@ -57476,7 +57506,7 @@
 "lng": -122.418265500002
 },
 {
-"name": "That'S My Jam",
+"name": "That's My Jam",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "324 DIVISADERO ST",
 "neighborhood": "Haight Ashbury",
@@ -57507,7 +57537,7 @@
 "lat": 37.783485000001,
 "lng": -122.433327000002,
 "lineaged": true,
-"lineage_name": "The Anchovy Bar"
+"lineage_name": "Anchovy Bar"
 },
 {
 "name": "The Arc San Francisco",
@@ -57773,7 +57803,7 @@
 "lat": 37.797498000001,
 "lng": -122.434578000002,
 "lineaged": true,
-"lineage_name": "The Brixton"
+"lineage_name": "Brixton"
 },
 {
 "name": "The Brixton South",
@@ -58361,7 +58391,7 @@
 "lat": 37.785420000001,
 "lng": -122.397079500002,
 "lineaged": true,
-"lineage_name": "Fly Trap"
+"lineage_name": "the Fly Trap"
 },
 {
 "name": "The Food Pavilion",
@@ -58518,7 +58548,7 @@
 "lng": -122.397889500002
 },
 {
-"name": "The Grandma'S Kitchen Sf",
+"name": "The Grandma's Kitchen Sf",
 "permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
 "address": "475 6TH ST",
 "neighborhood": "South of Market",
@@ -58621,7 +58651,7 @@
 "lat": 37.777482000001,
 "lng": -122.423274000002,
 "lineaged": true,
-"lineage_name": "Happy Crane"
+"lineage_name": "The Happy Crane"
 },
 {
 "name": "The Harlequin Group Llc",
@@ -59079,7 +59109,7 @@
 "lat": 37.762785000001,
 "lng": -122.408563500002,
 "lineaged": true,
-"lineage_name": "the Morris"
+"lineage_name": "The Morris"
 },
 {
 "name": "The Mucky Duck",
@@ -59396,6 +59426,7 @@
 "neighborhood": "Western Addition",
 "lat": 37.783665000001,
 "lng": -122.433088500002,
+"star_name": "The Progress",
 "lineaged": true,
 "lineage_name": "the Progress",
 "michelin": true
@@ -59779,7 +59810,7 @@
 "lng": -122.406795000002
 },
 {
-"name": "The St Mary'S Pub",
+"name": "The St Mary's Pub",
 "permit_type": "H86 - BARS/TAVERNS W/O FOOD PREP",
 "address": "3845 MISSION ST",
 "neighborhood": "Bernal Heights",
@@ -59827,7 +59858,7 @@
 "lng": -122.410629000002
 },
 {
-"name": "The Sunset'S Best Seafood Restaurant",
+"name": "The Sunset's Best Seafood Restaurant",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "3060 TARAVAL ST",
 "neighborhood": "Sunset/Parkside",
@@ -59843,7 +59874,7 @@
 "lng": -122.419746000002
 },
 {
-"name": "The Tailor'S Son",
+"name": "The Tailor's Son",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "2049 FILLMORE ST",
 "neighborhood": "Pacific Heights",
@@ -60109,7 +60140,7 @@
 "lng": -122.458671000002
 },
 {
-"name": "Thinker'S Cafe",
+"name": "Thinker's Cafe",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "1631 20TH ST",
 "neighborhood": "Potrero Hill",
@@ -60273,7 +60304,7 @@
 "lng": -122.402848500002
 },
 {
-"name": "Tiffany'S Cafe",
+"name": "Tiffany's Cafe",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "3801 3RD ST",
 "neighborhood": "Bayview Hunters Point",
@@ -60331,7 +60362,7 @@
 "lng": -122.415709500002
 },
 {
-"name": "Tim'S Market",
+"name": "Tim's Market",
 "permit_type": "H03 - RETAIL MKTS W/O PREP (UNDER 5001)",
 "address": "667 FILLMORE ST",
 "neighborhood": "Hayes Valley",
@@ -60355,7 +60386,7 @@
 "lng": -122.405611500002
 },
 {
-"name": "Tina'S Tasty Treats",
+"name": "Tina's Tasty Treats",
 "permit_type": "H99 - COTTAGE FOOD OPERATIONS - TIER B (INDIRECT SALES)",
 "address": "554 GIRARD ST",
 "neighborhood": "Portola",
@@ -60379,7 +60410,7 @@
 "lng": -122.437572301286
 },
 {
-"name": "Tio Chilo'S Grill Llc",
+"name": "Tio Chilo's Grill Llc",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "2872 24TH ST",
 "neighborhood": "Mission",
@@ -60703,7 +60734,7 @@
 "lng": -122.405215500002
 },
 {
-"name": "Tommaso'S",
+"name": "Tommaso's",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "1042 KEARNY ST",
 "neighborhood": "North Beach",
@@ -60711,7 +60742,7 @@
 "lng": -122.405215500002
 },
 {
-"name": "Tommy'S Joynt",
+"name": "Tommy's Joynt",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "1101 GEARY BLVD",
 "neighborhood": "Western Addition",
@@ -60719,7 +60750,7 @@
 "lng": -122.421816000002
 },
 {
-"name": "Tommy'S Restaurant",
+"name": "Tommy's Restaurant",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "5929 GEARY BLVD",
 "neighborhood": "Outer Richmond",
@@ -60767,7 +60798,7 @@
 "lng": -122.415808500002
 },
 {
-"name": "Tony Baloney'S",
+"name": "Tony Baloney's",
 "permit_type": "H31 - TOBACCO SALES - ANNUAL LICENSE FEE",
 "address": "1098 HOWARD ST",
 "neighborhood": "South of Market",
@@ -60775,7 +60806,7 @@
 "lng": -122.409405000002
 },
 {
-"name": "Tony Nik'S Cafe",
+"name": "Tony Nik's Cafe",
 "permit_type": "H87 - BARS/TAVERNS W/FOOD PREP",
 "address": "1534 STOCKTON ST",
 "neighborhood": "North Beach",
@@ -60783,7 +60814,7 @@
 "lng": -122.408896500002
 },
 {
-"name": "Tony'S Cable Car Restaurant",
+"name": "Tony's Cable Car Restaurant",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "2500 GEARY BLVD",
 "neighborhood": "Presidio Heights",
@@ -60791,7 +60822,7 @@
 "lng": -122.444779500002
 },
 {
-"name": "Tony'S Market & Liquor",
+"name": "Tony's Market & Liquor",
 "permit_type": "H03 - RETAIL MKTS W/O PREP (UNDER 5001)",
 "address": "2751 24TH ST",
 "neighborhood": "Mission",
@@ -60799,7 +60830,7 @@
 "lng": -122.407537500002
 },
 {
-"name": "Tony'S Pizza 314W",
+"name": "Tony's Pizza 314W",
 "permit_type": "H36 - STADIUM CONCESSIONS (PERM)",
 "address": "1 WARRIORS WAY, LVL 300 WEST",
 "neighborhood": "Mission Bay",
@@ -60807,7 +60838,7 @@
 "lng": -122.38766603283
 },
 {
-"name": "Tony'S Pizza 321N",
+"name": "Tony's Pizza 321N",
 "permit_type": "H36 - STADIUM CONCESSIONS (PERM)",
 "address": "1 WARRIORS WAY, LVL 300 NORTH",
 "neighborhood": "Mission Bay",
@@ -60815,7 +60846,7 @@
 "lng": -122.38766603283
 },
 {
-"name": "Tony'S Pizza Napoletana",
+"name": "Tony's Pizza Napoletana",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "1570 STOCKTON ST",
 "neighborhood": "North Beach",
@@ -60823,7 +60854,7 @@
 "lng": -122.408955000002
 },
 {
-"name": "Tony'S Pizza- Sec 314",
+"name": "Tony's Pizza- Sec 314",
 "permit_type": "H36 - STADIUM CONCESSIONS (PERM)",
 "address": "24 WILLIE MAYS PLZ # VIEW L",
 "neighborhood": "Mission Bay",
@@ -60831,7 +60862,7 @@
 "lng": -122.391855000002
 },
 {
-"name": "Tony'S/City Bistro 305E",
+"name": "Tony's/City Bistro 305E",
 "permit_type": "H36 - STADIUM CONCESSIONS (PERM)",
 "address": "1 WARRIORS WAY, LVL 300 EAST",
 "neighborhood": "Mission Bay",
@@ -60839,7 +60870,7 @@
 "lng": -122.38766603283
 },
 {
-"name": "Tony'S/City Bistro 310S",
+"name": "Tony's/City Bistro 310S",
 "permit_type": "H36 - STADIUM CONCESSIONS (PERM)",
 "address": "1 WARRIORS WAY, LVL 300 SOUTH",
 "neighborhood": "Mission Bay",
@@ -60847,7 +60878,7 @@
 "lng": -122.38766603283
 },
 {
-"name": "Tony'S/City Bistro South 600",
+"name": "Tony's/City Bistro South 600",
 "permit_type": "H36 - STADIUM CONCESSIONS (PERM)",
 "address": "1 WARRIORS WAY, LVL 600 SOUTH",
 "neighborhood": "Mission Bay",
@@ -60975,9 +61006,9 @@
 "neighborhood": "North Beach",
 "lat": 37.797584011125,
 "lng": -122.405741020295,
+"star_name": "Tosca Cafe",
 "lineaged": true,
-"lineage_name": "Tosca Cafe",
-"michelin": true
+"lineage_name": "Tosca Cafe"
 },
 {
 "name": "Toscano Brothers",
@@ -61060,7 +61091,7 @@
 "lng": -122.440144500002
 },
 {
-"name": "Town'S End Brunch",
+"name": "Town's End Brunch",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "2 TOWNSEND ST BLDG 4",
 "neighborhood": "Financial District/South Beach",
@@ -61128,7 +61159,7 @@
 "lng": -122.421064500002
 },
 {
-"name": "Trader Joe'S",
+"name": "Trader Joe's",
 "permit_type": "H08 - RETAIL MKTS W/FOOD PREP (10001 - 20000)",
 "address": "555 Fulton St, Ground Floor",
 "neighborhood": "Hayes Valley",
@@ -61136,7 +61167,7 @@
 "lng": -122.426004019764
 },
 {
-"name": "Trader Joe'S #100",
+"name": "Trader Joe's #100",
 "permit_type": "H08 - RETAIL MKTS W/FOOD PREP (10001 - 20000)",
 "address": "3 MASONIC AVE",
 "neighborhood": "Presidio Heights",
@@ -61144,7 +61175,7 @@
 "lng": -122.447767500002
 },
 {
-"name": "Trader Joe'S #19",
+"name": "Trader Joe's #19",
 "permit_type": "H08 - RETAIL MKTS W/FOOD PREP (10001 - 20000)",
 "address": "401 BAY ST",
 "neighborhood": "North Beach",
@@ -61152,7 +61183,7 @@
 "lng": -122.413896000002
 },
 {
-"name": "Trader Joe'S #200",
+"name": "Trader Joe's #200",
 "permit_type": "H08 - RETAIL MKTS W/FOOD PREP (10001 - 20000)",
 "address": "1095 HYDE ST",
 "neighborhood": "Nob Hill",
@@ -61160,7 +61191,7 @@
 "lng": -122.417833500002
 },
 {
-"name": "Trader Joe'S #225",
+"name": "Trader Joe's #225",
 "permit_type": "H08 - RETAIL MKTS W/FOOD PREP (10001 - 20000)",
 "address": "10 FOURTH ST",
 "neighborhood": "South of Market",
@@ -61168,7 +61199,7 @@
 "lng": -122.405791500002
 },
 {
-"name": "Trader Joe'S #78",
+"name": "Trader Joe's #78",
 "permit_type": "H09 - RETAIL MKTS W/FOOD PREP (5001 - 10000)",
 "address": "555   9TH ST",
 "neighborhood": "South of Market",
@@ -61374,7 +61405,7 @@
 "lng": -122.404135500002
 },
 {
-"name": "Trish'S Chocolate",
+"name": "Trish's Chocolate",
 "permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
 "address": "PIER 39 D-01",
 "neighborhood": "North Beach",
@@ -61382,7 +61413,7 @@
 "lng": -122.409063000002
 },
 {
-"name": "Trish'S Dishes",
+"name": "Trish's Dishes",
 "permit_type": "H36 - STADIUM CONCESSIONS (PERM)",
 "address": "PIER 39",
 "neighborhood": "North Beach",
@@ -61460,7 +61491,7 @@
 "lng": -122.437260000002
 },
 {
-"name": "Tsai'S Thai Dye Treats",
+"name": "Tsai's Thai Dye Treats",
 "permit_type": "H99R - COTTAGE FOOD OPERATIONS - TIER B (INDIRECT SALES)",
 "address": "540 ELIZABETH ST",
 "neighborhood": "Noe Valley",
@@ -61518,7 +61549,7 @@
 "lng": -122.438443500002
 },
 {
-"name": "Tu Kim'S Cafe",
+"name": "Tu Kim's Cafe",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "609 ELLIS ST",
 "neighborhood": "Tenderloin",
@@ -61598,7 +61629,7 @@
 "lng": -122.413131000002
 },
 {
-"name": "Turner'S Kitchen",
+"name": "Turner's Kitchen",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "3505 B 17TH ST",
 "neighborhood": "Mission",
@@ -61794,7 +61825,7 @@
 "lng": -122.396465019508
 },
 {
-"name": "Tyra'S Treats & Bubbles",
+"name": "Tyra's Treats & Bubbles",
 "permit_type": "H78 - MOBILE FOOD FACILITY CLASS 4",
 "address": "900 AVENUE D",
 "neighborhood": "Treasure Island",
@@ -61922,7 +61953,7 @@
 "lng": -122.466096000002
 },
 {
-"name": "Uma'S Artisanal",
+"name": "Uma's Artisanal",
 "permit_type": "H74 - CATERER",
 "address": "103 HORNE AVE",
 "neighborhood": "Bayview Hunters Point",
@@ -61980,7 +62011,7 @@
 "lng": -122.406502500002
 },
 {
-"name": "Uncle Benny'S Donut & Bagel",
+"name": "Uncle Benny's Donut & Bagel",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "2049 IRVING ST",
 "neighborhood": "Sunset/Parkside",
@@ -61988,7 +62019,7 @@
 "lng": -122.480005500002
 },
 {
-"name": "Uncle Boy'S",
+"name": "Uncle Boy's",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "245   BALBOA ST",
 "neighborhood": "Inner Richmond",
@@ -62020,7 +62051,7 @@
 "lng": -122.407893995944
 },
 {
-"name": "Uncle Vito'S Pizza Llc",
+"name": "Uncle Vito's Pizza Llc",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "700   BUSH ST",
 "neighborhood": "Nob Hill",
@@ -62028,7 +62059,7 @@
 "lng": -122.408915250152
 },
 {
-"name": "Unco Frank'S",
+"name": "Unco Frank's",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "443 CLEMENT ST",
 "neighborhood": "Inner Richmond",
@@ -62592,7 +62623,7 @@
 "lineage_name": "Valentino"
 },
 {
-"name": "Vallarta'S Taco Bar",
+"name": "Vallarta's Taco Bar",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "3033 24TH ST",
 "neighborhood": "Mission",
@@ -62854,7 +62885,7 @@
 "lng": -122.433889500002
 },
 {
-"name": "Vic'S Grocery And Liquor",
+"name": "Vic's Grocery And Liquor",
 "permit_type": "H31 - TOBACCO SALES - ANNUAL LICENSE FEE",
 "address": "3300 26TH ST",
 "neighborhood": "Mission",
@@ -62862,7 +62893,7 @@
 "lng": -122.416231500002
 },
 {
-"name": "Vic'S Winehouse On Fillmore",
+"name": "Vic's Winehouse On Fillmore",
 "permit_type": "H87 - BARS/TAVERNS W/FOOD PREP",
 "address": "1870 FILLMORE ST",
 "neighborhood": "Pacific Heights",
@@ -63032,7 +63063,7 @@
 "lng": -122.391855000002
 },
 {
-"name": "Violet'S",
+"name": "Violet's",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "2301 CLEMENT ST",
 "neighborhood": "Outer Richmond",
@@ -63144,7 +63175,7 @@
 "lng": -122.432625000002
 },
 {
-"name": "Vivien'S Chocolates",
+"name": "Vivien's Chocolates",
 "permit_type": "H98 - COTTAGE FOOD OPERATIONS - TIER A (DIRECT SALES)",
 "address": "139 DANVERS ST",
 "neighborhood": "Castro/Upper Market",
@@ -63448,7 +63479,7 @@
 "lng": -122.459468503739
 },
 {
-"name": "Walgreen'S #04231",
+"name": "Walgreen's #04231",
 "permit_type": "H06 - RETAIL MKTS W/O PREP (OVER 20000)",
 "address": "2690 MISSION ST",
 "neighborhood": "Mission",
@@ -63576,7 +63607,7 @@
 "lng": -122.391855000002
 },
 {
-"name": "Walla'S Smoke Shop",
+"name": "Walla's Smoke Shop",
 "permit_type": "H31 - TOBACCO SALES - ANNUAL LICENSE FEE",
 "address": "2792 MISSION ST",
 "neighborhood": "Mission",
@@ -63600,7 +63631,7 @@
 "lng": -122.43244500944
 },
 {
-"name": "Wally'S Community Market",
+"name": "Wally's Community Market",
 "permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
 "address": "453 OFARRELL ST",
 "neighborhood": "Tenderloin",
@@ -63920,7 +63951,7 @@
 "lng": -122.408559000002
 },
 {
-"name": "Wen'S Kitchen",
+"name": "Wen's Kitchen",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "1150 POLK ST",
 "neighborhood": "Nob Hill",
@@ -64100,7 +64131,7 @@
 "lng": -122.435824500002
 },
 {
-"name": "Wetzel'S Pretzels",
+"name": "Wetzel's Pretzels",
 "permit_type": "H88 - RETAIL BAKERIES WITH FOOD PREP",
 "address": "3251 20TH AVE",
 "neighborhood": "Lakeshore",
@@ -64108,7 +64139,7 @@
 "lng": -122.476837500002
 },
 {
-"name": "Wetzel'S Pretzels",
+"name": "Wetzel's Pretzels",
 "permit_type": "H88 - RETAIL BAKERIES WITH FOOD PREP",
 "address": "3251 20TH AVE # 102",
 "neighborhood": "Lakeshore",
@@ -64116,7 +64147,7 @@
 "lng": -122.476837500002
 },
 {
-"name": "Wetzel'S Pretzels (Basement)",
+"name": "Wetzel's Pretzels (Basement)",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "170 OFARRELL ST",
 "neighborhood": "Financial District/South Beach",
@@ -64124,7 +64155,7 @@
 "lng": -122.407375500002
 },
 {
-"name": "Wetzel'S Pretzels (Ground Level)",
+"name": "Wetzel's Pretzels (Ground Level)",
 "permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
 "address": "170 OFARRELL ST",
 "neighborhood": "Financial District/South Beach",
@@ -64188,7 +64219,7 @@
 "lng": -122.417010000002
 },
 {
-"name": "What'S Up Coco?",
+"name": "What's Up Coco?",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "2669 MISSION ST",
 "neighborhood": "Mission",
@@ -64730,7 +64761,7 @@
 "lng": -122.407618500002
 },
 {
-"name": "Woerner'S Liquor",
+"name": "Woerner's Liquor",
 "permit_type": "H31 - TOBACCO SALES - ANNUAL LICENSE FEE",
 "address": "901 GEARY ST",
 "neighborhood": "Tenderloin",
@@ -65136,7 +65167,7 @@
 "lng": -122.465920500002
 },
 {
-"name": "Xiaoyu'S Kitchen Llc",
+"name": "Xiaoyu's Kitchen Llc",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "560 BALBOA ST",
 "neighborhood": "Inner Richmond",
@@ -65242,7 +65273,7 @@
 "lng": -122.419687500002
 },
 {
-"name": "Yancy'S Saloon",
+"name": "Yancy's Saloon",
 "permit_type": "H86 - BARS/TAVERNS W/O FOOD PREP",
 "address": "734 IRVING ST",
 "neighborhood": "Inner Sunset",
@@ -65314,7 +65345,7 @@
 "lng": -122.421118500002
 },
 {
-"name": "Yasukochi'S Sweet Stop",
+"name": "Yasukochi's Sweet Stop",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "1790 SUTTER ST",
 "neighborhood": "Pacific Heights",
@@ -65438,7 +65469,7 @@
 "lng": -122.416371000002
 },
 {
-"name": "Yick'S Liquor",
+"name": "Yick's Liquor",
 "permit_type": "H31 - TOBACCO SALES - ANNUAL LICENSE FEE",
 "address": "4701 MISSION ST",
 "neighborhood": "Excelsior",
@@ -65600,7 +65631,7 @@
 "lng": -122.414211000002
 },
 {
-"name": "Yossie'S Cantina, Llc",
+"name": "Yossie's Cantina, Llc",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "398 7TH ST",
 "neighborhood": "South of Market",
@@ -65624,7 +65655,7 @@
 "lng": -122.412708709625
 },
 {
-"name": "Young'S Kung Fu Action Theatre & Laundry",
+"name": "Young's Kung Fu Action Theatre & Laundry",
 "permit_type": "H86 - BARS/TAVERNS W/O FOOD PREP",
 "address": "841 LARKIN ST",
 "neighborhood": "Tenderloin",
@@ -65672,7 +65703,7 @@
 "lng": -122.470137000002
 },
 {
-"name": "Yoyo'S",
+"name": "Yoyo's",
 "permit_type": "H28 - TAKE-OUTS",
 "address": "318 PACIFIC AVE",
 "neighborhood": "Financial District/South Beach",
@@ -65688,7 +65719,7 @@
 "lng": -122.406421500002
 },
 {
-"name": "Yu'S Cafe",
+"name": "Yu's Cafe",
 "permit_type": "H24 - RESTAURANT UNDER 1,000 SQFT",
 "address": "57 WALTER U LUM PL",
 "neighborhood": "Chinatown",
@@ -65850,7 +65881,7 @@
 "lng": -122.432859000002
 },
 {
-"name": "Yvonne'S Southern Sweets",
+"name": "Yvonne's Southern Sweets",
 "permit_type": "H07 - RETAIL MKTS W/FOOD PREP (UNDER 5001)",
 "address": "5128 3RD ST",
 "neighborhood": "Bayview Hunters Point",
@@ -65940,7 +65971,7 @@
 "lng": -122.433709500002
 },
 {
-"name": "Zach'S Deli- Field Club",
+"name": "Zach's Deli- Field Club",
 "permit_type": "H36 - STADIUM CONCESSIONS (PERM)",
 "address": "24 WILLIE MAYS PLZ # FIELD",
 "neighborhood": "Mission Bay",
@@ -66038,7 +66069,7 @@
 "lng": -122.422113000002
 },
 {
-"name": "Zeki'S Bar Inc",
+"name": "Zeki's Bar Inc",
 "permit_type": "H86 - BARS/TAVERNS W/O FOOD PREP",
 "address": "1319 CALIFORNIA ST",
 "neighborhood": "Nob Hill",
@@ -66086,7 +66117,7 @@
 "lng": -122.419174500002
 },
 {
-"name": "Zeng'S Massage Therapy",
+"name": "Zeng's Massage Therapy",
 "permit_type": "H67 - MASSAGE ESTABLISHMENT",
 "address": "4565 MISSION ST",
 "neighborhood": "Excelsior",
@@ -66150,7 +66181,7 @@
 "lng": -122.407020000002
 },
 {
-"name": "Zhen'S Kitchen",
+"name": "Zhen's Kitchen",
 "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
 "address": "674 BROADWAY",
 "neighborhood": "Chinatown",
@@ -66166,7 +66197,7 @@
 "lng": -122.407920000002
 },
 {
-"name": "Zhu'S Tea",
+"name": "Zhu's Tea",
 "permit_type": "H28 - TAKE-OUTS",
 "address": "112 WAVERLY PL",
 "neighborhood": "Chinatown",
@@ -66174,7 +66205,7 @@
 "lng": -122.406754500002
 },
 {
-"name": "Ziggy'S Burger & Grill",
+"name": "Ziggy's Burger & Grill",
 "permit_type": "H25 - RESTAURANT 1,000 - 2,000 SQFT",
 "address": "21 DRUMM ST",
 "neighborhood": "Financial District/South Beach",
@@ -66238,9 +66269,9 @@
 "neighborhood": "Hayes Valley",
 "lat": 37.773603000001,
 "lng": -122.421622500002,
+"star_name": "Zuni Cafe",
 "lineaged": true,
-"lineage_name": "Zuni Cafe",
-"michelin": true
+"lineage_name": "Zuni Cafe"
 },
 {
 "name": "Zushi Puzzle Inc",

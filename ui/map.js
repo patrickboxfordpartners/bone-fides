@@ -68,11 +68,17 @@
 
     map.on('load', async () => {
       // ── universe layer: every permitted food business as a quiet dot ──
+      // Reuses window.__bfVenues when the Michelin roster already fetched
+      // /api/venues (explorer.html), skipping a duplicate ~1MB payload.
       let all = [];
       try {
-        const r = await fetch('/api/venues');
-        const vd = await r.json();
-        all = (vd.venues || []).filter(v => typeof v.lat === 'number');
+        if (Array.isArray(window.__bfVenues)) {
+          all = window.__bfVenues.filter(v => typeof v.lat === 'number');
+        } else {
+          const r = await fetch('/api/venues');
+          const vd = await r.json();
+          all = (vd.venues || []).filter(v => typeof v.lat === 'number');
+        }
       } catch (e) { /* map still loads empty */ }
 
       const special = all.filter(v => v.lineaged || v.michelin);
