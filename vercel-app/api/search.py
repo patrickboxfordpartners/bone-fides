@@ -413,13 +413,15 @@ def resolve_query(q, lin, cl):
             v = e.get(k)
             if v and v.lower() == ql:
                 return True
-    # prefix tolerance for plural / partial kitchen names ("Finn Town Taproom")
+    # prefix tolerance for partial kitchen names ("Finn Town" → "Finn Town
+    # Taproom"). Both directions gated on len>=4 so "nopalera" cannot absorb
+    # "Nopa" (a different venue) — the query must extend the cited name.
     for e in lin:
         for k in ("from_venue", "to_venue"):
             v = e.get(k)
             if v and len(ql) >= 4:
                 vl = v.lower()
-                if vl.startswith(ql) or ql.startswith(vl) and len(vl) >= 4:
+                if len(vl) >= 4 and (vl.startswith(ql) or ql.startswith(vl)):
                     return True
     return False
 

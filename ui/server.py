@@ -1,5 +1,5 @@
 """Bone Fides demo UI: static page + JSON query API against the lineage index."""
-import os, sys, json, re, urllib.parse
+import os, sys, json, re, traceback, urllib.parse
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -414,12 +414,15 @@ def resolve_query(q, lin, cl):
             v = e.get(k)
             if v and v.lower() == ql:
                 return True
+    # prefix tolerance for partial kitchen names ("Finn Town" → "Finn Town
+    # Taproom"). Both directions gated on len>=4 so "nopalera" cannot absorb
+    # "Nopa" (a different venue) — the query must extend the cited name.
     for e in lin:
         for k in ("from_venue", "to_venue"):
             v = e.get(k)
             if v and len(ql) >= 4:
                 vl = v.lower()
-                if vl.startswith(ql) or ql.startswith(vl) and len(vl) >= 4:
+                if len(vl) >= 4 and (vl.startswith(ql) or ql.startswith(vl)):
                     return True
     return False
 
@@ -472,6 +475,7 @@ class Handler(SimpleHTTPRequestHandler):
         try:
             fn()
         except Exception:
+            traceback.print_exc()  # log the real cause; response stays generic
             # generic error surface: exception text can leak index names/endpoints
             try:
                 self._json({"error": "search temporarily unavailable"}, status=500)

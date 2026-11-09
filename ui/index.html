@@ -441,7 +441,8 @@ function render(q, edges, ms, ped, identity){
   // mis-extraction (a person written into from_venue) all live in that venue
   // bucket; the queried person's own cited moves live in the cluster bucket.
   const selfEdges = (identity || []).filter(cl =>
-    cl.name && cl.name.toLowerCase() === ql)
+    cl.name && (cl.name.toLowerCase() === ql ||
+      (cl.aliases||[]).some(a => a.toLowerCase() === ql)))
     .reduce((s, cl) => s + cl.n, 0);
   const venueFlips = edges.filter(e => e.person &&
     (e.person||'').toLowerCase() !== ql &&
