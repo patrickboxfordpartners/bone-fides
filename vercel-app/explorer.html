@@ -437,8 +437,16 @@ function setView(view, opts){
 if(SEGB){
   SEGB.addEventListener('click', e => {
     const b = e.target.closest('button');
-    if(b) setView(b.id === 'seg-map' ? 'map' : 'list');
+    if(b && !b.disabled) setView(b.id === 'seg-map' ? 'map' : 'list');
   });
+  /* map.js reports when the map cannot start — no token, or the Mapbox CDN
+     unreachable. The Map button would only ever open an empty stage, so
+     remove the whole switcher: List stays the one view. */
+  window.__bfMapUnavailable = () => {
+    document.body.classList.remove('mapview');
+    SEGB.remove();
+    delete window.__bfMapUnavailable;
+  };
 }
 
 // ── search ──
@@ -473,6 +481,9 @@ async function run(){
     if(mine !== lastFetch) return;
     CARD.setAttribute('aria-busy','false');
     CARD.innerHTML = '<div class="err" role="alert">Couldn’t reach the lineage index. <button class="chip" type="button" data-action="retry">Try again</button></div>';
+    // the error replaced the dossier wherever the reader's scroll had left
+    // it — the Try again button must not sit below the fold
+    scrollResultIntoView();
     return;
   }
   if(mine !== lastFetch) return;
@@ -499,14 +510,16 @@ async function run(){
 }
 
 /* On mobile the document scrolls; after a fresh search the dossier sits
-   wherever the reader's scroll had drifted. Bring the card head back into
-   view — but never yank the page when the reader is already looking at it. */
+   wherever the reader's scroll had drifted. Bring the card's top edge back
+   into view — a dossier is almost always taller than the screen, so judging
+   the whole card would scroll (or refuse to scroll) forever. Never yank the
+   page when the top edge is already on screen. */
 function scrollResultIntoView(){
   const mq = window.matchMedia('(max-width: 900px)');
   if(!mq.matches) return;
   const r = CARD.getBoundingClientRect();
-  const visible = r.top >= 0 && r.bottom <= (window.innerHeight || document.documentElement.clientHeight);
-  if(!visible) CARD.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const topVisible = r.top >= 0 && r.top < (window.innerHeight || document.documentElement.clientHeight);
+  if(!topVisible) CARD.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 async function pick(name){ Q.value = name; run(); }
