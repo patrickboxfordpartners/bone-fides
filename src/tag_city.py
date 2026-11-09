@@ -45,8 +45,22 @@ def main():
     aggs = {"to": {"terms": {"field": "to_venue.keyword", "size": 65536}},
             "fr": {"terms": {"field": "from_venue.keyword", "size": 65536}}}
     r = es.search(index=INDEX, body={"size": 0, "aggs": aggs})
-    lineaged = {b["key"] for b in r["aggregations"]["to"]["buckets"] + r["aggregations"]["fr"]["buckets"] if b["key"]}
-    ling_norm = {norm(v): v for v in lineaged}
+    # canonical graph name per normalization: several variants can share one
+    # norm key ("Atwater Tavern" / "ATwater TAvern", "B. Patisserie" /
+    # "b. patisserie", "LuLu" / "Lulu"), and set-iteration order would pick
+    # stochastically. The variant carrying the most cited edges is the
+    # citable one — it's also what /api/search resolves on.
+    counts = {}
+    for side in ("to", "fr"):
+        for b in r["aggregations"][side]["buckets"]:
+            k = b["key"]
+            if k:
+                counts[k] = counts.get(k, 0) + b["doc_count"]
+    ling_norm = {}
+    for name in counts:
+        k = norm(name)
+        if k not in ling_norm or counts[name] > counts[ling_norm[k]]:
+            ling_norm[k] = name
 
     star_norm = {norm(s): s for s in STARRED}
 
@@ -128,11 +142,6 @@ def main():
     # Folsom St sushi; Saison: dining room 178 Townsend + cellar annex 234
     # Townsend): the guide stars the dining room, so annexes/branches keep
     # lineage but lose the star. Curated: starred address per star_name.
-    # Compared on normalized whitespace/case: the dataset mixes "2316 Polk ST"
-    # with "2316 POLK ST" and pads some addresses.
-    def addr_norm(a):
-        return re.sub(r"\s+", " ", (a or "").strip().upper())
-
     STARRED_ADDR = {"Akiko's": "1501 CALIFORNIA ST",
                     "Saison": "178 TOWNSEND ST"}
     for sn, rows in by_star.items():
@@ -140,7 +149,7 @@ def main():
         if want is None:
             continue
         for r in rows:
-            if r.get("michelin") and addr_norm(r.get("address")) != addr_norm(want):
+            if r.get("michelin") and r.get("address") != want:
                 r.pop("michelin", None); r.pop("star_name", None)
 
     # one pin per lineage name: keep the row with the shortest name (the
