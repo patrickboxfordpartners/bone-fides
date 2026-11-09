@@ -4,7 +4,13 @@
 (function () {
   const TOKEN = window.MAPBOX_TOKEN;
   const el = document.getElementById('map');
-  if (!TOKEN || !el) { if (el) el.remove(); return; }
+  if (!TOKEN || !el) {
+    if (el) el.remove();
+    // explorer.html listens for this: with no token the mobile Map button
+    // would only open an empty stage, so it drops the switcher
+    if (window.__bfMapUnavailable) window.__bfMapUnavailable();
+    return;
+  }
 
   const css = document.createElement('link');
   css.rel = 'stylesheet';
@@ -13,6 +19,9 @@
   const js = document.createElement('script');
   js.src = 'https://api.mapbox.com/mapbox-gl-js/v3.9.0/mapbox-gl.js';
   js.onload = init;
+  // CDN unreachable is the same dead end: no canvas ever appears, so kill
+  // the Map button too
+  js.onerror = () => { if (window.__bfMapUnavailable) window.__bfMapUnavailable(); };
   document.head.appendChild(js);
 
   const SF = [-122.433, 37.78];
@@ -26,6 +35,12 @@
     });
     map.addControl(new mapboxgl.NavigationControl({ showCompass: false }), 'top-right');
     map.on('error', e => console.warn('map error', e && e.error));
+    /* Mobile view switch hooks: the map initializes while its container is
+       display:none (List is the default mobile view), so a 0×0 canvas needs
+       resize() when Map view reveals it — and a camera animation mid-flight
+       must stop when List view hides it again. */
+    window.__bfMapResize = () => map.resize();
+    window.__bfMapStop = () => map.stop();
 
     async function openPop(v) {
       let hits = [];
