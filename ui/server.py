@@ -378,6 +378,32 @@ def stats(es):
                 index=INDEX, body={"size": 0, "aggs": {"s": {"cardinality": {"field": "source_url.keyword"}}}}
             )["aggregations"]["s"]["value"]}
 
+MAX_QUERY_LEN = 120  # abuse cap: queries are names, not free-text essays
+
+def resolve_query(q, lin, cl):
+    """Did the query actually name a cited chef or kitchen? Same logic as
+    vercel-app/api/search.py — keep the two in sync."""
+    ql = q.lower().strip()
+    if not ql:
+        return False
+    for c in cl:
+        for n in [c["name"], *(c.get("aliases") or [])]:
+            if n.lower() == ql:
+                return True
+    for e in lin:
+        for k in ("from_venue", "to_venue"):
+            v = e.get(k)
+            if v and v.lower() == ql:
+                return True
+    for e in lin:
+        for k in ("from_venue", "to_venue"):
+            v = e.get(k)
+            if v and len(ql) >= 4:
+                vl = v.lower()
+                if vl.startswith(ql) or ql.startswith(vl) and len(vl) >= 4:
+                    return True
+    return False
+
 class Handler(SimpleHTTPRequestHandler):
     def do_GET(self):
         es = self.server.es
@@ -398,6 +424,7 @@ class Handler(SimpleHTTPRequestHandler):
     def _search(self, es):
         m = re.search(r"q=([^&]*)", self.path)
         q = urllib.parse.unquote(m.group(1)) if m else ""
+        q = q.strip()[:MAX_QUERY_LEN]
         ms = re.search(r"size=(\d+)", self.path)
         size = min(300, int(ms.group(1))) if ms else 25
         lin = lineage(es, q, size=size) if q else []
@@ -414,19 +441,21 @@ class Handler(SimpleHTTPRequestHandler):
             if extra:
                 lin = dedupe(lin + extra)
                 cl = identity(lin)
-        self._json({"query": q, "lineage": lin,
+        resolved = resolve_query(q, lin, cl) if q else False
+        self._json({"query": q, "resolved": resolved, "lineage": lin,
                     "identity": [{"name": c["name"], "aliases": c["aliases"],
                                   "homonym": c["homonym"], "possible": c["possible"],
                                   "n": c["n"], "edges": c["edges"]} for c in cl],
-                    "pedigree": pedigree(lin) if q else None,
+                    "pedigree": pedigree(lin) if (q and resolved) else None,
                     "suggestions": suggest(es, q) if q else []})
 
     def _safe(self, fn):
         try:
             fn()
-        except Exception as e:
+        except Exception:
+            # generic error surface: exception text can leak index names/endpoints
             try:
-                self._json({"error": str(e)}, status=500)
+                self._json({"error": "search temporarily unavailable"}, status=500)
             except Exception:
                 pass
 

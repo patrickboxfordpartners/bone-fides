@@ -15,6 +15,8 @@ _HERE = os.path.dirname(os.path.abspath(__file__))
 
 INDEX = "bone-fides-edges"
 
+MAX_QUERY_LEN = 120  # abuse cap: queries are names, not free-text essays
+
 def make_client(endpoint=None, api_key=None):
     from elasticsearch import Elasticsearch
     return Elasticsearch(
@@ -374,6 +376,34 @@ def _serve_mapjs():
     return (200, {"Content-Type": "application/javascript; charset=utf-8",
                   "Cache-Control": "public, max-age=300"}, body)
 
+# ── relevance gate: did the query actually name a chef or kitchen we cite? ──
+# Hybrid search ranks by relevance, not resolution — a nonsense query still
+# returns its 25 nearest records. The dossier UI needs to know whether any
+# cluster genuinely IS the query, not merely nearby it.
+def resolve_query(q, lin, cl):
+    ql = q.lower().strip()
+    if not ql:
+        return False
+    for c in cl:
+        for n in [c["name"], *(c.get("aliases") or [])]:
+            nl = n.lower()
+            if nl == ql:
+                return True
+    for e in lin:
+        for k in ("from_venue", "to_venue"):
+            v = e.get(k)
+            if v and v.lower() == ql:
+                return True
+    # prefix tolerance for plural / partial kitchen names ("Finn Town Taproom")
+    for e in lin:
+        for k in ("from_venue", "to_venue"):
+            v = e.get(k)
+            if v and len(ql) >= 4:
+                vl = v.lower()
+                if vl.startswith(ql) or ql.startswith(vl) and len(vl) >= 4:
+                    return True
+    return False
+
 # ── request dispatch (Vercel Python serverless) ──
 def _dispatch(path, query_params):
     qs = {k: v for k, v in parse_qs(query_params).items()}
@@ -384,7 +414,7 @@ def _dispatch(path, query_params):
     try:
         es = _client()
         if path.endswith("/api/search"):
-            q = q1("q") or ""
+            q = (q1("q") or "").strip()[:MAX_QUERY_LEN]
             size = min(300, int(q1("size") or 25))
             lin = lineage(es, q, size=size) if q else []
             cl = identity(lin) if q else []
@@ -396,11 +426,12 @@ def _dispatch(path, query_params):
                 if extra:
                     lin = dedupe(lin + extra)
                     cl = identity(lin)
-            body = {"query": q, "lineage": lin,
+            resolved = resolve_query(q, lin, cl) if q else False
+            body = {"query": q, "resolved": resolved, "lineage": lin,
                     "identity": [{"name": c["name"], "aliases": c["aliases"],
                                   "homonym": c["homonym"], "possible": c["possible"],
                                   "n": c["n"], "edges": c["edges"]} for c in cl],
-                    "pedigree": pedigree(lin) if q else None,
+                    "pedigree": pedigree(lin) if (q and resolved) else None,
                     "suggestions": suggest(es, q) if q else []}
         elif path.endswith("/api/venues"):
             body = {"venues": venues_geo()}
@@ -412,9 +443,12 @@ def _dispatch(path, query_params):
             body = {"error": "unknown endpoint"}
         return (200, {"Content-Type": "application/json"},
                 json.dumps(body).encode())
-    except Exception as e:
+    except Exception:
+        # generic error surface: exception text can leak index names / endpoints
+        import traceback
+        traceback.print_exc()
         return (500, {"Content-Type": "application/json"},
-                json.dumps({"error": str(e)}).encode())
+                json.dumps({"error": "search temporarily unavailable"}).encode())
 
 class handler(BaseHTTPRequestHandler):
     """Vercel Python runtime entry point: a BaseHTTPRequestHandler subclass
@@ -424,9 +458,9 @@ class handler(BaseHTTPRequestHandler):
         parsed = urlparse(self.path)
         try:
             status, headers, body = _dispatch(parsed.path, parsed.query)
-        except Exception as e:  # belt-and-braces; _dispatch already guards
+        except Exception:  # belt-and-braces; _dispatch already guards
             status, headers, body = (500, {"Content-Type": "application/json"},
-                                     json.dumps({"error": str(e)}).encode())
+                                     json.dumps({"error": "search temporarily unavailable"}).encode())
         self.send_response(status)
         for k, v in headers.items():
             self.send_header(k, v)
