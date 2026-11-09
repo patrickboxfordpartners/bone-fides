@@ -26,6 +26,12 @@
     });
     map.addControl(new mapboxgl.NavigationControl({ showCompass: false }), 'top-right');
     map.on('error', e => console.warn('map error', e && e.error));
+    /* Mobile view switch hooks: the map initializes while its container is
+       display:none (List is the default mobile view), so a 0×0 canvas needs
+       resize() when Map view reveals it — and a camera animation mid-flight
+       must stop when List view hides it again. */
+    window.__bfMapResize = () => map.resize();
+    window.__bfMapStop = () => map.stop();
 
     async function openPop(v) {
       let hits = [];
