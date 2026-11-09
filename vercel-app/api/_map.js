@@ -126,10 +126,18 @@
       const markers = [];
       special.forEach(v => {
         const pin = document.createElement('div');
+        const label = v.name + (v.michelin ? ', Michelin starred' : '') + (v.lineaged ? ', cited lineage' : '');
         pin.className = 'pin' + (v.michelin ? ' star' : '');
-        pin.title = v.name + (v.michelin ? ' · Michelin starred' : '') + (v.lineaged ? ' · has lineage' : '');
-        pin.innerHTML = '<div class="d"></div>';
-        pin.addEventListener('click', () => openPop(v));
+        pin.title = label;
+        pin.setAttribute('role', 'button');
+        pin.setAttribute('aria-label', label);
+        pin.tabIndex = 0;
+        pin.innerHTML = '<div class="d" aria-hidden="true"></div>';
+        const activate = () => openPop(v);
+        pin.addEventListener('click', activate);
+        pin.addEventListener('keydown', ev => {
+          if(ev.key === 'Enter' || ev.key === ' '){ ev.preventDefault(); activate(); }
+        });
         new mapboxgl.Marker({ element: pin }).setLngLat([v.lng, v.lat]).addTo(map);
         markers.push(v);
       });

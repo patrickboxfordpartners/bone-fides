@@ -1,5 +1,5 @@
 """Bone Fides demo UI: static page + JSON query API against the lineage index."""
-import os, sys, json, re, traceback, urllib.parse
+import os, sys, json, re, time, traceback, urllib.parse
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -11,8 +11,8 @@ from src.es import make_client, find_edges, INDEX
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 
-def suggest(es, prefix, size=7):
-    """Venue/person suggestions for the search box."""
+def _suggest_top(es, prefix, size):
+    """Fallback: top venue buckets, filtered in process. No hybrid search."""
     body = {
         "size": 0,
         "aggs": {
@@ -28,8 +28,45 @@ def suggest(es, prefix, size=7):
             names.add(name)
     return sorted(names)[:size]
 
+def _suggest_safe(prefix):
+    """Query for the wildcard matcher: keep every letter (Unicode included —
+    "Jardinière" must not lose its è) plus digits/space/&/', and drop the
+    characters that are special inside an ES wildcard expression."""
+    s = re.sub(r"[*?\[\]\\]", " ", prefix)
+    return re.sub(r"[^\w &'.’\-]", "", s, flags=re.UNICODE)[:40]
+
+def suggest(es, prefix, size=7):
+    """Venue name suggestions. Wildcard on the keyword field, not a dossier search."""
+    prefix = (prefix or "").strip()
+    if len(prefix) < 2:
+        return []
+    safe = _suggest_safe(prefix)
+    if len(safe) < 2:
+        return _suggest_top(es, prefix, size)
+    pattern = "*" + safe + "*"
+    try:
+        names = set()
+        for field in ("to_venue.keyword", "from_venue.keyword"):
+            body = {
+                "size": 0,
+                "query": {"wildcard": {field: {"value": pattern, "case_insensitive": True}}},
+                "aggs": {"names": {"terms": {"field": field, "size": max(size, 20)}}},
+            }
+            r = es.search(index=INDEX, body=body)
+            for b in r["aggregations"]["names"]["buckets"]:
+                if b["key"]:
+                    names.add(b["key"])
+        return sorted(names)[:size]
+    except Exception:
+        return _suggest_top(es, prefix, size)
+
 def lineage(es, query, size=25):
-    """All edges matching a venue or person, split into inbound/outbound by the UI."""
+    """All edges matching a venue or person, split into inbound/outbound by the UI.
+
+    evidence is stored in full: citation_supported() must see the whole
+    quotation (a move stated past the display cutoff still counts). The
+    public payload is shortened for display in assemble_dossier().
+    """
     hits = find_edges(es, query, size=size)
     edges = []
     for h in hits:
@@ -43,7 +80,7 @@ def lineage(es, query, size=25):
             "confidence": s.get("confidence"),
             "source": s.get("source"),
             "action": s.get("action"),
-            "evidence": (s.get("evidence") or "")[:220],
+            "evidence": s.get("evidence") or "",
             "source_url": s.get("source_url"),
             "source_image": s.get("source_image"),
             "score": h.get("_score", 0),
@@ -83,13 +120,24 @@ def norm_venue(v):
     toks = [t for t in v.split() if t not in ("the", "a", "an", "of", "at", "in", "on")]
     return ' '.join(toks)
 
+# One-token names that are not a restaurant. "bar" must not glue "bar tartine".
+_GENERIC_VENUE = {"bar", "cafe", "kitchen", "grill", "house", "restaurant", "room", "club", "san", "sf", "food", "wine", "bakery"}
+
 def _venue_touch(va, vb):
-    """Two venue keys touch on exact equality OR token containment
-    (Betelnut ⊂ Betelnut Pejiu Wu, Ritz Carlton ⊂ Ritz Carlton Buckhead)."""
+    """Exact match, or the shorter name is a leading-token prefix of the longer
+    (Betelnut ⊂ Betelnut Pejiu Wu). A single generic token does not match."""
     if va == vb:
         return True
-    ta, tb = set(va.split()), set(vb.split())
-    return bool(ta and tb and (ta <= tb or tb <= ta))
+    ta, tb = va.split(), vb.split()
+    if not ta or not tb:
+        return False
+    if len(ta) > len(tb):
+        ta, tb = tb, ta
+    if tb[:len(ta)] != ta:
+        return False
+    if len(ta) == 1 and (ta[0] in _GENERIC_VENUE or len(ta[0]) < 4):
+        return False
+    return True
 
 def _venues_touch(sa, sb):
     """Any pair of venue keys across two sets touches."""
@@ -113,16 +161,42 @@ def _keysplit(key):
     t = key.split()
     return (t[0], t[-1]) if len(t) >= 2 else (None, None)
 
+# Given-name nicknames only. A raw prefix would merge Dan/Danielle and
+# Chris/Christina. Each value is the one canonical long form we accept.
+_NICKNAMES = {
+    "jen": "jennifer", "jennifer": "jen",
+    "josh": "joshua", "joshua": "josh",
+    "chris": "christopher", "christopher": "chris",
+    "alex": "alexander", "alexander": "alex",
+    "mike": "michael", "michael": "mike",
+    "rob": "robert", "robert": "rob", "bob": "robert",
+    "dan": "daniel", "daniel": "dan",
+    "dave": "david", "david": "dave",
+    "matt": "matthew", "matthew": "matt",
+    "nick": "nicholas", "nicholas": "nick",
+    "tom": "thomas", "thomas": "tom",
+    "sam": "samuel", "samuel": "sam",
+    "pat": "patrick", "patrick": "pat",
+    "liz": "elizabeth", "elizabeth": "liz",
+    "kate": "katherine", "katherine": "kate",
+    "bill": "william", "will": "william", "william": "bill",
+    "jim": "james", "james": "jim",
+    "joe": "joseph", "joseph": "joe",
+    "tony": "anthony", "anthony": "tony",
+    "steve": "steven", "steven": "steve", "stephen": "steve",
+    "andy": "andrew", "andrew": "andy",
+    "ben": "benjamin", "benjamin": "ben",
+    "jon": "jonathan", "jonathan": "jon",
+}
+
 def _fuzzy_sibling(ka, kb):
-    """True if two normalized name keys are initial-prefix compatible variants
-    of one name: same surname, first names >=3 chars with one a prefix of the
-    other (jennifer/jen, joshua/josh, christopher/chris). Bare initials are
-    never matched — 'M. Miller' could be Mike or Mary."""
+    """Same surname and a known nickname pair (Jen/Jennifer, Chris/Christopher).
+    Prefix overlap alone is not enough — Dan is not Danielle."""
     fa, la = _keysplit(ka)
     fb, lb = _keysplit(kb)
-    if not fa or not fb or la != lb:
+    if not fa or not fb or la != lb or fa == fb:
         return False
-    return len(fa) >= 3 and len(fb) >= 3 and (fa.startswith(fb) or fb.startswith(fa))
+    return _NICKNAMES.get(fa) == fb or _NICKNAMES.get(fb) == fa
 
 def _components(edges):
     """Connected components over one name-key's edges. Two edges join when they
@@ -242,13 +316,144 @@ def identity(edges):
     out.sort(key=lambda c: -c["n"])
     return out
 
-def pedigree(edges):
-    """Weighted credibility score for the queried kitchen/person, 0-100.
+# Career-move language. A recipe sentence that merely names a title
+# ("combines it with butter") is not a promotion. Plain career facts the
+# extraction prompt asks for — "worked at Betelnut", "worked under Thomas
+# Keller", "trained at French Laundry" — are accepted too: they are the
+# mentor/stint sentences that build a lineage.
+_MOVE_CUE = re.compile(
+    r"\b(join(?:ed|s|ing)?|depart(?:ed|s|ure)?|leav(?:e|es|ing)|left|"
+    r"hir(?:ed|es|ing)|appoint(?:ed|s|ment)?|t(?:ook|akes|aking) over|"
+    r"mov(?:e|ed|es|ing) (?:over|to|from)|jumped ship|"
+    r"promot(?:ed|es|ion)|elevat(?:ed|es|ion)|"
+    r"named (?:culinary|executive|the new|as the|director|chef)|"
+    r"new executive chef|"
+    r"opens?|opened|founded|exit(?:ed|s|ing)?|steps down|"
+    r"headed to|lands? at|came from|coming from|went on|goes to|"
+    r"now (?:at|runs|heads)|formerly|previously|"
+    r"work(?:ed|s|ing) (?:at|under|for|with|in)|"
+    r"train(?:ed|s|ing) (?:at|under|with)|apprenticed? (?:at|under|with)|"
+    r"staged (?:at|under|with)|cook(?:ed|ing) (?:at|for|under)|"
+    r"sous chef under|tenure (?:at|with)|spent .* (?:at|with))\b",
+    re.I)
+_PROMO_CUE = re.compile(
+    r"\b(promot(?:ed|es|ion)|elevat(?:ed|es|ion)|"
+    r"named (?:executive|the new|as the)|appointed (?:executive|chef|as)|"
+    r"rises to|steps up to|new title)\b",
+    re.I)
+_NONCAREER = re.compile(
+    r"\b(guest chefs?|pop-?ups?|suppliers?|purveyors?|vendors?)\b", re.I)
 
-    Three factors: authority (how Chronicle-weighted the citations are,
-    55pts), independent corroboration across sources (25pts), and depth of
-    the record (20pts). A thin single-Eater-article venue lands ~29; a
-    Chronicle-verified, multi-source, deep record approaches 100."""
+def citation_supported(edge):
+    """True when the stored quotation itself states a career move.
+
+    Indexed edges are not re-fetched. PROMOTED is kept only when the
+    quotation says so; guest shifts and supplier blurbs are not moves.
+    """
+    ev = (edge.get("evidence") or "").strip()
+    if not ev:
+        return False
+    role = edge.get("role") or ""
+    if _NONCAREER.search(role) or _NONCAREER.search(ev):
+        return False
+    action = (edge.get("action") or "").upper()
+    if action == "PROMOTED":
+        return bool(_PROMO_CUE.search(ev))
+    return bool(_MOVE_CUE.search(ev))
+
+def outlet_tier(source, url):
+    """sfchronicle | sfgate | eater | other. A null or mismatched source
+    never borrows the Eater label from a different host."""
+    host = ""
+    if url:
+        m = re.search(r"https?://([^/]+)", url, re.I)
+        host = (m.group(1) if m else "").lower()
+    if source == "eater" and host and "eater" not in host:
+        source = None
+    if source in TIER_WEIGHT:
+        return source
+    if "sfchronicle" in host:
+        return "sfchronicle"
+    if "sfgate" in host:
+        return "sfgate"
+    if "eater.com" in host or host.startswith("eater.") or ".eater." in host:
+        return "eater"
+    return "other"
+
+def _venue_matches_query(ql, venue):
+    """Same resolution rule as resolve_query: exact, or a >=4 char prefix."""
+    if not venue:
+        return False
+    vl = venue.lower().strip()
+    if vl == ql:
+        return True
+    return bool(len(ql) >= 4 and len(vl) >= 4 and (vl.startswith(ql) or ql.startswith(vl)))
+
+def scope_edges(q, lin, cl):
+    """Edges that belong to the resolved chef or kitchen, not the rest of the page."""
+    ql = (q or "").lower().strip()
+    person_edges = []
+    for c in cl:
+        names = [c["name"], *(c.get("aliases") or [])]
+        if any((n or "").lower() == ql and not _is_collective(n) for n in names):
+            person_edges.extend(c["edges"])
+    # The person-vs-venue comparison counts only OTHER chefs' venue hits: a
+    # namesake restaurant touched by the queried chef's own moves must not
+    # tip the count toward the venue bucket (the explorer's venueFlips filter
+    # skips the queried person for the same reason). But when the venue wins
+    # the comparison, the returned restaurant dossier keeps every venue edge
+    # — the chef's own moves are part of the restaurant's record too.
+    person_set = {e.get("person") for e in person_edges}
+    venue_edges = [e for e in lin
+                   if _venue_matches_query(ql, e.get("from_venue"))
+                   or _venue_matches_query(ql, e.get("to_venue"))]
+    competing = sum(1 for e in venue_edges if e.get("person") not in person_set)
+    # A person whose own record is at least as large as the competing venue
+    # hits wins, matching the explorer's person-vs-namesake rule.
+    if person_edges and len(person_edges) >= competing:
+        return person_edges
+    if venue_edges:
+        return venue_edges
+    return person_edges
+
+def _public_cluster(c):
+    return {"name": c["name"], "aliases": c["aliases"],
+            "homonym": c["homonym"], "possible": c["possible"],
+            "n": c["n"], "edges": c["edges"]}
+
+def assemble_dossier(q, lin):
+    """Shape the public search payload.
+
+    Unresolved queries return no lineage. Resolved queries return only
+    career-move citations about that entity, and the score counts those.
+    """
+    q = (q or "").strip()[:MAX_QUERY_LEN]
+    if not q:
+        return {"query": "", "resolved": False, "lineage": [], "identity": [], "pedigree": None}
+    cl = identity(lin)
+    if not resolve_query(q, lin, cl):
+        return {"query": q, "resolved": False, "lineage": [], "identity": [], "pedigree": None}
+    scoped = []
+    for e in scope_edges(q, lin, cl):
+        if not citation_supported(e):
+            continue
+        row = dict(e)
+        row["outlet"] = outlet_tier(e.get("source"), e.get("source_url"))
+        row["supported"] = True
+        # display cut only: the gate above judged the full quotation
+        row["evidence"] = (row.get("evidence") or "")[:220]
+        scoped.append(row)
+    cl2 = identity(scoped) if scoped else []
+    return {"query": q, "resolved": True, "lineage": scoped,
+            "identity": [_public_cluster(c) for c in cl2],
+            "pedigree": pedigree(scoped) if scoped else None}
+
+def pedigree(edges):
+    """Weighted credibility of the edges passed in (already entity-scoped).
+
+    Authority is Chronicle-weighted (55pts), article corroboration (25pts),
+    and depth (20pts). Unknown hosts are tier `other` at weight 3.
+    """
     if not edges:
         return None
     tiers = {"sfchronicle": 0, "sfgate": 0, "eater": 0}
@@ -256,7 +461,9 @@ def pedigree(edges):
     urls = set()
     other = 0
     for e in edges:
-        t = e.get("source") if e.get("source") in TIER_WEIGHT else "other"
+        t = e.get("outlet") or outlet_tier(e.get("source"), e.get("source_url"))
+        if t not in TIER_WEIGHT:
+            t = "other"
         if t == "other":
             other += 1
             total += 3  # unranked outlets: lighter than Eater, never borrow its weight
@@ -361,7 +568,7 @@ def fetch_person_edges(es, names, limit=100):
             "to_venue": s.get("to_venue"), "role": s.get("role"),
             "date": s.get("date"), "confidence": s.get("confidence"),
             "source": s.get("source"), "action": s.get("action"),
-            "evidence": (s.get("evidence") or "")[:220],
+            "evidence": s.get("evidence") or "",
             "source_url": s.get("source_url"),
             "source_image": s.get("source_image"), "score": 0,
         })
@@ -385,6 +592,33 @@ def stats(es):
             )["aggregations"]["s"]["value"]}
 
 MAX_QUERY_LEN = 120  # abuse cap: queries are names, not free-text essays
+MAX_RESULT_SIZE = 40  # a dossier, not a corpus dump
+
+# Best-effort per-instance throttle. Warm Vercel isolates share this dict;
+# a cold start starts empty. Enough to blunt a tight loop without a datastore.
+_BUCKETS = {}
+
+def allow_request(bucket, key, limit, window, now=None):
+    now = time.time() if now is None else now
+    slot = _BUCKETS.setdefault(bucket, {})
+    hits = [t for t in slot.get(key, []) if now - t < window]
+    if len(hits) >= limit:
+        slot[key] = hits
+        return False
+    hits.append(now)
+    slot[key] = hits
+    if len(slot) > 4000:
+        stale = [k for k, v in slot.items() if not v or now - v[-1] >= window]
+        for k in stale:
+            slot.pop(k, None)
+    return True
+
+def clamp_size(raw, default=25):
+    """Public page size. Non-integers raise so the handler can stay generic."""
+    if raw in (None, "", []):
+        return default
+    n = int(raw)
+    return min(MAX_RESULT_SIZE, max(1, n))
 
 def _is_collective(name):
     """Anonymous/collective entity ("chefs", "sous chef", "two chefs"): the
@@ -432,6 +666,8 @@ class Handler(SimpleHTTPRequestHandler):
         path = urllib.parse.urlsplit(self.path).path  # ignore query string for routing
         if path.startswith("/api/search"):
             self._safe(lambda: self._search(es))
+        elif path.startswith("/api/suggest"):
+            self._safe(lambda: self._suggest(es))
         elif path.startswith("/api/venues"):
             self._safe(lambda: self._json({"venues": venues_geo(es)}))
         elif path.startswith("/api/map.js"):
@@ -446,12 +682,21 @@ class Handler(SimpleHTTPRequestHandler):
         else:
             super().do_GET()
 
+    def _client_ip(self):
+        fwd = self.headers.get("X-Forwarded-For", "")
+        if fwd:
+            return fwd.split(",")[0].strip()
+        return self.client_address[0] if self.client_address else ""
+
     def _search(self, es):
+        if not allow_request("search", self._client_ip() or "unknown", 30, 60):
+            self._json({"error": "too many requests"}, status=429)
+            return
         m = re.search(r"q=([^&]*)", self.path)
         q = urllib.parse.unquote(m.group(1)) if m else ""
         q = q.strip()[:MAX_QUERY_LEN]
         ms = re.search(r"size=(\d+)", self.path)
-        size = min(300, int(ms.group(1))) if ms else 25
+        size = clamp_size(ms.group(1)) if ms else 25
         lin = lineage(es, q, size=size) if q else []
         cl = identity(lin) if q else []
         # targeted completion: fragmented records (name variants, same-chef
@@ -465,14 +710,17 @@ class Handler(SimpleHTTPRequestHandler):
             extra = [e for e in fetch_person_edges(es, need) if _edge_key(e) not in have]
             if extra:
                 lin = dedupe(lin + extra)
-                cl = identity(lin)
-        resolved = resolve_query(q, lin, cl) if q else False
-        self._json({"query": q, "resolved": resolved, "lineage": lin,
-                    "identity": [{"name": c["name"], "aliases": c["aliases"],
-                                  "homonym": c["homonym"], "possible": c["possible"],
-                                  "n": c["n"], "edges": c["edges"]} for c in cl],
-                    "pedigree": pedigree(lin) if (q and resolved) else None,
-                    "suggestions": suggest(es, q) if q else []})
+        self._json(assemble_dossier(q, lin) if q else
+                   {"query": "", "resolved": False, "lineage": [], "identity": [], "pedigree": None})
+
+    def _suggest(self, es):
+        if not allow_request("suggest", self._client_ip() or "unknown", 90, 60):
+            self._json({"error": "too many requests"}, status=429)
+            return
+        m = re.search(r"q=([^&]*)", self.path)
+        q = urllib.parse.unquote(m.group(1)) if m else ""
+        q = q.strip()[:MAX_QUERY_LEN]
+        self._json({"query": q, "suggestions": suggest(es, q) if q else []})
 
     def _safe(self, fn):
         try:
