@@ -236,8 +236,8 @@
 
 <header class="wrap">
   <div class="mast">
-    <a class="wordmark" href="https://bone-fides-pat-mitchells-projects.vercel.app/">Bone <em>Fides</em></a>
-    <span class="live" id="livelink"><a href="https://bone-fides-pat-mitchells-projects.vercel.app/">Open the explorer</a></span>
+    <a class="wordmark" href="/explorer">Bone <em>Fides</em></a>
+    <span class="live" id="livelink"><a href="/explorer">Open the explorer</a></span>
   </div>
 </header>
 
@@ -250,7 +250,7 @@
        <b>Bone Fides answers with receipts</b> — every chef move cited to the article that reported it.
        Built from public food journalism, <em>never</em> from reviews.</p>
     <div class="herocta">
-      <a class="cta" href="https://bone-fides-pat-mitchells-projects.vercel.app/">Trace a kitchen
+      <a class="cta" href="/explorer">Trace a kitchen
         <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h9M8 3.5 12.5 8 8 12.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
       <a class="ctasecondary" href="#betelnut">See the Betelnut dossier ↓</a>
@@ -297,7 +297,7 @@
     <p class="slide-foot" data-pretext-p>Nine chapters, nine cited articles, one loop. Every picture
        is the artwork of the article that reported the move, or a credited photo of the place itself —
        no stock, no reviews, just the record.
-       <a href="https://bone-fides-pat-mitchells-projects.vercel.app/?q=Alexander%20Ong">Follow Ong in the explorer →</a></p>
+       <a href="/explorer/?q=Alexander%20Ong">Follow Ong in the explorer →</a></p>
   </section>
 
   <!-- ── The Betelnut dossier ────────────────── -->
@@ -346,7 +346,7 @@
         <p class="evsrc"><span class="srcbadge eater">Eater SF</span><a class="src" href="https://sf.eater.com/2018/10/15/17979010/bon-voyage" target="_blank" rel="noopener">sf.eater.com ↗</a></p>
       </div>
     </div>
-    <p class="sbody" style="margin-top:20px" data-pretext-p>The dossier keeps going — <a href="https://bone-fides-pat-mitchells-projects.vercel.app/?q=Betelnut">25 cited moves on Betelnut alone</a>. Some lineage left the city; the dossier shows you which, because that's part of the answer too.</p>
+    <p class="sbody" style="margin-top:20px" data-pretext-p>The dossier keeps going — <a href="/explorer/?q=Betelnut">25 cited moves on Betelnut alone</a>. Some lineage left the city; the dossier shows you which, because that's part of the answer too.</p>
   </section>
 
   <!-- ── How it works ────────────────────────── -->
@@ -408,10 +408,10 @@
     <h2 data-pretext>The next time a kitchen closes, ask its <em>bone fides</em>.</h2>
     <p class="sub" data-pretext-p>The explorer is live. Start with the kitchen that started this.</p>
     <div class="herocta">
-      <a class="cta" href="https://bone-fides-pat-mitchells-projects.vercel.app/?q=Betelnut">Open the dossier
+      <a class="cta" href="/explorer/?q=Betelnut">Open the dossier
         <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h9M8 3.5 12.5 8 8 12.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
-      <a class="ctasecondary" href="https://bone-fides-pat-mitchells-projects.vercel.app/">Browse all 799 kitchens</a>
+      <a class="ctasecondary" href="/explorer">Browse all 799 kitchens</a>
     </div>
   </section>
 </main>
@@ -419,7 +419,7 @@
 <footer class="wrap">
   <div class="footrow">
     <span><b>Bone Fides</b> — the kitchen lineage of San Francisco</span>
-    <span><a href="https://bone-fides-pat-mitchells-projects.vercel.app/">Explorer</a> · <a href="#how">Method</a> · <a href="#betelnut">Betelnut</a></span>
+    <span><a href="/explorer">Explorer</a> · <a href="#how">Method</a> · <a href="#betelnut">Betelnut</a></span>
   </div>
   <p class="footnote">Lineage is reconstructed from public reporting and can be incomplete or contested —
      every claim on this page links to the article behind it, so you can read the same evidence we did.
@@ -640,7 +640,7 @@ window.Pretext = {walkLineRanges: $1, setLocale: D1, profilePrepare: V1, prepare
     show(0);
   })();
   // Live stats straight from the explorer's API
-  fetch('https://bone-fides-pat-mitchells-projects.vercel.app/api/stats').then(r => r.json()).then(d => {
+  fetch('/api/stats').then(r => r.json()).then(d => {
     document.getElementById('n-edges').textContent = d.edges.toLocaleString('en-US');
     document.getElementById('n-people').textContent = d.people.toLocaleString('en-US');
     document.getElementById('n-venues').textContent = d.venues.toLocaleString('en-US');

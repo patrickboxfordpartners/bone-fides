@@ -3,10 +3,13 @@
 # is present (git deploys). The copies are committed so CLI deploys from a
 # shallow checkout (or CI machines without ../ui/) still get the assets.
 # map.js loads only when the runtime injects a token, so it ships verbatim.
+#
+# The explorer ships as explorer.html (NOT index.html): the landing page owns
+# "/" — a static index.html at the output root would win over the / rewrite.
 set -e
 cd "$(dirname "$0")"
-if [ -f ../ui/index.html ]; then
-  cp ../ui/index.html index.html
+if [ -f ../ui/explorer.html ]; then
+  cp ../ui/explorer.html explorer.html
   cp ../ui/map.js map.js
   cp ../ui/city_venues.json city_venues.json
   cp ../ui/venues_geo.json venues_geo.json

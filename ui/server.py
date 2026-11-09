@@ -438,8 +438,11 @@ class Handler(SimpleHTTPRequestHandler):
             self._serve_mapjs()
         elif path.startswith("/api/stats"):
             self._safe(lambda: self._json(stats(es)))
-        elif path in ("/", "/index.html"):
-            self._serve_index()
+        elif path in ("/", "/landing", "/landing.html"):
+            # "/" serves the landing page — same as the Vercel rewrite.
+            self._serve_landing()
+        elif path in ("/explorer", "/explorer/", "/explorer.html", "/explorer/index.html"):
+            self._serve_explorer()
         else:
             super().do_GET()
 
@@ -482,10 +485,10 @@ class Handler(SimpleHTTPRequestHandler):
             except Exception:
                 pass
 
-    def _serve_index(self):
-        """Serve index.html with the Mapbox token injected as window.MAPBOX_TOKEN."""
+    def _serve_explorer(self):
+        """Serve explorer.html with the Mapbox token injected as window.MAPBOX_TOKEN."""
         try:
-            with open(os.path.join(ROOT, "index.html")) as f:
+            with open(os.path.join(ROOT, "explorer.html")) as f:
                 html = f.read()
         except OSError:
             self.send_error(404)
@@ -508,6 +511,20 @@ class Handler(SimpleHTTPRequestHandler):
         except OSError:
             self.send_error(404)
             return
+
+    def _serve_landing(self):
+        """Serve landing.html verbatim (static page, no token injection)."""
+        try:
+            with open(os.path.join(ROOT, "landing.html")) as f:
+                body = f.read().encode()
+        except OSError:
+            self.send_error(404)
+            return
+        self.send_response(200)
+        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
         inject = "window.MAPBOX_TOKEN = %s;\n" % json.dumps(os.environ.get("MAPBOX_TOKEN", ""))
         body = (inject + js).encode()
         self.send_response(200)
