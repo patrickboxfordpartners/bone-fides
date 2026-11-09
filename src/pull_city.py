@@ -63,9 +63,38 @@ def main():
             "neighborhood": r.get("analysis_neighborhood") or "",
             "lat": lat, "lng": lng,
         })
-    # dedup by (name, address)
+    # Two Michelin-starred kitchens have no permit row in the DPH dataset
+    # (Madcap, San Ho Won: both 1★ in the 2026 guide) — the DBA never got
+    # filed/recorded. Curated additions so the star roster doesn't silently
+    # drop real starred restaurants. Injected BEFORE the dedup pass: when a
+    # future DPH filing lists one of them, the official row is seen first
+    # and the stand-in is dropped instead of double-pinning the star.
+    CURATED = [
+        {"name": "Madcap", "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
+         "address": "3195 California St", "neighborhood": "Presidio Heights",
+         "lat": 37.7872056, "lng": -122.4465788},
+        {"name": "San Ho Won", "permit_type": "H26 - RESTAURANT OVER 2,000 SQFT",
+         "address": "1625 Leavenworth St", "neighborhood": "Nob Hill",
+         "lat": 37.7959983, "lng": -122.4169553},
+    ]
+    venues += CURATED
+
+    # dedup by (name, address); a curated stand-in also yields to any kept
+    # row whose name matches after dropping the leading article, or extends
+    # it at a token boundary ("Madcap Restaurant") — mirrors tag_city's
+    # matching discipline so one kitchen can't get two starred pins.
+    def artless(s):
+        s = s.lower().split()
+        return " ".join(s[1:]) if len(s) > 1 and s[0] in ("the", "a", "an") else " ".join(s)
+
+    curated_ids = {id(c) for c in CURATED}
     seen, uniq = set(), []
     for v in venues:
+        if id(v) in curated_ids:
+            n = artless(v["name"])
+            if any(artless(u["name"]) == n or artless(u["name"]).startswith(n + " ")
+                   for u in uniq):
+                continue
         k = (v["name"].lower(), v["address"].lower())
         if k in seen: continue
         seen.add(k); uniq.append(v)

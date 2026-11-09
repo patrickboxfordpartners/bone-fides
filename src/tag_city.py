@@ -13,21 +13,25 @@ load_env(os.path.join(BASE, ".env"))
 from src.es import make_client, INDEX
 CITY = os.path.join(BASE, "ui", "city_venues.json")
 
-# SF restaurants holding (or recently holding) one or more Michelin stars.
-# Checked against the 2026 Michelin Guide (Wikipedia's starred-Bay-Area table,
-# year columns 2019/2021-2026): dropped rows the guide shows unstarred and the
-# permit data can't match (Bird Dog=Palo Alto, Sushi Jin/Iyasare/Wako/Helios/
-# Sonsie/Selby's=no SF permit row, A Plume/Alcohol by Volume=unmatched,
-# Aziza/Spruce/Tosca/Zuni/Rich Table=last starred years back), plus Verjus
-# and Lord Stanley (no current star). Added current stars found missing:
-# Birdsong (2-star), Californios (3-star), Kin Khao, Hilda and Jesse, Nisei,
-# Naides, Acquerello, Lazy Bear.
-STARRED = {"Benu", "Quince", "Saison", "Atelier Crenn", "Birdsong",
-           "Rintaro", "Ariake", "Akiko's", "Kusakabe", "Marufuku Ramen", "Ju-ni",
-           "7 Adams", "Angler", "Cotogna", "Delfina", "Mister Jiu's", "Nari",
-           "State Bird Provisions", "The Progress", "Niku Steakhouse",
-           "Flour + Water", "Kiln", "Luce", "Californios", "Kin Khao",
-           "Hilda and Jesse", "Nisei", "Naides", "Acquerello", "Lazy Bear"}
+# SF restaurants holding a Michelin star in the 2026 guide, with the star
+# count. Verified against guide.michelin.com's San Francisco listing (all four
+# pages) + each venue's distinction, cross-checked with Wikipedia's
+# starred-Bay-Area table (2026 column). SF only — North/South Bay stars
+# (SingleThread, French Laundry, Commis, Sonsie, ...) are outside the city
+# dataset. Former stars removed from the old list: Rintaro (Bib Gourmand,
+# not a star), Kusakabe (lost 2016), Ju-ni (lost 2021), Luce (lost 2018,
+# closed), Cotogna / Flour + Water (Selected, never starred), Akiko's /
+# Ariake / Delfina / Marufuku Ramen (never in the guide's starred tables).
+# Added missing current SF stars: Sons & Daughters (2), Madcap, San Ho Won,
+# Sorrel, Ssal, Wolfsbane (1).
+STARRED = {"Benu": 3, "Quince": 3, "Californios": 3, "Atelier Crenn": 3,
+           "Birdsong": 2, "Saison": 2, "Acquerello": 2, "Lazy Bear": 2,
+           "Kiln": 2, "Sons & Daughters": 2,
+           "7 Adams": 1, "Angler": 1, "Hilda and Jesse": 1, "Kin Khao": 1,
+           "Madcap": 1, "Mister Jiu's": 1, "Nari": 1, "Naides": 1,
+           "Niku Steakhouse": 1, "Nisei": 1, "San Ho Won": 1, "Sorrel": 1,
+           "Ssal": 1, "State Bird Provisions": 1, "The Progress": 1,
+           "Wolfsbane": 1}
 
 def norm(s):
     s = s.lower()
@@ -67,7 +71,8 @@ def main():
     cv = json.load(open(CITY))["venues"]
     tagged = 0
     for v in cv:
-        v.pop("lineaged", None); v.pop("michelin", None); v.pop("lineage_name", None)
+        v.pop("lineaged", None); v.pop("michelin", None)
+        v.pop("star_name", None); v.pop("stars", None); v.pop("lineage_name", None)
         n = norm(v["name"])
         # exact, then token-prefix; honorific rows ("Restaurant Nisei") match
         # their bare graph name after the honorific is dropped
@@ -89,14 +94,10 @@ def main():
             v["lineage_name"] = hit
             tagged += 1
         # michelin: exact, then prefix ("Quince" matches "Quince Restaurant",
-        # "Angler" matches "Angler Sf, Llc"). Skip generic-prefix false positives
-        # ("Chestnut" must not tag "Chestnut Diner" / "Chestnut Street …";
-        # "Flour + Water" must not star the Pizza Shop / Pizzeria spin-offs —
-        # only the flagship holds the star). star_name carries the curated
+        # "Angler" matches "Angler Sf, Llc"). star_name carries the curated
         # guide-list spelling through the flagship dedup below, so every
         # starred row (incl. permit oddities like "Angler Sf, Llc") has a
         # clean display name.
-        GENERIC_STAR = {"chestnut", "akiko's", "flour + water"}
         # city names that carry a leading honorific the guide drops
         # ("Restaurant Naides" → Naides, "Restaurant Nisei" → Nisei)
         HONORIFIC = ("restaurant ",)
@@ -107,14 +108,13 @@ def main():
         for sn, orig in star_norm.items():
             if n == sn or (n.startswith(HONORIFIC) and n[len("restaurant "):] == sn):
                 exact = orig; break
-            if sn in GENERIC_STAR:
-                continue
             if n.startswith(sn + " ") and len(sn) > plen:
                 plen = len(sn); pstar = orig
         orig = exact or pstar
         if orig:
             v["michelin"] = True
             v["star_name"] = orig
+            v["stars"] = STARRED[orig]
             v.setdefault("lineage_name", orig)
 
     # stars belong to the kitchen: where one starred name has both restaurant
@@ -136,21 +136,20 @@ def main():
         if any(is_rest_row(r) for r in rows):
             for r in rows:
                 if not is_rest_row(r):
-                    r.pop("michelin", None); r.pop("star_name", None)
+                    r.pop("michelin", None); r.pop("star_name", None); r.pop("stars", None)
 
-    # one starred name, several real branches (Akiko's: Nob Hill omakase +
-    # Folsom St sushi; Saison: dining room 178 Townsend + cellar annex 234
-    # Townsend): the guide stars the dining room, so annexes/branches keep
-    # lineage but lose the star. Curated: starred address per star_name.
-    STARRED_ADDR = {"Akiko's": "1501 CALIFORNIA ST",
-                    "Saison": "178 TOWNSEND ST"}
+    # one starred name, several real branches (Saison: dining room 178
+    # Townsend + cellar annex 234 Townsend): the guide stars the dining room,
+    # so annexes/branches keep lineage but lose the star. Curated: starred
+    # address per star_name.
+    STARRED_ADDR = {"Saison": "178 TOWNSEND ST"}
     for sn, rows in by_star.items():
         want = STARRED_ADDR.get(sn)
         if want is None:
             continue
         for r in rows:
             if r.get("michelin") and r.get("address") != want:
-                r.pop("michelin", None); r.pop("star_name", None)
+                r.pop("michelin", None); r.pop("star_name", None); r.pop("stars", None)
 
     # one pin per lineage name: keep the row with the shortest name (the
     # flagship location), so Blue Bottle's 11 permits render as one dot
