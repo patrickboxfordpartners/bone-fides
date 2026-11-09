@@ -1,6 +1,6 @@
 /* Map layer: full SF food-business universe + lineage pins.
    Quiet dots (thousands) render as one GeoJSON circle layer; lineaged venues
-   get interactive HTML pins (red), Michelin-starred ones gold. */
+   get interactive HTML pins (orange), Michelin-starred ones champagne. */
 (function () {
   const TOKEN = window.MAPBOX_TOKEN;
   const el = document.getElementById('map');

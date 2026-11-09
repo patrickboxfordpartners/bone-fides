@@ -10,7 +10,7 @@
 <style>
   :root {
     --bg:#171310; --bg2:#1f1a15; --ink:#efe6d3; --dim:#9b8f7c; --faint:rgba(239,230,211,.14);
-    --accent:#d08152; --gold:#c2a05a; --ok:#8fb996; --bad:#d9776b;
+    --accent:#d08152; --gold:#c2a05a; --stargold:#efd9a0; --ok:#8fb996; --bad:#d9776b;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { -webkit-font-smoothing: antialiased; }
@@ -95,6 +95,13 @@
   .srcbadge.sfgate { color: #1a5e63; }
   .chef .src a { color: var(--gold); text-decoration: none; border-bottom: 1px solid rgba(194,160,90,.35); }
   .chef .src a:hover { color: var(--ink); border-color: var(--ink); }
+  /* Instagram badge, on the chef's name line — only for handles verified against
+     the chef's own profile (title/bio match) or supplied by the operator. */
+  .igbadge { display: inline-flex; align-items: center; gap: 5px; font-size: 10.5px; font-weight: 560;
+             letter-spacing: .06em; color: var(--dim); text-decoration: none; vertical-align: 2px; }
+  .igbadge svg { width: 11px; height: 11px; opacity: .75; }
+  .igbadge:hover { color: var(--accent); }
+  .igbadge:hover svg { opacity: 1; }
   .empty { color: var(--dim); font-size: 16px; padding: 30px 0; font-style: italic; }
   .loading { color: var(--dim); font-size: 15px; padding: 28px 0; font-style: italic; }
 
@@ -109,9 +116,11 @@
   .pin { cursor: pointer; }
   .pin .d { width: 13px; height: 13px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg);
             box-shadow: 0 0 0 1px var(--accent), 0 2px 8px rgba(0,0,0,.6); transition: all .15s; }
-  .pin.star .d { background: var(--gold); box-shadow: 0 0 0 1px var(--gold), 0 2px 8px rgba(0,0,0,.6); }
+  /* Michelin pins use a dedicated champagne (much lighter than --gold) so they
+     stay clearly distinct from the orange lineage pins on the dark map. */
+  .pin.star .d { background: var(--stargold); box-shadow: 0 0 0 1px var(--stargold), 0 2px 8px rgba(0,0,0,.6); }
   .pin:hover .d { transform: scale(1.4); box-shadow: 0 0 0 1px var(--accent), 0 0 12px rgba(208,129,82,.5), 0 2px 8px rgba(0,0,0,.6); }
-  .pin.star:hover .d { box-shadow: 0 0 0 1px var(--gold), 0 0 12px rgba(194,160,90,.5), 0 2px 8px rgba(0,0,0,.6); }
+  .pin.star:hover .d { box-shadow: 0 0 0 1px var(--stargold), 0 0 12px rgba(239,217,160,.55), 0 2px 8px rgba(0,0,0,.6); }
   .pin.active .d { background: var(--accent); transform: scale(1.6); box-shadow: 0 0 0 2px var(--accent), 0 0 18px rgba(208,129,82,.55); }
   .mappop .badge { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--gold);
                    margin: -2px 0 6px; }
@@ -216,6 +225,104 @@ function srcBadge(u, source){
   if(tier === 'sfchronicle') return '<span class="srcbadge sfchronicle">Chronicle</span>';
   if(tier === 'sfgate') return '<span class="srcbadge sfgate">SFGate</span>';
   return '<span class="srcbadge" style="color:var(--dim)">Eater</span>';
+}
+
+/* Verified Instagram handles, keyed by the exact person.keyword in the corpus.
+   Only handles checked against the chef's own profile (title/bio match), a
+   restaurant account that credits them, or the operator's own list. Chefs with
+   no verified account are simply absent — nothing is guessed. */
+const IG = {
+  'Alexander Ong': 'chefalexong',
+  'Anthony Mangieri': 'anthony_w_mangieri',
+  'Anthony Strong': 'anthonystrong',
+  'April Bloomfield': 'aprilbloomfield',
+  'Arnold Eric Wong': 'arnoldericwong',
+  'Bradley Ogden': 'chefbradleyo',
+  'Brett Cooper': 'brettmichaelcooper',
+  'Bridget Batson': 'bridgetbatson',
+  'Bruce Hill': 'chefbrucehill',
+  'Bruno Feldeisen': 'brunofeldeisen',
+  'Charles Phan': 'slanteddoor',
+  'Chris Cosentino': 'chefchriscosentino',
+  'Chris Kajioka': 'ckcuisine21',
+  'Christopher Kostow': 'ckostow',
+  'Cindy Pawlcyn': 'cindypawlcyn',
+  'Craig Stoll': 'craighstoll',
+  'Curtis Di Fede': 'chefcurtisdifede',
+  'David Barzelay': 'davidbarzelay',
+  'David Bazirgan': 'chefdavebaz',
+  'David Fisher': 'fisher0720',
+  'David Kinch': 'davidkinch',
+  'David Lawrence': 'davidlawrencechef',
+  'David Nayfeld': 'davidnayfeld',
+  'Dennis Leary': 'dennislearysf',
+  'Deuki Hong': 'deukihong',
+  'Dominique Crenn': 'dominiquecrenn',
+  'Douglas Keane': 'douglaskeane',
+  'Elizabeth Falkner': 'cheffalkner',
+  'Emily Luchetti': 'emilyluchetti',
+  'Erik Hopfinger': 'piratechefsf',
+  'George Chen': 'chinalivechen',
+  'Gordon Drysdale': 'drysdalegordo',
+  'Hoss Zare': 'chefhosszare',
+  'James Ormsby': 'jamesormsby',
+  'James Syhabout': 'jamessyhabout',
+  'Jason Fox': 'chefjasonfox',
+  'Jennifer Puccio': 'chefpuccio',
+  'Jeremy Fox': 'chefjeremyfox',
+  'Joey Elenterio': 'jelenterio',
+  'Jonnatan Leiva': 'chefjonnatanleiva',
+  'Joseph Manzare': 'josephmanzare',
+  'Joshua Skenes': 'jskenes',
+  'Kim Alter': 'kimalter',
+  'Laura Ozyilmaz': 'lauraozyilmaz',
+  'Laurent Gras': 'laurentgras',
+  'Laurent Manrique': 'laurentmanrique',
+  'Loretta Keller': 'lorettakellersf',
+  'Louis Maldonado': 'louie_maldonado',
+  'Marc Schechter': 'pizzaman_420',
+  'Mario Tolentino': 'chefmariotolentino',
+  'Marisa Churchill': 'chef_marisachurchill',
+  'Mark Liberman': 'markliberman77',
+  'Mark Sullivan': 'chefmarksullivan',
+  'Melissa Perfit': 'chefmperfit',
+  'Michael Tusk': 'michaeltusk',
+  'Nate Appleman': 'nappleman',
+  'Nick Balla': 'nicolausballa',
+  'Pim Techamuanvivit': 'chezpim',
+  'Preeti Mistry': 'chefpmistry',
+  'Randy Lewis': 'chefrandylewis',
+  'Ravi Kapur': 'chefravikapur',
+  'Reem Assil': 'reem.assil',
+  'Richard Reddington': 'richardreddington',
+  'Robin Song': 'rtsong00',
+  'Rogelio Garcia': 'chefrogeliogarcia',
+  'Roland Passot': 'rolandpassot',
+  'Ron Boyd': 'ronboyd138',
+  'Ryan Scott': 'chef_ryan_scott',
+  'Sarah Kirnon': 'kirnonsarah',
+  'Sarah Rich': 'sallyhurricane',
+  'Sayat Ozyilmaz': 'sayatozyilmaz',
+  'Scott Beattie': 'scottbeattiecocktails',
+  'Srijith Gopinathan': 'chefsri_g',
+  'Stuart Brioza': 'atomicstew',
+  'Tanya Holland': 'mstanyaholland',
+  'Thad Vogler': 'thadvogler',
+  'Thomas Keller': 'chefthomaskeller',
+  'Thomas McNaughton': 'chefthomasmcnaughton',
+  'Timothy Hollingsworth': 'cheftimhollingsworth',
+  'Traci Des Jardins': 'tracidesjardins',
+  'Tu David Phu': 'cheftudavidphu',
+  'Tyler Florence': 'tylerflorence',
+  'Victor Scargle': 'vscargle',
+  'Wilder Marroquin': 'chefwildergramer'
+};
+
+const IG_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1.3" fill="currentColor" stroke="none"/></svg>';
+function igBadge(name, aliases){
+  const h = IG[name] || (aliases || []).find(a => IG[a]);
+  if(!h) return '';
+  return ' <a class="igbadge" href="https://www.instagram.com/' + h + '/" target="_blank" rel="noopener" title="' + esc(name) + ' on Instagram ( @' + h + ')">' + IG_SVG + 'ig</a>';
 }
 
 // ── rail head ──
@@ -344,7 +451,7 @@ function render(q, edges, ms, ped, identity){
     rows.push(`
     <div class="chef${img ? ' hasimg' : ''}">
       <div class="who"><span class="conf ${pivot.confidence||'medium'}" title="${esc(pivot.confidence||'medium')} confidence"></span><span class="sr-only">${esc(pivot.confidence||'medium')} confidence</span>
-        <span class="pname">${esc(cl.name)}</span>${meta ? '<span class="role">'+esc(meta)+'</span>' : ''}</div>
+        <span class="pname">${esc(cl.name)}</span>${meta ? '<span class="role">'+esc(meta)+'</span>' : ''}${igBadge(cl.name, cl.aliases)}</div>
       ${idBadge}
       <div class="chain">${chainHTML}</div>
       <div class="evrow">${img}
