@@ -1,6 +1,6 @@
 /* Map layer: full SF food-business universe + lineage pins.
    Quiet dots (thousands) render as one GeoJSON circle layer; lineaged venues
-   get interactive HTML pins (red), Michelin-starred ones gold. */
+   get interactive HTML pins (orange), Michelin-starred ones champagne. */
 (function () {
   const TOKEN = window.MAPBOX_TOKEN;
   const el = document.getElementById('map');
@@ -68,11 +68,17 @@
 
     map.on('load', async () => {
       // ── universe layer: every permitted food business as a quiet dot ──
+      // Reuses window.__bfVenues when the Michelin roster already fetched
+      // /api/venues (explorer.html), skipping a duplicate ~1MB payload.
       let all = [];
       try {
-        const r = await fetch('/api/venues');
-        const vd = await r.json();
-        all = (vd.venues || []).filter(v => typeof v.lat === 'number');
+        if (Array.isArray(window.__bfVenues)) {
+          all = window.__bfVenues.filter(v => typeof v.lat === 'number');
+        } else {
+          const r = await fetch('/api/venues');
+          const vd = await r.json();
+          all = (vd.venues || []).filter(v => typeof v.lat === 'number');
+        }
       } catch (e) { /* map still loads empty */ }
 
       const special = all.filter(v => v.lineaged || v.michelin);
@@ -91,7 +97,7 @@
           'circle-stroke-color': 'rgba(239,230,211,.10)', 'circle-stroke-width': 1,
         },
       });
-      // hover a quiet dot → name tooltip
+      // hover a quiet dot → name tooltip; tap does the same on touch screens
       const tip = new mapboxgl.Popup({ closeButton: false, offset: 8, maxWidth: '200px' });
       map.on('mousemove', 'quiet-dots', e => {
         map.getCanvas().style.cursor = 'pointer';
@@ -101,6 +107,16 @@
       });
       map.on('mouseleave', 'quiet-dots', () => {
         map.getCanvas().style.cursor = ''; tip.remove();
+      });
+      map.on('click', 'quiet-dots', e => {
+        const f = e.features && e.features[0];
+        if (f) tip.setLngLat(e.lngLat).setHTML(
+          '<div class="quiettip">' + esc(f.properties.name) + '</div>').addTo(map);
+      });
+      // tap anywhere else on the map closes a touch-opened tooltip
+      map.on('click', e => {
+        const pts = map.queryRenderedFeatures(e.point, { layers: ['quiet-dots'] });
+        if (!pts.length) tip.remove();
       });
 
       // ── lineage + michelin pins (interactive HTML markers) ──

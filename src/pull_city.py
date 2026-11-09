@@ -5,7 +5,7 @@ One row per permit (dedup by permit_number), keep only rows with lat/lng.
 Restaurants (H24 - RESTAURANT...) are the headline class; bars/bakeries/cafes
 also included — everything permitted that serves food/drink.
 """
-import json, os, collections, requests
+import json, os, collections, re, requests
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(BASE, "ui", "city_venues.json")
@@ -46,6 +46,14 @@ def main():
         if not (37.6 < lat < 37.85 and -123.05 < lng < -122.3):
             continue
         name = (r.get("dba") or "").strip().title().replace(" 'S", "'S")
+        # .title() capitalizes after any non-letter, so possessives come out
+        # "Akiko'S"/"Peet'S" — a possessive-final S is lower case ("Akiko's").
+        # Only the trailing apostrophe-S is touched; "O'Shea" keeps its cap.
+        # ("It'Sugar"/"Chef'Store" brand stylings are re-cased back on next
+        # re-pull; they're curated here because the raw DBA is all-caps.)
+        name = re.sub(r"(?<=[A-Za-z])'S\b", "'s", name)
+        name = name.replace("''", "'")  # raw typos like "Sammy''S On 2Nd"
+        name = re.sub(r"(?<=[A-Za-z])'S\b", "'s", name)
         if not name or name.lower().startswith(("none", "unknown", "test")):
             continue
         venues.append({

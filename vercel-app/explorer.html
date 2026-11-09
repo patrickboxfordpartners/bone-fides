@@ -56,6 +56,28 @@
   .chip:hover { color: var(--accent); border-bottom-color: var(--accent); }
   .chips .chip:not(:last-of-type)::after { content: '·'; color: #54493a; margin-left: 16px; }
 
+  /* ── Michelin roster: the starred kitchens, browsable without the map ── */
+  .roster { margin: 0 0 30px; border-top: 1px solid var(--faint); }
+  .rosterhead { display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
+                width: 100%; padding: 12px 0; background: none; border: 0; cursor: pointer;
+                color: var(--dim); font: 400 10.5px 'Fraunces', Georgia, serif;
+                letter-spacing: .22em; text-transform: uppercase; }
+  .rosterhead:hover { color: var(--stargold); }
+  .rosterhead .cnt { color: var(--stargold); font-weight: 600; }
+  .rosterhead .tw { transition: transform .2s ease; }
+  .roster.open .rosterhead .tw { transform: rotate(180deg); }
+  .rosterlist { display: none; padding-bottom: 8px; }
+  .roster.open .rosterlist { display: block; }
+  .rosterlist button { display: flex; width: 100%; align-items: baseline; justify-content: space-between;
+                       gap: 12px; padding: 6px 0; background: none; border: 0; cursor: pointer;
+                       color: var(--ink); font: 380 15.5px 'Fraunces', Georgia, serif;
+                       border-bottom: 1px solid transparent; text-align: left; }
+  .rosterlist button:hover { color: var(--accent); }
+  .rosterlist button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .rosterlist .nb { color: var(--dim); font-size: 12px; font-style: italic; font-weight: 340;
+                    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .rosterlist .lg { font-size: 11px; color: var(--gold); letter-spacing: .06em; flex: none; }
+
   /* ── Dossier ──────────────────────────────── */
   .card { padding: 0; }
   .kicker { font-size: 10.5px; letter-spacing: .3em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
@@ -198,6 +220,15 @@
       <div class="sugg" id="sugg" role="listbox" aria-label="Suggestions"></div>
     </form>
     <div class="chips" id="chips"></div>
+
+    <!-- ── Michelin roster: the starred kitchens, browsable without the map ── -->
+    <div class="roster" id="roster">
+      <button type="button" class="rosterhead" id="rosterhead" aria-expanded="false" aria-controls="rosterlist">
+        <span><span class="cnt" id="roster-count">★ …</span> Michelin-starred kitchens</span>
+        <span class="tw" aria-hidden="true">▾</span>
+      </button>
+      <div class="rosterlist" id="rosterlist" role="list"></div>
+    </div>
 
     <div id="card" class="card" aria-live="polite" aria-busy="false">
       <div class="empty">The graph holds 9,309 cited chef moves across 3,113 chefs. Search one kitchen.</div>
@@ -558,6 +589,44 @@ Q.addEventListener('keydown', e => {
 // ── seed chips ──
 document.getElementById('chips').innerHTML =
   '<span class="lbl">Start here</span>' + SEEDS.map(s => `<button type="button" class="chip" data-pick="${esc(s)}">${esc(s)}</button>`).join('');
+
+// ── Michelin roster: the starred kitchens as a browsable list, so no one has
+// to scan the map to find them. One row per starred venue; click traces its
+// dossier (and the map pin lights up via __bfHighlight). Rows carry the
+// neighborhood; "trace" marks the ones the graph can actually follow.
+(async function(){
+  const head = document.getElementById('rosterhead'), list = document.getElementById('rosterlist');
+  if(!head || !list) return;
+  let starred = [];
+  try {
+    const r = await fetch('/api/venues');
+    const d = await r.json();
+    starred = (d.venues || []).filter(v => v.michelin && typeof v.lat === 'number');
+    // map.js reuses this payload instead of refetching ~1MB of venue data
+    window.__bfVenues = d.venues || [];
+  } catch(e) { /* roster stays collapsed-empty; map still works */ }
+  // one row per starred venue (star_name is the curated guide spelling);
+  // lineage_name is the citable graph name when it differs (Angler Sf, Llc → Angler)
+  const byStar = new Map();
+  starred.forEach(v => {
+    const key = v.star_name || v.name;
+    if(!byStar.has(key)) byStar.set(key, v);
+  });
+  const rows = [...byStar.entries()].sort((a, b) => a[0].localeCompare(b[0], 'en', { sensitivity: 'base' }));
+  if(!rows.length){ head.querySelector('.cnt').textContent = '★ 0'; list.remove(); return; }
+  document.getElementById('roster-count').textContent = '★ ' + rows.length;
+  list.innerHTML = rows.map(([star, v]) => {
+    const q = v.lineage_name || star;
+    return `<button type="button" role="listitem" data-pick="${esc(q)}" title="${esc(v.name)}${v.neighborhood ? ' · ' + esc(v.neighborhood) : ''}">` +
+      `<span>${esc(star)}</span>` +
+      (v.lineaged ? '<span class="lg" title="This kitchen is in the lineage graph — click to trace it">trace</span>' : '') +
+      `<span class="nb">${esc(v.neighborhood || '')}</span></button>`;
+  }).join('');
+  head.addEventListener('click', () => {
+    const open = document.getElementById('roster').classList.toggle('open');
+    head.setAttribute('aria-expanded', String(open));
+  });
+})();
 
 // ── map (always via /api/map.js: the server injects the token there, so it
 // works on both the local server and Vercel; map.js itself hides the panel

@@ -511,6 +511,13 @@ class Handler(SimpleHTTPRequestHandler):
         except OSError:
             self.send_error(404)
             return
+        inject = "window.MAPBOX_TOKEN = %s;\n" % json.dumps(os.environ.get("MAPBOX_TOKEN", ""))
+        body = (inject + js).encode()
+        self.send_response(200)
+        self.send_header("Content-Type", "application/javascript; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
 
     def _serve_landing(self):
         """Serve landing.html verbatim (static page, no token injection)."""
@@ -522,13 +529,6 @@ class Handler(SimpleHTTPRequestHandler):
             return
         self.send_response(200)
         self.send_header("Content-Type", "text/html; charset=utf-8")
-        self.send_header("Content-Length", str(len(body)))
-        self.end_headers()
-        self.wfile.write(body)
-        inject = "window.MAPBOX_TOKEN = %s;\n" % json.dumps(os.environ.get("MAPBOX_TOKEN", ""))
-        body = (inject + js).encode()
-        self.send_response(200)
-        self.send_header("Content-Type", "application/javascript; charset=utf-8")
         self.send_header("Content-Length", str(len(body)))
         self.end_headers()
         self.wfile.write(body)
