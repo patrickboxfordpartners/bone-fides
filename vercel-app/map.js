@@ -74,7 +74,7 @@
       links.appendChild(res);
       if (hits.length) {
         const tr = document.createElement('a');
-        tr.href = '/?q=' + encodeURIComponent(v.lineage_name || v.name);
+        tr.href = '/explorer?q=' + encodeURIComponent(v.lineage_name || v.name);
         tr.className = 'trace';
         tr.textContent = 'Trace lineage';
         tr.onclick = ev => { ev.preventDefault(); window.pick(v.lineage_name || v.name); };
