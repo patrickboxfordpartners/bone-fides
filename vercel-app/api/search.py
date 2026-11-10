@@ -340,11 +340,26 @@ def outlet_tier(source, url):
         return "eater"
     return "other"
 
+def _loose(s):
+    """Punctuation-loose comparison key: lowercase letters and digits only.
+    "Mister Jiu's" and "Mister Jius" are the same kitchen to a reader who
+    skipped the apostrophe; "flour+water" and "flour water" likewise."""
+    return re.sub(r"[^a-z0-9]+", "", (s or "").lower())
+
+def _same_loose(a, b):
+    """Loose equality, gated like the prefix rule: short keys absorb too much."""
+    la, lb = _loose(a), _loose(b)
+    return bool(la and len(la) >= 4 and la == lb)
+
 def _venue_matches_query(ql, venue):
+    """Same resolution rule as resolve_query: exact, punctuation-loose, or a
+    >=4 char prefix."""
     if not venue:
         return False
     vl = venue.lower().strip()
     if vl == ql:
+        return True
+    if _same_loose(vl, ql):
         return True
     return bool(len(ql) >= 4 and len(vl) >= 4 and (vl.startswith(ql) or ql.startswith(vl)))
 
@@ -353,7 +368,8 @@ def scope_edges(q, lin, cl):
     person_edges = []
     for c in cl:
         names = [c["name"], *(c.get("aliases") or [])]
-        if any((n or "").lower() == ql and not _is_collective(n) for n in names):
+        if any(((n or "").lower() == ql or _same_loose(n, ql))
+               and not _is_collective(n) for n in names):
             person_edges.extend(c["edges"])
     # The person-vs-venue comparison counts only OTHER chefs' venue hits: a
     # namesake restaurant touched by the queried chef's own moves must not
@@ -394,6 +410,13 @@ def assemble_dossier(q, lin):
         # display cut only: the gate above judged the full quotation
         row["evidence"] = (row.get("evidence") or "")[:220]
         scoped.append(row)
+    if not scoped:
+        # Resolution matched something but nothing survived scoping + the
+        # citation gate (e.g. "StateBird" resolved via a fuzzy fetch but
+        # no fetched edge actually names it). Saying "resolved, no moves"
+        # would state a record the index doesn't hold — report unresolved
+        # so the reader gets the honest empty-state instead.
+        return {"query": q, "resolved": False, "lineage": [], "identity": [], "pedigree": None}
     cl2 = identity(scoped) if scoped else []
     return {"query": q, "resolved": True, "lineage": scoped,
             "identity": [_public_cluster(c) for c in cl2],
@@ -626,10 +649,15 @@ def resolve_query(q, lin, cl):
             nl = n.lower()
             if nl == ql and not _is_collective(n):
                 return True
+            # punctuation-loose name match ("Mister Jius" → "Mister Jiu's")
+            if _same_loose(n, ql) and not _is_collective(n):
+                return True
     for e in lin:
         for k in ("from_venue", "to_venue"):
             v = e.get(k)
             if v and v.lower() == ql:
+                return True
+            if _same_loose(v, ql):
                 return True
     # prefix tolerance for partial kitchen names ("Finn Town" → "Finn Town
     # Taproom"). Both directions gated on len>=4 so "nopalera" cannot absorb

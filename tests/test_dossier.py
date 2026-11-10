@@ -109,6 +109,29 @@ def test_nickname_pairs_still_match_and_generic_venues_do_not():
     assert _venue_touch("ritz carlton", "ritz carlton buckhead") is True
 
 
+def test_punctuation_loose_resolution():
+    """A reader who drops the apostrophe ("Mister Jius") or the plus
+    ("flour water") still gets the kitchen's dossier."""
+    edges = [
+        _move("Brandon Jew", "Mister Jiu's", "Jew Fong Supper Club",
+              "Mister Jiu's chef de cuisine Brandon Jew left to join Jew Fong Supper Club"),
+        _move("Eve Aronoff", "flour + water", "Coesa",
+              "flour + water sous chef Eve Aronoff left to join Coesa"),
+    ]
+    for q in ("Mister Jiu's", "Mister Jius", "mister jiu s"):
+        d = assemble_dossier(q, edges)
+        assert d["resolved"] is True, q
+        assert len(d["lineage"]) == 1, q
+    for q in ("flour + water", "flour water", "flourwater"):
+        d = assemble_dossier(q, edges)
+        assert d["resolved"] is True, q
+        assert len(d["lineage"]) == 1, q
+    # short keys stay gated: 3 loose chars must not absorb everything
+    assert assemble_dossier("benu", edges)["resolved"] is False
+    # distinct kitchens stay distinct once punctuation is dropped
+    assert assemble_dossier("banchan vendrs", edges)["resolved"] is False
+
+
 def test_size_cap_and_rate_limit():
     assert clamp_size(None) == 25
     assert clamp_size("") == 25

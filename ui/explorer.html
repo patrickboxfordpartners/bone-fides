@@ -304,6 +304,14 @@ const Q = document.getElementById('q'), SUGG = document.getElementById('sugg'), 
 const SEEDS = ['Betelnut', 'Gitane', 'Cotogna', 'Outerlands', 'Finn Town', 'China Live', 'Maria Isabel'];
 
 function esc(s){ return (s||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+/* Punctuation-loose comparison keys — mirrors the server's _loose() rule:
+   a reader who drops the apostrophe ("Mister Jius") or the plus
+   ("flour water") still names the same kitchen. */
+function looseKey(s){ return (s||'').toLowerCase().replace(/[^a-z0-9]+/g, ''); }
+function sameLoose(a, b){
+  const la = looseKey(a), lb = looseKey(b);
+  return !!la && la.length >= 4 && la === lb;
+}
 function hostOf(u){ try { return new URL(u).hostname.replace('www.',''); } catch(e){ return u; } }
 function srcBadge(u, source, outlet){
   const h = (() => { try { return new URL(u).hostname; } catch(e){ return ''; } })();
@@ -571,15 +579,19 @@ function trunc(s, n){
    person_edges: that chef's edges. q: lowercase query. Returns
    {chain:[venue,...], years:{'a>b':date}, pivot:edge} or null if untouched by q. */
 function buildChain(person_edges, ql){
+  const qlL = looseKey(ql);
   // prefer an exact venue match ("Betelnut") over substring noise ("Betelnut Pejiu Wu")
+  const venueIs = (v, q) => (v||'').toLowerCase() === q || sameLoose(v, q);
+  const venueHas = (v, q) => (v||'').toLowerCase().includes(q) || sameLoose(v, q);
   const exact = person_edges.find(e =>
-    (e.from_venue||'').toLowerCase() === ql || (e.to_venue||'').toLowerCase() === ql);
+    venueIs(e.from_venue, ql) || venueIs(e.to_venue, ql));
   const pivot = exact || person_edges.find(e =>
-    (e.from_venue||'').toLowerCase().includes(ql) || (e.to_venue||'').toLowerCase().includes(ql));
+    venueHas(e.from_venue, ql) || venueHas(e.to_venue, ql));
   if(!pivot) return null;
   const pf = (pivot.from_venue||'').toLowerCase(), pt = (pivot.to_venue||'').toLowerCase();
-  const start = pf === ql ? pivot.from_venue : (pt === ql ? pivot.to_venue :
-               (pf.includes(ql) ? pivot.from_venue : pivot.to_venue));
+  const start = venueIs(pivot.from_venue, ql) ? pivot.from_venue :
+               (venueIs(pivot.to_venue, ql) ? pivot.to_venue :
+               (venueHas(pivot.from_venue, ql) ? pivot.from_venue : pivot.to_venue));
   const byFrom = {}, byTo = {};
   person_edges.forEach(e => {
     if(e.from_venue) (byFrom[e.from_venue] = byFrom[e.from_venue] || []).push(e);
@@ -614,12 +626,13 @@ function render(q, edges, ms, ped, identity){
   // mis-extraction (a person written into from_venue) all live in that venue
   // bucket; the queried person's own cited moves live in the cluster bucket.
   const selfEdges = (identity || []).filter(cl =>
-    cl.name && (cl.name.toLowerCase() === ql ||
-      (cl.aliases||[]).some(a => a.toLowerCase() === ql)))
+    cl.name && (cl.name.toLowerCase() === ql || sameLoose(cl.name, ql) ||
+      (cl.aliases||[]).some(a => a.toLowerCase() === ql || sameLoose(a, ql))))
     .reduce((s, cl) => s + cl.n, 0);
   const venueFlips = edges.filter(e => e.person &&
-    (e.person||'').toLowerCase() !== ql &&
-    ((e.from_venue||'').toLowerCase().includes(ql) || (e.to_venue||'').toLowerCase().includes(ql))).length;
+    (e.person||'').toLowerCase() !== ql && !sameLoose(e.person, ql) &&
+    ((e.from_venue||'').toLowerCase().includes(ql) || (e.to_venue||'').toLowerCase().includes(ql)
+      || sameLoose(e.from_venue, ql) || sameLoose(e.to_venue, ql))).length;
   const isPersonQuery = selfEdges > 0 && selfEdges >= venueFlips;
 
   // pedigree dial: weighted credibility from source tiers + corroboration
@@ -644,7 +657,7 @@ function render(q, edges, ms, ped, identity){
     const c = buildChain(pedges, ql) || (personQuery ? buildPersonChain(pedges) : null);
     if(!c) return;
     const pivot = c.pivot;
-    const hereChip = v => v.toLowerCase() === ql ? ' here' : '';
+    const hereChip = v => (v.toLowerCase() === ql || sameLoose(v, ql)) ? ' here' : '';
     const chainHTML = c.chain.map((v, i) => {
       const yr = i > 0 ? c.years[c.chain[i-1] + '>' + v] : null;
       const linked = i > 0 && c.hasEdge && c.hasEdge[c.chain[i-1] + '>' + v];
