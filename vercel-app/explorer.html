@@ -626,7 +626,13 @@ let lastFetch = 0;
 // chip re-renders the same data instead of refetching (the filter is a view,
 // not a query)
 let lastDossier = null;
-async function run(){
+// server-side role facet (roadmap 4.3): active on permalink loads
+// (/explorer?q=A16&role=chef) and kept across retries of that same load.
+// A NEW query drops it (the role belonged to the previous dossier); chip
+// clicks under an active server filter refetch server-side.
+let serverRole = null;
+let lastRunQ = null;
+async function run(opts){
   const q = Q.value.trim(); if(!q){ Q.focus(); return; }
   CARD.dataset.mode = 'result';
   hideSugg();
@@ -647,10 +653,15 @@ async function run(){
   const mine = ++lastFetch;
   const t0 = performance.now();
   CARD.setAttribute('aria-busy','true');
-  try { const u = new URL(location); u.searchParams.set('q', q); history.replaceState(null, '', u); } catch(e){}
+  if(opts && 'role' in opts) serverRole = opts.role || null;
+  else if(q.toLowerCase() !== (lastRunQ || '').toLowerCase()) serverRole = null;
+  lastRunQ = q.toLowerCase();
+  try { const u = new URL(location); u.searchParams.set('q', q);
+        if(serverRole) u.searchParams.set('role', serverRole); else u.searchParams.delete('role');
+        history.replaceState(null, '', u); } catch(e){}
   let d;
   try {
-    const r = await fetch('/api/search?q=' + encodeURIComponent(q));
+    const r = await fetch('/api/search?q=' + encodeURIComponent(q) + (serverRole ? '&role=' + encodeURIComponent(serverRole) : ''));
     d = await r.json();
     if(!r.ok || d.error) throw new Error('search failed');
   } catch(e){
@@ -680,7 +691,7 @@ async function run(){
     return;
   }
   lastDossier = { q, lineage: d.lineage, ms: performance.now() - t0, ped: d.pedigree, identity: d.identity };
-  render(q, d.lineage, performance.now() - t0, d.pedigree, d.identity, null);
+  render(q, d.lineage, performance.now() - t0, d.pedigree, d.identity, null, d.role_filter || null);
   if(window.__bfHighlight) window.__bfHighlight(q);
   else window.__bfPendingHighlight = q;
   scrollResultIntoView();
@@ -711,10 +722,18 @@ document.addEventListener('click', e => {
   if(t){ e.preventDefault(); pick(t.getAttribute('data-pick')); return; }
   const a = e.target.closest('[data-action="retry"]');
   if(a){ run(); return; }
-  // role facet: re-render the kept dossier, filter is a view not a query
+  // role facet: re-render the kept dossier, filter is a view not a query —
+  // unless a server-side role filter is active (roadmap 4.3): the payload
+  // only holds rows the ES query passed, so a different bucket means a
+  // refetch with the new role, not a client-side lie
   const rf = e.target.closest('[data-rolefilter]');
   if(rf && lastDossier){
     const b = rf.getAttribute('data-rolefilter') || null;
+    if(serverRole){
+      if(b !== serverRole) run({ role: b });
+      else run({ role: null });
+      return;
+    }
     const d = lastDossier;
     render(d.q, d.lineage, d.ms, d.ped, d.identity, b);
     return;
@@ -801,7 +820,7 @@ function buildChain(person_edges, ql){
   return { chain, years, pivot, hasEdge };
 }
 
-function render(q, edges, ms, ped, identity, roleFilter){
+function render(q, edges, ms, ped, identity, roleFilter, serverFilter){
   if(!edges || !edges.length){ CARD.innerHTML = '<div class="empty">“'+esc(q)+'” is in the record, but none of the cited lines state a career move.</div>'; return; }
   const ql = q.toLowerCase();
   // person query when a cluster IS the query (by name) and its edges outnumber
@@ -891,15 +910,19 @@ function render(q, edges, ms, ped, identity, roleFilter){
   const rowHTMLs = cards.map(cd => cd.html);
   const visible = roleFilter ? rowHTMLs.filter((h, i) => cards[i].bucket === roleFilter) : rowHTMLs;
   const shown = visible.length;
-  const rolebar = buckets.length > 1 ? `<div class="rolebar" role="group" aria-label="Filter chefs by role">` +
-    buckets.map(b => `<button type="button" class="rchip${roleFilter === b ? ' on' : ''}" data-rolefilter="${esc(b)}" aria-pressed="${roleFilter === b}">${esc(BUCKET_LABEL[b] || b)}<b>${counts[b]}</b></button>`).join('') +
-    (roleFilter ? `<button type="button" class="rchip" data-rolefilter="" aria-pressed="false">all</button>` : '') +
+  // server facet active: the chip that matches it reads "on" and the clear
+  // chip re-runs the query without the role param (a refetch — the server
+  // filtered the ES query itself, so the unfiltered rows aren't in hand)
+  const sv = serverFilter || null;
+  const rolebar = buckets.length > (sv ? 0 : 1) || sv || roleFilter ? `<div class="rolebar" role="group" aria-label="Filter chefs by role">` +
+    buckets.map(b => `<button type="button" class="rchip${roleFilter === b || (sv && !roleFilter && b === sv) ? ' on' : ''}" data-rolefilter="${esc(b)}" aria-pressed="${roleFilter === b}">${esc(BUCKET_LABEL[b] || b)}<b>${counts[b]}</b></button>`).join('') +
+    (roleFilter || sv ? `<button type="button" class="rchip" data-rolefilter="" aria-pressed="false">all</button>` : '') +
     `</div>` : '';
 
   CARD.innerHTML = `
     <div class="kicker">Kitchen dossier</div>
     <h2>${esc(q)}<button type="button" class="watchbtn" id="watchbtn" data-watch="${esc(q)}" aria-pressed="false">☆ watch this</button><button type="button" class="copybtn" id="copybtn" title="Copy a link to this dossier">copy link</button></h2>
-    <div class="sub"><b>${shown}</b> chef${shown===1?'':'s'} in the record${ms ? ' · resolved in ' + Math.round(ms) + ' ms' : ''}${roleFilter ? ' · filtered to ' + esc(BUCKET_LABEL[roleFilter] || roleFilter) : ''} · <i>click any kitchen to keep tracing</i></div>
+    <div class="sub"><b>${shown}</b> chef${shown===1?'':'s'} in the record${ms ? ' · resolved in ' + Math.round(ms) + ' ms' : ''}${roleFilter ? ' · filtered to ' + esc(BUCKET_LABEL[roleFilter] || roleFilter) : ''}${sv && !roleFilter ? ' · filtered to ' + esc(BUCKET_LABEL[sv] || sv) + ' (server-side)' : ''} · <i>click any kitchen to keep tracing</i></div>
     ${pedHTML}
     <div class="legend" aria-hidden="true"><span><span class="conf high"></span>High confidence</span><span><span class="conf medium"></span>Medium</span><span><span class="conf low"></span>Low</span></div>
     ${rolebar}
@@ -1237,7 +1260,8 @@ renderWatchTray();
   document.head.appendChild(s);
 }
 const initQ = new URLSearchParams(location.search).get('q');
-if(initQ){ Q.value = initQ; run(); }
+const initRole = new URLSearchParams(location.search).get('role');
+if(initQ){ Q.value = initQ; run({ role: initRole }); }
 
 // ── corrections: "Flag or add" opens a form that queues a tip for triage.
 // Tips go to the inbox (bone-fides-tips), never straight into the record —

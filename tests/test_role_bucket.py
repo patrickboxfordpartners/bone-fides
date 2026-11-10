@@ -3,13 +3,21 @@
 Locks the normalizer discipline (ROADMAP 4.1): token-based synonym fold,
 never substring guessing, domain beats seniority. The corpus's 1,115 raw
 values fold to {chef, executive chef, pastry, sous, owner, bartender, other}.
+Three copies must agree: src/roles.py (canonical, used at index time) and
+the two inline twins.
 """
 import importlib.util
 import os
+import sys
 
 import pytest
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
+_ROOT = os.path.dirname(_HERE)
+if _ROOT not in sys.path:
+    sys.path.insert(0, _ROOT)
+
+from src.roles import role_bucket as src_bucket, BUCKETS  # noqa: E402
 
 
 def _load(name, path):
@@ -20,16 +28,25 @@ def _load(name, path):
 
 
 SERVERS = [
-    pytest.param(_load("ui_server", os.path.join(_HERE, "..", "ui", "server.py")),
+    pytest.param(src_bucket, id="src/roles.py"),
+    pytest.param(_load("ui_server", os.path.join(_HERE, "..", "ui", "server.py")).role_bucket,
                  id="ui/server.py"),
     pytest.param(_load("vercel_search", os.path.join(
-        _HERE, "..", "vercel-app", "api", "search.py")), id="vercel-app/api/search.py"),
+        _HERE, "..", "vercel-app", "api", "search.py")).role_bucket,
+                 id="vercel-app/api/search.py"),
 ]
 
 
 @pytest.fixture(params=SERVERS)
 def bucket(request):
-    return request.param.role_bucket
+    return request.param
+
+
+def test_bucket_vocabulary_matches_twins():
+    # the &role= facet accepts exactly the canonical vocabulary
+    for mod_path in [os.path.join(_HERE, "..", "ui", "server.py"),
+                     os.path.join(_HERE, "..", "vercel-app", "api", "search.py")]:
+        assert set(_load("m_" + os.path.basename(mod_path), mod_path)._ROLE_BUCKETS) == set(BUCKETS)
 
 
 def test_case_and_punctuation_fold(bucket):

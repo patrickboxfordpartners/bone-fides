@@ -1,6 +1,8 @@
 """Elasticsearch layer: index mapping, doc builder, client factory, hybrid search."""
 import os
 
+from src.roles import role_bucket
+
 INDEX = "bone-fides-edges"
 TIPS_INDEX = "bone-fides-tips"
 
@@ -38,7 +40,10 @@ TIPS_SETTINGS = {
 }
 
 def build_edge_doc(edge):
-    """Flat, citation-bearing doc; text copies feed keyword + semantic search."""
+    """Flat, citation-bearing doc; text copies feed keyword + semantic search.
+
+    role_bucket is stamped at index time so /api/search?role=<bucket> can
+    filter with a term query — the raw role text stays for display."""
     venue_bits = [v for v in (edge.get("from_venue"), edge.get("to_venue")) if v]
     return {
         "person": edge["person"],
@@ -47,6 +52,7 @@ def build_edge_doc(edge):
         "to_venue": edge.get("to_venue"),
         "venue_text": " ".join(venue_bits) if venue_bits else edge.get("role", ""),
         "role": edge.get("role"),
+        "role_bucket": role_bucket(edge.get("role")),
         "action": edge.get("action"),
         "mentor": edge.get("mentor"),
         "date": edge.get("date"),
@@ -65,6 +71,7 @@ INDEX_SETTINGS = {
             "to_venue": {"type": "keyword"},
             "venue_text": {"type": "text"},
             "role": {"type": "text"},
+            "role_bucket": {"type": "keyword"},
             "action": {"type": "keyword"},
             "mentor": {"type": "keyword"},
             "date": {"type": "text"},
@@ -115,8 +122,13 @@ def index_edges(es, docs, index=INDEX):
     except Exception:
         pass  # refresh is an optimization; the next refresh will catch up
 
-def find_edges(es, query, index=INDEX, size=20):
-    """Hybrid search: fuzzy keyword on names + sparse_vector on semantic_text field."""
+def find_edges(es, query, index=INDEX, size=20, role=None):
+    """Hybrid search: fuzzy keyword on names + sparse_vector on semantic_text field.
+
+    role: optional bucket (from src.roles.BUCKETS). Applied as post_filter —
+    it gates the final RRF hit list without touching ranking, so a filtered
+    dossier is exactly the unfiltered dossier with rows removed (this ES
+    version rejects sparse_vector nested inside bool)."""
     body = {
         "size": size,
         "retriever": {
@@ -136,4 +148,6 @@ def find_edges(es, query, index=INDEX, size=20):
             }
         },
     }
+    if role:
+        body["post_filter"] = {"term": {"role_bucket": role}}
     return es.search(index=index, body=body)["hits"]["hits"]

@@ -125,8 +125,13 @@ def make_client(endpoint=None, api_key=None):
         request_timeout=30,
     )
 
-def find_edges(es, query, index=INDEX, size=20):
-    """Hybrid RRF: fuzzy keyword + sparse_vector semantic (same as src/es.py)."""
+def find_edges(es, query, index=INDEX, size=20, role=None):
+    """Hybrid RRF: fuzzy keyword + sparse_vector semantic (same as src/es.py).
+
+    role: optional role_bucket filter (roadmap 4.3), applied as post_filter —
+    it gates the final RRF hit list without touching ranking, so a filtered
+    dossier is exactly the unfiltered dossier with rows removed (this ES
+    version rejects sparse_vector nested inside bool)."""
     body = {
         "size": size,
         "retriever": {
@@ -146,6 +151,8 @@ def find_edges(es, query, index=INDEX, size=20):
             }
         },
     }
+    if role:
+        body["post_filter"] = {"term": {"role_bucket": role}}
     return es.search(index=index, body=body)["hits"]["hits"]
 
 _es = None
@@ -414,6 +421,8 @@ _ROLE_SOUS = {"sous"}
 _ROLE_OWNER = {"owner", "owners", "founder", "founders", "founding", "proprietor", "proprietors",
                "restaurateur", "restaurateurs", "partner", "partners", "operator", "operators"}
 _ROLE_BAR = {"bartender", "barman", "barback", "bar"}
+# the bucket vocabulary the &role= facet accepts (src.roles.BUCKETS twin)
+_ROLE_BUCKETS = {"chef", "executive chef", "pastry", "sous", "owner", "bartender", "other"}
 
 def role_bucket(role):
     """Raw role text -> dossier filter bucket. Same logic as ui/server.py —
@@ -483,7 +492,7 @@ def _public_cluster(c):
             "homonym": c["homonym"], "possible": c["possible"],
             "n": c["n"], "edges": c["edges"]}
 
-def assemble_dossier(q, lin):
+def assemble_dossier(q, lin, role=None):
     q = (q or "").strip()[:MAX_QUERY_LEN]
     if not q:
         return {"query": "", "resolved": False, "lineage": [], "identity": [], "pedigree": None}
@@ -509,9 +518,14 @@ def assemble_dossier(q, lin):
         # so the reader gets the honest empty-state instead.
         return {"query": q, "resolved": False, "lineage": [], "identity": [], "pedigree": None}
     cl2 = identity(scoped) if scoped else []
-    return {"query": q, "resolved": True, "lineage": scoped,
-            "identity": [_public_cluster(c) for c in cl2],
-            "pedigree": pedigree(scoped) if scoped else None}
+    out = {"query": q, "resolved": True, "lineage": scoped,
+           "identity": [_public_cluster(c) for c in cl2],
+           "pedigree": pedigree(scoped) if scoped else None}
+    if role:
+        # the facet note travels with the payload so the UI can say what the
+        # filter did without a second request
+        out["role_filter"] = role
+    return out
 
 def pedigree(edges):
     if not edges:
@@ -541,11 +555,12 @@ def pedigree(edges):
             "moves": len(edges), "sources": len(urls), "tiers": tiers}
 
 # ── ES query layer ──
-def lineage(es, query, size=25):
+def lineage(es, query, size=25, role=None):
     """evidence is stored in full: citation_supported() must see the whole
     quotation (a move stated past the display cutoff still counts). The
-    public payload is shortened for display in assemble_dossier()."""
-    hits = find_edges(es, query, size=size)
+    public payload is shortened for display in assemble_dossier().
+    role: optional bucket filter (roadmap 4.3), applied inside the ES query."""
+    hits = find_edges(es, query, size=size, role=role)
     edges = []
     for h in hits:
         s = h["_source"]
@@ -786,7 +801,11 @@ def _dispatch(path, query_params, ip="", body_bytes=None):
         if path.endswith("/api/search"):
             q = (q1("q") or "").strip()[:MAX_QUERY_LEN]
             size = clamp_size(q1("size"))
-            lin = lineage(es, q, size=size) if q else []
+            # role facet (roadmap 4.3): &role=<bucket> filters the ES query
+            # on the index-time stamp; unknown values are ignored, never 500
+            role_raw = (q1("role") or "").strip()
+            role = role_raw if role_raw in _ROLE_BUCKETS else None
+            lin = lineage(es, q, size=size, role=role) if q else []
             cl = identity(lin) if q else []
             need = sorted({n for c in cl if c["homonym"] or c["possible"]
                            for n in [c["name"], *c["aliases"]]})
@@ -795,7 +814,7 @@ def _dispatch(path, query_params, ip="", body_bytes=None):
                 extra = [e for e in fetch_person_edges(es, need) if _edge_key(e) not in have]
                 if extra:
                     lin = dedupe(lin + extra)
-            body = assemble_dossier(q, lin) if q else {
+            body = assemble_dossier(q, lin, role=role) if q else {
                 "query": "", "resolved": False, "lineage": [], "identity": [], "pedigree": None}
         elif path.endswith("/api/suggest"):
             q = (q1("q") or "").strip()[:MAX_QUERY_LEN]
