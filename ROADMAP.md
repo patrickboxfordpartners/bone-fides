@@ -170,6 +170,23 @@ enrichment.
    resolution fails before the facet-aware branch, so the unresolved
    path probes the UNGATED record to distinguish "facet emptied a real
    dossier" from "not in the record."
+   **Review pass (2026-11-10):** a second-pair-of-eyes review of the
+   shipped 4.4 work found five verified defects, all fixed and locked by
+   tests (tests/test_review_3330654.py): the local twin dropped
+   plus-encoded facet params (spaces in hood/role values silently
+   unmatched); CLOSED_SF lookups were raw-string (curly apostrophes,
+   case, articles fell through); the token-prefix fallback stamped SF
+   hoods on out-of-city parentheticals and single-token permit keys
+   prefix-claimed multi-token venues; the role facet-clear chip was dead;
+   and the completion merge pulled ungated homonym edges past the facet
+   gates. Honesty follow-ups: the facet-empty branch now also gates on
+   the role filter (a role-only empty said "not in the record" while the
+   ungated record HAS the name) and names the filter from the
+   server-validated echo; the coverage note names only the facets in the
+   message; the facet-empty probe forwards role and honors the citation
+   gate; the era regex stamps decade-suffixed dates ("1970s") without
+   lying about relative dates. Corpus re-stamped after the normalizer
+   fixes (9,312 docs).
 
 **Costs.** Steps 1+2 ~1 session; step 3 ~0.5; step 4 is a separate data
 project.

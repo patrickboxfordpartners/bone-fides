@@ -27,7 +27,10 @@ import re
 # 2020s bucket is open-ended.
 ERA_BUCKETS = ("pre-1990", "1990s", "2000s", "2010s", "2020s")
 
-_YEAR_RE = re.compile(r"\b(19|20)(\d{2})\b")
+# Trailing "s" ("the 1970s", "mid-1980s") is decade shorthand, not noise —
+# the corpus holds 26 such dates; the optional-s keeps bare-year matching
+# intact while stamping them.
+_YEAR_RE = re.compile(r"\b(19|20)(\d{2})(?:s\b)?")
 
 
 def _year(date_str):
@@ -38,7 +41,8 @@ def _year(date_str):
     m = _YEAR_RE.search(s)
     if not m:
         return None
-    y = int(m.group(0))
+    # group(1)+group(2): the year digits (group(0) can carry the "s")
+    y = int(m.group(1) + m.group(2))
     if 1900 <= y <= 2026:
         return y
     return None

@@ -21,8 +21,18 @@ unstamped; the facet discloses partial coverage.
 import collections
 import json
 import os
+import re
 
 from src.tag_city import norm
+
+# "(Los Angeles)", "(East Oakland)", "(as a pop-up)": parenthetical
+# annotations. When one names a place outside SF, the token-prefix
+# fallback must not stamp the SF head venue's hood on the branch.
+_PAREN_RE = re.compile(r"\(([^)]*)\)")
+_NONCITY_HINTS = ("los angeles", "oakland", "daly city", "cupertino",
+                  "palo alto", "berkeley", "san jose", "sacramento",
+                  "portland", "seattle", "new york", "yonkers",
+                  "st. helena", "healdsburg", "sonoma", "napa")
 
 def _norm(s):
     """tag_city.norm with curly quotes straightened first.
@@ -47,6 +57,9 @@ _CITY = os.path.join(_BASE, "ui", "city_venues.json")
 # Unverifiable-by-block venues stay out (Bar Agricole 355 11th, Munchery
 # and Charles Nob Hill ARE verified below via street-level context).
 CLOSED_SF = {
+    # (keys are curated display spellings; lookups go through _norm so
+    # case/curly-apostrophe/article variants place the same — see
+    # closed_sf_norm below)
     "Aqua": "Financial District/South Beach",        # 252 California
     "Ame": "Financial District/South Beach",         # 689 Mission
     "AQ": "South of Market",                         # 1155 Mission
@@ -108,11 +121,14 @@ def hood_vocabulary(city_path=None):
 def load_hood_maps(city_path=None):
     """Build the lookup maps from the city file once.
 
-    Returns (lin_hood, permit_hood):
+    Returns (lin_hood, permit_hood, closed_sf_norm):
     - lin_hood: norm(lineage_name) -> hood of that kitchen's flagship row
       (shortest row name per lineage — the row the map pins).
     - permit_hood: norm(permit name) -> majority-vote hood across the rows
       sharing that key.
+    - closed_sf_norm: _norm(curated spelling) -> hood, so a corpus
+      spelling like 'Masa’s' (curly) or 'The Slanted Door' places the
+      same as the straight curated key.
     """
     cv = json.load(open(city_path or _CITY))["venues"]
     rows = {}
@@ -132,7 +148,8 @@ def load_hood_maps(city_path=None):
         k = _norm(v["name"])
         counts.setdefault(k, collections.Counter())[nb] += 1
     permit_hood = {k: c.most_common(1)[0][0] for k, c in counts.items()}
-    return lin_hood, permit_hood
+    closed_sf_norm = {_norm(k): hood for k, hood in CLOSED_SF.items()}
+    return lin_hood, permit_hood, closed_sf_norm
 
 
 def hood_for(name, maps=None):
@@ -142,7 +159,8 @@ def hood_for(name, maps=None):
     token-prefix (len>=4 both sides), curated closed-venue map. Non-SF
     venues stay unstamped — nothing invents an SF hood for Chez Panisse.
     """
-    lin_hood, permit_hood = maps if maps is not None else load_hood_maps()
+    lin_hood, permit_hood, closed_sf_norm = (
+        maps if maps is not None else load_hood_maps())
     k = _norm(name or "")
     if not k:
         return None
@@ -152,12 +170,28 @@ def hood_for(name, maps=None):
         return permit_hood[k]
     # token-boundary prefix fallback, len>=4 both sides, must be
     # unambiguous (the raw-substring bug tag_city's docstring warns
-    # about: "All Washed Up" must not grab "(Washbag)")
+    # about: "All Washed Up" must not grab "(Washbag)"). A parenthetical
+    # annotation naming another city ("(Los Angeles)", "(Daly City)")
+    # marks an out-of-city branch — norm flattens those to trailing
+    # tokens that must never tip the prefix match; such venues only
+    # place via the curated map.
     if len(k) >= 4:
+        for m in _PAREN_RE.finditer(name or ""):
+            hint = m.group(1).strip().lower()
+            if hint and any(c in hint for c in _NONCITY_HINTS):
+                return closed_sf_norm.get(k)
         cands = set()
         for pk, hood in permit_hood.items():
-            if len(pk) >= 4 and (k.startswith(pk + " ") or pk.startswith(k + " ")):
+            if len(pk) < 4:
+                continue
+            # the shorter key must end at a token boundary of the longer
+            # one AND be multi-token itself: a single-token permit key
+            # ("Cache") is a word match, not a name prefix — it must not
+            # claim "Cache Creek Casino Resort" (a different business).
+            if " " not in pk:
+                continue
+            if k.startswith(pk + " ") or pk.startswith(k + " "):
                 cands.add(hood)
         if len(cands) == 1:
             return next(iter(cands))
-    return CLOSED_SF.get((name or "").strip())
+    return closed_sf_norm.get(k)

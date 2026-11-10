@@ -703,19 +703,38 @@ async function run(opts){
   /* resolved=false means nothing in the record actually IS the query.
      The API returns an empty dossier in that case. */
   if(d.resolved === false){
-    // facet-empty (roadmap 4.4): the query was facet-filtered server-side
-    // (serverEra/serverHood set) and came back unresolved — the kitchen may
-    // still be in the record with no cited moves under the filter. Show the
-    // facet message, never the "no such kitchen" one: under an active
-    // filter, unresolved can't be read as not-in-the-record.
-    if(serverEra || serverHood){
+    // facet-empty (roadmap 4.4): the query was facet-filtered client-side
+    // (serverRole/serverEra/serverHood set) and came back unresolved. Under
+    // an active filter, unresolved can't be read as not-in-the-record — show
+    // the facet message; the wording inside keys off server-validated values.
+    if(serverRole || serverEra || serverHood){
+      // only the SERVER-VALIDATED values may name the filter in the
+      // message: an echo (role_filter/era_filter/hood_filter) or the probe's
+      // facet_empty flag, falling back to client state that matches the
+      // echo. Raw junk params render the plain empty state instead.
+      const valRole = d.role_filter || null;
+      const valEra = d.era_filter || null;
+      const valHood = d.hood_filter || null;
+      const namedRole = (valRole && serverRole === valRole) ? serverRole : null;
+      const namedEra = (valEra && serverEra === valEra) || (!valEra && d.facet_empty === true && serverEra) ? serverEra : null;
+      const namedHood = (valHood && serverHood === valHood) || (!valHood && d.facet_empty === true && serverHood) ? serverHood : null;
       const bits = [];
-      if(serverEra) bits.push('era ' + esc(serverEra));
-      if(serverHood) bits.push('neighborhood ' + esc(serverHood));
+      const cov = [];
+      if(namedRole) bits.push('role ' + esc(namedRole)); // role is stamped on every row — no coverage caveat
+      if(namedEra){ bits.push('era ' + esc(namedEra)); cov.push(d.era_coverage || ERA_COVERAGE); }
+      if(namedHood){ bits.push('neighborhood ' + esc(namedHood)); cov.push(d.hood_coverage || HOOD_COVERAGE); }
       const which = bits.join(' + ');
+      const covNote = cov.length ? ' — ' + cov.join(', ') + '.' : '';
+      if(!which){
+        // filter state exists client-side but the server dropped/never
+        // validated it — the plain empty state is the honest one
+        CARD.innerHTML = '<div class="empty">“' + esc(q) + '” has no cited moves in the record under the active filters.'
+          + ' <button type="button" class="chip" data-facetclear="all">clear the filter</button></div>';
+      } else {
       CARD.innerHTML = '<div class="empty">“' + esc(q) + '”' + (d.facet_empty ? ' is in the record, but none of its cited moves carry ' + which : ' has no cited moves under ' + which)
-        + ' — dates exist on 15% of cited moves, neighborhoods on 43%.'
+        + covNote
         + ' <button type="button" class="chip" data-facetclear="all">clear the filter</button></div>';
+      }
       if(window.__bfHighlight) window.__bfHighlight(q);
       else window.__bfPendingHighlight = q;
       scrollResultIntoView();
@@ -780,7 +799,9 @@ document.addEventListener('click', e => {
       return;
     }
     const d = lastDossier;
-    render(d.q, d.lineage, d.ms, d.ped, d.identity, b);
+    render(d.q, d.lineage, d.ms, d.ped, d.identity, b,
+           { role: null, era: serverEra, hood: serverHood,
+             eraCoverage: ERA_COVERAGE, hoodCoverage: HOOD_COVERAGE });
     return;
   }
   // era/hood facets (roadmap 4.4): server-side filters — clearing one re-runs
@@ -791,6 +812,7 @@ document.addEventListener('click', e => {
     if(k === 'all'){ run({ role: null, era: null, hood: null }); return; }
     if(k === 'era'){ run({ era: null }); return; }
     if(k === 'hood'){ run({ hood: null }); return; }
+    if(k === 'role'){ run({ role: null }); return; }
     return;
   }
   // watchlist: the dossier star toggles this query in/out of My kitchens.

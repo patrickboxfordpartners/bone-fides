@@ -529,11 +529,27 @@ def assemble_dossier(q, lin, role=None, era=None, hood=None, es=None):
         # ("is in the record, but none of its cited moves carry era X").
         # If it doesn't resolve unfiltered either, the entity is not in
         # the record and the plain empty state stays honest.
-        if (era or hood) and es is not None:
+        if (era or hood or role) and es is not None:
             ungated = lineage(es, q, size=25)
             if resolve_query(q, ungated, identity(ungated)):
-                return {"query": q, "resolved": False, "lineage": [], "identity": [],
-                        "pedigree": None, "facet_empty": True}
+                # the message says "none of its cited moves carry era X" —
+                # cited moves must actually exist: an entity whose ungated
+                # rows all fail the citation gate (recipe sentences etc.)
+                # has no cited moves at all, and the plain empty state is
+                # the honest one.
+                cited = [e for e in ungated if citation_supported(e)]
+                if cited:
+                    out = {"query": q, "resolved": False, "lineage": [], "identity": [],
+                           "pedigree": None, "facet_empty": True}
+                    if role:
+                        out["role_filter"] = role
+                    if era:
+                        out["era_filter"] = era
+                        out["era_coverage"] = _ERA_COVERAGE
+                    if hood:
+                        out["hood_filter"] = hood
+                        out["hood_coverage"] = _HOOD_COVERAGE
+                    return out
         return {"query": q, "resolved": False, "lineage": [], "identity": [], "pedigree": None}
     scoped = []
     for e in scope_edges(q, lin, cl):
@@ -556,10 +572,20 @@ def assemble_dossier(q, lin, role=None, era=None, hood=None, es=None):
         # emptying means the kitchen exists but its cited dates don't reach
         # that era — the facet's honest-empty state, not the
         # spelling-suggestions one. facet_exists tells the two apart.
-        if era or hood:
-            return {"query": q, "resolved": False, "lineage": [], "identity": [],
-                    "pedigree": None, "facet_empty": bool(
-                        _facet_probe(es, q, era=era, hood=hood)) or None if es else None}
+        if era or hood or role:
+            out = {"query": q, "resolved": False, "lineage": [], "identity": [],
+                   "pedigree": None, "facet_empty": bool(
+                       _facet_probe(es, q, era=era, hood=hood, role=role))
+                   or None if es else None}
+            if role:
+                out["role_filter"] = role
+            if era:
+                out["era_filter"] = era
+                out["era_coverage"] = _ERA_COVERAGE
+            if hood:
+                out["hood_filter"] = hood
+                out["hood_coverage"] = _HOOD_COVERAGE
+            return out
         return {"query": q, "resolved": False, "lineage": [], "identity": [], "pedigree": None}
     cl2 = identity(scoped) if scoped else []
     out = {"query": q, "resolved": True, "lineage": scoped,
@@ -691,7 +717,8 @@ def fetch_person_edges(es, names, limit=100):
     body = {"size": limit, "query": {"bool": {"filter": [
         {"terms": {"person.keyword": names}}]}},
         "_source": ["person", "from_venue", "to_venue", "role", "date",
-                    "confidence", "source", "action", "evidence", "source_url"]}
+                    "confidence", "source", "action", "evidence", "source_url",
+                    "role_bucket", "era_bucket", "venue_hoods"]}
     r = es.search(index=INDEX, body=body)
     out = []
     for h in r["hits"]["hits"]:
@@ -704,6 +731,11 @@ def fetch_person_edges(es, names, limit=100):
             "evidence": s.get("evidence") or "",
             "source_url": s.get("source_url"),
             "source_image": s.get("source_image"), "score": 0,
+            # facet stamps travel so the merge site can gate completion
+            # rows by the same facets the ranked window used
+            "role_bucket": s.get("role_bucket"),
+            "era_bucket": s.get("era_bucket"),
+            "venue_hoods": s.get("venue_hoods") or [],
         })
     return out
 
@@ -888,15 +920,15 @@ class Handler(SimpleHTTPRequestHandler):
         # role facet (roadmap 4.3): &role=<bucket> filters the ES query on the
         # index-time stamp; unknown values are ignored, never 500
         mr = re.search(r"role=([^&]*)", self.path)
-        role = urllib.parse.unquote(mr.group(1)).strip() if mr else ""
+        role = urllib.parse.unquote_plus(mr.group(1)).strip() if mr else ""
         role = role if role in _ROLE_BUCKETS else None
         # era + hood facets (roadmap 4.4): same discipline, unknown values
         # ignored (hood labels carry slashes — percent-decode first)
         me = re.search(r"era=([^&]*)", self.path)
-        era = urllib.parse.unquote(me.group(1)).strip() if me else ""
+        era = urllib.parse.unquote_plus(me.group(1)).strip() if me else ""
         era = era if era in _ERA_BUCKETS else None
         mh = re.search(r"hood=([^&]*)", self.path)
-        hood = urllib.parse.unquote(mh.group(1)).strip() if mh else ""
+        hood = urllib.parse.unquote_plus(mh.group(1)).strip() if mh else ""
         hood = hood if hood in _HOOD_VOCAB else None
         lin = lineage(es, q, size=size, role=role, era=era, hood=hood) if q else []
         cl = identity(lin) if q else []
@@ -910,6 +942,14 @@ class Handler(SimpleHTTPRequestHandler):
             have = {_edge_key(e) for e in lin}
             extra = [e for e in fetch_person_edges(es, need) if _edge_key(e) not in have]
             if extra:
+                # facet gates apply to completion edges too: a row fetched
+                # ungated must not surface in a dossier the chips claim is
+                # role/era/hood-filtered. Same set-membership stamps the
+                # ranked window was gated on.
+                extra = [e for e in extra
+                         if (not role or e.get("role_bucket") == role)
+                         and (not era or e.get("era_bucket") == era)
+                         and (not hood or hood in (e.get("venue_hoods") or []))]
                 lin = dedupe(lin + extra)
         self._json(assemble_dossier(q, lin, role=role, era=era, hood=hood, es=es) if q else
                    {"query": "", "resolved": False, "lineage": [], "identity": [], "pedigree": None})
