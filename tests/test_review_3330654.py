@@ -168,6 +168,22 @@ def test_era_trailing_boundary():
     assert era_bucket("2022-10-04T23:47:38Z") == "2020s"
 
 
+# Greptile PR #8: the boundary is Unicode-aware — attached uppercase words,
+# underscores, and non-ASCII letters are still attached words, and dates
+# reach era_bucket without case normalization
+def test_era_boundary_rejects_case_underscore_unicode():
+    assert era_bucket("2015ISH") is None
+    assert era_bucket("2015ISHES") is None
+    assert era_bucket("2015_is") is None
+    assert era_bucket("2015Éurope") is None
+    assert era_bucket("2015à") is None
+    assert era_bucket("2015日本") is None
+    # punctuation-adjacent years stay valid (parens, brackets, hyphens)
+    assert era_bucket("(2015)") == "2010s"
+    assert era_bucket("[2017]") == "2010s"
+    assert era_bucket("2017-fall") == "2010s"
+
+
 # Fix 10: twin find_edges gate composition stays in sync
 def test_twin_find_edges_gate_strings_match():
     import inspect
