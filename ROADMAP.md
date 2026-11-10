@@ -146,6 +146,30 @@ enrichment.
 4. Neighborhood pipeline facet: deferred. Requires venue→neighborhood
    enrichment at index time (join via the `tag_city` normalization
    discipline) — a data task, not a UI task, and needs its own run.
+   **Shipped 2026-11-09 (as 4.4, with era):** `src/eras.py` normalizes
+   loose dates to era buckets {pre-1990, 1990s, 2000s, 2010s, 2020s} —
+   word-boundary year extraction only, ranges anchor on the FIRST year
+   (arrival era), relative dates ("recently") never yield a bucket; 1,166
+   of 1,454 dated edges carry a citable year. `src/hoods.py` joins
+   venues→neighborhoods: flagship-row rule (shortest name per lineage
+   key, the same row the map pins), majority-vote permit rows, unambiguous
+   token-prefix fallback, plus a curated CLOSED_SF map for 46 venues the
+   current-permit snapshot cannot see — every curated hood verified
+   against the city file's own block-level labels; non-SF venues stay
+   unstamped (nothing invents an SF hood for Chez Panisse). Both stamped
+   at index time (`era_bucket`, `venue_hoods`) and backfilled (9,312
+   docs): 12% of edges carry an era, 43% carry a hood. `&era=` / `&hood=`
+   post_filter over the RRF window, composed with role gates; the
+   explorer renders chips with click-to-clear, honors permalinks, and the
+   facet-empty state is honest — "is in the record, but none of its
+   cited moves carry era X" with the coverage disclosure (dates on 15%,
+   neighborhoods on 43%) and a clear-the-filter affordance. Two probe
+   lessons: a size=0 window collects NOTHING for post_filter to gate (the
+   RRF window is the only pool it sees — probes need a real, deep
+   window), and when the gates empty the retrieval window itself,
+   resolution fails before the facet-aware branch, so the unresolved
+   path probes the UNGATED record to distinguish "facet emptied a real
+   dossier" from "not in the record."
 
 **Costs.** Steps 1+2 ~1 session; step 3 ~0.5; step 4 is a separate data
 project.
@@ -189,10 +213,10 @@ on real inbound demand from operators.
 
 **Status 2026-11-09: the build order above is complete** — 1 (corrections
 layer), 4.1+4.2 (role normalizer + dossier role chips), 3 (hub tree), 2
-(My kitchens watchlist), 5.1 (copy link + print stylesheet), and 4.3's
-role facet all shipped to prod with tests, twin sync, and browser
-verification. Remaining from this roadmap: 4.4 (neighborhood enrichment +
-date normalization for an era facet) as a standalone data run.
+(My kitchens watchlist), 5.1 (copy link + print stylesheet), 4.3's
+role facet, and 4.4 (era buckets + venue→neighborhood enrichment for the
+era and neighborhood facets) all shipped with tests, twin sync, and
+browser verification. Nothing remains from this roadmap.
 
 Each step ships straight to main with tests, twin sync (`build.sh`), and a
 prod verification pass, same as every change in this repo.

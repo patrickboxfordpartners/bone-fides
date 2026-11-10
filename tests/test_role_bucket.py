@@ -49,6 +49,25 @@ def test_bucket_vocabulary_matches_twins():
         assert set(_load("m_" + os.path.basename(mod_path), mod_path)._ROLE_BUCKETS) == set(BUCKETS)
 
 
+def test_era_vocabulary_matches_twins():
+    # roadmap 4.4: the &era= facet accepts exactly src.eras.ERA_BUCKETS
+    from src.eras import ERA_BUCKETS
+    expected = set(ERA_BUCKETS)
+    for mod_path in [os.path.join(_HERE, "..", "ui", "server.py"),
+                     os.path.join(_HERE, "..", "vercel-app", "api", "search.py")]:
+        assert set(_load("e_" + os.path.basename(mod_path), mod_path)._ERA_BUCKETS) == expected
+
+
+def test_hood_vocabulary_matches_twins():
+    # roadmap 4.4: the &hood= facet accepts exactly the city file's
+    # analysis_neighborhood labels (+ the curated closed-venue labels)
+    from src.hoods import hood_vocabulary
+    expected = set(hood_vocabulary())
+    for mod_path in [os.path.join(_HERE, "..", "ui", "server.py"),
+                     os.path.join(_HERE, "..", "vercel-app", "api", "search.py")]:
+        assert set(_load("h_" + os.path.basename(mod_path), mod_path)._HOOD_VOCAB) == expected
+
+
 def test_case_and_punctuation_fold(bucket):
     assert bucket("Chef") == bucket("chef")
     assert bucket("Executive Chef") == "executive chef"

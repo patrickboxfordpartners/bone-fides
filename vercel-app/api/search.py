@@ -125,13 +125,14 @@ def make_client(endpoint=None, api_key=None):
         request_timeout=30,
     )
 
-def find_edges(es, query, index=INDEX, size=20, role=None):
+def find_edges(es, query, index=INDEX, size=20, role=None, era=None, hood=None):
     """Hybrid RRF: fuzzy keyword + sparse_vector semantic (same as src/es.py).
 
-    role: optional role_bucket filter (roadmap 4.3), applied as post_filter —
-    it gates the final RRF hit list without touching ranking, so a filtered
+    role/era/hood: optional facet filters, applied as post_filter — they
+    gate the final RRF hit list without touching ranking, so a filtered
     dossier is exactly the unfiltered dossier with rows removed (this ES
-    version rejects sparse_vector nested inside bool)."""
+    version rejects sparse_vector nested inside bool). Multiple facets
+    compose with AND."""
     body = {
         "size": size,
         "retriever": {
@@ -151,8 +152,17 @@ def find_edges(es, query, index=INDEX, size=20, role=None):
             }
         },
     }
+    gates = []
     if role:
-        body["post_filter"] = {"term": {"role_bucket": role}}
+        gates.append({"term": {"role_bucket": role}})
+    if era:
+        gates.append({"term": {"era_bucket": era}})
+    if hood:
+        gates.append({"term": {"venue_hoods": hood}})
+    if len(gates) == 1:
+        body["post_filter"] = gates[0]
+    elif gates:
+        body["post_filter"] = {"bool": {"filter": gates}}
     return es.search(index=index, body=body)["hits"]["hits"]
 
 _es = None
@@ -423,6 +433,23 @@ _ROLE_OWNER = {"owner", "owners", "founder", "founders", "founding", "proprietor
 _ROLE_BAR = {"bartender", "barman", "barback", "bar"}
 # the bucket vocabulary the &role= facet accepts (src.roles.BUCKETS twin)
 _ROLE_BUCKETS = {"chef", "executive chef", "pastry", "sous", "owner", "bartender", "other"}
+# era + hood vocabularies (roadmap 4.4, src.eras.ERA_BUCKETS and
+# src.hoods.hood_vocabulary twins). Hoods mirror the city file's
+# analysis_neighborhood labels — the exact list is locked by test.
+_ERA_BUCKETS = {"pre-1990", "1990s", "2000s", "2010s", "2020s"}
+_HOOD_VOCAB = {
+    "Bayview Hunters Point", "Bernal Heights", "Castro/Upper Market",
+    "Chinatown", "Excelsior", "Financial District/South Beach", "Glen Park",
+    "Golden Gate Park", "Haight Ashbury", "Hayes Valley", "Inner Richmond",
+    "Inner Sunset", "Japantown", "Lakeshore", "Lincoln Park",
+    "Lone Mountain/USF", "Marina", "McLaren Park", "Mission", "Mission Bay",
+    "Nob Hill", "Noe Valley", "North Beach", "Oceanview/Merced/Ingleside",
+    "Outer Mission", "Outer Richmond", "Pacific Heights", "Portola",
+    "Potrero Hill", "Presidio", "Presidio Heights", "Russian Hill",
+    "Seacliff", "South of Market", "Sunset/Parkside", "Tenderloin",
+    "Treasure Island", "Twin Peaks", "Visitacion Valley",
+    "West of Twin Peaks", "Western Addition",
+}
 
 def role_bucket(role):
     """Raw role text -> dossier filter bucket. Same logic as ui/server.py —
@@ -492,12 +519,25 @@ def _public_cluster(c):
             "homonym": c["homonym"], "possible": c["possible"],
             "n": c["n"], "edges": c["edges"]}
 
-def assemble_dossier(q, lin, role=None):
+def assemble_dossier(q, lin, role=None, era=None, hood=None, es=None):
     q = (q or "").strip()[:MAX_QUERY_LEN]
     if not q:
         return {"query": "", "resolved": False, "lineage": [], "identity": [], "pedigree": None}
     cl = identity(lin)
     if not resolve_query(q, lin, cl):
+        # roadmap 4.4: the era/hood gates act on the retrieval window, so a
+        # facet can empty it entirely — resolution then fails HERE, before
+        # the facet-aware branch below. Probe the ungated record with the
+        # same resolution discipline: if the query names something there,
+        # the facet emptied a real dossier — the honest facet-empty state
+        # ("is in the record, but none of its cited moves carry era X").
+        # If it doesn't resolve unfiltered either, the entity is not in
+        # the record and the plain empty state stays honest.
+        if (era or hood) and es is not None:
+            ungated = lineage(es, q, size=25)
+            if resolve_query(q, ungated, identity(ungated)):
+                return {"query": q, "resolved": False, "lineage": [], "identity": [],
+                        "pedigree": None, "facet_empty": True}
         return {"query": q, "resolved": False, "lineage": [], "identity": [], "pedigree": None}
     scoped = []
     for e in scope_edges(q, lin, cl):
@@ -516,6 +556,14 @@ def assemble_dossier(q, lin, role=None):
         # no fetched edge actually names it). Saying "resolved, no moves"
         # would state a record the index doesn't hold — report unresolved
         # so the reader gets the honest empty-state instead.
+        # EXCEPT under an active facet (roadmap 4.4): "Betelnut & era=2010s"
+        # emptying means the kitchen exists but its cited dates don't reach
+        # that era — the facet's honest-empty state, not the
+        # spelling-suggestions one. facet_empty tells the two apart.
+        if era or hood:
+            return {"query": q, "resolved": False, "lineage": [], "identity": [],
+                    "pedigree": None, "facet_empty": bool(
+                        _facet_probe(es, q, era=era, hood=hood)) or None if es else None}
         return {"query": q, "resolved": False, "lineage": [], "identity": [], "pedigree": None}
     cl2 = identity(scoped) if scoped else []
     out = {"query": q, "resolved": True, "lineage": scoped,
@@ -525,7 +573,27 @@ def assemble_dossier(q, lin, role=None):
         # the facet note travels with the payload so the UI can say what the
         # filter did without a second request
         out["role_filter"] = role
+    if era:
+        out["era_filter"] = era
+        # dates exist on only 15.6% of edges and not all carry a citable
+        # year — an era-filtered dossier must say so or it lies by omission
+        out["era_coverage"] = "dates on 15% of cited moves"
+    if hood:
+        out["hood_filter"] = hood
+        # hood stamps exist for SF venues the city file can place — 43% of
+        # edge docs — so the filter discloses partial coverage
+        out["hood_coverage"] = "neighborhoods on 43% of cited moves"
     return out
+
+def _facet_probe(es, q, era=None, hood=None, role=None):
+    """Does the raw query match ANY edge under these facet gates?
+
+    A size=0 window collects NOTHING for post_filter to gate (the RRF
+    window is the only pool post_filter sees), so the probe needs a real
+    window. Deep one: ES keeps scanning past `size` until the window fills
+    with post_filter survivors, so a 300-deep window is an honest
+    "any such edge exists" at corpus scale."""
+    return bool(find_edges(es, q, size=300, role=role, era=era, hood=hood))
 
 def pedigree(edges):
     if not edges:
@@ -555,12 +623,13 @@ def pedigree(edges):
             "moves": len(edges), "sources": len(urls), "tiers": tiers}
 
 # ── ES query layer ──
-def lineage(es, query, size=25, role=None):
+def lineage(es, query, size=25, role=None, era=None, hood=None):
     """evidence is stored in full: citation_supported() must see the whole
     quotation (a move stated past the display cutoff still counts). The
     public payload is shortened for display in assemble_dossier().
-    role: optional bucket filter (roadmap 4.3), applied inside the ES query."""
-    hits = find_edges(es, query, size=size, role=role)
+    role/era/hood: optional facet filters (roadmap 4.3/4.4), applied inside
+    the ES query as post_filter gates."""
+    hits = find_edges(es, query, size=size, role=role, era=era, hood=hood)
     edges = []
     for h in hits:
         s = h["_source"]
@@ -801,11 +870,15 @@ def _dispatch(path, query_params, ip="", body_bytes=None):
         if path.endswith("/api/search"):
             q = (q1("q") or "").strip()[:MAX_QUERY_LEN]
             size = clamp_size(q1("size"))
-            # role facet (roadmap 4.3): &role=<bucket> filters the ES query
-            # on the index-time stamp; unknown values are ignored, never 500
+            # role facet (roadmap 4.3) + era/hood facets (4.4): filters on the
+            # index-time stamps; unknown values are ignored, never 500
             role_raw = (q1("role") or "").strip()
             role = role_raw if role_raw in _ROLE_BUCKETS else None
-            lin = lineage(es, q, size=size, role=role) if q else []
+            era = (q1("era") or "").strip()
+            era = era if era in _ERA_BUCKETS else None
+            hood = (q1("hood") or "").strip()
+            hood = hood if hood in _HOOD_VOCAB else None
+            lin = lineage(es, q, size=size, role=role, era=era, hood=hood) if q else []
             cl = identity(lin) if q else []
             need = sorted({n for c in cl if c["homonym"] or c["possible"]
                            for n in [c["name"], *c["aliases"]]})
@@ -814,7 +887,7 @@ def _dispatch(path, query_params, ip="", body_bytes=None):
                 extra = [e for e in fetch_person_edges(es, need) if _edge_key(e) not in have]
                 if extra:
                     lin = dedupe(lin + extra)
-            body = assemble_dossier(q, lin, role=role) if q else {
+            body = assemble_dossier(q, lin, role=role, era=era, hood=hood, es=es) if q else {
                 "query": "", "resolved": False, "lineage": [], "identity": [], "pedigree": None}
         elif path.endswith("/api/suggest"):
             q = (q1("q") or "").strip()[:MAX_QUERY_LEN]

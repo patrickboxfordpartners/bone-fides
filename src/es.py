@@ -2,6 +2,8 @@
 import os
 
 from src.roles import role_bucket
+from src.eras import era_bucket
+from src.hoods import load_hood_maps, hood_for
 
 INDEX = "bone-fides-edges"
 TIPS_INDEX = "bone-fides-tips"
@@ -39,11 +41,36 @@ TIPS_SETTINGS = {
     }
 }
 
+_HOOD_MAPS = None
+
+def _hood_stamps(edge, maps=None):
+    """Neighborhoods of the venues this edge touches (0-2 keyword values).
+
+    Only SF venues the city file can place get a stamp; non-SF venues and
+    unverifiable names stay null (the facet discloses partial coverage).
+    """
+    m = maps if maps is not None else _get_maps()
+    out = []
+    for v in (edge.get("from_venue"), edge.get("to_venue")):
+        if not v:
+            continue
+        h = hood_for(v, m)
+        if h and h not in out:
+            out.append(h)
+    return out
+
+def _get_maps():
+    global _HOOD_MAPS
+    if _HOOD_MAPS is None:
+        _HOOD_MAPS = load_hood_maps()
+    return _HOOD_MAPS
+
 def build_edge_doc(edge):
     """Flat, citation-bearing doc; text copies feed keyword + semantic search.
 
-    role_bucket is stamped at index time so /api/search?role=<bucket> can
-    filter with a term query — the raw role text stays for display."""
+    role_bucket / era_bucket / hood stamps are applied at index time so
+    /api/search?role=&era=&hood= can filter with term queries — the raw
+    role text stays for display."""
     venue_bits = [v for v in (edge.get("from_venue"), edge.get("to_venue")) if v]
     return {
         "person": edge["person"],
@@ -53,6 +80,8 @@ def build_edge_doc(edge):
         "venue_text": " ".join(venue_bits) if venue_bits else edge.get("role", ""),
         "role": edge.get("role"),
         "role_bucket": role_bucket(edge.get("role")),
+        "era_bucket": era_bucket(edge.get("date")),
+        "venue_hoods": _hood_stamps(edge),
         "action": edge.get("action"),
         "mentor": edge.get("mentor"),
         "date": edge.get("date"),
@@ -72,6 +101,8 @@ INDEX_SETTINGS = {
             "venue_text": {"type": "text"},
             "role": {"type": "text"},
             "role_bucket": {"type": "keyword"},
+            "era_bucket": {"type": "keyword"},
+            "venue_hoods": {"type": "keyword"},
             "action": {"type": "keyword"},
             "mentor": {"type": "keyword"},
             "date": {"type": "text"},
@@ -122,13 +153,16 @@ def index_edges(es, docs, index=INDEX):
     except Exception:
         pass  # refresh is an optimization; the next refresh will catch up
 
-def find_edges(es, query, index=INDEX, size=20, role=None):
+def find_edges(es, query, index=INDEX, size=20, role=None, era=None, hood=None):
     """Hybrid search: fuzzy keyword on names + sparse_vector on semantic_text field.
 
-    role: optional bucket (from src.roles.BUCKETS). Applied as post_filter —
-    it gates the final RRF hit list without touching ranking, so a filtered
+    role/era/hood: optional facet filters (src.roles / src.eras vocabularies,
+    hood = city analysis_neighborhood label). Applied as post_filter — they
+    gate the final RRF hit list without touching ranking, so a filtered
     dossier is exactly the unfiltered dossier with rows removed (this ES
-    version rejects sparse_vector nested inside bool)."""
+    version rejects sparse_vector nested inside bool). Multiple facets
+    compose with AND; era/hood fields are multi-valued so they filter on
+    any listed value."""
     body = {
         "size": size,
         "retriever": {
@@ -148,6 +182,15 @@ def find_edges(es, query, index=INDEX, size=20, role=None):
             }
         },
     }
+    gates = []
     if role:
-        body["post_filter"] = {"term": {"role_bucket": role}}
+        gates.append({"term": {"role_bucket": role}})
+    if era:
+        gates.append({"term": {"era_bucket": era}})
+    if hood:
+        gates.append({"term": {"venue_hoods": hood}})
+    if len(gates) == 1:
+        body["post_filter"] = gates[0]
+    elif gates:
+        body["post_filter"] = {"bool": {"filter": gates}}
     return es.search(index=index, body=body)["hits"]["hits"]

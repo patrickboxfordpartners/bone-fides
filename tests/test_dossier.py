@@ -82,6 +82,55 @@ def test_unknown_host_is_not_eater():
     assert d["pedigree"]["tiers"]["other"] == 1
 
 
+def test_facet_emptying_the_window_reports_facet_empty():
+    """Roadmap 4.4: era/hood gates act on the retrieval window, so the
+    filtered fetch can come back EMPTY — resolution fails before the
+    facet-aware branch. The ungated probe decides honestly: a query that
+    resolves unfiltered gets facet_empty=True ("is in the record, but
+    none of its cited moves carry era X"); one that never resolved stays
+    the plain empty state."""
+    betelnut = [
+        _move("George Chen", None, "Betelnut", "opened Betelnut in 1995"),
+        _move("Alexander Ong", "Betelnut", "The Market",
+              "executive chef Alexander Ong departed Betelnut in 2013"),
+    ]
+
+    class _NoES:  # es=None -> no probe possible; plain empty must stay
+        pass
+
+    d = assemble_dossier("Betelnut", [], era="2000s", es=None)
+    assert d["resolved"] is False
+    assert d.get("facet_empty") is None
+    assert "era_filter" not in d
+
+    class _FakeES:
+        def __init__(self, rows):
+            self.rows = rows
+
+    import ui.server as srv
+
+    real_lineage = srv.lineage
+
+    def fake_lineage(es, q, size=25, role=None, era=None, hood=None):
+        # only the UNGATED probe runs (era=None); the server never refetches
+        # the gated window itself, so a gated call here would be a bug
+        assert era is None and hood is None and role is None
+        return betelnut
+
+    srv.lineage = fake_lineage
+    try:
+        d = assemble_dossier("Betelnut", [], era="2000s", es=_FakeES([]))
+        assert d["resolved"] is False
+        assert d["facet_empty"] is True
+        # an entity truly absent from the record stays plain-unresolved
+        srv.lineage = lambda *a, **k: []
+        d = assemble_dossier("Zzzqx Kitchen", [], era="2000s", es=_FakeES([]))
+        assert d["resolved"] is False
+        assert d.get("facet_empty") is None
+    finally:
+        srv.lineage = real_lineage
+
+
 def test_dan_and_danielle_stay_distinct():
     assert _fuzzy_sibling("dan smith", "danielle smith") is False
     edges = [

@@ -299,6 +299,9 @@
   .rolebar .rchip b { font-weight: 500; color: var(--ink); margin-left: 5px; }
   .rolebar .rchip:hover { color: var(--accent); border-color: var(--accent); }
   .rolebar .rchip.on { color: var(--accent); border-color: var(--accent); background: rgba(208,129,82,.08); }
+  .facetbar { margin-top: 8px; }
+  .facetbar .rchip { cursor: pointer; }
+  .facetbar .rchip.on b { color: var(--accent); }
   .rolebar .rchip.on b { color: var(--accent); }
   .pedigree { margin-top: 18px; padding: 14px 16px 12px; border: 1px solid var(--faint); border-radius: 8px;
               background: rgba(208,129,82,.05); }
@@ -319,7 +322,7 @@
             --accent: #a05a2c; --gold: #8a6d1f; --ok: #2e6b3f; --bad: #9c3325; --stargold: #8a6d1f; }
     body { background: #fff; color: var(--ink); overflow: visible; }
     .stage, .searchbar, .roster, .chips, .watchtray, .railmeta, .railfoot,
-    .legend, .rolebar, .viewtoggle, .flagrow, .flaglink, .watchbtn, .copybtn,
+    .legend, .rolebar, .facetbar, .viewtoggle, .flagrow, .flaglink, .watchbtn, .copybtn,
     .sugg, .seg, .mapcontrols { display: none !important; }
     .app { display: block; height: auto; }
     .rail { overflow: visible; border: 0; padding: 0; width: auto; max-width: none; }
@@ -626,11 +629,19 @@ let lastFetch = 0;
 // chip re-renders the same data instead of refetching (the filter is a view,
 // not a query)
 let lastDossier = null;
-// server-side role facet (roadmap 4.3): active on permalink loads
-// (/explorer?q=A16&role=chef) and kept across retries of that same load.
-// A NEW query drops it (the role belonged to the previous dossier); chip
+// server-side role facet (roadmap 4.3) + era/hood facets (roadmap 4.4):
+// active on permalink loads (/explorer?q=A16&role=chef or &era=2010s or
+// &hood=Marina) and kept across retries of that same load. A NEW query
+// drops them (the filters belonged to the previous dossier); facet chip
 // clicks under an active server filter refetch server-side.
 let serverRole = null;
+// facet coverage notes (roadmap 4.4) — travel from the server too, but these
+// constants keep the chips self-explanatory even when render() is called
+// with kept data
+const ERA_COVERAGE = 'dates on 15% of cited moves';
+const HOOD_COVERAGE = 'neighborhoods on 43% of cited moves';
+let serverEra = null;
+let serverHood = null;
 let lastRunQ = null;
 async function run(opts){
   const q = Q.value.trim(); if(!q){ Q.focus(); return; }
@@ -654,14 +665,28 @@ async function run(opts){
   const t0 = performance.now();
   CARD.setAttribute('aria-busy','true');
   if(opts && 'role' in opts) serverRole = opts.role || null;
-  else if(q.toLowerCase() !== (lastRunQ || '').toLowerCase()) serverRole = null;
+  if(opts && 'era' in opts) serverEra = opts.era || null;
+  if(opts && 'hood' in opts) serverHood = opts.hood || null;
+  if(!(opts && ('role' in opts || 'era' in opts || 'hood' in opts))
+     && q.toLowerCase() !== (lastRunQ || '').toLowerCase()){
+    // a genuinely new query drops all server filters (they belonged to the
+    // previous dossier)
+    serverRole = null; serverEra = null; serverHood = null;
+  }
   lastRunQ = q.toLowerCase();
   try { const u = new URL(location); u.searchParams.set('q', q);
         if(serverRole) u.searchParams.set('role', serverRole); else u.searchParams.delete('role');
+        if(serverEra) u.searchParams.set('era', serverEra); else u.searchParams.delete('era');
+        if(serverHood) u.searchParams.set('hood', serverHood); else u.searchParams.delete('hood');
         history.replaceState(null, '', u); } catch(e){}
   let d;
   try {
-    const r = await fetch('/api/search?q=' + encodeURIComponent(q) + (serverRole ? '&role=' + encodeURIComponent(serverRole) : ''));
+    const qs = new URLSearchParams();
+    qs.set('q', q);
+    if(serverRole) qs.set('role', serverRole);
+    if(serverEra) qs.set('era', serverEra);
+    if(serverHood) qs.set('hood', serverHood);
+    const r = await fetch('/api/search?' + qs.toString());
     d = await r.json();
     if(!r.ok || d.error) throw new Error('search failed');
   } catch(e){
@@ -678,6 +703,24 @@ async function run(opts){
   /* resolved=false means nothing in the record actually IS the query.
      The API returns an empty dossier in that case. */
   if(d.resolved === false){
+    // facet-empty (roadmap 4.4): the query was facet-filtered server-side
+    // (serverEra/serverHood set) and came back unresolved — the kitchen may
+    // still be in the record with no cited moves under the filter. Show the
+    // facet message, never the "no such kitchen" one: under an active
+    // filter, unresolved can't be read as not-in-the-record.
+    if(serverEra || serverHood){
+      const bits = [];
+      if(serverEra) bits.push('era ' + esc(serverEra));
+      if(serverHood) bits.push('neighborhood ' + esc(serverHood));
+      const which = bits.join(' + ');
+      CARD.innerHTML = '<div class="empty">“' + esc(q) + '”' + (d.facet_empty ? ' is in the record, but none of its cited moves carry ' + which : ' has no cited moves under ' + which)
+        + ' — dates exist on 15% of cited moves, neighborhoods on 43%.'
+        + ' <button type="button" class="chip" data-facetclear="all">clear the filter</button></div>';
+      if(window.__bfHighlight) window.__bfHighlight(q);
+      else window.__bfPendingHighlight = q;
+      scrollResultIntoView();
+      return;
+    }
     const close = (d.identity || []).slice(0, 6).map(c =>
       `<button type="button" class="chip" data-pick="${esc(c.name)}">${esc(c.name)}</button>`).join('');
     CARD.innerHTML = '<div class="empty">No kitchen or chef named “' + esc(q) + '” in the record yet.'
@@ -691,7 +734,9 @@ async function run(opts){
     return;
   }
   lastDossier = { q, lineage: d.lineage, ms: performance.now() - t0, ped: d.pedigree, identity: d.identity };
-  render(q, d.lineage, performance.now() - t0, d.pedigree, d.identity, null, d.role_filter || null);
+  render(q, d.lineage, performance.now() - t0, d.pedigree, d.identity, null,
+         { role: d.role_filter || null, era: d.era_filter || null, hood: d.hood_filter || null,
+           eraCoverage: d.era_coverage || null, hoodCoverage: d.hood_coverage || null });
   if(window.__bfHighlight) window.__bfHighlight(q);
   else window.__bfPendingHighlight = q;
   scrollResultIntoView();
@@ -736,6 +781,16 @@ document.addEventListener('click', e => {
     }
     const d = lastDossier;
     render(d.q, d.lineage, d.ms, d.ped, d.identity, b);
+    return;
+  }
+  // era/hood facets (roadmap 4.4): server-side filters — clearing one re-runs
+  // the query without it; the others survive (each facet is its own param)
+  const fc = e.target.closest('[data-facetclear]');
+  if(fc){
+    const k = fc.getAttribute('data-facetclear');
+    if(k === 'all'){ run({ role: null, era: null, hood: null }); return; }
+    if(k === 'era'){ run({ era: null }); return; }
+    if(k === 'hood'){ run({ hood: null }); return; }
     return;
   }
   // watchlist: the dossier star toggles this query in/out of My kitchens.
@@ -821,6 +876,13 @@ function buildChain(person_edges, ql){
 }
 
 function render(q, edges, ms, ped, identity, roleFilter, serverFilter){
+  // serverFilter is now the object {role, era, hood} of active server-side
+  // facet filters (roadmap 4.4); null when none are active
+  const sv = serverFilter || null;
+  const svRole = sv ? (sv.role || null) : null;
+  const svEra = sv ? (sv.era || null) : null;
+  const svHood = sv ? (sv.hood || null) : null;
+  const anySv = !!(svRole || svEra || svHood);
   if(!edges || !edges.length){ CARD.innerHTML = '<div class="empty">“'+esc(q)+'” is in the record, but none of the cited lines state a career move.</div>'; return; }
   const ql = q.toLowerCase();
   // person query when a cluster IS the query (by name) and its edges outnumber
@@ -913,19 +975,33 @@ function render(q, edges, ms, ped, identity, roleFilter, serverFilter){
   // server facet active: the chip that matches it reads "on" and the clear
   // chip re-runs the query without the role param (a refetch — the server
   // filtered the ES query itself, so the unfiltered rows aren't in hand)
-  const sv = serverFilter || null;
-  const rolebar = buckets.length > (sv ? 0 : 1) || sv || roleFilter ? `<div class="rolebar" role="group" aria-label="Filter chefs by role">` +
-    buckets.map(b => `<button type="button" class="rchip${roleFilter === b || (sv && !roleFilter && b === sv) ? ' on' : ''}" data-rolefilter="${esc(b)}" aria-pressed="${roleFilter === b}">${esc(BUCKET_LABEL[b] || b)}<b>${counts[b]}</b></button>`).join('') +
-    (roleFilter || sv ? `<button type="button" class="rchip" data-rolefilter="" aria-pressed="false">all</button>` : '') +
+  const rolebar = buckets.length > (anySv ? 0 : 1) || anySv || roleFilter ? `<div class="rolebar" role="group" aria-label="Filter chefs by role">` +
+    buckets.map(b => `<button type="button" class="rchip${roleFilter === b || (!roleFilter && svRole && b === svRole) ? ' on' : ''}" data-rolefilter="${esc(b)}" aria-pressed="${roleFilter === b}">${esc(BUCKET_LABEL[b] || b)}<b>${counts[b]}</b></button>`).join('') +
+    (roleFilter || anySv ? `<button type="button" class="rchip" data-rolefilter="" aria-pressed="false">all</button>` : '') +
+    `</div>` : '';
+
+  // era/hood facet disclosure (roadmap 4.4): active server filters render as
+  // removable chips with their honest coverage note — the corpus's dates and
+  // SF-placeable venues are partial, and the dossier must say so or it lies
+  // by omission. Coverage percentages come from the server payload (they
+  // drift as the corpus grows); the constants are only a fallback.
+  const facetBits = [];
+  if(svRole) facetBits.push({ k: 'role', label: 'role: ' + (BUCKET_LABEL[svRole] || svRole), note: '' });
+  if(svEra) facetBits.push({ k: 'era', label: 'era: ' + svEra, note: (serverFilter && serverFilter.eraCoverage) || ERA_COVERAGE });
+  if(svHood) facetBits.push({ k: 'hood', label: 'hood: ' + svHood, note: (serverFilter && serverFilter.hoodCoverage) || HOOD_COVERAGE });
+  const facetbar = anySv ? `<div class="rolebar facetbar" role="group" aria-label="Active filters">` +
+    facetBits.map(f => `<button type="button" class="rchip on" data-facetclear="${f.k}" title="${esc(f.note || 'Clear this filter')}">${esc(f.label)} · ×</button>`).join('') +
+    `<button type="button" class="rchip" data-facetclear="all" aria-pressed="false">clear all</button>` +
     `</div>` : '';
 
   CARD.innerHTML = `
     <div class="kicker">Kitchen dossier</div>
     <h2>${esc(q)}<button type="button" class="watchbtn" id="watchbtn" data-watch="${esc(q)}" aria-pressed="false">☆ watch this</button><button type="button" class="copybtn" id="copybtn" title="Copy a link to this dossier">copy link</button></h2>
-    <div class="sub"><b>${shown}</b> chef${shown===1?'':'s'} in the record${ms ? ' · resolved in ' + Math.round(ms) + ' ms' : ''}${roleFilter ? ' · filtered to ' + esc(BUCKET_LABEL[roleFilter] || roleFilter) : ''}${sv && !roleFilter ? ' · filtered to ' + esc(BUCKET_LABEL[sv] || sv) + ' (server-side)' : ''} · <i>click any kitchen to keep tracing</i></div>
+    <div class="sub"><b>${shown}</b> chef${shown===1?'':'s'} in the record${ms ? ' · resolved in ' + Math.round(ms) + ' ms' : ''}${roleFilter ? ' · filtered to ' + esc(BUCKET_LABEL[roleFilter] || roleFilter) : ''}${svRole && !roleFilter ? ' · filtered to ' + esc(BUCKET_LABEL[svRole] || svRole) + ' (server-side)' : ''} · <i>click any kitchen to keep tracing</i></div>
     ${pedHTML}
     <div class="legend" aria-hidden="true"><span><span class="conf high"></span>High confidence</span><span><span class="conf medium"></span>Medium</span><span><span class="conf low"></span>Low</span></div>
     ${rolebar}
+    ${facetbar}
     <div class="viewtoggle" id="viewtoggle"></div>
     <div id="treehost"></div>
     <div class="dossier">${visible.join('')}</div>
@@ -1261,7 +1337,9 @@ renderWatchTray();
 }
 const initQ = new URLSearchParams(location.search).get('q');
 const initRole = new URLSearchParams(location.search).get('role');
-if(initQ){ Q.value = initQ; run({ role: initRole }); }
+const initEra = new URLSearchParams(location.search).get('era');
+const initHood = new URLSearchParams(location.search).get('hood');
+if(initQ){ Q.value = initQ; run({ role: initRole, era: initEra, hood: initHood }); }
 
 // ── corrections: "Flag or add" opens a form that queues a tip for triage.
 // Tips go to the inbox (bone-fides-tips), never straight into the record —

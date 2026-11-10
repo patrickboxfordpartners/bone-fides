@@ -28,6 +28,25 @@ def test_edge_doc_stamps_role_bucket():
     assert d["role_bucket"] == "executive chef"
     assert d["role"] == "executive chef"  # raw text kept for display
 
+def test_edge_doc_stamps_era_bucket():
+    # index-time stamp (roadmap 4.4): &era= filters on this keyword field;
+    # loose strings without a citable year stay None
+    d = build_edge_doc(EDGE)
+    assert d["era_bucket"] == "2000s"  # "2001-2013" anchors on the first year
+    assert build_edge_doc({**EDGE, "date": "recently"})["era_bucket"] is None
+    assert build_edge_doc({**EDGE, "date": None})["era_bucket"] is None
+
+def test_edge_doc_stamps_venue_hoods():
+    # index-time stamp (roadmap 4.4): &hood= filters on this keyword field;
+    # only venues the city file can place get a stamp, deduped, in order
+    d = build_edge_doc(EDGE)
+    assert "venue_hoods" in d
+    assert isinstance(d["venue_hoods"], list)
+    # both venues unplaceable (Betelnut is curated; use a non-SF + junk pair)
+    non_sf = build_edge_doc({**EDGE, "from_venue": "Chez Panisse",
+                             "to_venue": "The French Laundry"})
+    assert non_sf["venue_hoods"] == []
+
 def test_find_edges_role_filter_is_post_filter():
     # post_filter, not a retriever-level clause: it gates the final RRF hit
     # list without touching ranking, and this ES version rejects
@@ -37,3 +56,7 @@ def test_find_edges_role_filter_is_post_filter():
     src = inspect.getsource(find_edges)
     assert 'post_filter' in src
     assert '{"term": {"role_bucket": role}}' in src
+    # roadmap 4.4: era + hood join as additional gates, composed with AND
+    assert '{"term": {"era_bucket": era}}' in src
+    assert '{"term": {"venue_hoods": hood}}' in src
+    assert 'body["post_filter"] = {"bool": {"filter": gates}}' in src

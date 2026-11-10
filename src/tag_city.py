@@ -10,7 +10,6 @@ BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, BASE)
 from src.cli import load_env
 load_env(os.path.join(BASE, ".env"))
-from src.es import make_client, INDEX
 CITY = os.path.join(BASE, "ui", "city_venues.json")
 
 # SF restaurants holding a Michelin star in the 2026 guide, with the star
@@ -45,6 +44,10 @@ def token_prefix_match(city_n, ling_n):
     return city_n.startswith(ling_n + " ") or city_n == ling_n
 
 def main():
+    # lazy import: src.es imports src.hoods which imports this module's norm
+    # (the neighborhood join uses the same normalizer), so a top-level import
+    # here would be circular
+    from src.es import make_client, INDEX
     es = make_client()
     aggs = {"to": {"terms": {"field": "to_venue.keyword", "size": 65536}},
             "fr": {"terms": {"field": "from_venue.keyword", "size": 65536}}}
