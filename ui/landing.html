@@ -224,6 +224,11 @@
     .slide-cap .v .r { display: block; margin: 5px 0 0; }
     .sthumb .tn { display: none; }
     .sthumb { min-height: 44px; }
+    /* aspect-ratio + min-height:300px transfers through the ratio into a
+       ~558px MIN-WIDTH on a 375px phone: the stage (and every caption) ends
+       up clipped by .slide-wrap's overflow:hidden. A fixed height severs
+       that transfer — the stage stays 100% wide, tall enough for captions. */
+    .slide-stage { aspect-ratio: auto; height: 340px; min-height: 0; }
   }
   @media (prefers-reduced-motion: reduce) {
     .slide-stage img { transition: opacity .3s ease; transform: none; }
