@@ -144,6 +144,41 @@
   .empty { color: var(--dim); font-size: 16px; padding: 30px 0; font-style: italic; }
   .loading { color: var(--dim); font-size: 15px; padding: 28px 0; font-style: italic; }
 
+  /* ── hub tree: this kitchen's people, in and out, as a two-sided SVG tree ── */
+  .viewtoggle { margin-top: 14px; display: none; align-items: baseline; gap: 10px; }
+  .viewtoggle button { font: 400 12.5px 'Fraunces', Georgia, serif; letter-spacing: .08em;
+                       background: none; border: 0; cursor: pointer; color: var(--dim);
+                       border-bottom: 1px solid transparent; padding: 0 0 1px; text-transform: uppercase; }
+  .viewtoggle button:hover { color: var(--accent); border-bottom-color: var(--accent); }
+  .viewtoggle button.on { color: var(--accent); border-bottom-color: var(--accent); }
+  .viewtoggle .hint { font-size: 11.5px; color: var(--dim); font-style: italic; }
+  .tree { margin-top: 16px; }
+  .tree svg { display: block; max-width: 100%; height: auto; }
+  .tree text { font-family: 'Fraunces', Georgia, serif; }
+  .tree .tnode { cursor: pointer; }
+  .tree .tnode:hover rect { stroke: var(--accent); }
+  .tree .tedge { fill: none; }
+  .tree .tin, .tree .tout { font-size: 10.5px; letter-spacing: .2em; text-transform: uppercase;
+                            fill: var(--dim); }
+  /* mobile (≤640px): the two-sided tree becomes a vertical branch list —
+     same DOM, CSS layout switch, honest at 375px */
+  .treelist { display: none; }
+  .treelist .tsec { margin-top: 12px; }
+  .treelist .tsectitle { font-size: 10.5px; letter-spacing: .22em; text-transform: uppercase; color: var(--dim); margin-bottom: 6px; }
+  .treelist .trows { list-style: none; margin: 0; padding: 0; }
+  .treelist .trow { display: flex; align-items: baseline; gap: 8px; padding: 7px 0; border-top: 1px solid var(--faint); font-size: 14px; flex-wrap: wrap; }
+  .treelist .trow .tp { color: var(--dim); font-style: italic; font-size: 12.5px; }
+  .treelist .trow .tconf { width: 8px; height: 8px; border-radius: 50%; flex: none; align-self: center; }
+  .treelist .trow .tconf.high { background: var(--ok); } .treelist .trow .tconf.medium { background: var(--gold); } .treelist .trow .tconf.low { background: var(--bad); }
+  @media (max-width: 640px) {
+    .tree { display: none; }
+    .treelist { display: block; }
+  }
+  @media (min-width: 641px) {
+    .treelist { display: none; }
+    .tree { display: block; }
+  }
+
   /* ── Map stage overlays ───────────────────── */
   .stagehint { position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); z-index: 10; pointer-events: none;
                background: rgba(23,19,16,.82); backdrop-filter: blur(8px); border: 1px solid var(--faint);
@@ -554,6 +589,7 @@ async function run(){
   const q = Q.value.trim(); if(!q){ Q.focus(); return; }
   CARD.dataset.mode = 'result';
   hideSugg();
+  treeOn = false;  // a new query closes any open tree
   // Tracing from the map on mobile: land on the dossier in List view — the
   // result is up here, not behind the map you just left. (quiet: the dossier
   // scroll below decides where we land, not the rail head.) The class only
@@ -808,8 +844,11 @@ function render(q, edges, ms, ped, identity, roleFilter){
     ${pedHTML}
     <div class="legend" aria-hidden="true"><span><span class="conf high"></span>High confidence</span><span><span class="conf medium"></span>Medium</span><span><span class="conf low"></span>Low</span></div>
     ${rolebar}
+    <div class="viewtoggle" id="viewtoggle"></div>
+    <div id="treehost"></div>
     <div class="dossier">${visible.join('')}</div>
     <div class="flagrow"><button type="button" class="flaglink" data-flag="dossier" title="Missing a cited move or source? Add it">flag or add to this dossier</button></div>`;
+  buildTreeToggle(q, edges, isPersonQuery);
 }
 
 /* Person-query chain: no venue pivot exists, so lay the chef's cited moves
@@ -830,6 +869,140 @@ function buildPersonChain(pedges){
     }
   });
   return { chain: stops, years, pivot: pedges.find(e => e.supported !== false) || pedges[0], hasEdge };
+}
+
+/* ── hub tree (roadmap 3): this kitchen's cited people, in and out, as a
+   vertical SVG tree. Hub chip on top; a spine drops down and each cited
+   move branches off it — inbound (who came here) above outbound (where
+   they went next), grouped under IN / OUT captions. Node = venue chip,
+   edge = one cited move, confidence color, year when dated. Data comes
+   from the dossier payload already in hand — no new endpoint. The rail
+   is ~360px so the tree grows down, never sideways; no scroll. Mobile
+   ≤640px renders the same moves as a branch list via CSS (both hosts
+   stay in the DOM). ── */
+
+const CONF_COLOR = { high: 'var(--ok)', medium: 'var(--gold)', low: 'var(--bad)' };
+
+function hubMoves(edges, ql){
+  /* Split dossier rows into inbound (edge arrives at the hub) and outbound
+     (edge leaves the hub) relative to the queried venue. A row is hub-touching
+     when from_venue/to_venue matches q exactly or punctuation-loose. */
+  const isHub = v => v && ((v.toLowerCase() === ql) || sameLoose(v, ql));
+  const moves = [];
+  edges.forEach(e => {
+    if(isHub(e.from_venue) && e.to_venue && !isHub(e.to_venue)){
+      moves.push({ dir: 'out', person: e.person, other: e.to_venue, role: e.role,
+                   conf: e.confidence || 'medium', date: e.date, url: e.source_url });
+    } else if(isHub(e.to_venue) && e.from_venue && !isHub(e.from_venue)){
+      moves.push({ dir: 'in', person: e.person, other: e.from_venue, role: e.role,
+                   conf: e.confidence || 'medium', date: e.date, url: e.source_url });
+    }
+  });
+  // one move per (direction, person, other): the tree is a summary, the
+  // dossier rows below keep the full per-edge detail
+  const seen = new Set();
+  return moves.filter(m => {
+    const k = m.dir + '|' + (m.person||'') + '|' + (m.other||'');
+    if(seen.has(k)) return false;
+    seen.add(k); return true;
+  });
+}
+
+function treeSVG(q, moves){
+  /* Hand-rolled vertical tree, git-graph style: hub chip on top, one spine
+     drops below it, and each cited move hangs off the spine as a full-width
+     chip — inbound group first (under an IN caption), outbound second (OUT).
+     The spine carries the year for dated moves. Rail is ~360px, so the tree
+     grows down, never sideways; everything fits without scroll. */
+  const inn = moves.filter(m => m.dir === 'in');
+  const out = moves.filter(m => m.dir === 'out');
+  const CHIP_H = 26, CHIP_R = 6, ROW_H = 38, PAD = 14, W = 340;
+  const HUB_H = 30;
+  const HUB_W = Math.max(120, Math.min(W - PAD * 2, Math.round(q.length * 8.2 + 30)));
+  const spineX = PAD + 10;
+  const chipX = spineX + 12, chipW = W - chipX - PAD;
+  const esc2 = s => esc(s);
+  const edgeStroke = c => CONF_COLOR[c] || CONF_COLOR.medium;
+  // layout first (positions are deterministic), then emit
+  const secs = [];
+  if(inn.length) secs.push({ caption: 'in', list: inn });
+  if(out.length) secs.push({ caption: 'out', list: out });
+  let y = PAD + HUB_H / 2;
+  const hubY = y;
+  y += HUB_H / 2 + 18;
+  const rows = [];
+  secs.forEach(sec => {
+    sec.capY = y + 9;
+    y += 26;
+    sec.list.forEach(m => { rows.push({ y: y + ROW_H / 2, m }); y += ROW_H; });
+    y += 4;
+  });
+  const spineTop = hubY + HUB_H / 2;
+  const spineBottom = rows.length ? rows[rows.length - 1].y : spineTop;
+  const H = Math.round(spineBottom + CHIP_H / 2 + PAD);
+  let s = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Lineage tree for ${esc2(q)}: ${inn.length} cited move${inn.length===1?'':'s'} in, ${out.length} out">`;
+  // hub chip, centered, accent stroke
+  s += `<g class="tnode"><rect x="${(W - HUB_W)/2}" y="${hubY - HUB_H/2}" width="${HUB_W}" height="${HUB_H}" rx="7" style="fill:var(--bg2);stroke:var(--accent);stroke-width:1.4"/>` +
+       `<text x="${W/2}" y="${hubY + 5}" text-anchor="middle" style="fill:var(--accent);font-size:13.5px;font-weight:600">${esc2(q)}</text></g>`;
+  // one continuous spine: hub bottom -> last row
+  s += `<path d="M ${spineX} ${spineTop} L ${spineX} ${spineBottom}" style="stroke:var(--faint);stroke-width:1.4" class="tedge"/>`;
+  secs.forEach(sec => {
+    s += `<text x="${spineX + 14}" y="${sec.capY}" style="fill:var(--dim);font-size:10.5px;letter-spacing:.2em">${sec.caption.toUpperCase()}</text>`;
+  });
+  rows.forEach(r => {
+    const m = r.m;
+    const label = m.other + (m.person ? ' · ' + m.person : '');
+    // branch tick off the spine, confidence color
+    s += `<path class="tedge" d="M ${spineX} ${r.y} L ${chipX} ${r.y}" style="stroke:${edgeStroke(m.conf)};stroke-width:1.4;opacity:.85"/>`;
+    if(m.date) s += `<text x="${spineX + 16}" y="${r.y - 16}" style="fill:var(--dim);font-size:9.5px;font-style:italic">${esc2(m.date)}</text>`;
+    s += `<g class="tnode" data-pick="${esc2(m.other)}">` +
+         `<rect x="${chipX}" y="${r.y - CHIP_H/2}" width="${chipW}" height="${CHIP_H}" rx="${CHIP_R}" style="fill:var(--bg2);stroke:var(--faint)"/>` +
+         `<text x="${chipX + 12}" y="${r.y + 4.5}" style="fill:var(--ink);font-size:12.5px">${esc2(label)}</text></g>`;
+  });
+  s += '</svg>';
+  return s;
+}
+
+function treeListHTML(q, moves){
+  /* Mobile fallback: the same moves as a vertical branch list. */
+  const row = m => `<li class="trow ${m.dir}">` +
+    `<span class="tconf ${m.conf}" aria-hidden="true"></span>` +
+    (m.dir === 'in' ? `<button type="button" class="vchip" data-pick="${esc(m.other)}">${esc(m.other)}</button>` : '') +
+    `<span class="tp">${esc(m.person || '')}</span>` +
+    (m.dir === 'out' ? `<span class="arr">→</span><button type="button" class="vchip" data-pick="${esc(m.other)}">${esc(m.other)}</button>` : '') +
+    (m.date ? `<span class="yr">${esc(m.date)}</span>` : '') +
+    `</li>`;
+  const inn = moves.filter(m => m.dir === 'in');
+  const out = moves.filter(m => m.dir === 'out');
+  const sec = (title, list) => list.length
+    ? `<div class="tsec"><div class="tsectitle">${title}</div><ul class="trows">${list.map(row).join('')}</ul></div>` : '';
+  return sec('Came to ' + esc(q), inn) + sec('Went next', out);
+}
+
+let treeOn = false;
+function buildTreeToggle(q, edges, isPersonQuery){
+  const host = document.getElementById('viewtoggle');
+  const treehost = document.getElementById('treehost');
+  if(!host || !treehost) return;
+  if(isPersonQuery || !treehost){ treehost.innerHTML = ''; host.style.display = 'none'; return; }
+  const moves = hubMoves(edges, q.toLowerCase());
+  // a hub with nothing to branch has no story as a tree
+  if(moves.length < 2){ treehost.innerHTML = ''; host.style.display = 'none'; return; }
+  const inN = moves.filter(m => m.dir === 'in').length;
+  const outN = moves.length - inN;
+  host.style.display = 'flex';
+  host.innerHTML = `<button type="button" id="treetab" aria-expanded="false">View as tree</button>` +
+    `<span class="hint">${inN} in · ${outN} out</span>`;
+  treehost.innerHTML = '';
+  document.getElementById('treetab').addEventListener('click', () => {
+    treeOn = !treeOn;
+    const tab = document.getElementById('treetab');
+    tab.classList.toggle('on', treeOn);
+    tab.setAttribute('aria-expanded', String(treeOn));
+    treehost.innerHTML = treeOn
+      ? `<div class="tree">${treeSVG(q, moves)}</div><div class="treelist">${treeListHTML(q, moves)}</div>`
+      : '';
+  });
 }
 
 // ── autosuggest ──
