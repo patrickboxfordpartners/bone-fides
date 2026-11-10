@@ -11,13 +11,29 @@ Usage: PYTHONPATH=. .venv/bin/python src/stamp_era_hoods.py [--dry-run]
 import sys
 
 from src.cli import load_env
-from src.es import make_client, INDEX, build_edge_doc
+from src.es import make_client, INDEX, INDEX_SETTINGS, build_edge_doc
 
 def main(argv=None):
     load_env()
     dry = "--dry-run" in (argv or sys.argv[1:])
     es = make_client()
     from elasticsearch.helpers import scan
+    # The facet fields must be keyword BEFORE the first update writes them:
+    # if the index lacks the mapping, ES auto-creates TEXT fields from the
+    # first bulk update, and bare-term facet gates silently match nothing
+    # ("South of Market" is tokenized text, not a keyword). INDEX_SETTINGS
+    # only applies at create time, so put the mapping on explicitly.
+    stamps = INDEX_SETTINGS["mappings"]["properties"]
+    facet_fields = {k: stamps[k] for k in ("era_bucket", "venue_hoods",
+                                           "role_bucket") if k in stamps}
+    existing = es.indices.get_mapping(index=INDEX).get(INDEX, {}).get(
+        "mappings", {}).get("properties", {})
+    missing = {k: v for k, v in facet_fields.items()
+               if existing.get(k, {}).get("type") != "keyword"}
+    if missing and not dry:
+        es.indices.put_mapping(index=INDEX, properties=missing)
+    elif missing and dry:
+        print(f"[dry-run] would add keyword mappings for: {sorted(missing)}")
     era_counts = {}
     hood_counts = {}
     updated = 0
