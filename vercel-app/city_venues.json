@@ -53035,10 +53035,11 @@
 "neighborhood": "Russian Hill",
 "lat": 37.797174000001,
 "lng": -122.421888000002,
+"lineaged": true,
+"lineage_name": "Ssal",
 "michelin": true,
 "star_name": "Ssal",
-"stars": 1,
-"lineage_name": "Ssal"
+"stars": 1
 },
 {
 "name": "St Anthonys Foundation",
