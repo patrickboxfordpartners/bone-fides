@@ -71,6 +71,11 @@
               margin-left: 10px; vertical-align: middle; }
   .watchbtn:hover { color: var(--accent); border-color: var(--accent); }
   .watchbtn.on { color: var(--accent); border-color: var(--accent); }
+  .copybtn { font: 400 12px 'Fraunces', Georgia, serif; letter-spacing: .06em; border: 1px solid var(--faint);
+             background: none; color: var(--dim); border-radius: 999px; padding: 4px 12px; cursor: pointer;
+             margin-left: 6px; vertical-align: middle; }
+  .copybtn:hover { color: var(--accent); border-color: var(--accent); }
+  .copybtn.done { color: var(--ok); border-color: var(--ok); }
 
   /* ── Michelin roster: the starred kitchens, browsable without the map ── */
   .roster { margin: 0 0 30px; border-top: 1px solid var(--faint); }
@@ -304,6 +309,27 @@
   .pedlbl b { color: var(--gold); font-weight: 600; font-size: 13.5px; }
   .legend .conf { display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px; vertical-align:middle; }
   @media (prefers-reduced-motion: reduce) { * { transition:none !important; } }
+
+  /* ── print (roadmap 5.1): a dossier prints as a clean one-pager, citation
+     list intact. Hide everything that is chrome — map, search, roster, the
+     interactive affordances — and let the dossier flow. Light background,
+     dark ink: the app palette is night-mode and would burn toner. ── */
+  @media print {
+    :root { --bg: #fff; --bg2: #fff; --ink: #1a1613; --dim: #5c554d; --faint: #d8d2c8;
+            --accent: #a05a2c; --gold: #8a6d1f; --ok: #2e6b3f; --bad: #9c3325; --stargold: #8a6d1f; }
+    body { background: #fff; color: var(--ink); overflow: visible; }
+    .stage, .searchbar, .roster, .chips, .watchtray, .railmeta, .railfoot,
+    .legend, .rolebar, .viewtoggle, .flagrow, .flaglink, .watchbtn, .copybtn,
+    .sugg, .seg, .mapcontrols { display: none !important; }
+    .app { display: block; height: auto; }
+    .rail { overflow: visible; border: 0; padding: 0; width: auto; max-width: none; }
+    .card { box-shadow: none; }
+    a { color: var(--ink); }
+    a[href^="http"]::after { content: ' (' attr(href) ')'; font-size: 9.5px; color: var(--dim);
+                             word-break: break-all; }
+    .chef { break-inside: avoid; }
+    .treehost, #treehost { display: none !important; }
+  }
 
   /* ── mobile: two views behind a List | Map switch ──
      The map as a 58vh block buried under the roster/dossier made it a dead
@@ -705,6 +731,12 @@ document.addEventListener('click', e => {
     renderWatchTray(); syncWatchBtn();
     return;
   }
+  // copy link: the dossier's permalink (/explorer?q=...) to the clipboard
+  const cb = e.target.closest('.copybtn');
+  if(cb){
+    copyDossierLink(cb);
+    return;
+  }
   // "flag or add": context = the current query, plus which chef/edge the
   // button sat on (edge-level buttons carry data-person / data-source)
   const f = e.target.closest('[data-flag]');
@@ -866,7 +898,7 @@ function render(q, edges, ms, ped, identity, roleFilter){
 
   CARD.innerHTML = `
     <div class="kicker">Kitchen dossier</div>
-    <h2>${esc(q)}<button type="button" class="watchbtn" id="watchbtn" data-watch="${esc(q)}" aria-pressed="false">☆ watch this</button></h2>
+    <h2>${esc(q)}<button type="button" class="watchbtn" id="watchbtn" data-watch="${esc(q)}" aria-pressed="false">☆ watch this</button><button type="button" class="copybtn" id="copybtn" title="Copy a link to this dossier">copy link</button></h2>
     <div class="sub"><b>${shown}</b> chef${shown===1?'':'s'} in the record${ms ? ' · resolved in ' + Math.round(ms) + ' ms' : ''}${roleFilter ? ' · filtered to ' + esc(BUCKET_LABEL[roleFilter] || roleFilter) : ''} · <i>click any kitchen to keep tracing</i></div>
     ${pedHTML}
     <div class="legend" aria-hidden="true"><span><span class="conf high"></span>High confidence</span><span><span class="conf medium"></span>Medium</span><span><span class="conf low"></span>Low</span></div>
@@ -1099,6 +1131,35 @@ document.addEventListener('click', e => {
     renderWatchTray(); syncWatchBtn();
   }
 });
+/* Copy-link (roadmap 5.1): every dossier is a permalinked, sourced credential
+   (/explorer?q=...). navigator.clipboard needs a secure context; the local
+   server is http://localhost, which qualifies, but older engines fall back
+   to a hidden textarea + execCommand. Feedback is in the button label —
+   no toast infrastructure exists. */
+async function copyDossierLink(btn){
+  // location.href is the URL that produced the dossier on screen — run()
+  // replaceStates ?q= before rendering, so href never drifts from the view
+  const url = location.href;
+  let ok = false;
+  try {
+    await navigator.clipboard.writeText(url);
+    ok = true;
+  } catch(e){
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = url;
+      ta.style.cssText = 'position:fixed;opacity:0';
+      document.body.appendChild(ta);
+      ta.select();
+      ok = document.execCommand('copy');
+      ta.remove();
+    } catch(e2){ /* stay failed */ }
+  }
+  const was = btn.textContent;
+  btn.textContent = ok ? 'copied ✓' : 'copy failed';
+  btn.classList.toggle('done', ok);
+  setTimeout(() => { btn.textContent = was; btn.classList.remove('done'); }, 1600);
+}
 function syncWatchBtn(){
   const b = document.getElementById('watchbtn');
   if(!b) return;
