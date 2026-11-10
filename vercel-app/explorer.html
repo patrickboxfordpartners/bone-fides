@@ -57,7 +57,20 @@
   .chip { font: 400 14.5px 'Fraunces', Georgia, serif; border: 0; background: none; cursor: pointer; color: var(--dim);
           padding: 0; border-bottom: 1px solid transparent; }
   .chip:hover { color: var(--accent); border-bottom-color: var(--accent); }
-  .chips .chip:not(:last-of-type)::after { content: '·'; color: #54493a; margin-left: 16px; }
+  #chips .chip:not(:last-of-type)::after { content: '·'; color: #54493a; margin-left: 16px; }
+  /* ── watchlist: "My kitchens" tray + the dossier bookmark star ── */
+  .watchtray { margin: -22px 0 30px; }
+  .watchtray .chip { color: var(--accent); }
+  .watchtray .chip:hover { color: var(--ink); }
+  .watchtray .wchipwrap { display: inline-flex; align-items: baseline; gap: 2px; }
+  .watchtray .wx { font: 400 12px 'Fraunces', Georgia, serif; border: 0; background: none; cursor: pointer;
+                   color: var(--dim); padding: 0 2px; margin-left: 2px; }
+  .watchtray .wx:hover { color: var(--bad); }
+  .watchbtn { font: 400 12px 'Fraunces', Georgia, serif; letter-spacing: .06em; border: 1px solid var(--faint);
+              background: none; color: var(--dim); border-radius: 999px; padding: 4px 12px; cursor: pointer;
+              margin-left: 10px; vertical-align: middle; }
+  .watchbtn:hover { color: var(--accent); border-color: var(--accent); }
+  .watchbtn.on { color: var(--accent); border-color: var(--accent); }
 
   /* ── Michelin roster: the starred kitchens, browsable without the map ── */
   .roster { margin: 0 0 30px; border-top: 1px solid var(--faint); }
@@ -95,6 +108,7 @@
   .card { padding: 0; }
   .kicker { font-size: 10.5px; letter-spacing: .3em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
   .card h2 { font-size: 40px; font-weight: 380; line-height: 1; letter-spacing: -.01em; }
+  .card h2 .watchbtn { margin-left: 14px; }
   .card .sub { color: var(--dim); font-size: 14px; margin-top: 10px; font-style: italic; font-weight: 340; }
   .card .sub b { color: var(--ink); font-style: normal; font-weight: 500; }
   .dossier { margin-top: 26px; }
@@ -343,6 +357,7 @@
       <div class="sugg" id="sugg" role="listbox" aria-label="Suggestions"></div>
     </form>
     <div class="chips" id="chips"></div>
+    <div class="chips watchtray" id="watchtray" hidden></div>
 
     <!-- ── Michelin roster: the starred kitchens, browsable without the map ── -->
     <div class="roster" id="roster">
@@ -678,6 +693,18 @@ document.addEventListener('click', e => {
     render(d.q, d.lineage, d.ms, d.ped, d.identity, b);
     return;
   }
+  // watchlist: the dossier star toggles this query in/out of My kitchens.
+  // Case-insensitive add/remove: "betelnut" and "Betelnut" are one kitchen.
+  const wb = e.target.closest('[data-watch]');
+  if(wb){
+    const name = wb.getAttribute('data-watch');
+    const list = watchGet();
+    const i = list.findIndex(n => n.toLowerCase() === name.toLowerCase());
+    if(i >= 0) list.splice(i, 1); else list.unshift(name);
+    watchSet(list);
+    renderWatchTray(); syncWatchBtn();
+    return;
+  }
   // "flag or add": context = the current query, plus which chef/edge the
   // button sat on (edge-level buttons carry data-person / data-source)
   const f = e.target.closest('[data-flag]');
@@ -839,7 +866,7 @@ function render(q, edges, ms, ped, identity, roleFilter){
 
   CARD.innerHTML = `
     <div class="kicker">Kitchen dossier</div>
-    <h2>${esc(q)}</h2>
+    <h2>${esc(q)}<button type="button" class="watchbtn" id="watchbtn" data-watch="${esc(q)}" aria-pressed="false">☆ watch this</button></h2>
     <div class="sub"><b>${shown}</b> chef${shown===1?'':'s'} in the record${ms ? ' · resolved in ' + Math.round(ms) + ' ms' : ''}${roleFilter ? ' · filtered to ' + esc(BUCKET_LABEL[roleFilter] || roleFilter) : ''} · <i>click any kitchen to keep tracing</i></div>
     ${pedHTML}
     <div class="legend" aria-hidden="true"><span><span class="conf high"></span>High confidence</span><span><span class="conf medium"></span>Medium</span><span><span class="conf low"></span>Low</span></div>
@@ -849,6 +876,7 @@ function render(q, edges, ms, ped, identity, roleFilter){
     <div class="dossier">${visible.join('')}</div>
     <div class="flagrow"><button type="button" class="flaglink" data-flag="dossier" title="Missing a cited move or source? Add it">flag or add to this dossier</button></div>`;
   buildTreeToggle(q, edges, isPersonQuery);
+  syncWatchBtn();
 }
 
 /* Person-query chain: no venue pivot exists, so lay the chef's cited moves
@@ -1038,6 +1066,50 @@ Q.addEventListener('keydown', e => {
 // ── seed chips ──
 document.getElementById('chips').innerHTML =
   '<span class="lbl">Start here</span>' + SEEDS.map(s => `<button type="button" class="chip" data-pick="${esc(s)}">${esc(s)}</button>`).join('');
+
+/* ── watchlist (roadmap 2): "My kitchens", local-only bookmarks ──
+   localStorage list of query strings, rendered as a chip tray under the
+   seeds and removable from the dossier with one button. No accounts, no
+   sync — the roadmap's honest slice. Cap keeps the tray from growing
+   without bound; newest wins. */
+const WATCH_KEY = 'bone-fides:watch';
+function watchGet(){
+  try {
+    const raw = JSON.parse(localStorage.getItem(WATCH_KEY) || '[]');
+    return Array.isArray(raw) ? raw.filter(x => typeof x === 'string' && x.trim()).slice(0, 40) : [];
+  } catch(e){ return []; }
+}
+function watchSet(list){
+  try { localStorage.setItem(WATCH_KEY, JSON.stringify(list.slice(0, 40))); } catch(e){ /* private mode */ }
+}
+function renderWatchTray(){
+  const tray = document.getElementById('watchtray');
+  const list = watchGet();
+  tray.hidden = !list.length;
+  tray.innerHTML = list.length
+    ? '<span class="lbl">My kitchens</span>' + list.map(n =>
+        `<span class="wchipwrap"><button type="button" class="chip" data-pick="${esc(n)}">${esc(n)}</button><button type="button" class="wx" data-unwatch="${esc(n)}" title="Remove from My kitchens" aria-label="Remove ${esc(n)} from My kitchens">×</button></span>`).join('')
+    : '';
+}
+document.addEventListener('click', e => {
+  const w = e.target.closest('[data-unwatch]');
+  if(w){
+    const x = (w.getAttribute('data-unwatch') || '').toLowerCase();
+    watchSet(watchGet().filter(n => n.toLowerCase() !== x));
+    renderWatchTray(); syncWatchBtn();
+  }
+});
+function syncWatchBtn(){
+  const b = document.getElementById('watchbtn');
+  if(!b) return;
+  // compare case-insensitively: "betelnut" and "Betelnut" are the same kitchen
+  const cur = (Q.value.trim() || '').toLowerCase();
+  const on = watchGet().some(n => n.toLowerCase() === cur);
+  b.classList.toggle('on', on);
+  b.textContent = on ? '★ watching' : '☆ watch this';
+  b.setAttribute('aria-pressed', String(on));
+}
+renderWatchTray();
 
 // ── Michelin roster: the starred kitchens as a browsable list, so no one has
 // to scan the map to find them. One row per starred venue; click traces its
