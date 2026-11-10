@@ -2,6 +2,40 @@
 import os
 
 INDEX = "bone-fides-edges"
+TIPS_INDEX = "bone-fides-tips"
+
+def build_tip_doc(tip):
+    """Reader-submitted correction/source tip. Never auto-ingested; the tips
+    index is a triage inbox for the corpus-growth loop, not the corpus."""
+    return {
+        "query": tip.get("query"),
+        "context": tip.get("context"),
+        "person": tip.get("person"),
+        "venue": tip.get("venue"),
+        "type": tip["type"],
+        "url": tip.get("url"),
+        "note": tip.get("note"),
+        "ip": tip.get("ip"),
+        "created_at": tip.get("created_at"),
+        "status": "open",
+    }
+
+TIPS_SETTINGS = {
+    "mappings": {
+        "properties": {
+            "query": {"type": "keyword"},
+            "context": {"type": "keyword"},
+            "person": {"type": "keyword"},
+            "venue": {"type": "keyword"},
+            "type": {"type": "keyword"},
+            "url": {"type": "keyword"},
+            "note": {"type": "text"},
+            "ip": {"type": "keyword", "index": False},
+            "created_at": {"type": "date"},
+            "status": {"type": "keyword"},
+        }
+    }
+}
 
 def build_edge_doc(edge):
     """Flat, citation-bearing doc; text copies feed keyword + semantic search."""
@@ -55,6 +89,10 @@ def make_client(endpoint=None, api_key=None):
 def ensure_index(es, index=INDEX):
     if not es.indices.exists(index=index):
         es.indices.create(index=index, mappings=INDEX_SETTINGS["mappings"])
+
+def ensure_tips_index(es):
+    if not es.indices.exists(index=TIPS_INDEX):
+        es.indices.create(index=TIPS_INDEX, mappings=TIPS_SETTINGS["mappings"])
 
 def index_edges(es, docs, index=INDEX):
     """Bulk-index, retrying through transient timeouts (the semantic_text field

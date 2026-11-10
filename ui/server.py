@@ -1,5 +1,5 @@
 """Bone Fides demo UI: static page + JSON query API against the lineage index."""
-import os, sys, json, re, time, traceback, urllib.parse
+import os, sys, json, re, time, traceback, urllib.parse, datetime
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -7,7 +7,7 @@ sys.path.insert(0, BASE)
 from src.cli import load_env
 load_env(os.path.join(BASE, ".env"))
 
-from src.es import make_client, find_edges, INDEX
+from src.es import make_client, find_edges, INDEX, TIPS_INDEX, ensure_tips_index, build_tip_doc
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 
@@ -616,6 +616,48 @@ def stats(es):
 MAX_QUERY_LEN = 120  # abuse cap: queries are names, not free-text essays
 MAX_RESULT_SIZE = 40  # a dossier, not a corpus dump
 
+TIP_TYPES = ("wrong person", "wrong venue", "wrong detail",
+             "add a move", "add a source")
+MAX_TIP_NOTE = 500
+MAX_TIP_URL = 300
+
+def accept_tip(payload, ip):
+    """Validate a reader-submitted correction/tip into a storable doc.
+
+    Returns (ok, doc_or_error); doc_or_error is None when the tip is
+    accepted but must not be stored (honeypot). Source URL is required
+    for the two "grow the corpus" types — a tip that adds a move or
+    source without a citation is not actionable, and citations are the
+    product."""
+    if not isinstance(payload, dict):
+        return False, "invalid payload"
+    if (payload.get("website") or "").strip():
+        # Honeypot filled: bots only. Accept silently, store nothing.
+        return True, None
+    ttype = (payload.get("type") or "").strip().lower()
+    if ttype not in TIP_TYPES:
+        return False, "unknown type"
+    note = (payload.get("note") or "").strip()[:MAX_TIP_NOTE]
+    url = (payload.get("url") or "").strip()[:MAX_TIP_URL]
+    if ttype in ("add a move", "add a source"):
+        if not url or not re.match(r"https?://", url):
+            return False, "a source link is required to add to the record"
+    if not note and not url:
+        return False, "a note or a source link is required"
+    doc = {
+        "query": (payload.get("query") or "").strip()[:MAX_QUERY_LEN],
+        "context": (payload.get("context") or "").strip()[:MAX_QUERY_LEN],
+        "person": (payload.get("person") or "").strip()[:80],
+        "venue": (payload.get("venue") or "").strip()[:80],
+        "type": ttype,
+        "url": url,
+        "note": note,
+        "ip": ip,
+        "created_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        "status": "open",
+    }
+    return True, doc
+
 # Best-effort per-instance throttle. Warm Vercel isolates share this dict;
 # a cold start starts empty. Enough to blunt a tight loop without a datastore.
 _BUCKETS = {}
@@ -688,6 +730,14 @@ def resolve_query(q, lin, cl):
     return False
 
 class Handler(SimpleHTTPRequestHandler):
+    def do_POST(self):
+        es = self.server.es
+        path = urllib.parse.urlsplit(self.path).path
+        if path.startswith("/api/tip"):
+            self._safe(lambda: self._tip(es))
+        else:
+            self.send_error(404)
+
     def do_GET(self):
         es = self.server.es
         path = urllib.parse.urlsplit(self.path).path  # ignore query string for routing
@@ -748,6 +798,37 @@ class Handler(SimpleHTTPRequestHandler):
         q = urllib.parse.unquote(m.group(1)) if m else ""
         q = q.strip()[:MAX_QUERY_LEN]
         self._json({"query": q, "suggestions": suggest(es, q) if q else []})
+
+    def _tip(self, es):
+        """Reader-submitted correction or source tip -> tips inbox.
+
+        Queue, not corpus: nothing here enters the lineage index without the
+        citation gate and a human triage pass (src/review_tips.py)."""
+        if not allow_request("tips", self._client_ip() or "unknown", 5, 3600):
+            self._json({"error": "too many requests"}, status=429)
+            return
+        try:
+            length = int(self.headers.get("Content-Length") or 0)
+        except ValueError:
+            length = 0
+        if length <= 0 or length > 4096:
+            self._json({"error": "invalid body"}, status=400)
+            return
+        try:
+            payload = json.loads(self.rfile.read(length).decode("utf-8", "replace"))
+        except Exception:
+            self._json({"error": "invalid body"}, status=400)
+            return
+        ok, doc_or_err = accept_tip(payload, self._client_ip() or "unknown")
+        if not ok:
+            self._json({"error": doc_or_err}, status=400)
+            return
+        if doc_or_err is None:  # honeypot: accepted silently, never stored
+            self._json({"ok": True})
+            return
+        ensure_tips_index(es)
+        es.index(index=TIPS_INDEX, document=doc_or_err, refresh=False)
+        self._json({"ok": True})
 
     def _safe(self, fn):
         try:

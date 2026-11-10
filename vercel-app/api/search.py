@@ -5,7 +5,7 @@ but stateless per-request: ES client is cached across warm invocations.
 Credentials come from env vars (ELASTIC_ENDPOINT, ELASTIC_API_KEY,
 MAPBOX_TOKEN) — never printed, never committed.
 """
-import os, sys, json, re, time
+import os, sys, json, re, time, datetime
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs
@@ -17,6 +17,67 @@ INDEX = "bone-fides-edges"
 
 MAX_QUERY_LEN = 120  # abuse cap: queries are names, not free-text essays
 MAX_RESULT_SIZE = 40  # a dossier, not a corpus dump
+
+TIP_TYPES = ("wrong person", "wrong venue", "wrong detail",
+             "add a move", "add a source")
+MAX_TIP_NOTE = 500
+MAX_TIP_URL = 300
+
+def accept_tip(payload, ip):
+    """Validate a reader-submitted correction/tip into a storable doc.
+    Same logic as ui/server.py — keep the two in sync. doc_or_error is
+    None when the tip is accepted but must not be stored (honeypot)."""
+    if not isinstance(payload, dict):
+        return False, "invalid payload"
+    if (payload.get("website") or "").strip():
+        # Honeypot filled: bots only. Accept silently, store nothing.
+        return True, None
+    ttype = (payload.get("type") or "").strip().lower()
+    if ttype not in TIP_TYPES:
+        return False, "unknown type"
+    note = (payload.get("note") or "").strip()[:MAX_TIP_NOTE]
+    url = (payload.get("url") or "").strip()[:MAX_TIP_URL]
+    if ttype in ("add a move", "add a source"):
+        if not url or not re.match(r"https?://", url):
+            return False, "a source link is required to add to the record"
+    if not note and not url:
+        return False, "a note or a source link is required"
+    doc = {
+        "query": (payload.get("query") or "").strip()[:MAX_QUERY_LEN],
+        "context": (payload.get("context") or "").strip()[:MAX_QUERY_LEN],
+        "person": (payload.get("person") or "").strip()[:80],
+        "venue": (payload.get("venue") or "").strip()[:80],
+        "type": ttype,
+        "url": url,
+        "note": note,
+        "ip": ip,
+        "created_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        "status": "open",
+    }
+    return True, doc
+
+TIPS_INDEX = "bone-fides-tips"
+TIPS_SETTINGS = {
+    "mappings": {
+        "properties": {
+            "query": {"type": "keyword"},
+            "context": {"type": "keyword"},
+            "person": {"type": "keyword"},
+            "venue": {"type": "keyword"},
+            "type": {"type": "keyword"},
+            "url": {"type": "keyword"},
+            "note": {"type": "text"},
+            "ip": {"type": "keyword", "index": False},
+            "created_at": {"type": "date"},
+            "status": {"type": "keyword"},
+        }
+    }
+}
+
+def ensure_tips_index(es):
+    if not es.indices.exists(index=TIPS_INDEX):
+        es.indices.create(index=TIPS_INDEX, mappings=TIPS_SETTINGS["mappings"])
+
 TIER_WEIGHT = {"sfchronicle": 12, "sfgate": 8, "eater": 6}
 
 _BUCKETS = {}
@@ -676,7 +737,7 @@ def _too_many():
     return (429, {"Content-Type": "application/json", "Retry-After": "60"},
             json.dumps({"error": "too many requests"}).encode())
 
-def _dispatch(path, query_params, ip=""):
+def _dispatch(path, query_params, ip="", body_bytes=None):
     qs = {k: v for k, v in parse_qs(query_params).items()}
     def q1(k):
         v = qs.get(k, [])
@@ -686,6 +747,8 @@ def _dispatch(path, query_params, ip=""):
     if path.endswith("/api/search") and not allow_request("search", ip, 30, 60):
         return _too_many()
     if path.endswith("/api/suggest") and not allow_request("suggest", ip, 90, 60):
+        return _too_many()
+    if path.endswith("/api/tip") and not allow_request("tips", ip, 5, 3600):
         return _too_many()
 
     try:
@@ -713,6 +776,28 @@ def _dispatch(path, query_params, ip=""):
             body = stats(es)
         elif path.endswith("/api/map.js"):
             return _serve_mapjs()
+        elif path.endswith("/api/tip"):
+            # Reader-submitted correction/source tip -> tips inbox. Queue,
+            # not corpus: nothing enters the lineage index without the
+            # citation gate and a human triage pass (src/review_tips.py).
+            if not body_bytes or len(body_bytes) > 4096:
+                return (400, {"Content-Type": "application/json"},
+                        json.dumps({"error": "invalid body"}).encode())
+            try:
+                payload = json.loads(body_bytes.decode("utf-8", "replace"))
+            except Exception:
+                return (400, {"Content-Type": "application/json"},
+                        json.dumps({"error": "invalid body"}).encode())
+            ok, doc_or_err = accept_tip(payload, ip)
+            if not ok:
+                return (400, {"Content-Type": "application/json"},
+                        json.dumps({"error": doc_or_err}).encode())
+            if doc_or_err is None:  # honeypot: accepted silently, never stored
+                return (200, {"Content-Type": "application/json"},
+                        json.dumps({"ok": True}).encode())
+            ensure_tips_index(es)
+            es.index(index=TIPS_INDEX, document=doc_or_err, refresh=False)
+            body = {"ok": True}
         else:
             body = {"error": "unknown endpoint"}
         return (200, {"Content-Type": "application/json"},
@@ -736,6 +821,27 @@ class handler(BaseHTTPRequestHandler):
         try:
             status, headers, body = _dispatch(parsed.path, parsed.query, ip)
         except Exception:  # belt-and-braces; _dispatch already guards
+            status, headers, body = (500, {"Content-Type": "application/json"},
+                                     json.dumps({"error": "search temporarily unavailable"}).encode())
+        self.send_response(status)
+        for k, v in headers.items():
+            self.send_header(k, v)
+        self.end_headers()
+        self.wfile.write(body)
+
+    def do_POST(self):
+        parsed = urlparse(self.path)
+        ip = (self.headers.get("x-forwarded-for") or "").split(",")[0].strip()
+        if not ip and self.client_address:
+            ip = self.client_address[0]
+        try:
+            length = int(self.headers.get("Content-Length") or 0)
+        except ValueError:
+            length = 0
+        body_bytes = self.rfile.read(length) if 0 < length <= 4096 else None
+        try:
+            status, headers, body = _dispatch(parsed.path, parsed.query, ip, body_bytes)
+        except Exception:
             status, headers, body = (500, {"Content-Type": "application/json"},
                                      json.dumps({"error": "search temporarily unavailable"}).encode())
         self.send_response(status)

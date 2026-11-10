@@ -160,6 +160,32 @@
               color: var(--dim); font-size: 12px; line-height: 1.6; font-weight: 350; }
   .railfoot b { color: var(--ink); font-weight: 550; }
 
+  /* ── corrections: a quiet door, not a banner ── */
+  .flaglink { background: none; border: 0; padding: 2px 0; color: var(--dim); font: italic 350 12.5px 'Fraunces', Georgia, serif;
+              cursor: pointer; text-decoration: underline; text-decoration-color: rgba(155,143,124,.4); text-underline-offset: 3px; }
+  .flaglink:hover { color: var(--gold); text-decoration-color: var(--gold); }
+  .tipdialog { color: var(--ink); background: var(--bg2); border: 1px solid var(--faint); border-radius: 10px;
+               padding: 22px; width: min(92vw, 420px); font: 350 15px 'Fraunces', Georgia, serif; }
+  .tipdialog::backdrop { background: rgba(10,8,6,.72); }
+  .tipdialog h3 { margin: 0 0 4px; font-size: 20px; font-weight: 400; }
+  .tipdialog .about { margin: 0 0 14px; color: var(--dim); font-size: 12.5px; line-height: 1.5; }
+  .tipdialog label { display: block; font-size: 10.5px; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); margin: 12px 0 5px; }
+  .tipdialog label:first-of-type { margin-top: 0; }
+  .tipdialog select, .tipdialog input, .tipdialog textarea {
+    width: 100%; box-sizing: border-box; background: var(--bg); color: var(--ink);
+    border: 1px solid var(--faint); border-radius: 6px; padding: 8px 10px;
+    font: 350 14.5px 'Fraunces', Georgia, serif; }
+  .tipdialog textarea { resize: vertical; min-height: 72px; }
+  .tipdialog .hp { position: absolute; left: -9999px; height: 0; overflow: hidden; }
+  .tipdialog .actions { display: flex; gap: 10px; margin-top: 16px; align-items: center; }
+  .tipdialog .send { background: var(--gold); color: var(--bg); border: 0; border-radius: 6px;
+                     padding: 9px 18px; font: 560 14px 'Fraunces', Georgia, serif; cursor: pointer; }
+  .tipdialog .cancel { background: none; border: 0; color: var(--dim); cursor: pointer; font: 350 13.5px 'Fraunces', Georgia, serif; }
+  .tipdialog .cancel:hover { color: var(--ink); }
+  .tipdialog .sent { color: var(--ok); }
+  .tipdialog .errbox { color: var(--bad); font-size: 13px; margin-top: 10px; min-height: 0; }
+  .flagrow { margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--faint); }
+
   .pin { cursor: pointer; }
   /* The dot stays 13px (600 pins share one canvas at city zoom), but the
      marker element is a 36px invisible hit pad — thumbs hit SOMETHING, and
@@ -298,6 +324,36 @@
     <div class="stagehint" id="stagehint">Every permitted food business in SF — <b>orange</b> = cited lineage, <b class="g">champagne</b> = Michelin starred</div>
   </div>
 </div>
+
+<!-- ── corrections dialog: one form serves dossier-level and edge-level flags ── -->
+<dialog class="tipdialog" id="tipdialog" aria-labelledby="tiptitle">
+  <form id="tipform" method="dialog" onsubmit="return true;">
+    <h3 id="tiptitle">Flag or add</h3>
+    <p class="about">Something here is wrong, or you know a cited source this record is missing.
+       Tips are reviewed by hand before anything enters the record.</p>
+    <label for="tip-type">What kind</label>
+    <select id="tip-type">
+      <option>add a source</option>
+      <option>add a move</option>
+      <option>wrong person</option>
+      <option>wrong venue</option>
+      <option>wrong detail</option>
+    </select>
+    <label for="tip-url">Source link <span id="tip-urlhint" style="text-transform:none;letter-spacing:0;color:var(--dim)">(article that states it)</span></label>
+    <input id="tip-url" type="url" inputmode="url" placeholder="https://sf.eater.com/…" autocomplete="off">
+    <label for="tip-note">Note</label>
+    <textarea id="tip-note" maxlength="500" placeholder="What should change, or what the article says"></textarea>
+    <div class="hp" aria-hidden="true">
+      <label for="tip-website">Website</label>
+      <input id="tip-website" type="text" tabindex="-1" autocomplete="off">
+    </div>
+    <div class="errbox" id="tiperr" role="alert"></div>
+    <div class="actions">
+      <button class="send" type="submit">Send tip</button>
+      <button class="cancel" type="button" onclick="document.getElementById('tipdialog').close()">Cancel</button>
+    </div>
+  </form>
+</dialog>
 
 <script>
 const Q = document.getElementById('q'), SUGG = document.getElementById('sugg'), CARD = document.getElementById('card');
@@ -564,7 +620,19 @@ document.addEventListener('click', e => {
   const t = e.target.closest('[data-pick]');
   if(t){ e.preventDefault(); pick(t.getAttribute('data-pick')); return; }
   const a = e.target.closest('[data-action="retry"]');
-  if(a){ run(); }
+  if(a){ run(); return; }
+  // "flag or add": context = the current query, plus which chef/edge the
+  // button sat on (edge-level buttons carry data-person / data-source)
+  const f = e.target.closest('[data-flag]');
+  if(f && window.__openTip){
+    window.__tipContext({
+      query: Q.value || '',
+      person: f.getAttribute('data-person') || '',
+      venue: (f.getAttribute('data-flag') === 'dossier') ? (Q.value || '') : '',
+      source: f.getAttribute('data-source') || '',
+    });
+    window.__openTip();
+  }
 });
 document.addEventListener('error', e => {
   if(e.target && e.target.classList && e.target.classList.contains('evimg')) e.target.classList.add('broken');
@@ -675,6 +743,8 @@ function render(q, edges, ms, ped, identity){
       .filter(Boolean).join(' · ');
     // imagery: the cited article's own photo, lazy-loaded, with graceful fallback
     const img = pivot.source_image ? `<img class="evimg" src="${esc(pivot.source_image)}" alt="" loading="lazy" referrerpolicy="no-referrer">` : '';
+    // per-edge flag affordance: the flag knows which chef and edge it sits on
+    const flagEdge = `<button type="button" class="flaglink" data-flag="edge" data-person="${esc(cl.name)}" data-source="${esc(pivot.source_url||'')}" title="Something wrong with this cited move? Flag it">flag or add</button>`;
     rows.push(`
     <div class="chef${img ? ' hasimg' : ''}">
       <div class="who"><span class="conf ${pivot.confidence||'medium'}" title="${esc(pivot.confidence||'medium')} confidence"></span><span class="sr-only">${esc(pivot.confidence||'medium')} confidence</span>
@@ -685,6 +755,7 @@ function render(q, edges, ms, ped, identity){
       <div class="evtext">
       ${pivot.evidence ? '<div class="ev">' + esc(trunc(pivot.evidence, 190)) + '</div>' : ''}
       ${pivot.source_url ? '<div class="src">§ <a href="'+esc(pivot.source_url)+'" target="_blank" rel="noopener">'+esc(hostOf(pivot.source_url))+'</a>' + srcBadge(pivot.source_url, pivot.source, pivot.outlet) + '</div>' : ''}
+      <div>${flagEdge}</div>
       </div></div>
     </div>`);
   });
@@ -696,7 +767,8 @@ function render(q, edges, ms, ped, identity){
     <div class="sub"><b>${rows.length}</b> chef${rows.length===1?'':'s'} in the record${ms ? ' · resolved in ' + Math.round(ms) + ' ms' : ''} · <i>click any kitchen to keep tracing</i></div>
     ${pedHTML}
     <div class="legend" aria-hidden="true"><span><span class="conf high"></span>High confidence</span><span><span class="conf medium"></span>Medium</span><span><span class="conf low"></span>Low</span></div>
-    <div class="dossier">${rows.join('')}</div>`;
+    <div class="dossier">${rows.join('')}</div>
+    <div class="flagrow"><button type="button" class="flaglink" data-flag="dossier" title="Missing a cited move or source? Add it">flag or add to this dossier</button></div>`;
 }
 
 /* Person-query chain: no venue pivot exists, so lay the chef's cited moves
@@ -819,6 +891,76 @@ document.getElementById('chips').innerHTML =
 }
 const initQ = new URLSearchParams(location.search).get('q');
 if(initQ){ Q.value = initQ; run(); }
+
+// ── corrections: "Flag or add" opens a form that queues a tip for triage.
+// Tips go to the inbox (bone-fides-tips), never straight into the record —
+// the citation gate stays the gate. ──
+{
+  const DIALOG = document.getElementById('tipdialog');
+  const FORM = document.getElementById('tipform');
+  const ERR = document.getElementById('tiperr');
+
+  // context: what the reader was looking at when they flagged
+  let tipContext = { query: '', person: '', venue: '' };
+  window.__tipContext = c => { tipContext = c; };
+
+  function openTip(preset){
+    tipContext = Object.assign(tipContext, preset || {});
+    FORM.querySelector('#tip-type').value = 'add a source';
+    // an edge flag carries its citation; prefill so the reader starts from it
+    FORM.querySelector('#tip-url').value = tipContext.source || '';
+    FORM.querySelector('#tip-note').value = '';
+    ERR.textContent = '';
+    const sent = FORM.querySelector('.sent'); if (sent) sent.remove();
+    DIALOG.showModal();
+    FORM.querySelector('#tip-note').focus();
+  }
+  window.__openTip = openTip;
+
+  FORM.addEventListener('submit', async ev => {
+    ev.preventDefault();
+    ERR.textContent = '';
+    const payload = {
+      type: FORM.querySelector('#tip-type').value,
+      url: FORM.querySelector('#tip-url').value.trim(),
+      note: FORM.querySelector('#tip-note').value.trim(),
+      // honeypot: bots that fill it get silently accepted server-side
+      website: FORM.querySelector('#tip-website').value,
+      query: tipContext.query || '',
+      context: tipContext.venue || tipContext.query || '',
+      person: tipContext.person || '',
+      venue: tipContext.venue || '',
+    };
+    const btn = FORM.querySelector('.send');
+    btn.disabled = true;
+    try {
+      const r = await fetch('/api/tip', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (r.status === 429) {
+        ERR.textContent = 'Too many tips from this connection just now — try again later.';
+        return;
+      }
+      if (!r.ok) {
+        let msg = 'Could not send the tip.';
+        try { msg = (await r.json()).error || msg; } catch(e) {}
+        ERR.textContent = msg;
+        return;
+      }
+      const sent = document.createElement('div');
+      sent.className = 'sent';
+      sent.textContent = 'Sent. Thank you — tips are read when the record grows.';
+      btn.before(sent);
+      setTimeout(() => DIALOG.close(), 1800);
+    } catch(e) {
+      ERR.textContent = 'Network error — the tip did not send.';
+    } finally {
+      btn.disabled = false;
+    }
+  });
+}
 </script>
 </body>
 </html>
