@@ -133,7 +133,16 @@ enrichment.
 3. Server facet params: `/api/search` gains `&role=<bucket>` and
    `&era=<from>-<to>` filtering the ES query (era applied only to dated
    edges, with a visible "dates on 15% of cited moves" note when active so
-   the filter never lies by omission).
+   the filter never lies by omission). **Shipped 2026-11-09, role only:**
+   role_bucket stamped at index time (one-off backfill run, 9,312 docs)
+   and `&role=` applies as a post_filter — it gates the final RRF hit list
+   without touching ranking, and this ES version rejects sparse_vector
+   nested in bool, so the planned retriever-level filter was impossible.
+   The explorer honors `?role=` permalinks and discloses the filter; chip
+   clicks under an active server filter refetch server-side. Era facet
+   NOT built: dates are loose strings ("2015", "January") on 15.6% of
+   edges — a query param can't filter them honestly. Era needs index-time
+   date normalization, which is a data run (4.4 territory).
 4. Neighborhood pipeline facet: deferred. Requires venue→neighborhood
    enrichment at index time (join via the `tag_city` normalization
    discipline) — a data task, not a UI task, and needs its own run.
@@ -177,6 +186,13 @@ on real inbound demand from operators.
   which the tree renders directly.
 - 3 third: biggest UX build, done after the cheap compounding wins.
 - 2 and 5 are fillers between bigger pieces, not roadmap anchors.
+
+**Status 2026-11-09: the build order above is complete** — 1 (corrections
+layer), 4.1+4.2 (role normalizer + dossier role chips), 3 (hub tree), 2
+(My kitchens watchlist), 5.1 (copy link + print stylesheet), and 4.3's
+role facet all shipped to prod with tests, twin sync, and browser
+verification. Remaining from this roadmap: 4.4 (neighborhood enrichment +
+date normalization for an era facet) as a standalone data run.
 
 Each step ships straight to main with tests, twin sync (`build.sh`), and a
 prod verification pass, same as every change in this repo.
