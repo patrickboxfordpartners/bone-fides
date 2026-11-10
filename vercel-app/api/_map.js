@@ -53,9 +53,12 @@
       el.className = 'mappop';
       const chefs = new Set(hits.map(h => h.person).filter(Boolean));
       const badge = v.michelin ? '<div class="badge">★ Michelin starred</div>' : '';
+      // "H26 - RESTAURANT OVER 2,000 SQFT" is permit-department noise; the
+      // venue word itself is all a reader needs to know what this dot is
+      const kind = v.permit_type ? (v.permit_type.match(/RESTAURANT|MARKET|BAKERY|CAFE|BAR|TAVERN|FOOD PREP|KITCHEN|CATERER|WHOLESALE|COMMISSARY|VENDOR|MERCANTILE|RETAIL/i) || [])[0] : null;
       el.innerHTML = `
         <div class="t">${esc(v.name)}</div>${badge}
-        <div class="m">${hits.length ? hits.length + ' cited move' + (hits.length===1?'':'s') + (chefs.size ? ' · ' + chefs.size + ' chef' + (chefs.size===1?'':'s') + ' in the graph' : '') : esc(v.permit_type || 'permitted food business')}${v.neighborhood ? ' · ' + esc(v.neighborhood) : ''}</div>
+        <div class="m">${hits.length ? hits.length + ' cited move' + (hits.length===1?'':'s') + (chefs.size ? ' · ' + chefs.size + ' chef' + (chefs.size===1?'':'s') + ' in the graph' : '') : esc((kind ? kind.charAt(0) + kind.slice(1).toLowerCase() : null) || v.permit_type || 'permitted food business')}${v.neighborhood ? ' · ' + esc(v.neighborhood) : ''}</div>
         <div class="links"></div>`;
       const links = el.querySelector('.links');
       if (v.website) {

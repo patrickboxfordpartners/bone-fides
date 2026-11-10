@@ -149,11 +149,23 @@
                background: rgba(23,19,16,.82); backdrop-filter: blur(8px); border: 1px solid var(--faint);
                border-radius: 999px; padding: 8px 16px; font-size: 12.5px; color: var(--dim); font-style: italic; white-space: nowrap;
                max-width: calc(100% - 24px); overflow: hidden; text-overflow: ellipsis; }
+  /* The legend is the part readers actually need — never let it truncate.
+     Desktop keeps the one-line pill; phones wrap to two lines. */
+  .stagehint b { color: var(--accent); font-weight: 550; font-style: normal; }
+  .stagehint b.g { color: var(--stargold); }
+  @media (max-width: 900px) {
+    .stagehint { white-space: normal; text-align: center; line-height: 1.5; text-overflow: clip; }
+  }
   .railfoot { margin-top: 30px; padding-top: 16px; border-top: 1px solid var(--faint);
               color: var(--dim); font-size: 12px; line-height: 1.6; font-weight: 350; }
   .railfoot b { color: var(--ink); font-weight: 550; }
 
   .pin { cursor: pointer; }
+  /* The dot stays 13px (600 pins share one canvas at city zoom), but the
+     marker element is a 36px invisible hit pad — thumbs hit SOMETHING, and
+     neighbors 20px apart stay distinguishable by which pad you touch. */
+  .pin { width: 36px; height: 36px; margin-left: -18px; margin-top: -18px;
+         display: flex; align-items: center; justify-content: center; }
   .pin .d { width: 13px; height: 13px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg);
             box-shadow: 0 0 0 1px var(--accent), 0 2px 8px rgba(0,0,0,.6); transition: all .15s; }
   /* Michelin pins use a dedicated champagne (much lighter than --gold) so they
@@ -173,6 +185,13 @@
   .mapboxgl-popup-tip { border-top-color: #1f1a15 !important; border-bottom-color: #1f1a15 !important; }
   .mapboxgl-popup-close-button { color: var(--dim) !important; font-size: 20px; padding: 2px 9px; }
   .mapboxgl-popup-close-button:hover { color: var(--ink) !important; background: transparent !important; }
+  /* Touch targets: thumbs, not cursors. 44px min on the popup controls,
+     29px zoom buttons grow to 38px (they sit in a corner, so 44 is roomy).
+     Mapbox's own css sets 29px on this same selector and its stylesheet
+     loads after ours, so !important is the only thing that wins. */
+  .mapboxgl-popup-close-button { width: 44px; height: 44px; font-size: 22px; padding: 0; top: -4px !important; right: -2px !important; }
+  .mapboxgl-ctrl-group button { width: 38px !important; height: 38px !important; }
+  .mapboxgl-ctrl-group { border-radius: 8px; }
   .mapboxgl-ctrl-group { background: #1f1a15 !important; border: 1px solid var(--faint) !important; border-radius: 6px; overflow: hidden; }
   .mapboxgl-ctrl-group button { background-color: transparent !important; }
   .mapboxgl-ctrl-group button:hover { background-color: rgba(239,230,211,.1) !important; }
@@ -181,8 +200,8 @@
   .mappop { font-family: 'Fraunces', Georgia, serif; min-width: 220px; color: var(--ink); }
   .mappop .t { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
   .mappop .m { font-size: 13px; color: var(--dim); margin-bottom: 10px; font-style: italic; }
-  .mappop a { display: inline-block; font-size: 13.5px; color: var(--gold); text-decoration: none;
-              border: 1px solid rgba(194,160,90,.45); border-radius: 999px; padding: 4px 14px; margin: 2px 6px 2px 0; }
+  .mappop a { display: inline-flex; align-items: center; font-size: 13.5px; color: var(--gold); text-decoration: none;
+              border: 1px solid rgba(194,160,90,.45); border-radius: 999px; padding: 0 14px; min-height: 40px; margin: 3px 8px 3px 0; }
   .mappop a:hover { background: var(--gold); color: var(--bg); }
   .mappop .res { background: var(--gold); color: var(--bg); border-color: var(--gold); font-weight: 600; }
   .mappop .res:hover { background: var(--ink); border-color: var(--ink); }
@@ -276,7 +295,7 @@
 
   <div class="stage">
     <div id="map" aria-label="Map of current kitchens"></div>
-    <div class="stagehint" id="stagehint">Every permitted food business in SF — orange = cited lineage, champagne = Michelin starred</div>
+    <div class="stagehint" id="stagehint">Every permitted food business in SF — <b>orange</b> = cited lineage, <b class="g">champagne</b> = Michelin starred</div>
   </div>
 </div>
 
