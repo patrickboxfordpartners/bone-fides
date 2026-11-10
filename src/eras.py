@@ -29,8 +29,10 @@ ERA_BUCKETS = ("pre-1990", "1990s", "2000s", "2010s", "2020s")
 
 # Trailing "s" ("the 1970s", "mid-1980s") is decade shorthand, not noise —
 # the corpus holds 26 such dates; the optional-s keeps bare-year matching
-# intact while stamping them.
-_YEAR_RE = re.compile(r"\b(19|20)(\d{2})(?:s\b)?")
+# intact while stamping them. A lookahead after the whole match refuses
+# longer digit runs ("20150") and attached words ("2015ish"): a year is a
+# bounded token, not a substring.
+_YEAR_RE = re.compile(r"\b(19|20)(\d{2})(?:s)?(?![a-z0-9])")
 
 
 def _year(date_str):

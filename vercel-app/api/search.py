@@ -534,26 +534,22 @@ def assemble_dossier(q, lin, role=None, era=None, hood=None, es=None):
         # If it doesn't resolve unfiltered either, the entity is not in
         # the record and the plain empty state stays honest.
         if (era or hood or role) and es is not None:
-            ungated = lineage(es, q, size=25)
-            if resolve_query(q, ungated, identity(ungated)):
-                # the message says "none of its cited moves carry era X" —
-                # cited moves must actually exist: an entity whose ungated
-                # rows all fail the citation gate (recipe sentences etc.)
-                # has no cited moves at all, and the plain empty state is
-                # the honest one.
-                cited = [e for e in ungated if citation_supported(e)]
-                if cited:
-                    out = {"query": q, "resolved": False, "lineage": [], "identity": [],
-                           "pedigree": None, "facet_empty": True}
-                    if role:
-                        out["role_filter"] = role
-                    if era:
-                        out["era_filter"] = era
-                        out["era_coverage"] = "dates on 15% of cited moves"
-                    if hood:
-                        out["hood_filter"] = hood
-                        out["hood_coverage"] = "neighborhoods on 43% of cited moves"
-                    return out
+            # one shared honest probe: resolution + query-scoped rows +
+            # the citation gate. The message claims "none of its cited
+            # moves carry era X"; both halves must be proven, not
+            # assumed from raw window matches.
+            if _cited_moves_exist(es, q):
+                out = {"query": q, "resolved": False, "lineage": [], "identity": [],
+                       "pedigree": None, "facet_empty": True}
+                if role:
+                    out["role_filter"] = role
+                if era:
+                    out["era_filter"] = era
+                    out["era_coverage"] = "dates on 15% of cited moves"
+                if hood:
+                    out["hood_filter"] = hood
+                    out["hood_coverage"] = "neighborhoods on 43% of cited moves"
+                return out
         return {"query": q, "resolved": False, "lineage": [], "identity": [], "pedigree": None}
     scoped = []
     for e in scope_edges(q, lin, cl):
@@ -577,8 +573,15 @@ def assemble_dossier(q, lin, role=None, era=None, hood=None, es=None):
         # that era — the facet's honest-empty state, not the
         # spelling-suggestions one. facet_empty tells the two apart.
         if era or hood or role:
+            # the entity resolved in the gated fetch but no row survived
+            # scoping + the citation gate. facet_empty only when the same
+            # scoping+citation discipline proves cited moves exist
+            # ungated AND the deep gated window still holds one: both
+            # probes accept nothing on raw term matches alone.
+            probe = _cited_moves_exist(es, q) if es else None
             out = {"query": q, "resolved": False, "lineage": [], "identity": [],
-                   "pedigree": None, "facet_empty": bool(
+                   "pedigree": None,
+                   "facet_empty": bool(probe) and bool(
                        _facet_probe(es, q, era=era, hood=hood, role=role))
                    or None if es else None}
             if role:
@@ -611,15 +614,51 @@ def assemble_dossier(q, lin, role=None, era=None, hood=None, es=None):
         out["hood_coverage"] = "neighborhoods on 43% of cited moves"
     return out
 
-def _facet_probe(es, q, era=None, hood=None, role=None):
-    """Does the raw query match ANY edge under these facet gates?
+def _cited_moves_exist(es, q):
+    """Does the ungated record hold query-scoped, citation-passing moves?
 
-    A size=0 window collects NOTHING for post_filter to gate (the RRF
-    window is the only pool post_filter sees), so the probe needs a real
-    window. Deep one: ES keeps scanning past `size` until the window fills
-    with post_filter survivors, so a 300-deep window is an honest
-    "any such edge exists" at corpus scale."""
-    return bool(find_edges(es, q, size=300, role=role, era=era, hood=hood))
+    The facet-empty message claims "none of its cited moves carry X" — the
+    "cited moves" half must be true: rows matched the retrieval window on
+    any term (recipe sentences, supplier blurbs) are not the queried
+    entity's moves until scoping binds them to the query and the citation
+    gate calls a move a move."""
+    ungated = lineage(es, q, size=25)
+    if not resolve_query(q, ungated, identity(ungated)):
+        return None  # not in the record at all
+    scoped = scope_edges(q, ungated, identity(ungated))
+    return [e for e in scoped if citation_supported(e)] or None
+
+
+def _facet_probe(es, q, era=None, hood=None, role=None):
+    """Did a real dossier exist under these facet gates?
+
+    Runs after _cited_moves_exist proved the entity HAS cited moves
+    unfiltered. A size=0 window collects NOTHING for post_filter to gate
+    (the RRF window is the only pool post_filter sees), so the probe needs
+    a real window. Deep one: ES keeps scanning past `size` until the
+    window fills with post_filter survivors, so a 300-deep window is an
+    honest "any such edge exists" at corpus scale. The discriminator is
+    RESOLUTION, not citation: "none of its cited moves carry era X" is
+    true when the gated fetch still names the entity (the dossier the
+    chips claim to filter) even though its surviving rows fail the
+    citation gate — that is the facet emptying a real record, not
+    nothing-in-the-record."""
+    hits = find_edges(es, q, size=300, role=role, era=era, hood=hood)
+    edges = [_probe_edge(h) for h in hits]
+    return bool(resolve_query(q, edges, identity(edges)))
+
+def _probe_edge(h):
+    """Raw ES hit -> edge dict shaped the way lineage() shapes them, so
+    scope_edges/identity/citation_supported see the same fields."""
+    s = h["_source"]
+    return {
+        "person": s.get("person"), "from_venue": s.get("from_venue"),
+        "to_venue": s.get("to_venue"), "role": s.get("role"),
+        "date": s.get("date"), "confidence": s.get("confidence"),
+        "source": s.get("source"), "action": s.get("action"),
+        "evidence": s.get("evidence") or "", "source_url": s.get("source_url"),
+        "score": h.get("_score", 0),
+    }
 
 def pedigree(edges):
     if not edges:

@@ -14,6 +14,7 @@ Every critical finding from the two-reviewer pass, locked:
   relative dates
 """
 import importlib.util
+import inspect
 import os
 import sys
 
@@ -116,14 +117,55 @@ def test_probe_forwards_role():
         assert "_facet_probe(es, q, era=era, hood=hood, role=role)" in src, path
 
 
-# Fix 7: the ungated probe honors the citation gate
-def test_ungated_probe_honors_citation_gate():
-    import inspect
-    src = inspect.getsource(_UI.assemble_dossier)
-    assert "citation_supported(e)" in src
-    # in the facet branch only after resolve succeeds ungated
-    src_v = inspect.getsource(_VERCEL.assemble_dossier)
-    assert "citation_supported(e)" in src_v
+# Fix 7 + Greptile fix 4: the facet-empty claims rest on one shared honest
+# probe — resolution, query-scoped rows, and the citation gate. Raw window
+# matches (recipe rows, unrelated hits) prove nothing.
+def test_facet_probes_are_scoped_and_citation_gated():
+    for path, mod in ((os.path.join(_ROOT, "ui", "server.py"), _UI),
+                      (os.path.join(_ROOT, "vercel-app", "api", "search.py"), _VERCEL)):
+        src = open(path).read()
+        # the shared ungated probe exists and binds rows to the query
+        assert "def _cited_moves_exist(es, q):" in src, path
+        assert "scope_edges(q, ungated, identity(ungated))" in src, path
+        assert "[e for e in scoped if citation_supported(e)]" in src, path
+        # the gated probe discriminates on RESOLUTION (a real dossier under
+        # the gates), not on a raw gated hit
+        probe = inspect.getsource(mod._facet_probe)
+        assert "resolve_query(q, edges, identity(edges))" in probe, path
+        # branch B requires BOTH probes before facet_empty=True
+        assert "bool(probe) and bool(" in src, path
+
+
+# Greptile fix 1: local twin decodes q with unquote_plus (URLSearchParams
+# sends spaces in q as '+', so "Finn Town" must match "Finn Town Taproom")
+def test_ui_server_q_decodes_plus():
+    src = open(os.path.join(_ROOT, "ui", "server.py")).read()
+    # both search and suggest
+    assert src.count("urllib.parse.unquote_plus(m.group(1))") >= 2
+    # and no plain-unquote q decoding is left
+    assert "urllib.parse.unquote(m.group(1))" not in src
+
+
+# Greptile fix 2: the backfill puts keyword mappings on BEFORE the first
+# update (a mapping-less index would auto-create text fields and the term
+# gates would silently match nothing)
+def test_backfill_ensures_keyword_mappings_first():
+    src = open(os.path.join(_ROOT, "src", "stamp_era_hoods.py")).read()
+    assert "INDEX_SETTINGS" in src
+    assert "put_mapping" in src
+    # mapping check happens before the scan loop
+    assert src.index("put_mapping") < src.index('for hit in scan(')
+
+
+# Greptile fix 3: era regex refuses digit runs and attached words
+def test_era_trailing_boundary():
+    assert era_bucket("20150") is None
+    assert era_bucket("2015ish") is None
+    assert era_bucket("12345") is None
+    # real forms still stamp
+    assert era_bucket("2015") == "2010s"
+    assert era_bucket("1970s") == "pre-1990"
+    assert era_bucket("2022-10-04T23:47:38Z") == "2020s"
 
 
 # Fix 10: twin find_edges gate composition stays in sync
@@ -183,6 +225,31 @@ def test_facet_empty_wording_uses_validated_values():
         src = open(path).read()
         assert "const valEra = d.era_filter || null;" in src, path
         assert "const namedEra" in src, path
+
+
+# Greptile fix 5: each filter names itself ONLY on its own server echo — no
+# facet_empty fallback that blames era/hood when a different filter emptied
+# the dossier (e.g. role=chef emptied it while era=bogus was rejected).
+def test_facet_names_require_own_echo():
+    for path in (os.path.join(_ROOT, "ui", "explorer.html"),
+                 os.path.join(_ROOT, "vercel-app", "explorer.html")):
+        src = open(path).read()
+        assert "const namedRole = (valRole && serverRole === valRole) ? serverRole : null;" in src, path
+        assert "const namedEra = (valEra && serverEra === valEra) ? serverEra : null;" in src, path
+        assert "const namedHood = (valHood && serverHood === valHood) ? serverHood : null;" in src, path
+        # the old facet_empty fallbacks are gone
+        assert "!valEra && d.facet_empty === true" not in src, path
+        assert "!valHood && d.facet_empty === true" not in src, path
+
+
+# Greptile fix 6: coverage notes visible beside the chips, not hover-only
+def test_facet_coverage_note_visible():
+    for path in (os.path.join(_ROOT, "ui", "explorer.html"),
+                 os.path.join(_ROOT, "vercel-app", "explorer.html")):
+        src = open(path).read()
+        assert "const facetNote = facetBits.filter(f => f.note).map(f => esc(f.note)).join(' · ');" in src, path
+        assert '<span class="facetcov">${facetNote}</span>' in src, path
+        assert ".rolebar .facetcov {" in src, path
 
 
 # Fix 11 (found in browser verification): role-only facet-empty must not

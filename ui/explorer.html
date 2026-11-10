@@ -298,6 +298,8 @@
                     border-radius: 12px; background: none; cursor: pointer; color: var(--dim); }
   .rolebar .rchip b { font-weight: 500; color: var(--ink); margin-left: 5px; }
   .rolebar .rchip:hover { color: var(--accent); border-color: var(--accent); }
+  /* facet coverage note: visible disclosure, not hover-only (touch users) */
+  .rolebar .facetcov { font: italic 350 12.5px 'Fraunces', Georgia, serif; color: var(--dim); }
   .rolebar .rchip.on { color: var(--accent); border-color: var(--accent); background: rgba(208,129,82,.08); }
   .facetbar { margin-top: 8px; }
   .facetbar .rchip { cursor: pointer; }
@@ -715,9 +717,13 @@ async function run(opts){
       const valRole = d.role_filter || null;
       const valEra = d.era_filter || null;
       const valHood = d.hood_filter || null;
+      // each filter names itself ONLY on its own server echo — a facet_empty
+      // flag does not license blaming era/hood, because a DIFFERENT filter
+      // (role=chef) may be the one that emptied the dossier while the server
+      // rejected era=bogus as junk. Unvalidated client state renders no name.
       const namedRole = (valRole && serverRole === valRole) ? serverRole : null;
-      const namedEra = (valEra && serverEra === valEra) || (!valEra && d.facet_empty === true && serverEra) ? serverEra : null;
-      const namedHood = (valHood && serverHood === valHood) || (!valHood && d.facet_empty === true && serverHood) ? serverHood : null;
+      const namedEra = (valEra && serverEra === valEra) ? serverEra : null;
+      const namedHood = (valHood && serverHood === valHood) ? serverHood : null;
       const bits = [];
       const cov = [];
       if(namedRole) bits.push('role ' + esc(namedRole)); // role is stamped on every row — no coverage caveat
@@ -1011,9 +1017,14 @@ function render(q, edges, ms, ped, identity, roleFilter, serverFilter){
   if(svRole) facetBits.push({ k: 'role', label: 'role: ' + (BUCKET_LABEL[svRole] || svRole), note: '' });
   if(svEra) facetBits.push({ k: 'era', label: 'era: ' + svEra, note: (serverFilter && serverFilter.eraCoverage) || ERA_COVERAGE });
   if(svHood) facetBits.push({ k: 'hood', label: 'hood: ' + svHood, note: (serverFilter && serverFilter.hoodCoverage) || HOOD_COVERAGE });
+  // coverage notes render as a visible hint line beside the chips, not just
+  // chip title text — touch users have no hover, and an era-filtered dossier
+  // must disclose "dates on 15% of cited moves" without a pointer.
+  const facetNote = facetBits.filter(f => f.note).map(f => esc(f.note)).join(' · ');
   const facetbar = anySv ? `<div class="rolebar facetbar" role="group" aria-label="Active filters">` +
     facetBits.map(f => `<button type="button" class="rchip on" data-facetclear="${f.k}" title="${esc(f.note || 'Clear this filter')}">${esc(f.label)} · ×</button>`).join('') +
     `<button type="button" class="rchip" data-facetclear="all" aria-pressed="false">clear all</button>` +
+    (facetNote ? `<span class="facetcov">${facetNote}</span>` : '') +
     `</div>` : '';
 
   CARD.innerHTML = `
