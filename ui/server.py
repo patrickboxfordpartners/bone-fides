@@ -146,12 +146,11 @@ def norm_name(n):
     """Canonical person-name key: drop quoted nicknames, straighten quotes,
     lowercase, strip punctuation. 'Traci des Jardins' == 'Traci Des Jardins',
     "Sean O'Brien" == 'Sean O’Brien', "Thitid 'Ton' Tassanakajohn" collapses."""
-    import re as _re
-    n = _re.sub(r'"[^"]*"', '', n)
+    n = re.sub(r'"[^"]*"', '', n)
     n = n.replace(chr(8217), "'").replace(chr(8216), "'")
     n = n.replace(chr(8220), "'").replace(chr(8221), "'")  # curly double -> straight
-    n = _re.sub(r"'[^']*'", '', n)
-    n = _re.sub(r'[^a-z\s-]', '', n.lower())
+    n = re.sub(r"'[^']*'", '', n)
+    n = re.sub(r'[^a-z\s-]', '', n.lower())
     return ' '.join(n.split())
 
 def norm_venue(v):
@@ -160,13 +159,13 @@ def norm_venue(v):
     trailing possessives (Chez TJ's == Chez TJ), unicode-fold accents
     (Jardinière == Jardiniere), straighten apostrophes, strip punctuation,
     drop stop words (The Commissary == Commissary)."""
-    import re as _re, unicodedata as _ud
-    v = _re.sub(r'\([^)]*\)', ' ', v)                     # (Folsom St. location)
+    import unicodedata as _ud
+    v = re.sub(r'\([^)]*\)', ' ', v)                      # (Folsom St. location)
     v = _ud.normalize("NFD", v)
     v = "".join(ch for ch in v if not _ud.combining(ch))
     v = v.replace(chr(8217), "'").replace(chr(8216), "'")
-    v = _re.sub(r"['’]s?\b", '', v)                       # possessive TJ's -> TJ
-    v = _re.sub(r'[^a-z0-9\s]', '', v.lower())
+    v = re.sub(r"['’]s?\b", '', v)                        # possessive TJ's -> TJ
+    v = re.sub(r'[^a-z0-9\s]', '', v.lower())
     toks = [t for t in v.split() if t not in ("the", "a", "an", "of", "at", "in", "on")]
     return ' '.join(toks)
 
@@ -329,7 +328,13 @@ def identity(edges):
         for i in range(len(clusters)):
             for j in range(i + 1, len(clusters)):
                 a, b = clusters[i], clusters[j]
-                if a["key"] != b["key"] and _fuzzy_sibling(a["key"], b["key"]) \
+                # same names-guard as the flag pass below: clusters sharing a
+                # person string are the homonym case (already flagged), not
+                # two name variants of one chef. Merging them here would
+                # collapse "possibly two people" into a single card and
+                # silently assert an identity the corpus cannot support.
+                if a["key"] != b["key"] and not (a["names"] & b["names"]) \
+                        and _fuzzy_sibling(a["key"], b["key"]) \
                         and (_venues_touch(a["venues"], b["venues"]) or a["urls"] & b["urls"]):
                     a["names"] |= b["names"]; a["edges"] += b["edges"]
                     a["venues"] |= b["venues"]; a["urls"] |= b["urls"]
@@ -638,12 +643,12 @@ def assemble_dossier(q, lin, role=None, era=None, hood=None, es=None):
         out["era_filter"] = era
         # dates exist on only 15.6% of edges and not all carry a citable
         # year — an era-filtered dossier must say so or it lies by omission
-        out["era_coverage"] = "dates on 15% of cited moves"
+        out["era_coverage"] = _ERA_COVERAGE
     if hood:
         out["hood_filter"] = hood
         # hood stamps exist for SF venues the city file can place — 43% of
         # edge docs — so the filter discloses partial coverage
-        out["hood_coverage"] = "neighborhoods on 43% of cited moves"
+        out["hood_coverage"] = _HOOD_COVERAGE
     return out
 
 def pedigree(edges):
@@ -678,6 +683,24 @@ def pedigree(edges):
     return {"score": min(100, score),
             "moves": len(edges), "sources": len(urls), "tiers": tiers}
 
+# Non-restaurant names the extraction produced ("Google kitchen", "TBD") and
+# chains. Shared by venues_geo (map dots) and stats (kitchen count) so the
+# headline number and the map draw from the same definition of a kitchen.
+_JUNK_WORDS = ("tbd", "to be determined", "facebook", "walgreen", "google",
+               "salesforce", "amazon", "apple inc", "airbnb", "uber",
+               "doordash", "lyft", "bon appetit", "proper food", "mixt",
+               "test ", "unknown", "null", "none")
+_CHAIN_NAMES = ("mcdonald", "starbucks", "burger king", "jack in the box",
+                "kentucky fried", "little caesars", "popeyes", "chipotle",
+                "subway", "jamba juice", "peet", "philz", "phil'z", "taco bell",
+                "wendy", "dunkin", "in n out", "mrs field", "cold stone",
+                "dairy queen", "potbelly", "panera", "noah")
+
+def _is_junk_venue(name):
+    n = (name or "").lower()
+    return (not n.strip()) or any(w in n for w in _JUNK_WORDS) \
+        or any(c in n for c in _CHAIN_NAMES)
+
 def venues_geo(es):
     """Venues for the map: the full SF permitted-food universe (ui/city_venues.json,
     written by src/pull_city.py) merged with the curated geocode cache (ui/venues_geo.json).
@@ -693,24 +716,10 @@ def venues_geo(es):
         return any(t == k or t.startswith(k + " ") or t.startswith(k + " -")
                    or t.startswith(k + "R") for k in KEEP_TYPES)
 
-    JUNK_WORDS = ("tbd", "to be determined", "facebook", "walgreen", "google",
-                  "salesforce", "amazon", "apple inc", "airbnb", "uber",
-                  "doordash", "lyft", "bon appetit", "proper food", "mixt",
-                  "test ", "unknown")
-    CHAIN_NAMES = ("mcdonald", "starbucks", "burger king", "jack in the box",
-                   "kentucky fried", "little caesars", "popeyes", "chipotle",
-                   "subway", "jamba juice", "peet", "philz", "phil'z", "taco bell",
-                   "wendy", "dunkin", "in n out", "mrs field", "cold stone",
-                   "dairy queen", "potbelly", "panera", "noah")
-
-    def is_junk(name):
-        n = (name or "").lower()
-        return any(w in n for w in JUNK_WORDS) or any(c in n for c in CHAIN_NAMES)
-
     def keep(v):
         if v.get("lineaged") or v.get("michelin"):
             return True
-        return keep_type(v.get("permit_type")) and not is_junk(v.get("name"))
+        return keep_type(v.get("permit_type")) and not _is_junk_venue(v.get("name"))
 
     venues = []
     city = os.path.join(ROOT, "city_venues.json")
@@ -739,15 +748,12 @@ def _edge_key(e):
 def dedupe(edges):
     seen, out = set(), []
     for e in edges:
-        k = _edge_key(person_fix(e))
+        k = _edge_key(e)
         if k in seen:
             continue
         seen.add(k)
         out.append(e)
     return out
-
-def person_fix(e):
-    return e
 
 def fetch_person_edges(es, names, limit=100):
     """Full edge set for exact person strings — targeted completion when the
@@ -757,7 +763,7 @@ def fetch_person_edges(es, names, limit=100):
         {"terms": {"person.keyword": names}}]}},
         "_source": ["person", "from_venue", "to_venue", "role", "date",
                     "confidence", "source", "action", "evidence", "source_url",
-                    "role_bucket", "era_bucket", "venue_hoods"]}
+                    "source_image", "role_bucket", "era_bucket", "venue_hoods"]}
     r = es.search(index=INDEX, body=body)
     out = []
     for h in r["hits"]["hits"]:
@@ -778,22 +784,48 @@ def fetch_person_edges(es, names, limit=100):
         })
     return out
 
+def _distinct_values(es, field, page=1000):
+    """Every distinct value of a keyword field, via composite aggregation.
+
+    `terms` caps at the requested size, which silently truncates a corpus this
+    big (the old stats() asked for 500 per field and reported 799 kitchens
+    against 4,100+ real ones). composite pages through all of them."""
+    out, after = set(), None
+    while True:
+        comp = {"size": page, "sources": [{"v": {"terms": {"field": field}}}]}
+        if after:
+            comp["after"] = after
+        agg = es.search(index=INDEX, body={
+            "size": 0, "aggs": {"v": {"composite": comp}}})["aggregations"]["v"]
+        buckets = agg["buckets"]
+        out |= {b["key"]["v"] for b in buckets if b["key"]["v"]}
+        after = agg.get("after_key")
+        if not buckets or not after:
+            return out
+
 def stats(es):
-    """Top-line corpus stats for the masthead counter."""
-    body = {"size": 0, "aggs": {
-        "people": {"cardinality": {"field": "person.keyword"}},
-        "from_v": {"terms": {"field": "from_venue.keyword", "size": 500}},
-        "to_v": {"terms": {"field": "to_venue.keyword", "size": 500}},
-    }}
-    r = es.search(index=INDEX, body=body)
-    a = r["aggregations"]
-    venues = {b["key"] for b in a["from_v"]["buckets"] + a["to_v"]["buckets"] if b["key"]}
+    """Top-line corpus stats for the masthead counter.
+
+    venues is the count of distinct KITCHENS — venue names folded with the
+    same norm_venue the dossier uses ("Tartine" / "Tartine Bakery" are one
+    kitchen) and filtered with the same junk/chain rule the map uses. It is
+    deliberately not a raw name count: that number would overstate the
+    corpus by counting typo variants and chains as separate restaurants.
+    """
+    venues_raw = _distinct_values(es, "from_venue.keyword") \
+        | _distinct_values(es, "to_venue.keyword")
+    venues = {norm_venue(v) for v in venues_raw
+              if v and not _is_junk_venue(v) and norm_venue(v)}
+    agg = es.search(index=INDEX, body={"size": 0, "aggs": {
+        "people": {"cardinality": {"field": "person.keyword",
+                                   "precision_threshold": 40000}},
+        "sources": {"cardinality": {"field": "source_url.keyword",
+                                    "precision_threshold": 40000}},
+    }})["aggregations"]
     return {"edges": es.count(index=INDEX)["count"],
-            "people": a["people"]["value"],
+            "people": agg["people"]["value"],
             "venues": len(venues),
-            "sources": es.search(
-                index=INDEX, body={"size": 0, "aggs": {"s": {"cardinality": {"field": "source_url.keyword"}}}}
-            )["aggregations"]["s"]["value"]}
+            "sources": agg["sources"]["value"]}
 
 MAX_QUERY_LEN = 120  # abuse cap: queries are names, not free-text essays
 MAX_RESULT_SIZE = 40  # a dossier, not a corpus dump

@@ -10,6 +10,11 @@ set -e
 cd "$(dirname "$0")"
 if [ -f ../ui/explorer.html ]; then
   cp ../ui/explorer.html explorer.html
+  # landing.html serves "/" via the vercel.json rewrite. It was missing from
+  # this copy list, so the deployed landing page silently drifted from ui/
+  # for every content change (it shipped 9,309 moves / 799 kitchens / a
+  # pedigree of 73 long after ui/ said otherwise).
+  cp ../ui/landing.html landing.html
   cp ../ui/map.js map.js
   cp ../ui/city_venues.json city_venues.json
   cp ../ui/venues_geo.json venues_geo.json

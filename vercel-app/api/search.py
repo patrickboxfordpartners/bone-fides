@@ -450,6 +450,16 @@ _HOOD_VOCAB = {
     "Treasure Island", "Twin Peaks", "Visitacion Valley",
     "West of Twin Peaks", "Western Addition",
 }
+# coverage notes travel with every facet-filtered payload (the corpus's dates
+# and SF-placeable venues are partial; the filter must say so).
+# NOTE: these strings describe the RAW field coverage — dates are present on
+# ~15.6% of edges, neighborhood stamps on ~41% — but the era filter itself
+# runs on era_bucket, which only 12.5% of edges carry (a date that yields no
+# citable year gets no bucket). The era note therefore overstates what the
+# filter can see by ~3 points. Tighten both strings to the filter's real
+# reach when the methodology page lands.
+_ERA_COVERAGE = "dates on 15% of cited moves"
+_HOOD_COVERAGE = "neighborhoods on 43% of cited moves"
 
 def role_bucket(role):
     """Raw role text -> dossier filter bucket. Same logic as ui/server.py —
@@ -545,10 +555,10 @@ def assemble_dossier(q, lin, role=None, era=None, hood=None, es=None):
                     out["role_filter"] = role
                 if era:
                     out["era_filter"] = era
-                    out["era_coverage"] = "dates on 15% of cited moves"
+                    out["era_coverage"] = _ERA_COVERAGE
                 if hood:
                     out["hood_filter"] = hood
-                    out["hood_coverage"] = "neighborhoods on 43% of cited moves"
+                    out["hood_coverage"] = _HOOD_COVERAGE
                 return out
         return {"query": q, "resolved": False, "lineage": [], "identity": [], "pedigree": None}
     scoped = []
@@ -588,10 +598,10 @@ def assemble_dossier(q, lin, role=None, era=None, hood=None, es=None):
                 out["role_filter"] = role
             if era:
                 out["era_filter"] = era
-                out["era_coverage"] = "dates on 15% of cited moves"
+                out["era_coverage"] = _ERA_COVERAGE
             if hood:
                 out["hood_filter"] = hood
-                out["hood_coverage"] = "neighborhoods on 43% of cited moves"
+                out["hood_coverage"] = _HOOD_COVERAGE
             return out
         return {"query": q, "resolved": False, "lineage": [], "identity": [], "pedigree": None}
     cl2 = identity(scoped) if scoped else []
@@ -606,12 +616,12 @@ def assemble_dossier(q, lin, role=None, era=None, hood=None, es=None):
         out["era_filter"] = era
         # dates exist on only 15.6% of edges and not all carry a citable
         # year — an era-filtered dossier must say so or it lies by omission
-        out["era_coverage"] = "dates on 15% of cited moves"
+        out["era_coverage"] = _ERA_COVERAGE
     if hood:
         out["hood_filter"] = hood
         # hood stamps exist for SF venues the city file can place — 43% of
         # edge docs — so the filter discloses partial coverage
-        out["hood_coverage"] = "neighborhoods on 43% of cited moves"
+        out["hood_coverage"] = _HOOD_COVERAGE
     return out
 
 def _cited_moves_exist(es, q):
@@ -802,21 +812,65 @@ def suggest(es, prefix, size=7):
     except Exception:
         return _suggest_top(es, prefix, size)
 
+def _distinct_values(es, field, page=1000):
+    """Every distinct value of a keyword field, via composite aggregation.
+
+    `terms` caps at the requested size, which silently truncates a corpus this
+    big (the old stats() asked for 500 per field and reported 799 kitchens
+    against 4,000+ real ones). composite pages through all of them."""
+    out, after = set(), None
+    while True:
+        comp = {"size": page, "sources": [{"v": {"terms": {"field": field}}}]}
+        if after:
+            comp["after"] = after
+        agg = es.search(index=INDEX, body={
+            "size": 0, "aggs": {"v": {"composite": comp}}})["aggregations"]["v"]
+        buckets = agg["buckets"]
+        out |= {b["key"]["v"] for b in buckets if b["key"]["v"]}
+        after = agg.get("after_key")
+        if not buckets or not after:
+            return out
+
 def stats(es):
-    body = {"size": 0, "aggs": {
-        "people": {"cardinality": {"field": "person.keyword"}},
-        "from_v": {"terms": {"field": "from_venue.keyword", "size": 500}},
-        "to_v": {"terms": {"field": "to_venue.keyword", "size": 500}},
-    }}
-    r = es.search(index=INDEX, body=body)
-    a = r["aggregations"]
-    venues = {b["key"] for b in a["from_v"]["buckets"] + a["to_v"]["buckets"] if b["key"]}
+    """Top-line corpus stats for the masthead counter.
+
+    venues counts distinct KITCHENS: names folded with the same norm_venue
+    the dossier uses ("Tartine" / "Tartine Bakery" are one kitchen) and
+    filtered with the same junk/chain rule the map uses. Not a raw name
+    count — that would overstate the corpus with typo variants and chains.
+    """
+    venues_raw = _distinct_values(es, "from_venue.keyword") \
+        | _distinct_values(es, "to_venue.keyword")
+    venues = {norm_venue(v) for v in venues_raw
+              if v and not _is_junk_venue(v) and norm_venue(v)}
+    agg = es.search(index=INDEX, body={"size": 0, "aggs": {
+        "people": {"cardinality": {"field": "person.keyword",
+                                   "precision_threshold": 40000}},
+        "sources": {"cardinality": {"field": "source_url.keyword",
+                                    "precision_threshold": 40000}},
+    }})["aggregations"]
     return {"edges": es.count(index=INDEX)["count"],
-            "people": a["people"]["value"],
+            "people": agg["people"]["value"],
             "venues": len(venues),
-            "sources": es.search(
-                index=INDEX, body={"size": 0, "aggs": {"s": {"cardinality": {"field": "source_url.keyword"}}}}
-            )["aggregations"]["s"]["value"]}
+            "sources": agg["sources"]["value"]}
+
+# Non-restaurant names the extraction produced ("Google kitchen", "TBD") and
+# chains. Shared by venues_geo (map dots) and stats (kitchen count) so the
+# headline number and the map draw from the same definition of a kitchen.
+_JUNK_WORDS = ("tbd", "to be determined", "facebook", "walgreen", "google",
+               "salesforce", "amazon", "apple inc", "airbnb", "uber",
+               "doordash", "lyft", "bon appetit", "proper food", "mixt",
+               "test ", "unknown", "null", "none")
+_CHAIN_NAMES = ("mcdonald", "starbucks", "burger king", "jack in the box",
+                "kentucky fried", "little caesars", "popeyes", "chipotle",
+                "subway", "jamba juice", "peet", "philz", "phil'z", "taco bell",
+                "wendy", "dunkin", "in n out", "mrs field", "cold stone",
+                "dairy queen", "potbelly", "panera", "noah")
+
+def _is_junk_venue(name):
+    n = (name or "").lower()
+    return (not n.strip()) or any(w in n for w in _JUNK_WORDS) \
+        or any(c in n for c in _CHAIN_NAMES)
 
 def venues_geo(es=None):
     """Venues for the map — reads the data files bundled next to api/ at
@@ -825,15 +879,6 @@ def venues_geo(es=None):
     city = os.path.join(root, "city_venues.json")
     curated = os.path.join(root, "venues_geo.json")
     KEEP_TYPES = ("H24", "H25", "H26", "H28", "H29", "H86", "H87", "H88")
-    JUNK_WORDS = ("tbd", "to be determined", "facebook", "walgreen", "google",
-                  "salesforce", "amazon", "apple inc", "airbnb", "uber",
-                  "doordash", "lyft", "bon appetit", "proper food", "mixt",
-                  "test ", "unknown")
-    CHAIN_NAMES = ("mcdonald", "starbucks", "burger king", "jack in the box",
-                   "kentucky fried", "little caesars", "popeyes", "chipotle",
-                   "subway", "jamba juice", "peet", "philz", "phil'z", "taco bell",
-                   "wendy", "dunkin", "in n out", "mrs field", "cold stone",
-                   "dairy queen", "potbelly", "panera", "noah")
 
     def keep_type(t):
         t = t or ""
@@ -841,8 +886,7 @@ def venues_geo(es=None):
                    or t.startswith(k + "R") for k in KEEP_TYPES)
 
     def is_junk(name):
-        n = (name or "").lower()
-        return any(w in n for w in JUNK_WORDS) or any(c in n for c in CHAIN_NAMES)
+        return _is_junk_venue(name)
 
     def keep(v):
         if v.get("lineaged") or v.get("michelin"):
@@ -891,8 +935,7 @@ def resolve_query(q, lin, cl):
         return False
     for c in cl:
         for n in [c["name"], *(c.get("aliases") or [])]:
-            nl = n.lower()
-            if nl == ql and not _is_collective(n):
+            if n.lower() == ql and not _is_collective(n):
                 return True
             # punctuation-loose name match ("Mister Jius" → "Mister Jiu's")
             if _same_loose(n, ql) and not _is_collective(n):
