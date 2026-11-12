@@ -926,9 +926,48 @@ def method(es):
         coverage[f] = a[f]["doc_count"]
 
     tiers = {k: v["doc_count"] for k, v in a["tiers"]["buckets"].items()}
-    value = {"coverage": coverage, "tiers": tiers}
+    value = {"coverage": coverage, "tiers": tiers,
+             "scores": _score_sample(es)}
     _METHOD_CACHE["at"], _METHOD_CACHE["value"] = now, value
     return value
+
+
+# A fixed sample so the published score distribution is reproducible across
+# runs. Deliberately well-documented, recognizable kitchens: the point is to
+# show a reader what the scale looks like on the best-reported records, not to
+# claim this is the corpus distribution (most venues score far lower).
+_SCORE_SAMPLE = (
+    "SPQR", "State Bird Provisions", "Chez Panisse", "Mister Jiu's", "Quince",
+    "Zuni Cafe", "Delfina", "Benu", "Mourad", "Betelnut", "Tartine",
+    "Kin Khao", "Lazy Bear", "Coi", "Saison", "Nopa", "Rich Table",
+    "Atelier Crenn",
+)
+
+
+def _score_sample(es):
+    """Score distribution across the fixed sample, for the /method page.
+
+    Costs one dossier assembly per venue, so it is computed only when the
+    method cache is cold (once per 300s per instance) and never on a page that
+    does not ask for it.
+    """
+    scores = []
+    for name in _SCORE_SAMPLE:
+        try:
+            lin = lineage(es, name, size=25)
+            ped = pedigree([e for e in lin if citation_supported(e)])
+        except Exception:
+            continue
+        if ped:
+            scores.append(ped["score"])
+    if not scores:
+        return None
+    scores.sort()
+    mid = len(scores) // 2
+    median = scores[mid] if len(scores) % 2 else round(
+        (scores[mid - 1] + scores[mid]) / 2)
+    return {"n": len(scores), "min": scores[0], "max": scores[-1],
+            "median": median}
 
 MAX_QUERY_LEN = 120  # abuse cap: queries are names, not free-text essays
 MAX_RESULT_SIZE = 40  # a dossier, not a corpus dump

@@ -302,6 +302,19 @@
           'driven by Eater and SFGATE volume.'
         : 'The Chronicle supplies ' + share.toFixed(1) + '% of cited moves.');
     }
+
+    // Score distribution: measured over a fixed sample of well-documented
+    // kitchens, so the published range is reproducible rather than recalled.
+    const s = d.scores;
+    if (s) {
+      set('score-range', s.min + '–' + s.max);
+      set('score-median', s.median);
+      set('score-compare',
+        'Measured across ' + s.n + ' of the best-documented kitchens in the corpus: ' +
+        s.min + ' to ' + s.max + ', median ' + s.median + '. The spread tracks how much ' +
+        'has been written about a kitchen, not how good it is — a three-star room with ' +
+        'a thin press record scores below a neighborhood place that reporters kept covering.');
+    }
   }).catch(() => {
     const n = document.getElementById('src-note');
     if (n) n.textContent = 'Live figures unavailable — reload to retry.';
