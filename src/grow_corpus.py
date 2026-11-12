@@ -150,7 +150,11 @@ def main(max_articles=60):
     for u in fresh:
         done += 1
         try:
-            text = fetch_mod.fetch_text(u)
+            # fetch_article returns the page's publication date alongside the
+            # text. published_at is recorded on every new edge so a reader can
+            # tell a 2019 article about a 2005 tenure from a 2005 article —
+            # the corpus previously had no way to distinguish them.
+            text, published_at = fetch_mod.fetch_article(u)
             if not text or len(text) < 400:
                 print(f"[{done}/{len(fresh)}] skip thin: {u[:80]}")
                 seen.add(u); _persist(); continue
@@ -177,6 +181,7 @@ def main(max_articles=60):
             docs = []
             for e in edges:
                 e["source_url"] = u
+                e["published_at"] = published_at
                 docs.append(build_edge_doc(e))
             index_edges(es, docs)
             new_edges += len(edges)

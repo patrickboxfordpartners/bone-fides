@@ -89,6 +89,11 @@ def build_edge_doc(edge):
         "confidence": edge.get("confidence"),
         "source_url": edge["source_url"],
         "source": edge.get("source"),  # source tier: eater | sfgate | sfchronicle
+        # When the ARTICLE was published — not when the move happened. Stored
+        # separately so a 2019 article describing a 2005 tenure cannot be read
+        # as "worked there in 2019". Absent on every edge indexed before this
+        # field existed; forward-only, never backfilled by guesswork.
+        "published_at": edge.get("published_at"),
     }
 
 INDEX_SETTINGS = {
@@ -111,6 +116,9 @@ INDEX_SETTINGS = {
             "source_url": {"type": "keyword"},
             "source_image": {"type": "keyword", "index": False, "doc_values": False},
             "source": {"type": "keyword"},
+            # keyword, not date: publishers emit inconsistent formats and a
+            # failed date parse silently drops the value. Stored as given.
+            "published_at": {"type": "keyword", "index": False},
             "semantic": {"type": "semantic_text", "inference_id": ".openai-text-embedding-3-small"},
         }
     }

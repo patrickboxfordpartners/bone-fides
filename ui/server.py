@@ -886,6 +886,50 @@ def stats(es):
     _STATS_CACHE["at"], _STATS_CACHE["value"] = now, value
     return value
 
+
+# Field coverage the /method page documents. Cached with stats(): the counts
+# move only when the corpus does, and the page is opened far more often than
+# the corpus is rebuilt.
+_METHOD_CACHE = {"at": 0.0, "value": None}
+_COVERAGE_FIELDS = ("date", "era_bucket", "venue_hoods", "action", "mentor")
+
+
+def method(es):
+    """Corpus composition for the /method page: coverage rates and outlet tiers.
+
+    Every figure here is a live measurement — the page's whole purpose is to
+    state what the corpus actually contains, so nothing on it may be estimated.
+    Counts that also appear on the landing page come from stats() so the two
+    pages cannot disagree.
+    """
+    now = time.time()
+    cached = _METHOD_CACHE["value"]
+    if cached is not None and now - _METHOD_CACHE["at"] < _STATS_TTL:
+        return cached
+
+    base = stats(es)
+    agg_body = {"size": 0, "aggs": {}}
+    for f in _COVERAGE_FIELDS:
+        agg_body["aggs"][f] = {"filter": {"exists": {"field": f}}}
+    # outlet tiers, counted the same way the score counts them
+    agg_body["aggs"]["tiers"] = {"filters": {"filters": {
+        "sfchronicle": {"term": {"source": "sfchronicle"}},
+        "sfgate": {"term": {"source": "sfgate"}},
+        "eater": {"term": {"source": "eater"}},
+        "other": {"bool": {"must_not": {"terms": {
+            "source": ["sfchronicle", "sfgate", "eater"]}}}},
+    }}}
+    a = es.search(index=INDEX, body=agg_body)["aggregations"]
+
+    coverage = dict(base)
+    for f in _COVERAGE_FIELDS:
+        coverage[f] = a[f]["doc_count"]
+
+    tiers = {k: v["doc_count"] for k, v in a["tiers"]["buckets"].items()}
+    value = {"coverage": coverage, "tiers": tiers}
+    _METHOD_CACHE["at"], _METHOD_CACHE["value"] = now, value
+    return value
+
 MAX_QUERY_LEN = 120  # abuse cap: queries are names, not free-text essays
 MAX_RESULT_SIZE = 40  # a dossier, not a corpus dump
 
@@ -1024,6 +1068,10 @@ class Handler(SimpleHTTPRequestHandler):
             self._serve_mapjs()
         elif path.startswith("/api/stats"):
             self._safe(lambda: self._json(stats(es)))
+        elif path.startswith("/api/method"):
+            self._safe(lambda: self._json(method(es)))
+        elif path in ("/method", "/method.html"):
+            self._serve_static("method.html")
         elif path in ("/", "/landing", "/landing.html"):
             # "/" serves the landing page — same as the Vercel rewrite.
             self._serve_landing()
@@ -1177,8 +1225,12 @@ class Handler(SimpleHTTPRequestHandler):
 
     def _serve_landing(self):
         """Serve landing.html verbatim (static page, no token injection)."""
+        self._serve_static("landing.html")
+
+    def _serve_static(self, name):
+        """Serve a static HTML file from ui/ verbatim."""
         try:
-            with open(os.path.join(ROOT, "landing.html")) as f:
+            with open(os.path.join(ROOT, name)) as f:
                 body = f.read().encode()
         except OSError:
             self.send_error(404)

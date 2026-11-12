@@ -15,6 +15,7 @@ if [ -f ../ui/explorer.html ]; then
   # for every content change (it shipped 9,309 moves / 799 kitchens / a
   # pedigree of 73 long after ui/ said otherwise).
   cp ../ui/landing.html landing.html
+  cp ../ui/method.html method.html
   cp ../ui/map.js map.js
   cp ../ui/city_venues.json city_venues.json
   cp ../ui/venues_geo.json venues_geo.json

@@ -187,6 +187,7 @@ def test_both_twins_import_cleanly():
 # serve even when the root copies are current.
 _DEPLOYED_FROM_UI = (
     ("landing.html", "landing.html"),
+    ("method.html", "method.html"),
     ("explorer.html", "explorer.html"),
     ("map.js", "map.js"),
     ("city_venues.json", "city_venues.json"),
