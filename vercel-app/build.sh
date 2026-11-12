@@ -15,12 +15,14 @@ if [ -f ../ui/explorer.html ]; then
   # for every content change (it shipped 9,309 moves / 799 kitchens / a
   # pedigree of 73 long after ui/ said otherwise).
   cp ../ui/landing.html landing.html
+  cp ../ui/method.html method.html
   cp ../ui/map.js map.js
   cp ../ui/city_venues.json city_venues.json
   cp ../ui/venues_geo.json venues_geo.json
   cp ../ui/city_venues.json api/city_venues.json
   cp ../ui/venues_geo.json api/venues_geo.json
   cp ../ui/map.js api/_map.js
+  cp ../ui/score_sample.json api/score_sample.json
   echo "vercel-app build: UI assets copied from ui/"
 else
   echo "vercel-app build: using committed copies"

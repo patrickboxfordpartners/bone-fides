@@ -4,7 +4,7 @@
   "outputDirectory": ".",
   "functions": {
     "api/search.py": {
-      "includeFiles": "city_venues.json, venues_geo.json, _map.js"
+      "includeFiles": "city_venues.json, venues_geo.json, _map.js, score_sample.json"
     }
   },
   "rewrites": [
@@ -14,8 +14,10 @@
     { "source": "/api/map.js", "destination": "/api/search" },
     { "source": "/api/suggest", "destination": "/api/search" },
     { "source": "/api/tip", "destination": "/api/search" },
+    { "source": "/api/method", "destination": "/api/search" },
     { "source": "/", "destination": "/landing.html" },
     { "source": "/explorer", "destination": "/explorer.html" },
+    { "source": "/method", "destination": "/method.html" },
     { "source": "/landing", "destination": "/landing.html" }
   ]
 }

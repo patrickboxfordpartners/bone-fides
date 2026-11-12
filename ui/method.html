@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Method — Bone Fides</title>
+<meta name="description" content="How Bone Fides counts its corpus, scores documentation strength, and where the data is thin. Every number on this page is measured, not estimated.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #171310; --bg2: #1f1a15; --ink: #efe6d3; --dim: #9b8f7c;
+    --faint: rgba(239, 230, 211, .14); --accent: #d08152; --gold: #c2a05a;
+    --ok: #8fb996; --bad: #d9776b;
+    --pad: clamp(20px, 5vw, 72px); --measure: 64ch;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: Fraunces, Georgia, serif; font-size: 17px; line-height: 1.6;
+    font-weight: 350; -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--gold); text-decoration: none; border-bottom: 1px solid rgba(194,160,90,.35); }
+  a:hover { border-bottom-color: var(--gold); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 var(--pad); }
+  header.top {
+    display: flex; align-items: baseline; justify-content: space-between;
+    padding: 22px 0; border-bottom: 1px solid var(--faint); gap: 20px; flex-wrap: wrap;
+  }
+  .wordmark { font-size: 19px; font-weight: 560; letter-spacing: .01em; color: var(--ink); border: 0; }
+  .wordmark em { font-style: italic; color: var(--accent); font-weight: 500; }
+  nav.top a { font-size: 13.5px; color: var(--dim); border: 0; margin-left: 22px; }
+  nav.top a:hover { color: var(--ink); }
+
+  .hero { padding: clamp(48px, 8vw, 96px) 0 clamp(28px, 4vw, 48px); }
+  .kicker {
+    font-size: 10.5px; letter-spacing: .3em; text-transform: uppercase;
+    color: var(--gold); margin: 0 0 18px; font-weight: 400;
+  }
+  h1 {
+    font-size: clamp(38px, 6vw, 68px); line-height: 1; margin: 0 0 22px;
+    font-weight: 380; letter-spacing: -.015em; max-width: 18ch;
+  }
+  h1 em { font-style: italic; color: var(--accent); font-weight: 500; }
+  .lede { font-size: clamp(18px, 2.1vw, 22px); color: var(--dim); max-width: 58ch; margin: 0; }
+
+  section { padding: clamp(38px, 6vw, 72px) 0; border-top: 1px solid var(--faint); }
+  h2 {
+    font-size: clamp(24px, 3.1vw, 34px); line-height: 1.15; font-weight: 380;
+    margin: 0 0 8px; letter-spacing: -.01em;
+  }
+  .sub { color: var(--dim); font-size: 15.5px; margin: 0 0 30px; max-width: var(--measure); }
+  h3 { font-size: 19px; font-weight: 480; margin: 34px 0 10px; }
+  p { max-width: var(--measure); margin: 0 0 16px; }
+  p.note { font-size: 14.5px; color: var(--dim); font-style: italic; }
+
+  .num { font-variant-numeric: tabular-nums; color: var(--accent); font-weight: 420; }
+
+  table { width: 100%; border-collapse: collapse; margin: 22px 0 8px; font-size: 15px; }
+  caption { text-align: left; font-size: 13px; color: var(--dim); font-style: italic; padding-bottom: 10px; }
+  th, td { text-align: left; padding: 11px 14px 11px 0; border-bottom: 1px solid var(--faint); vertical-align: top; }
+  th { font-weight: 500; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); }
+  td.r { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  tbody tr:last-child td { border-bottom: 0; }
+
+  .formula {
+    background: var(--bg2); border: 1px solid var(--faint); border-radius: 4px;
+    padding: 20px 22px; margin: 22px 0; font-size: 15px; overflow-x: auto;
+  }
+  .formula code { font-family: "SF Mono", Menlo, monospace; font-size: 13.5px; color: var(--ink); white-space: pre; display: block; }
+  .formula .lbl { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 12px; }
+
+  .callout {
+    border-left: 2px solid var(--accent); padding: 4px 0 4px 18px;
+    margin: 26px 0; color: var(--ink); max-width: var(--measure);
+  }
+  .callout p:last-child { margin-bottom: 0; }
+
+  .coverage { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 1px; background: var(--faint); border: 1px solid var(--faint); margin: 24px 0; }
+  .cov { background: var(--bg); padding: 18px 20px; }
+  .cov b { display: block; font-size: 26px; font-weight: 420; color: var(--accent); font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+  .cov span { font-size: 12.5px; color: var(--dim); display: block; margin-top: 4px; }
+  .cov small { font-size: 11.5px; color: #7a6f60; display: block; margin-top: 6px; font-variant-numeric: tabular-nums; }
+
+  .thin { color: var(--bad); }
+  .solid { color: var(--ok); }
+
+  footer { border-top: 1px solid var(--faint); padding: 34px 0 60px; color: var(--dim); font-size: 13.5px; }
+  footer a { font-size: 13.5px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="wordmark" href="/">Bone <em>Fides</em></a>
+    <nav class="top">
+      <a href="/explorer">Explorer</a>
+      <a href="/method">Method</a>
+    </nav>
+  </header>
+
+  <div class="hero">
+    <p class="kicker">Method</p>
+    <h1>What these numbers mean, and <em>what they don't</em>.</h1>
+    <p class="lede">Bone Fides makes claims about who cooked where. This page states exactly how
+      each claim is counted, scored, and where the record is thin. Every figure below is measured
+      against the live corpus, not estimated.</p>
+  </div>
+
+  <section id="sources">
+    <h2>Where the data comes from</h2>
+    <p class="sub">Public food journalism only. No reviews, no user submissions, no proprietary data.</p>
+    <p>Every record in the corpus is a <b>move</b>: one person, the kitchen they left, the kitchen
+      they went to, and the sentence in an article that says so. A move enters the corpus only when
+      an extraction pass finds it stated in the article text — never inferred, never assembled from
+      separate facts.</p>
+    <p>Sources are Eater SF, SFGATE, and a small number of independent writers and chef-profile sites.
+      The <b>citation gate</b> runs on every edge: the quoted evidence must appear verbatim in the
+      article, and the sentence must describe a move rather than a guest appearance, a pop-up, a
+      supplier relationship, or a recipe.</p>
+
+    <table id="tbl-sources">
+      <caption>Edges by publishing outlet (host of the citing article).</caption>
+      <thead><tr><th>Outlet</th><th class="r">Moves cited</th><th class="r">Share</th></tr></thead>
+      <tbody id="src-body">
+        <tr><td>sf.eater.com</td><td class="r num" id="src-eater">—</td><td class="r" id="src-eater-pct">—</td></tr>
+        <tr><td>sfgate.com</td><td class="r num" id="src-sfgate">—</td><td class="r" id="src-sfgate-pct">—</td></tr>
+        <tr><td>sfchronicle.com</td><td class="r num" id="src-chron">—</td><td class="r" id="src-chron-pct">—</td></tr>
+        <tr><td>independent writers</td><td class="r num" id="src-other">—</td><td class="r" id="src-other-pct">—</td></tr>
+      </tbody>
+    </table>
+    <p class="note" id="src-note">Measuring…</p>
+  </section>
+
+  <section id="lineage">
+    <h2>The lineage score</h2>
+    <p class="sub">Formerly called "pedigree". Renamed because the old name implied a judgement about
+      the kitchen. It isn't one.</p>
+
+    <div class="callout">
+      <p><b>This score measures documentation, not quality.</b> It rises when more articles corroborate
+        a kitchen's moves and when those articles come from larger outlets. It says nothing about how
+        good the food was, how skilled the chefs were, or how the kitchen compares to another.</p>
+      <p>A kitchen with twenty well-reported alumni will outscore one with five exceptional chefs nobody
+        wrote about. That is a property of the journalism, not of the kitchens.</p>
+    </div>
+
+    <h3>How it is calculated</h3>
+    <div class="formula">
+      <span class="lbl">Lineage score</span>
+      <code>score = round( 55 × outlet_weight
+             + 25 × corroboration
+             + 20 × depth )</code>
+    </div>
+    <table>
+      <thead><tr><th>Term</th><th class="r">Weight</th><th>Definition</th></tr></thead>
+      <tbody>
+        <tr><td>Outlet weight</td><td class="r">55</td><td>Mean citation weight across the kitchen's moves,
+          divided by the top tier. Weights: SF Chronicle <span class="num">12</span>, SFGATE <span class="num">8</span>,
+          Eater <span class="num">6</span>, everything else <span class="num">3</span>.</td></tr>
+        <tr><td>Corroboration</td><td class="r">25</td><td>
+          <code>min(1, max(0, articles − 1) / 4)</code> — distinct articles citing the kitchen,
+          normalized so the first article contributes nothing. The subtraction is deliberate:
+          one article is the minimum needed to have a record at all, not corroboration.
+          Five or more articles saturate the term.</td></tr>
+        <tr><td>Depth</td><td class="r">20</td><td>
+          <code>min(1, moves / 12)</code> — cited moves, normalized so twelve saturates the term.</td></tr>
+      </tbody>
+    </table>
+
+    <p class="note" id="score-note">Reading the saved measurement…</p>
+
+    <h3>What the number looks like in practice</h3>
+    <p>Scores across a sample of well-documented San Francisco kitchens run
+      <span class="num" id="score-range">—</span>, with a median around
+      <span class="num" id="score-median">—</span>. No kitchen in the corpus reaches 100, and none should:
+      a kitchen cited by more outlets for more moves can always be cited more.</p>
+    <p class="note" id="score-compare">Measuring…</p>
+  </section>
+
+  <section id="coverage">
+    <h2>How complete is the record?</h2>
+    <p class="sub">Honestly: partial. These are the measured coverage rates, so you can judge any
+      filtered view accordingly.</p>
+
+    <div class="coverage" id="cov-grid">
+      <div class="cov"><b id="cov-edges">—</b><span>Cited moves</span><small>the whole corpus</small></div>
+      <div class="cov"><b id="cov-people">—</b><span>People named</span><small>distinct chefs and owners</small></div>
+      <div class="cov"><b id="cov-venues">—</b><span>Kitchen names</span><small>normalized; see note below</small></div>
+      <div class="cov"><b id="cov-sources">—</b><span>Articles cited</span><small>distinct source URLs</small></div>
+    </div>
+
+    <div class="coverage">
+      <div class="cov"><b id="cov-date">—</b><span>Moves with a date</span><small class="thin">era filter sees only these</small></div>
+      <div class="cov"><b id="cov-era">—</b><span>Moves with a usable year</span><small class="thin">a date must yield a citable year</small></div>
+      <div class="cov"><b id="cov-hood">—</b><span>Moves with a neighborhood</span><small class="thin">SF venues the city file can place</small></div>
+      <div class="cov"><b id="cov-action">—</b><span>Moves with a typed action</span><small class="thin">joined / departed / promoted</small></div>
+      <div class="cov"><b id="cov-mentor">—</b><span>Moves naming a mentor</span><small class="thin">"trained under" is rare in print</small></div>
+    </div>
+
+    <h3>What "worked at" does and does not mean</h3>
+    <p>Most records say a person <b>worked at</b> a kitchen in a stated role. Fewer say they were
+      <b>promoted</b> there, and very few name a <b>mentor</b> or say they <b>trained under</b> someone.
+      The corpus distinguishes these where the article does, and says nothing where it doesn't.</p>
+    <div class="callout">
+      <p>This is the most important limit on the data. When the site says a kitchen's chefs
+        <em>trained</em> somewhere, that is only literally true for the small share of moves whose
+        article names a mentor. For the rest, the honest reading is <b>worked at</b>, not trained under.</p>
+    </div>
+
+    <h3>Why kitchen names are not restaurant count</h3>
+    <p>The kitchen figure counts <b>distinct normalized names</b>, not distinct restaurants. Names are
+      folded for case, punctuation, accents, possessives and stop words, so "Chez TJ's" and "Chez TJ"
+      count once. But the corpus has no venue identity table, so "Tartine" and "Tartine Bakery" count
+      twice. Treat the number as kitchen <em>names</em> in the record, not a count of restaurants that
+      exist.</p>
+  </section>
+
+  <section id="limits">
+    <h2>Known limits</h2>
+    <p class="sub">The things that would make a careful reader distrust a single record if unstated.</p>
+
+    <h3>Dates are the weakest field</h3>
+    <p>Fewer than one move in five carries any date, and dates arrive as prose ("2001–2013",
+      "last spring", "recently"). Only dates that yield an explicit year become an era bucket, which is
+      why the era filter covers less of the corpus than the date field does. The filter discloses this
+      in the dossier whenever it is active.</p>
+
+    <h3>Employment dates are not publication dates</h3>
+    <p>A move's date is what the article states about when it happened — not when the article was
+      written. An article published years after a chef's tenure can describe that tenure accurately.</p>
+    <p>The corpus now captures the article's own publication date on newly indexed records, read
+      from the page's declared metadata. This is <b>forward-only</b>: records indexed before the
+      field existed do not carry one, so the two dates can be compared on recent additions but not
+      across the whole corpus. The explorer does not surface publication dates yet.</p>
+
+    <h3>Same name, possibly two people</h3>
+    <p>When one name produces two unconnected bodies of work, the dossier surfaces that as
+      <b>possibly two people</b> rather than merging them. It is never resolved silently. A flagged
+      record is a question, not an answer.</p>
+
+    <h3>Concurrent roles and conflicting titles</h3>
+    <p>A person can hold two roles at once, and two articles can describe the same role differently
+      ("executive chef" in one, "culinary director" in another). Both records are kept. The corpus does
+      not adjudicate between them.</p>
+  </section>
+
+  <section id="corrections">
+    <h2>Corrections</h2>
+    <p>Every dossier carries a <b>Flag or add</b> control, and every cited move links to the article
+      that supports it. A correction with a source is the most useful thing you can send.</p>
+    <p>Corrections are reviewed by hand before they touch the corpus. Nothing submitted through the form
+      enters the record automatically — the citation gate is the product, and the inbox exists to
+      protect it, not bypass it.</p>
+    <p class="note">Tips currently arrive in a review queue, not a public log. If a correction changes
+      a record, it does so because the underlying citation was wrong or missing.</p>
+  </section>
+
+  <footer>
+    <p><a href="/">Bone Fides</a> · <a href="/explorer">Explorer</a> · Built from public food
+      journalism, never from reviews.</p>
+  </footer>
+</div>
+
+<script>
+(function () {
+  const fmt = n => Number(n).toLocaleString('en-US');
+  const pct = (a, b) => (b ? (a / b * 100).toFixed(1) + '%' : '—');
+
+  // Coverage + counts come from one endpoint so the page cannot disagree with itself.
+  fetch('/api/method').then(r => r.json()).then(d => {
+    const cov = d.coverage || {};
+    const N = cov.edges || 1;
+
+    const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+
+    set('cov-edges', fmt(N));
+    set('cov-people', fmt(cov.people || 0));
+    set('cov-venues', fmt(cov.venues || 0));
+    set('cov-sources', fmt(cov.sources || 0));
+
+    set('cov-date', pct(cov.date, N));
+    set('cov-era', pct(cov.era_bucket, N));
+    set('cov-hood', pct(cov.venue_hoods, N));
+    set('cov-action', pct(cov.action, N));
+    set('cov-mentor', pct(cov.mentor, N));
+
+    // tiers are a sibling of coverage in the payload, not a member of it
+    const t = d.tiers || {};
+    set('src-eater', fmt(t.eater || 0));
+    set('src-sfgate', fmt(t.sfgate || 0));
+    set('src-chron', fmt(t.sfchronicle || 0));
+    set('src-other', fmt(t.other || 0));
+    set('src-eater-pct', pct(t.eater || 0, N));
+    set('src-sfgate-pct', pct(t.sfgate || 0, N));
+    set('src-chron-pct', pct(t.sfchronicle || 0, N));
+    set('src-other-pct', pct(t.other || 0, N));
+
+    if (t.sfchronicle != null) {
+      const share = (t.sfchronicle / N * 100);
+      set('src-note', share < 1
+        ? 'The Chronicle carries the heaviest citation weight but supplies only ' +
+          share.toFixed(1) + '% of cited moves — the weight rarely applies. In practice the score is ' +
+          'driven by Eater and SFGATE volume.'
+        : 'The Chronicle supplies ' + share.toFixed(1) + '% of cited moves.');
+    }
+
+    // Score distribution: measured over a fixed sample of well-documented
+    // kitchens, so the published range is reproducible rather than recalled.
+    const s = d.scores;
+    if (s) {
+      set('score-range', s.min + '–' + s.max);
+      set('score-median', s.median);
+      set('score-compare',
+        'Measured across ' + s.n + ' of the best-documented kitchens in the corpus: ' +
+        s.min + ' to ' + s.max + ', median ' + s.median + '. The spread tracks how much ' +
+        'has been written about a kitchen, not how good it is — a three-star room with ' +
+        'a thin press record scores below a neighborhood place that reporters kept covering.');
+      // The sample is measured offline (18 dossier assemblies is ~7s), so say
+      // WHEN rather than implying the number is live to the second.
+      set('score-note', s.measured_at
+        ? 'Measured ' + s.measured_at + ' over a fixed sample of ' + s.n +
+          ' kitchens. Re-run after each corpus-growth session.'
+        : 'Measured over a fixed sample of ' + s.n + ' kitchens.');
+    } else {
+      set('score-note', 'Saved measurement unavailable — re-run src/stamp_score_sample.py.');
+    }
+  }).catch(() => {
+    const n = document.getElementById('src-note');
+    if (n) n.textContent = 'Live figures unavailable — reload to retry.';
+    const s = document.getElementById('score-note');
+    if (s) s.textContent = 'Live figures unavailable — reload to retry.';
+  });
+})();
+</script>
+</body>
+</html>

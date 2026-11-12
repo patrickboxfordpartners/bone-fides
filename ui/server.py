@@ -886,6 +886,140 @@ def stats(es):
     _STATS_CACHE["at"], _STATS_CACHE["value"] = now, value
     return value
 
+
+# Field coverage the /method page documents. Cached with stats(): the counts
+# move only when the corpus does, and the page is opened far more often than
+# the corpus is rebuilt.
+_METHOD_CACHE = {"at": 0.0, "value": None}
+_COVERAGE_FIELDS = ("date", "era_bucket", "venue_hoods", "action", "mentor")
+
+
+def method(es):
+    """Corpus composition for the /method page: coverage rates and outlet tiers.
+
+    Every figure here is a live measurement — the page's whole purpose is to
+    state what the corpus actually contains, so nothing on it may be estimated.
+    Counts that also appear on the landing page come from stats() so the two
+    pages cannot disagree.
+    """
+    now = time.time()
+    cached = _METHOD_CACHE["value"]
+    if cached is not None and now - _METHOD_CACHE["at"] < _STATS_TTL:
+        return cached
+
+    base = stats(es)
+    agg_body = {"size": 0, "aggs": {}}
+    for f in _COVERAGE_FIELDS:
+        agg_body["aggs"][f] = {"filter": {"exists": {"field": f}}}
+    # Outlet tiers must use the SAME rule the score uses: outlet_tier(), which
+    # falls back to the source_url host when `source` is missing. A pure
+    # `term: source` aggregation would count the 23 host-identifiable edges
+    # with no `source` as "other" while the score counted them as Eater.
+    agg_body["aggs"]["tiers"] = {"terms": {"field": "source", "size": 10}}
+    a = es.search(index=INDEX, body=agg_body)["aggregations"]
+
+    coverage = dict(base)
+    for f in _COVERAGE_FIELDS:
+        coverage[f] = a[f]["doc_count"]
+
+    tiers = {"sfchronicle": 0, "sfgate": 0, "eater": 0, "other": 0}
+    for b in a["tiers"]["buckets"]:
+        key = b["key"] if b["key"] in tiers else "other"
+        tiers[key] += b["doc_count"]
+    # edges with no `source` still have a host; classify them the way the
+    # score does rather than dumping them into "other". The terms agg above
+    # only saw edges that HAVE a source, so these are purely additive.
+    for h in es.search(index=INDEX, body={
+            "size": 1000,
+            "query": {"bool": {"must_not": {"exists": {"field": "source"}}}},
+            "_source": ["source", "source_url"]})["hits"]["hits"]:
+        src = h["_source"]
+        tiers[outlet_tier(src.get("source"), src.get("source_url"))] += 1
+    value = {"coverage": coverage, "tiers": tiers,
+             "scores": _score_sample()}
+    _METHOD_CACHE["at"], _METHOD_CACHE["value"] = now, value
+    return value
+
+
+# A fixed sample so the published score distribution is reproducible across
+# runs. Deliberately well-documented, recognizable kitchens: the point is to
+# show a reader what the scale looks like on the best-reported records, not to
+# claim this is the corpus distribution (most venues score far lower).
+_SCORE_SAMPLE = (
+    "SPQR", "State Bird Provisions", "Chez Panisse", "Mister Jiu's", "Quince",
+    "Zuni Cafe", "Delfina", "Benu", "Mourad", "Betelnut", "Tartine",
+    "Kin Khao", "Lazy Bear", "Coi", "Saison", "Nopa", "Rich Table",
+    "Atelier Crenn",
+)
+
+
+def measure_score_sample(es):
+    """MEASURE the score distribution across _SCORE_SAMPLE. Slow (~7s).
+
+    This is the computing half, kept separate from _score_sample() (the cheap
+    file reader the web request uses) because the two have opposite cost and
+    call-site profiles: this one runs offline in stamp_score_sample.py, the
+    other runs on every cold serverless instance.
+
+    Not called at request time by design. Never wire this into a handler.
+
+    Scores come from assemble_dossier(), the explorer's own path, NOT from
+    scoring raw search hits. Hybrid search returns fuzzy and related matches,
+    and assemble_dossier applies scope_edges() to drop the ones that are not
+    actually about the queried kitchen before scoring. Skipping that step
+    published numbers the dossiers themselves did not show: 6 of the 18
+    sampled kitchens disagreed, Tartine by 10 points and Atelier Crenn by 21.
+
+    A failed search is a failure, not a smaller sample. Silently dropping a
+    kitchen would let a transient timeout redefine the "fixed" sample and
+    overwrite the saved stamp with a different range. If any kitchen cannot be
+    scored, return None and let the caller keep the existing file.
+    """
+    scores = []
+    for name in _SCORE_SAMPLE:
+        try:
+            lin = lineage(es, name, size=25)
+            ped = (assemble_dossier(name, lin, es=es) or {}).get("pedigree")
+        except Exception as exc:
+            print(f"score sample: {name!r} failed ({type(exc).__name__}) — "
+                  f"leaving the saved stamp untouched")
+            return None
+        if not ped:
+            print(f"score sample: {name!r} has no scored dossier — "
+                  f"leaving the saved stamp untouched")
+            return None
+        scores.append(ped["score"])
+    if not scores:
+        return None
+    scores.sort()
+    mid = len(scores) // 2
+    median = scores[mid] if len(scores) % 2 else round(
+        (scores[mid - 1] + scores[mid]) / 2)
+    return {"n": len(scores), "min": scores[0], "max": scores[-1],
+            "median": median}
+
+
+def _score_sample(_data_path=None):
+    """The published score distribution, read from a stamped data file.
+
+    Measured offline by src/stamp_score_sample.py rather than computed per
+    request: assembling 18 dossiers costs ~7s, which every cold serverless
+    instance would pay before the page could render a number. The sample is
+    fixed, so the result is stable; re-stamp it after a corpus-growth run.
+
+    Returns None (and the page falls back to its own copy) if the file is
+    missing — a deploy without the stamp should degrade, not 500.
+    """
+    path = _data_path or os.path.join(ROOT, "score_sample.json")
+    try:
+        with open(path) as f:
+            d = json.load(f)
+    except (OSError, ValueError):
+        return None
+    if not isinstance(d, dict) or "min" not in d:
+        return None
+    return d
+
 MAX_QUERY_LEN = 120  # abuse cap: queries are names, not free-text essays
 MAX_RESULT_SIZE = 40  # a dossier, not a corpus dump
 
@@ -1024,6 +1158,10 @@ class Handler(SimpleHTTPRequestHandler):
             self._serve_mapjs()
         elif path.startswith("/api/stats"):
             self._safe(lambda: self._json(stats(es)))
+        elif path.startswith("/api/method"):
+            self._safe(lambda: self._json(method(es)))
+        elif path in ("/method", "/method.html"):
+            self._serve_static("method.html")
         elif path in ("/", "/landing", "/landing.html"):
             # "/" serves the landing page — same as the Vercel rewrite.
             self._serve_landing()
@@ -1177,8 +1315,12 @@ class Handler(SimpleHTTPRequestHandler):
 
     def _serve_landing(self):
         """Serve landing.html verbatim (static page, no token injection)."""
+        self._serve_static("landing.html")
+
+    def _serve_static(self, name):
+        """Serve a static HTML file from ui/ verbatim."""
         try:
-            with open(os.path.join(ROOT, "landing.html")) as f:
+            with open(os.path.join(ROOT, name)) as f:
                 body = f.read().encode()
         except OSError:
             self.send_error(404)

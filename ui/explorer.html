@@ -312,6 +312,8 @@
                  background: linear-gradient(90deg, var(--accent), var(--gold)); transition: width .6s ease; }
   .pedlbl { margin-top: 8px; font-size: 12.5px; color: var(--dim); line-height: 1.5; }
   .pedlbl b { color: var(--gold); font-weight: 600; font-size: 13.5px; }
+  .pedmethod { border: 0; text-decoration: none; }
+  .pedmethod:hover b { text-decoration: underline; text-underline-offset: 3px; }
   .legend .conf { display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px; vertical-align:middle; }
   @media (prefers-reduced-motion: reduce) { * { transition:none !important; } }
 
@@ -936,9 +938,9 @@ function render(q, edges, ms, ped, identity, roleFilter, serverFilter){
     if(ped.tiers.sfgate) tierBits.push('<span class="tier-sfgate">'+ped.tiers.sfgate+' SFGate</span>');
     if(ped.tiers.eater) tierBits.push('<span>'+ped.tiers.eater+' Eater</span>');
     if(ped.tiers.other) tierBits.push('<span>'+ped.tiers.other+' other</span>');
-    pedHTML = '<div class="pedigree" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+ped.score+'" title="Credibility score: source authority (Chronicle > SFGate > Eater), corroboration across cited articles, and depth of the verified record">'+
+    pedHTML = '<div class="pedigree" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+ped.score+'" title="Lineage score: how well documented this kitchen is — outlet authority (Chronicle &gt; SFGate &gt; Eater), corroboration across cited articles, and depth of the record. Measures documentation, not culinary quality. See /method">'+
       '<div class="pedbar" aria-hidden="true"><span style="width:'+ped.score+'%"></span></div>'+
-      '<div class="pedlbl"><b>Bone Fides score '+ped.score+'</b>/100 — '+ped.moves+' move'+(ped.moves===1?'':'s')+', cited in '+ped.sources+' article'+(ped.sources===1?'':'s')+' · '+tierBits.join(' · ')+'</div></div>';
+      '<div class="pedlbl"><a class="pedmethod" href="/method" title="How this score is calculated"><b>Lineage score '+ped.score+'</b>/100</a> — '+ped.moves+' move'+(ped.moves===1?'':'s')+', cited in '+ped.sources+' article'+(ped.sources===1?'':'s')+' · '+tierBits.join(' · ')+'</div></div>';
   }
 
   // one card per identity cluster (server-side people disambiguation).

@@ -36,6 +36,9 @@ ALLOWED = {
     # _facet_probe: local imports find_edges lazily from src.es to avoid a
     # circular import at module load; prod defines find_edges inline.
     "_facet_probe",
+    # _score_sample reads score_sample.json from the runtime's own directory
+    # (ui/ locally, api/ on Vercel) — the only difference is the root path.
+    "_score_sample",
 }
 
 
@@ -187,6 +190,7 @@ def test_both_twins_import_cleanly():
 # serve even when the root copies are current.
 _DEPLOYED_FROM_UI = (
     ("landing.html", "landing.html"),
+    ("method.html", "method.html"),
     ("explorer.html", "explorer.html"),
     ("map.js", "map.js"),
     ("city_venues.json", "city_venues.json"),
@@ -194,6 +198,7 @@ _DEPLOYED_FROM_UI = (
     ("city_venues.json", "api/city_venues.json"),
     ("venues_geo.json", "api/venues_geo.json"),
     ("map.js", "api/_map.js"),
+    ("score_sample.json", "api/score_sample.json"),
 )
 
 
