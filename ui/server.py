@@ -927,7 +927,7 @@ def method(es):
 
     tiers = {k: v["doc_count"] for k, v in a["tiers"]["buckets"].items()}
     value = {"coverage": coverage, "tiers": tiers,
-             "scores": _score_sample(es)}
+             "scores": _score_sample()}
     _METHOD_CACHE["at"], _METHOD_CACHE["value"] = now, value
     return value
 
@@ -944,30 +944,26 @@ _SCORE_SAMPLE = (
 )
 
 
-def _score_sample(es):
-    """Score distribution across the fixed sample, for the /method page.
+def _score_sample(_data_path=None):
+    """The published score distribution, read from a stamped data file.
 
-    Costs one dossier assembly per venue, so it is computed only when the
-    method cache is cold (once per 300s per instance) and never on a page that
-    does not ask for it.
+    Measured offline by src/stamp_score_sample.py rather than computed per
+    request: assembling 18 dossiers costs ~7s, which every cold serverless
+    instance would pay before the page could render a number. The sample is
+    fixed, so the result is stable; re-stamp it after a corpus-growth run.
+
+    Returns None (and the page falls back to its own copy) if the file is
+    missing — a deploy without the stamp should degrade, not 500.
     """
-    scores = []
-    for name in _SCORE_SAMPLE:
-        try:
-            lin = lineage(es, name, size=25)
-            ped = pedigree([e for e in lin if citation_supported(e)])
-        except Exception:
-            continue
-        if ped:
-            scores.append(ped["score"])
-    if not scores:
+    path = _data_path or os.path.join(ROOT, "score_sample.json")
+    try:
+        with open(path) as f:
+            d = json.load(f)
+    except (OSError, ValueError):
         return None
-    scores.sort()
-    mid = len(scores) // 2
-    median = scores[mid] if len(scores) % 2 else round(
-        (scores[mid - 1] + scores[mid]) / 2)
-    return {"n": len(scores), "min": scores[0], "max": scores[-1],
-            "median": median}
+    if not isinstance(d, dict) or "min" not in d:
+        return None
+    return d
 
 MAX_QUERY_LEN = 120  # abuse cap: queries are names, not free-text essays
 MAX_RESULT_SIZE = 40  # a dossier, not a corpus dump
