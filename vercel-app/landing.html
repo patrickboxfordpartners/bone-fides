@@ -261,10 +261,10 @@
       <a class="ctasecondary" href="#betelnut">See the Betelnut dossier ↓</a>
     </div>
     <div class="stats" id="stats" aria-label="Corpus size">
-      <div class="stat"><b id="n-edges">9,309</b><span>Cited chef moves</span></div>
-      <div class="stat"><b id="n-people">3,113</b><span>Chefs named</span></div>
-      <div class="stat"><b id="n-venues">799</b><span>SF kitchens</span></div>
-      <div class="stat"><b id="n-sources">2,219</b><span>Journalism sources</span></div>
+      <div class="stat"><b id="n-edges">9,312</b><span>Cited chef moves</span></div>
+      <div class="stat"><b id="n-people">3,119</b><span>Chefs named</span></div>
+      <div class="stat"><b id="n-venues">4,084</b><span>Kitchens</span></div>
+      <div class="stat"><b id="n-sources">2,221</b><span>Journalism sources</span></div>
     </div>
   </div>
 
@@ -318,7 +318,7 @@
           <h3><s>Betelnut</s> · closed 2015</h3>
         </div>
         <div class="pedigree">
-          <b>73</b>
+          <b>65</b>
           <span>Pedigree score</span>
         </div>
       </div>
@@ -363,7 +363,7 @@
         <span class="n">01</span>
         <div>
           <h4>Public food journalism, nothing else</h4>
-          <p><b>2,219 articles</b> from Eater SF, SFGATE, the Chronicle and independent writers —
+          <p><b id="n-sources-copy">2,221</b> <span id="n-sources-unit">articles</span> from Eater SF, SFGATE, the Chronicle and independent writers —
              closures, openings, chef-shuffle roundups, profiles. No review data, no proprietary anything.</p>
         </div>
       </div>
@@ -416,7 +416,7 @@
       <a class="cta" href="/explorer?q=Betelnut">Open the dossier
         <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h9M8 3.5 12.5 8 8 12.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
-      <a class="ctasecondary" href="/explorer">Browse all 799 kitchens</a>
+      <a class="ctasecondary" href="/explorer">Browse all <span id="n-venues-copy">4,084</span> kitchens</a>
     </div>
   </section>
 </main>
@@ -644,12 +644,19 @@ window.Pretext = {walkLineRanges: $1, setLocale: D1, profilePrepare: V1, prepare
     // Begin once the first chapter has rendered (no photo to wait for).
     show(0);
   })();
-  // Live stats straight from the explorer's API
+  // Live stats straight from the explorer's API. The two prose mentions of a
+  // count (method section, closing CTA) are updated from the same response so
+  // the page never states two different totals in the same viewport.
   fetch('/api/stats').then(r => r.json()).then(d => {
-    document.getElementById('n-edges').textContent = d.edges.toLocaleString('en-US');
-    document.getElementById('n-people').textContent = d.people.toLocaleString('en-US');
-    document.getElementById('n-venues').textContent = d.venues.toLocaleString('en-US');
-    document.getElementById('n-sources').textContent = d.sources.toLocaleString('en-US');
+    const fmt = n => n.toLocaleString('en-US');
+    document.getElementById('n-edges').textContent = fmt(d.edges);
+    document.getElementById('n-people').textContent = fmt(d.people);
+    document.getElementById('n-venues').textContent = fmt(d.venues);
+    document.getElementById('n-sources').textContent = fmt(d.sources);
+    const venueCopy = document.getElementById('n-venues-copy');
+    if (venueCopy) venueCopy.textContent = fmt(d.venues);
+    const sourceCopy = document.getElementById('n-sources-copy');
+    if (sourceCopy) sourceCopy.textContent = fmt(d.sources);
   }).catch(() => { /* baked-in numbers stay */ });
 })();
 </script>
