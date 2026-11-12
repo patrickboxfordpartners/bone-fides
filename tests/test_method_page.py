@@ -154,6 +154,38 @@ def test_method_page_never_leaves_a_permanent_measuring_placeholder():
     assert "'score-note'" in html, "score-note is never updated by the script"
 
 
+def test_score_sample_uses_the_explorer_scoping_path():
+    """The stamp must score through assemble_dossier(), like a dossier does.
+
+    Scoring raw search hits skipped scope_edges(), so the published sample
+    disagreed with the dossiers it claims to summarize: 6 of 18 kitchens were
+    wrong, Tartine by 10 points and Atelier Crenn by 21. A methodology page
+    whose own sample does not match its own dossiers is self-refuting.
+    """
+    for path in (_UI_PATH, _VERCEL_PATH):
+        src = ast.unparse(_funcs(path)["measure_score_sample"])
+        assert "assemble_dossier" in src, (
+            f"{path}: measure_score_sample() no longer scores through "
+            f"assemble_dossier(), so it can publish numbers dossiers do not show")
+        assert "scope_edges" in src or "assemble_dossier" in src
+
+
+def test_score_sample_refuses_to_publish_a_partial_sample():
+    """A failed search must abort the stamp, not shrink the sample.
+
+    Silently skipping a kitchen lets one timeout redefine the "fixed" sample
+    and overwrite the saved range with a different one.
+    """
+    for path in (_UI_PATH, _VERCEL_PATH):
+        src = ast.unparse(_funcs(path)["measure_score_sample"])
+        assert "return None" in src, (
+            f"{path}: measure_score_sample() can still complete with a "
+            f"partial sample")
+        assert "continue" not in src.replace("continue\n", ""), (
+            f"{path}: measure_score_sample() still skips failed kitchens "
+            f"with `continue` instead of aborting")
+
+
 def test_method_page_does_not_duplicate_the_stats_fetch():
     """One endpoint feeds the counts, or the page can disagree with itself —
     which is the exact sentence its own comment makes."""

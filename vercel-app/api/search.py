@@ -90,16 +90,33 @@ def measure_score_sample(es):
     other runs on every cold serverless instance.
 
     Not called at request time by design. Never wire this into a handler.
+
+    Scores come from assemble_dossier(), the explorer's own path, NOT from
+    scoring raw search hits. Hybrid search returns fuzzy and related matches,
+    and assemble_dossier applies scope_edges() to drop the ones that are not
+    actually about the queried kitchen before scoring. Skipping that step
+    published numbers the dossiers themselves did not show: 6 of the 18
+    sampled kitchens disagreed, Tartine by 10 points and Atelier Crenn by 21.
+
+    A failed search is a failure, not a smaller sample. Silently dropping a
+    kitchen would let a transient timeout redefine the "fixed" sample and
+    overwrite the saved stamp with a different range. If any kitchen cannot be
+    scored, return None and let the caller keep the existing file.
     """
     scores = []
     for name in _SCORE_SAMPLE:
         try:
             lin = lineage(es, name, size=25)
-            ped = pedigree([e for e in lin if citation_supported(e)])
-        except Exception:
-            continue
-        if ped:
-            scores.append(ped["score"])
+            ped = (assemble_dossier(name, lin, es=es) or {}).get("pedigree")
+        except Exception as exc:
+            print(f"score sample: {name!r} failed ({type(exc).__name__}) — "
+                  f"leaving the saved stamp untouched")
+            return None
+        if not ped:
+            print(f"score sample: {name!r} has no scored dossier — "
+                  f"leaving the saved stamp untouched")
+            return None
+        scores.append(ped["score"])
     if not scores:
         return None
     scores.sort()
