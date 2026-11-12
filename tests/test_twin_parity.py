@@ -176,15 +176,29 @@ def test_both_twins_import_cleanly():
         assert hasattr(mod, "stats")
 
 
-# Assets the deploy serves that originate in ui/. Keep in sync with
-# vercel-app/build.sh — the bug this locks is landing.html being served from
-# vercel-app/ but never copied there, so it drifted for every content change.
-_DEPLOYED_FROM_UI = ("landing.html", "explorer.html", "map.js",
-                     "city_venues.json", "venues_geo.json")
+# Assets the deploy serves that originate in ui/, as (source, deployed copy)
+# pairs. Keep in sync with vercel-app/build.sh — the bug this locks is
+# landing.html being served from vercel-app/ but never copied there, so it
+# drifted for every content change.
+#
+# The api/ destinations matter as much as the root ones: the Python handler
+# reads city_venues.json, venues_geo.json and _map.js from ITS OWN directory
+# (api/), so a stale api/ copy is what /api/venues and /api/map.js actually
+# serve even when the root copies are current.
+_DEPLOYED_FROM_UI = (
+    ("landing.html", "landing.html"),
+    ("explorer.html", "explorer.html"),
+    ("map.js", "map.js"),
+    ("city_venues.json", "city_venues.json"),
+    ("venues_geo.json", "venues_geo.json"),
+    ("city_venues.json", "api/city_venues.json"),
+    ("venues_geo.json", "api/venues_geo.json"),
+    ("map.js", "api/_map.js"),
+)
 
 
 def test_build_copies_every_ui_asset_the_deploy_serves():
-    """Any front-end asset served by Vercel must have a copy rule in build.sh.
+    """Every source->destination copy must exist in build.sh.
 
     landing.html was absent from build.sh's copy list. The deploy kept serving
     a committed copy, so the live homepage showed 9,309 moves, 799 kitchens,
@@ -192,28 +206,82 @@ def test_build_copies_every_ui_asset_the_deploy_serves():
     because the drift was between a source file and an un-copied artifact.
     """
     build = open(os.path.join(_ROOT, "vercel-app", "build.sh")).read()
-    missing = [f for f in _DEPLOYED_FROM_UI if f"ui/{f}" not in build]
+    missing = [f"{src} -> {dst}" for src, dst in _DEPLOYED_FROM_UI
+               if f"ui/{src}" not in build or dst not in build]
     assert not missing, (
-        f"build.sh never copies {missing} from ui/ — the deployed copy will "
+        f"build.sh has no copy rule for {missing} — the deployed copy will "
         f"drift from the source on every edit.")
 
 
-@pytest.mark.parametrize("asset", _DEPLOYED_FROM_UI)
-def test_copy_listed_assets_start_life_identical(asset):
-    """Committed copies must match ui/ at rest.
+@pytest.mark.parametrize("src,dst", _DEPLOYED_FROM_UI,
+                         ids=[f"{s}-to-{d}" for s, d in _DEPLOYED_FROM_UI])
+def test_copy_listed_assets_start_life_identical(src, dst):
+    """Committed copies must match their ui/ source at rest.
 
     build.sh re-copies them at deploy time when ../ui/ exists, but CLI deploys
     from a shallow checkout fall back to the committed copy. A committed copy
     that disagrees with ui/ means two different sites depending on how it was
-    built.
+    built. This covers the api/ mirrors too, which the handler actually reads.
     """
-    a = os.path.join(_ROOT, "ui", asset)
-    b = os.path.join(_ROOT, "vercel-app", asset)
+    a = os.path.join(_ROOT, "ui", src)
+    b = os.path.join(_ROOT, "vercel-app", dst.replace("/", os.sep))
     if not (os.path.exists(a) and os.path.exists(b)):
-        pytest.skip(f"{asset} not present in both trees")
+        pytest.skip(f"{dst} not present in both trees")
     assert open(a, "rb").read() == open(b, "rb").read(), (
-        f"vercel-app/{asset} is stale relative to ui/{asset}. "
+        f"vercel-app/{dst} is stale relative to ui/{src}. "
         f"Run vercel-app/build.sh and commit the result.")
+
+
+def test_junk_filter_does_not_eat_real_restaurants():
+    """Junk/chain matching must be whole-token, never substring.
+
+    Substring matching dropped "Schubert's Bakery" and "Petite Auberge" from
+    the kitchen count because both contain "uber". Whole-token matching keeps
+    them while still rejecting the actual artefacts.
+    """
+    mod = _load("junk_check_ui", _UI_PATH)
+    must_survive = ["Schubert's Bakery", "Petite Auberge", "Zuni Cafe",
+                    "Tartine Bakery", "Chez Panisse", "Nopa",
+                    "State Bird Provisions"]
+    for name in must_survive:
+        assert not mod._is_junk_venue(name), f"{name!r} wrongly dropped as junk"
+
+    must_drop = ["Uber", "Google", "Google kitchen", "Starbucks",
+                 "McDonald's", "Burger King Market St", "TBD", "null", "",
+                 "Chipotle Mexican Grill", "Peet’s Coffee & Tea"]
+    for name in must_drop:
+        assert mod._is_junk_venue(name), f"{name!r} wrongly kept as a kitchen"
+
+
+def test_stats_does_not_claim_alias_resolution():
+    """stats() folds normalized names; it does not resolve aliases.
+
+    The docstring once promised "Tartine" / "Tartine Bakery" count as one
+    kitchen, which norm_venue does not do. Either implement alias folding or
+    describe it honestly — this locks the honest description until a venue
+    identity table exists.
+    """
+    for path in (_UI_PATH, _VERCEL_PATH):
+        # parse fresh: _functions() strips docstrings for AST comparison
+        tree = ast.parse(open(path).read())
+        fn = next(n for n in tree.body
+                  if isinstance(n, ast.FunctionDef) and n.name == "stats")
+        doc = (ast.get_docstring(fn) or "").lower()
+        assert "alias" in doc, (
+            f"{path}: stats() docstring no longer discloses that aliases are "
+            f"not resolved — that was the exact inaccuracy a reviewer caught")
+        assert "not resolve" in doc or "does not resolve" in doc, (
+            f"{path}: stats() docstring should state plainly that it does not "
+            f"resolve aliases")
+
+
+def test_stats_result_is_cached_in_both_twins():
+    """Both twins memoize stats(): every page load was re-scanning the corpus."""
+    for path in (_UI_PATH, _VERCEL_PATH):
+        src = ast.unparse(_functions(path)["stats"])
+        assert "_STATS_CACHE" in src, (
+            f"{path}: stats() lost its TTL cache, so every page load pays for "
+            f"a full distinct-venue scan again")
 
 
 def test_stats_defines_venues_as_kitchens_not_raw_names():

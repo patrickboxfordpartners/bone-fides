@@ -686,6 +686,11 @@ def pedigree(edges):
 # Non-restaurant names the extraction produced ("Google kitchen", "TBD") and
 # chains. Shared by venues_geo (map dots) and stats (kitchen count) so the
 # headline number and the map draw from the same definition of a kitchen.
+#
+# Matched as WHOLE WORDS, never substrings. Substring matching dropped real
+# SF restaurants whose names merely contain a chain fragment: "Schubert's
+# Bakery" and "Petite Auberge" both contain "uber" and were silently
+# excluded from the corpus count.
 _JUNK_WORDS = ("tbd", "to be determined", "facebook", "walgreen", "google",
                "salesforce", "amazon", "apple inc", "airbnb", "uber",
                "doordash", "lyft", "bon appetit", "proper food", "mixt",
@@ -696,10 +701,34 @@ _CHAIN_NAMES = ("mcdonald", "starbucks", "burger king", "jack in the box",
                 "wendy", "dunkin", "in n out", "mrs field", "cold stone",
                 "dairy queen", "potbelly", "panera", "noah")
 
+
+def _tokens(s):
+    """Lowercase word tokens, punctuation folded to spaces."""
+    return "".join(c if c.isalnum() or c.isspace() else " "
+                   for c in (s or "").lower()).split()
+
+
 def _is_junk_venue(name):
-    n = (name or "").lower()
-    return (not n.strip()) or any(w in n for w in _JUNK_WORDS) \
-        or any(c in n for c in _CHAIN_NAMES)
+    """True when a venue name is a non-kitchen artefact, not a restaurant.
+
+    Junk terms match as WHOLE TOKEN SEQUENCES, never substrings. Substring
+    matching silently dropped real SF restaurants whose names merely contain
+    a chain fragment: "Schubert's Bakery" and "Petite Auberge" both contain
+    "uber" and were excluded from the corpus count.
+
+    Multi-word terms match as contiguous phrases ("burger king" inside
+    "Burger King Market St"), so a chain with a branch suffix still counts
+    while a name that merely contains the letters does not.
+    """
+    toks = _tokens(name)
+    if not toks:
+        return True
+    joined = " " + " ".join(toks) + " "
+    for term in _JUNK_WORDS + _CHAIN_NAMES:
+        t = _tokens(term)
+        if t and (" " + " ".join(t) + " ") in joined:
+            return True
+    return False
 
 def venues_geo(es):
     """Venues for the map: the full SF permitted-food universe (ui/city_venues.json,
@@ -784,12 +813,16 @@ def fetch_person_edges(es, names, limit=100):
         })
     return out
 
-def _distinct_values(es, field, page=1000):
+def _distinct_values(es, field, page=10000):
     """Every distinct value of a keyword field, via composite aggregation.
 
     `terms` caps at the requested size, which silently truncates a corpus this
     big (the old stats() asked for 500 per field and reported 799 kitchens
-    against 4,100+ real ones). composite pages through all of them."""
+    against 4,000+ real ones). composite pages through all of them.
+
+    page=10000 is ES's default composite max_buckets, so a corpus this size
+    resolves in ONE round-trip per field instead of 4-5. The corpus would have
+    to pass 10k distinct values before this needed a second page."""
     out, after = set(), None
     while True:
         comp = {"size": page, "sources": [{"v": {"terms": {"field": field}}}]}
@@ -803,15 +836,39 @@ def _distinct_values(es, field, page=1000):
         if not buckets or not after:
             return out
 
+# Corpus-size cache. /api/stats is fetched on every landing and explorer page
+# load, and counting distinct venue names costs several aggregation round-trips
+# even at page=10000. The corpus grows in periodic scrape runs, not per
+# request, so a warm process can answer every visitor for a few minutes from
+# one computation.
+_STATS_TTL = 300.0  # seconds
+_STATS_CACHE = {"at": 0.0, "value": None}
+
+
 def stats(es):
     """Top-line corpus stats for the masthead counter.
 
-    venues is the count of distinct KITCHENS — venue names folded with the
-    same norm_venue the dossier uses ("Tartine" / "Tartine Bakery" are one
-    kitchen) and filtered with the same junk/chain rule the map uses. It is
-    deliberately not a raw name count: that number would overstate the
-    corpus by counting typo variants and chains as separate restaurants.
+    venues counts distinct NORMALIZED venue names: each name is filtered by
+    the same junk/chain rule the map uses, then folded with norm_venue, which
+    removes case, punctuation, accents, possessives, and stop words. It does
+    NOT resolve aliases — "Tartine" and "Tartine Bakery" normalize to
+    different strings and count as two. Alias resolution needs a venue
+    identity table the corpus does not have yet, so the number is best read
+    as "distinct kitchen names", not "distinct restaurants".
+
+    Still the right number to show: it is far closer to reality than the raw
+    name count (which counts every typo variant) and than the old
+    truncated-terms count of 799.
+
+    Result is memoized for _STATS_TTL: the count is identical on every call
+    until the next scrape run, and visitors were otherwise paying for the same
+    full scan each page load.
     """
+    now = time.time()
+    cached = _STATS_CACHE["value"]
+    if cached is not None and now - _STATS_CACHE["at"] < _STATS_TTL:
+        return cached
+
     venues_raw = _distinct_values(es, "from_venue.keyword") \
         | _distinct_values(es, "to_venue.keyword")
     venues = {norm_venue(v) for v in venues_raw
@@ -822,10 +879,12 @@ def stats(es):
         "sources": {"cardinality": {"field": "source_url.keyword",
                                     "precision_threshold": 40000}},
     }})["aggregations"]
-    return {"edges": es.count(index=INDEX)["count"],
-            "people": agg["people"]["value"],
-            "venues": len(venues),
-            "sources": agg["sources"]["value"]}
+    value = {"edges": es.count(index=INDEX)["count"],
+             "people": agg["people"]["value"],
+             "venues": len(venues),
+             "sources": agg["sources"]["value"]}
+    _STATS_CACHE["at"], _STATS_CACHE["value"] = now, value
+    return value
 
 MAX_QUERY_LEN = 120  # abuse cap: queries are names, not free-text essays
 MAX_RESULT_SIZE = 40  # a dossier, not a corpus dump
