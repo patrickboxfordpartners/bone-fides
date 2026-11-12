@@ -911,21 +911,30 @@ def method(es):
     agg_body = {"size": 0, "aggs": {}}
     for f in _COVERAGE_FIELDS:
         agg_body["aggs"][f] = {"filter": {"exists": {"field": f}}}
-    # outlet tiers, counted the same way the score counts them
-    agg_body["aggs"]["tiers"] = {"filters": {"filters": {
-        "sfchronicle": {"term": {"source": "sfchronicle"}},
-        "sfgate": {"term": {"source": "sfgate"}},
-        "eater": {"term": {"source": "eater"}},
-        "other": {"bool": {"must_not": {"terms": {
-            "source": ["sfchronicle", "sfgate", "eater"]}}}},
-    }}}
+    # Outlet tiers must use the SAME rule the score uses: outlet_tier(), which
+    # falls back to the source_url host when `source` is missing. A pure
+    # `term: source` aggregation would count the 23 host-identifiable edges
+    # with no `source` as "other" while the score counted them as Eater.
+    agg_body["aggs"]["tiers"] = {"terms": {"field": "source", "size": 10}}
     a = es.search(index=INDEX, body=agg_body)["aggregations"]
 
     coverage = dict(base)
     for f in _COVERAGE_FIELDS:
         coverage[f] = a[f]["doc_count"]
 
-    tiers = {k: v["doc_count"] for k, v in a["tiers"]["buckets"].items()}
+    tiers = {"sfchronicle": 0, "sfgate": 0, "eater": 0, "other": 0}
+    for b in a["tiers"]["buckets"]:
+        key = b["key"] if b["key"] in tiers else "other"
+        tiers[key] += b["doc_count"]
+    # edges with no `source` still have a host; classify them the way the
+    # score does rather than dumping them into "other". The terms agg above
+    # only saw edges that HAVE a source, so these are purely additive.
+    for h in es.search(index=INDEX, body={
+            "size": 1000,
+            "query": {"bool": {"must_not": {"exists": {"field": "source"}}}},
+            "_source": ["source", "source_url"]})["hits"]["hits"]:
+        src = h["_source"]
+        tiers[outlet_tier(src.get("source"), src.get("source_url"))] += 1
     value = {"coverage": coverage, "tiers": tiers,
              "scores": _score_sample()}
     _METHOD_CACHE["at"], _METHOD_CACHE["value"] = now, value
@@ -942,6 +951,35 @@ _SCORE_SAMPLE = (
     "Kin Khao", "Lazy Bear", "Coi", "Saison", "Nopa", "Rich Table",
     "Atelier Crenn",
 )
+
+
+def measure_score_sample(es):
+    """MEASURE the score distribution across _SCORE_SAMPLE. Slow (~7s).
+
+    This is the computing half, kept separate from _score_sample() (the cheap
+    file reader the web request uses) because the two have opposite cost and
+    call-site profiles: this one runs offline in stamp_score_sample.py, the
+    other runs on every cold serverless instance.
+
+    Not called at request time by design. Never wire this into a handler.
+    """
+    scores = []
+    for name in _SCORE_SAMPLE:
+        try:
+            lin = lineage(es, name, size=25)
+            ped = pedigree([e for e in lin if citation_supported(e)])
+        except Exception:
+            continue
+        if ped:
+            scores.append(ped["score"])
+    if not scores:
+        return None
+    scores.sort()
+    mid = len(scores) // 2
+    median = scores[mid] if len(scores) % 2 else round(
+        (scores[mid - 1] + scores[mid]) / 2)
+    return {"n": len(scores), "min": scores[0], "max": scores[-1],
+            "median": median}
 
 
 def _score_sample(_data_path=None):

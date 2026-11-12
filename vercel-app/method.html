@@ -163,13 +163,17 @@
         <tr><td>Outlet weight</td><td class="r">55</td><td>Mean citation weight across the kitchen's moves,
           divided by the top tier. Weights: SF Chronicle <span class="num">12</span>, SFGATE <span class="num">8</span>,
           Eater <span class="num">6</span>, everything else <span class="num">3</span>.</td></tr>
-        <tr><td>Corroboration</td><td class="r">25</td><td>Distinct articles citing the kitchen, capped at five.
-          More independent articles means more confidence the record is real.</td></tr>
-        <tr><td>Depth</td><td class="r">20</td><td>Number of cited moves, capped at twelve.</td></tr>
+        <tr><td>Corroboration</td><td class="r">25</td><td>
+          <code>min(1, max(0, articles − 1) / 4)</code> — distinct articles citing the kitchen,
+          normalized so the first article contributes nothing. The subtraction is deliberate:
+          one article is the minimum needed to have a record at all, not corroboration.
+          Five or more articles saturate the term.</td></tr>
+        <tr><td>Depth</td><td class="r">20</td><td>
+          <code>min(1, moves / 12)</code> — cited moves, normalized so twelve saturates the term.</td></tr>
       </tbody>
     </table>
 
-    <p class="note" id="score-note">Measuring…</p>
+    <p class="note" id="score-note">Reading the saved measurement…</p>
 
     <h3>What the number looks like in practice</h3>
     <p>Scores across a sample of well-documented San Francisco kitchens run
@@ -229,8 +233,11 @@
 
     <h3>Employment dates are not publication dates</h3>
     <p>A move's date is what the article states about when it happened — not when the article was
-      written. An article published years after a chef's tenure can describe that tenure accurately.
-      The corpus does not yet record article publication dates, so the two cannot be compared.</p>
+      written. An article published years after a chef's tenure can describe that tenure accurately.</p>
+    <p>The corpus now captures the article's own publication date on newly indexed records, read
+      from the page's declared metadata. This is <b>forward-only</b>: records indexed before the
+      field existed do not carry one, so the two dates can be compared on recent additions but not
+      across the whole corpus. The explorer does not surface publication dates yet.</p>
 
     <h3>Same name, possibly two people</h3>
     <p>When one name produces two unconnected bodies of work, the dossier surfaces that as
@@ -314,19 +321,21 @@
         s.min + ' to ' + s.max + ', median ' + s.median + '. The spread tracks how much ' +
         'has been written about a kitchen, not how good it is — a three-star room with ' +
         'a thin press record scores below a neighborhood place that reporters kept covering.');
+      // The sample is measured offline (18 dossier assemblies is ~7s), so say
+      // WHEN rather than implying the number is live to the second.
+      set('score-note', s.measured_at
+        ? 'Measured ' + s.measured_at + ' over a fixed sample of ' + s.n +
+          ' kitchens. Re-run after each corpus-growth session.'
+        : 'Measured over a fixed sample of ' + s.n + ' kitchens.');
+    } else {
+      set('score-note', 'Saved measurement unavailable — re-run src/stamp_score_sample.py.');
     }
   }).catch(() => {
     const n = document.getElementById('src-note');
     if (n) n.textContent = 'Live figures unavailable — reload to retry.';
+    const s = document.getElementById('score-note');
+    if (s) s.textContent = 'Live figures unavailable — reload to retry.';
   });
-
-  fetch('/api/stats').then(r => r.json()).then(d => {
-    const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
-    set('cov-edges', fmt(d.edges));
-    set('cov-people', fmt(d.people));
-    set('cov-venues', fmt(d.venues));
-    set('cov-sources', fmt(d.sources));
-  }).catch(() => {});
 })();
 </script>
 </body>

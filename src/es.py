@@ -133,8 +133,25 @@ def make_client(endpoint=None, api_key=None):
     )
 
 def ensure_index(es, index=INDEX):
+    """Create the index, or repair an existing one's mapping.
+
+    Creating only is not enough: an index made before a field existed never
+    receives its mapping. That matters most for published_at — if dynamic
+    date detection runs first, the initial ISO timestamp creates a `date`
+    field, and a later publisher emitting a different format is then rejected
+    outright. Applying the explicit keyword mapping first makes the field
+    format-agnostic. Additive and idempotent: put_mapping only adds or
+    updates, never drops.
+    """
     if not es.indices.exists(index=index):
         es.indices.create(index=index, mappings=INDEX_SETTINGS["mappings"])
+        return
+    try:
+        es.indices.put_mapping(
+            index=index,
+            properties={"published_at": INDEX_SETTINGS["mappings"]["properties"]["published_at"]})
+    except Exception:
+        pass  # older clusters or a race with another writer; never block indexing
 
 def ensure_tips_index(es):
     if not es.indices.exists(index=TIPS_INDEX):

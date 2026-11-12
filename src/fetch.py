@@ -27,6 +27,7 @@ _PUB_PATTERNS = (
     r'<meta[^>]+property=["\']article:published_time["\'][^>]+content=["\']([^"\']+)',
     r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']article:published_time["\']',
     r'<meta[^>]+itemprop=["\']datePublished["\'][^>]+content=["\']([^"\']+)',
+    r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+itemprop=["\']datePublished["\']',
     r'"datePublished"\s*:\s*"([^"]+)"',
     r'<time[^>]+datetime=["\']([^"\']+)',
 )

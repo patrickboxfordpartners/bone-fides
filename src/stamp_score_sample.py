@@ -39,7 +39,9 @@ def main():
     from src.es import make_client
 
     es = make_client()
-    sample = ui._score_sample(es)
+    # measure_score_sample() computes; _score_sample() only reads the file.
+    # Calling the reader here passed an ES client into open() — TypeError.
+    sample = ui.measure_score_sample(es)
     if not sample:
         print("no scores computed — corpus unreachable or sample empty")
         return 1

@@ -123,6 +123,67 @@ def test_method_page_explains_kitchen_names_are_not_restaurants():
         "understandable")
 
 
+def test_method_counts_outlets_with_the_score_s_own_rule():
+    """Outlet shares must be computed the way the score computes them.
+
+    A pure `term: source` aggregation counted the 23 edges whose `source` is
+    missing as "other", while the score's outlet_tier() read their source_url
+    host and called them Eater. Two different answers to "how many Eater
+    moves" on a page whose job is being the one that is right.
+    """
+    for path in (_UI_PATH, _VERCEL_PATH):
+        src = ast.unparse(_funcs(path)["method"])
+        assert "outlet_tier" in src, (
+            f"{path}: method() no longer classifies source-less edges by host, "
+            f"so outlet totals disagree with the score")
+
+
+def test_method_page_never_leaves_a_permanent_measuring_placeholder():
+    """A placeholder that no code path updates is a promise the page breaks.
+
+    score-note said 'Measuring…' forever: the scores branch filled the range,
+    median and comparison but never touched the note. A pre-fetch placeholder
+    is fine, so this checks that every one is actually written by the script.
+    """
+    html = open(_METHOD_HTML).read()
+    import re
+    placeholders = re.findall(r'id="([a-z-]+)"[^>]*>\s*Measuring', html)
+    missing = [pid for pid in placeholders if f"'{pid}'" not in html]
+    assert not missing, (
+        f"method.html shows 'Measuring…' in {missing}, which no script updates")
+    assert "'score-note'" in html, "score-note is never updated by the script"
+
+
+def test_method_page_does_not_duplicate_the_stats_fetch():
+    """One endpoint feeds the counts, or the page can disagree with itself —
+    which is the exact sentence its own comment makes."""
+    html = open(_METHOD_HTML).read()
+    assert "fetch('/api/stats')" not in html, (
+        "method.html fetches /api/stats again; /api/method already includes "
+        "those counts, and two fetches can race")
+
+
+def test_method_page_documents_the_normalized_score_terms():
+    """Readers must be able to reproduce the score. The caps alone don't say
+    how articles and moves become 0..1, and the -1 in corroboration is the
+    part that changes the answer."""
+    html = open(_METHOD_HTML).read()
+    assert "min(1, max(0, articles" in html, (
+        "method.html no longer states the corroboration normalization")
+    assert "min(1, moves / 12)" in html, (
+        "method.html no longer states the depth normalization")
+
+
+def test_method_page_describes_publication_dates_as_forward_only():
+    """published_at now exists, so 'the corpus does not record publication
+    dates' became false the moment this shipped."""
+    html = open(_METHOD_HTML).read().lower()
+    assert "forward-only" in html or "forward only" in html, (
+        "method.html must state that publication dates are captured forward-only")
+    assert "does not yet record article publication dates" not in html, (
+        "method.html still claims publication dates are not recorded")
+
+
 def test_no_display_surface_still_calls_it_a_pedigree_score():
     """The rename is only real if every surface moved. CSS class names are
     fine; a visible label is not."""

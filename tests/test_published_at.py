@@ -50,6 +50,39 @@ def test_ignores_too_short_matches():
     assert extract_published_at(html) is None
 
 
+def test_reads_itemprop_date_published_in_both_attribute_orders():
+    """itemprop appeared in both orders on real pages; only one was matched.
+
+    The article:published_time patterns handled both orders from the start, so
+    the gap was invisible unless you compared the two blocks side by side.
+    """
+    assert extract_published_at(
+        '<meta itemprop="datePublished" content="2020-01-02">') == "2020-01-02"
+    assert extract_published_at(
+        '<meta content="2021-05-10" itemprop="datePublished">') == "2021-05-10"
+
+
+def test_measure_and_read_are_separate_functions():
+    """The computing half and the file-reading half must not be the same name.
+
+    Collapsing them broke src/stamp_score_sample.py: it passed an ES client to
+    the reader, which called open() on it and raised TypeError. The refresh
+    command is documented in that script, so it has to actually run.
+    """
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "ui_server_measure", os.path.join(_ROOT, "ui", "server.py"))
+    ui = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(ui)
+    assert callable(getattr(ui, "measure_score_sample", None)), (
+        "measure_score_sample() is gone — the offline refresh cannot compute")
+    # the reader must take a path, not a client
+    import inspect
+    params = list(inspect.signature(ui._score_sample).parameters)
+    assert params == ["_data_path"], (
+        f"_score_sample should read a file path, got params {params}")
+
+
 def test_build_edge_doc_carries_published_at_separately_from_date():
     """The two dates must not collapse into one field.
 
