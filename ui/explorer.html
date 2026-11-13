@@ -141,6 +141,31 @@
            color: var(--ink); line-height: 1.4; border-bottom: 1px solid transparent; }
   .vchip:hover { color: var(--accent); border-bottom-color: var(--accent); }
   .vchip.here { color: var(--accent); font-weight: 640; cursor: default; }
+  /* ── Career timeline ─────────────────────────────────────────────
+     A vertical sequence, used when an edge carries a citable year.
+     Moves with no year are NOT interleaved — they render in their own
+     labelled group below, because inventing an order from prose that
+     states none is exactly the kind of claim this project refuses. */
+  .tl { margin-top: 10px; padding-left: 2px; }
+  .tlrow { display: grid; grid-template-columns: 74px 14px 1fr; gap: 0 10px; align-items: start; }
+  .tlyr { font: 340 11.5px Fraunces, Georgia, serif; color: var(--gold); letter-spacing: .06em;
+          text-align: right; padding-top: 3px; font-variant-numeric: tabular-nums; }
+  .tlrail { position: relative; display: flex; justify-content: center; }
+  .tlrail::before { content: ''; position: absolute; top: 0; bottom: 0; width: 1px; background: var(--faint); }
+  .tlrow:first-child .tlrail::before { top: 11px; }
+  .tlrow:last-child .tlrail::before { bottom: auto; height: 11px; }
+  .tldot { position: relative; z-index: 1; width: 7px; height: 7px; border-radius: 50%;
+           background: var(--accent); margin-top: 8px; box-shadow: 0 0 0 3px var(--bg); }
+  .tldot.here { background: var(--gold); }
+  .tlbody { padding-bottom: 14px; min-width: 0; }
+  .tlvenues { display: flex; align-items: baseline; flex-wrap: wrap; gap: 2px 7px; }
+  .tlmeta { font-size: 11.5px; color: var(--dim); font-style: italic; margin-top: 2px; }
+  .tlmentor { font-size: 11.5px; color: var(--ok); margin-top: 2px; }
+  .tlundated { margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--faint); }
+  .tlundated .tlhdr { font: 340 11px Fraunces, Georgia, serif; color: var(--dim);
+                      letter-spacing: .14em; text-transform: uppercase; margin-bottom: 7px; }
+  .tlundated .urow { display: flex; align-items: baseline; flex-wrap: wrap; gap: 2px 7px; margin-bottom: 5px; }
+  @media (max-width: 560px) { .tlrow { grid-template-columns: 52px 12px 1fr; gap: 0 8px; } }
   .arr { color: #54493a; font-size: 16px; }
   .arr .yr { font-size: 12px; color: var(--dim); font-weight: 340; font-style: italic; margin-left: 5px; }
   .chef .ev { font-size: 14.5px; margin-top: 10px; line-height: 1.5; color: var(--dim); font-weight: 350; font-style: italic; }
@@ -905,6 +930,64 @@ function buildChain(person_edges, ql){
   return { chain, years, pivot, hasEdge };
 }
 
+// ── Career timeline ────────────────────────────────────────────────────
+// Ordered by era_bucket where the article yielded a citable year. Moves with
+// no year are NOT placed in the sequence: the corpus states no order for them,
+// and inventing one (by article date, by array position, by chain hop count)
+// would be a claim the data does not support. They render in a separate,
+// clearly labelled group so a reader can see exactly how much is dated.
+const ERA_ORDER = ['pre-1990', '1990s', '2000s', '2010s', '2020s'];
+
+function buildTimeline(edges, ql){
+  if(!edges || !edges.length) return null;
+  const qlL = looseKey(ql);
+  const here = v => v && (looseKey(v) === qlL || sameLoose(v, ql));
+  // One row per move. Prefer showing from → to; a move with only one endpoint
+  // still gets a row (it is a cited fact even when half the venue is unknown).
+  const rows = edges
+    .filter(e => e.from_venue || e.to_venue)
+    .map(e => ({
+      e,
+      era: ERA_ORDER.includes(e.era_bucket) ? e.era_bucket : null,
+      from: e.from_venue, to: e.to_venue,
+    }));
+  if(!rows.length) return null;
+  const dated = rows.filter(r => r.era);
+  const undated = rows.filter(r => !r.era);
+  // Within an era, keep corpus order — we have no finer grain than the bucket,
+  // so imposing any further sort would be fiction dressed as precision.
+  dated.sort((a, b) => ERA_ORDER.indexOf(a.era) - ERA_ORDER.indexOf(b.era));
+  // Only become a timeline when it actually sequences something.
+  if(dated.length < 2) return null;
+  return { dated, undated };
+}
+
+function timelineHTML(tl, ql, chipFor){
+  const qlL = looseKey(ql);
+  const isHere = v => !!v && (looseKey(v) === qlL || sameLoose(v, ql));
+  const venue = v => v ? chipFor(v) : '<span class="vchip" style="color:var(--dim);font-style:italic">unspecified</span>';
+  const rows = tl.dated.map(r => {
+    const e = r.e;
+    const mentor = e.mentor ? `<div class="tlmentor">under ${esc(e.mentor)}</div>` : '';
+    const meta = [e.role, e.date].filter(Boolean).join(' · ');
+    return `<div class="tlrow">
+      <div class="tlyr">${esc(r.era)}</div>
+      <div class="tlrail"><span class="tldot${(isHere(r.from)||isHere(r.to))?' here':''}" aria-hidden="true"></span></div>
+      <div class="tlbody">
+        <div class="tlvenues">${venue(r.from)}${r.to ? '<span class="arr">→</span>' + venue(r.to) : ''}</div>
+        ${meta ? `<div class="tlmeta">${esc(meta)}</div>` : ''}
+        ${mentor}
+      </div>
+    </div>`;
+  }).join('');
+  const und = tl.undated.length ? `<div class="tlundated">
+      <div class="tlhdr">${tl.undated.length} move${tl.undated.length===1?'':'s'} with no stated year</div>
+      ${tl.undated.map(r => `<div class="urow">${venue(r.from)}${r.to ? '<span class="arr">→</span>' + venue(r.to) : ''}${
+        r.e.role ? `<span class="tlmeta">${esc(r.e.role)}</span>` : ''}</div>`).join('')}
+    </div>` : '';
+  return `<div class="tl" role="list" aria-label="Career timeline">${rows}${und}</div>`;
+}
+
 function render(q, edges, ms, ped, identity, roleFilter, serverFilter){
   // serverFilter is now the object {role, era, hood} of active server-side
   // facet filters (roadmap 4.4); null when none are active
@@ -955,12 +1038,20 @@ function render(q, edges, ms, ped, identity, roleFilter, serverFilter){
     if(!c) return;
     const pivot = c.pivot;
     const hereChip = v => (v.toLowerCase() === ql || sameLoose(v, ql)) ? ' here' : '';
-    const chainHTML = c.chain.map((v, i) => {
-      const yr = i > 0 ? c.years[c.chain[i-1] + '>' + v] : null;
-      const linked = i > 0 && c.hasEdge && c.hasEdge[c.chain[i-1] + '>' + v];
-      return (linked ? `<span class="arr">→${yr ? '<span class="yr">'+esc(yr)+'</span>' : ''}</span>` : '') +
-             (hereChip(v) ? `<span class="vchip here" aria-current="true">${esc(v)}</span>` : `<button type="button" class="vchip" data-pick="${esc(v)}">${esc(v)}</button>`);
-    }).join('');
+    // Timeline when the record carries at least two dated moves; otherwise the
+    // chain. The chain shows connectivity, the timeline shows sequence — a
+    // reader wants the sequence when the years exist.
+    const tl = buildTimeline(pedges, ql);
+    const chipFor = v => hereChip(v)
+      ? `<span class="vchip here" aria-current="true">${esc(v)}</span>`
+      : `<button type="button" class="vchip" data-pick="${esc(v)}">${esc(v)}</button>`;
+    const chainHTML = tl
+      ? timelineHTML(tl, ql, chipFor)
+      : c.chain.map((v, i) => {
+          const yr = i > 0 ? c.years[c.chain[i-1] + '>' + v] : null;
+          const linked = i > 0 && c.hasEdge && c.hasEdge[c.chain[i-1] + '>' + v];
+          return (linked ? `<span class="arr">→${yr ? '<span class="yr">'+esc(yr)+'</span>' : ''}</span>` : '') + chipFor(v);
+        }).join('');
     // identity badges: name variants + homonym / possible-same-chef flags
     let idBadge = '';
     const bits = [];
