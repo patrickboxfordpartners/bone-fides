@@ -212,20 +212,61 @@ def test_same_route_in_two_eras_is_two_events():
 
 
 def test_merging_citations_keeps_mentor_from_a_different_source():
-    """Taking one whole citation discards the other's detail.
+    """Citations describing the SAME event merge across fields.
 
-    A dated citation and a mentor-naming citation describe the same move; the
-    row must carry both, not whichever one scored higher.
+    Two sources for one 2010s move — one giving the date, one naming the mentor —
+    must yield one row carrying both. Taking either citation whole would drop
+    the other's detail.
     """
-    edges = [_edge(era="2010s", mentor=None, url="u1"),
-             _edge(era=None, mentor="Bocuse", url="u2"),
+    edges = [_edge(era="2010s", date="2013", mentor=None, url="u1"),
+             _edge(era="2010s", date=None, mentor="Bocuse", url="u2"),
              _edge(frm="Y", to="Z", era="2020s", url="u3")]
     got = _run_js(
         f"const t=buildTimeline({json.dumps(edges)},'X');"
-        f"console.log(JSON.stringify(t.dated.map(r=>({{era:r.era,m:r.e.mentor}}))));")
-    assert got[0]["m"] == "Bocuse", (
-        "the mentor from the undated citation must survive the merge")
-    assert got[0]["era"] == "2010s", "the dated citation must supply the era"
+        f"console.log(JSON.stringify(t.dated.map(r=>({{era:r.era,m:r.e.mentor,d:r.e.date}}))));")
+    row = next(r for r in got if r["era"] == "2010s")
+    assert row["m"] == "Bocuse", "the mentor from the second citation was dropped"
+    assert row["d"] == "2013", "the date from the first citation was dropped"
+
+
+def test_undated_citation_does_not_attach_to_every_era():
+    """An undated citation belongs to no specific event.
+
+    A route walked in the 2000s AND the 2020s is two events. A third citation
+    naming a mentor but stating no year supports the move, not a particular
+    instance of it — pasting it onto both rows invents two mentorships.
+    """
+    edges = [_edge(frm="X", to="Y", era="2000s", date="2001", url="u1"),
+             _edge(frm="X", to="Y", era="2020s", date="2021", url="u2"),
+             _edge(frm="X", to="Y", era=None, date="recently", mentor="Bocuse", url="u3")]
+    got = _run_js(
+        f"const t=buildTimeline({json.dumps(edges)},'X');"
+        f"console.log(JSON.stringify({{dated:t.dated.map(r=>({{era:r.era,m:r.e.mentor,d:r.e.date}})),"
+        f"undated:t.undated.map(r=>({{m:r.e.mentor}}))}}));")
+    assert len(got["dated"]) == 2, "two eras on one route are two events"
+    for row in got["dated"]:
+        assert row["m"] is None, (
+            f"the {row['era']} event claimed a mentor stated by an undated citation")
+    # the ambiguous citation stays on its own row, keeping its mentor
+    assert got["undated"], "the undated citation must remain a separate row"
+    assert got["undated"][0]["m"] == "Bocuse"
+
+
+def test_same_route_same_era_two_dates_is_two_events():
+    """Two promotions at one kitchen in the same era are still two events.
+
+    Collapsing on route+era alone drops one; the stated dates distinguish them.
+    """
+    edges = [_edge(frm="X", to="Y", era="2010s", date="2012", url="u1"),
+             _edge(frm="X", to="Y", era="2010s", date="2017", url="u2"),
+             _edge(frm="A", to="B", era="2020s", url="u3")]
+    got = _run_js(
+        f"const t=buildTimeline({json.dumps(edges)},'X');"
+        f"console.log(JSON.stringify(t.dated.map(r=>({{era:r.era,d:r.e.date}}))));")
+    same = [r for r in got if r["era"] == "2010s"]
+    assert len(same) == 2, (
+        "two distinct dates in one era are two events, not one")
+    assert {r["d"] for r in same} == {"2012", "2017"}
 
 
 def test_undated_heading_id_is_unique_per_card():

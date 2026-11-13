@@ -941,21 +941,24 @@ const ERA_ORDER = ['pre-1990', '1990s', '2000s', '2010s', '2020s'];
 
 function buildTimeline(edges, ql){
   if(!edges || !edges.length) return null;
-  // One row per career EVENT, not per edge, and not per venue pair either.
+  // One row per career EVENT.
   //
-  // Identity is person + endpoints. Role is excluded because the corpus words
-  // the same move differently across articles ("chef" vs "chef and
-  // restaurateur" for one Aziza->Mourad move) — keying on it split one move
-  // into two rows.
+  // An event is identified by person + endpoints + ITS STATED TIME. Route alone
+  // is not enough: a chef can be promoted twice at one kitchen, or return along
+  // the same route years later, and those are separate dated events. Route plus
+  // role is also not enough, because the corpus words one move differently
+  // across articles ("chef" vs "chef and restaurateur" for one Aziza->Mourad
+  // move) — keying on role split one move in two.
   //
-  // Era is handled by grouping rather than by the key: the same route in two
-  // different eras is two real events (a return, or a second promotion), so a
-  // group with more than one distinct era fans out into one row per era. A
-  // group with one era (or where only some citations carry one) merges.
+  // So: group by route, then partition each group by what the citations
+  // actually state about time. Within a partition, the citations are the same
+  // event reported more than once and merge.
   //
-  // Fields are MERGED across citations rather than taking one whole citation:
-  // a dated source and a mentor-naming source describing the same move should
-  // yield one row carrying both, not whichever scored higher.
+  // AMBIGUOUS citations — ones with no era and no date — belong to no
+  // partition. They cannot be attributed to an event without inventing one, so
+  // they stay separate. A mentor named in an undated article must NOT be
+  // pasted onto both a 2000s and a 2020s promotion; it supports the move, not a
+  // particular instance of it.
   const groups = new Map();
   edges
     .filter(e => e.from_venue || e.to_venue)
@@ -965,32 +968,64 @@ function buildTimeline(edges, ql){
       groups.get(k).push(e);
     });
 
+  // Time is resolved in two levels, because precision varies by citation.
+  //
+  // Level 1 — era. Citations stating no era belong to no event; they are
+  // ambiguous and stay separate (a mentor named in an undated article supports
+  // the move, not a particular instance of it).
+  //
+  // Level 2 — date, but only where dates actually CONFLICT. Two promotions at
+  // one kitchen inside a decade carry different dates and are two events. But a
+  // citation that states 2013 and one that states no date at all are not in
+  // conflict — they describe the same event, one less precisely than the
+  // other, so they merge.
+  const timeKey = c => c.era_bucket || null;
+  const dateKey = c => c.date ? String(c.date).trim().toLowerCase() : '';
+
   const rows = [];
   groups.forEach(cites => {
-    const eras = [...new Set(cites.map(c => c.era_bucket).filter(Boolean))];
-    // no era at all, or exactly one: one event
-    const buckets = eras.length > 1 ? eras : [eras[0] || null];
-    buckets.forEach(era => {
-      // citations belonging to this event: those whose era matches, plus the
-      // undated ones when there is only a single era to belong to
-      const members = buckets.length === 1
-        ? cites
-        : cites.filter(c => c.era_bucket === era || !c.era_bucket);
+    const byEra = new Map();
+    const ambiguous = [];
+    cites.forEach(c => {
+      const ek = timeKey(c);
+      if(ek === null){ ambiguous.push(c); return; }
+      if(!byEra.has(ek)) byEra.set(ek, []);
+      byEra.get(ek).push(c);
+    });
+
+    const mkRow = (members, era) => {
       const base = members[0];
-      rows.push({
-        // merge: first citation supplying each field wins
+      return {
         e: {
           ...base,
           era_bucket: era,
-          mentor: members.map(m => m.mentor).find(Boolean) || base.mentor,
-          date: members.map(m => m.date).find(Boolean) || base.date,
-          role: members.map(m => m.role).find(Boolean) || base.role,
-          source_url: members.map(m => m.source_url).find(Boolean) || base.source_url,
+          // merge only WITHIN one event: every member describes it
+          mentor: members.map(m => m.mentor).find(Boolean) || null,
+          date: members.map(m => m.date).find(Boolean) || null,
+          role: members.map(m => m.role).find(Boolean) || null,
+          source_url: members.map(m => m.source_url).find(Boolean) || null,
         },
         era: ERA_ORDER.includes(era) ? era : null,
         from: base.from_venue, to: base.to_venue,
-      });
+      };
+    };
+
+    byEra.forEach((members, era) => {
+      const dates = [...new Set(members.map(dateKey).filter(Boolean))];
+      if(dates.length <= 1){
+        // no conflict: one event, all citations of it
+        rows.push(mkRow(members, era));
+        return;
+      }
+      // conflicting dates: one event per date. A citation with no date cannot
+      // be attributed to one of them without guessing, so it stays separate.
+      dates.forEach(d => rows.push(mkRow(members.filter(c => dateKey(c) === d), era)));
+      const noDate = members.filter(c => !dateKey(c));
+      if(noDate.length) rows.push(mkRow(noDate, era));
     });
+
+    // nothing stated about when: one row per route, never folded into a dated one
+    if(ambiguous.length) rows.push(mkRow(ambiguous, null));
   });
   if(!rows.length) return null;
   const dated = rows.filter(r => r.era);
