@@ -150,7 +150,7 @@
   .tlrow { display: grid; grid-template-columns: 74px 14px 1fr; gap: 0 10px; align-items: start; }
   .tlyr { font: 340 11.5px Fraunces, Georgia, serif; color: var(--gold); letter-spacing: .06em;
           text-align: right; padding-top: 3px; font-variant-numeric: tabular-nums; }
-  .tlrail { position: relative; display: flex; justify-content: center; }
+  .tlrail { position: relative; display: flex; justify-content: center; align-self: stretch; }
   .tlrail::before { content: ''; position: absolute; top: 0; bottom: 0; width: 1px; background: var(--faint); }
   .tlrow:first-child .tlrail::before { top: 11px; }
   .tlrow:last-child .tlrail::before { bottom: auto; height: 11px; }
@@ -165,6 +165,7 @@
   .tlundated .tlhdr { font: 340 11px Fraunces, Georgia, serif; color: var(--dim);
                       letter-spacing: .14em; text-transform: uppercase; margin-bottom: 7px; }
   .tlundated .urow { display: flex; align-items: baseline; flex-wrap: wrap; gap: 2px 7px; margin-bottom: 5px; }
+  .tlundated .urowmain { display: flex; align-items: baseline; flex-wrap: wrap; gap: 2px 7px; }
   @media (max-width: 560px) { .tlrow { grid-template-columns: 52px 12px 1fr; gap: 0 8px; } }
   .arr { color: #54493a; font-size: 16px; }
   .arr .yr { font-size: 12px; color: var(--dim); font-weight: 340; font-style: italic; margin-left: 5px; }
@@ -941,16 +942,32 @@ const ERA_ORDER = ['pre-1990', '1990s', '2000s', '2010s', '2020s'];
 function buildTimeline(edges, ql){
   if(!edges || !edges.length) return null;
   const qlL = looseKey(ql);
-  const here = v => v && (looseKey(v) === qlL || sameLoose(v, ql));
-  // One row per move. Prefer showing from → to; a move with only one endpoint
-  // still gets a row (it is a cited fact even when half the venue is unknown).
-  const rows = edges
+  // One row per MOVE, not per edge. A single career move is often reported by
+  // several articles (Mourad Lahlou's Aziza->Mourad is cited by three), and
+  // each citation is a separate edge. Rendering them all would repeat the same
+  // move and make a career look busier than it was.
+  //
+  // Identity is person + endpoints ONLY. Role is deliberately excluded: the
+  // corpus words the same move differently across articles ("chef" vs "chef
+  // and restaurateur" for one Aziza->Mourad move), and keying on it would split
+  // one move into two rows for a difference that is editorial, not real.
+  const byMove = new Map();
+  edges
     .filter(e => e.from_venue || e.to_venue)
-    .map(e => ({
-      e,
-      era: ERA_ORDER.includes(e.era_bucket) ? e.era_bucket : null,
-      from: e.from_venue, to: e.to_venue,
-    }));
+    .forEach(e => {
+      const k = [e.person||'', e.from_venue||'', e.to_venue||''].join('\u0001');
+      const prev = byMove.get(k);
+      // Prefer the citation carrying more usable detail, so the merged row
+      // keeps a mentor/era when only one of its sources reported them.
+      const rank = x => (x.era_bucket ? 4 : 0) + (x.date ? 2 : 0) +
+                        (x.mentor ? 1 : 0) + (x.role ? 0.5 : 0);
+      if(!prev || rank(e) > rank(prev)) byMove.set(k, e);
+    });
+  const rows = [...byMove.values()].map(e => ({
+    e,
+    era: ERA_ORDER.includes(e.era_bucket) ? e.era_bucket : null,
+    from: e.from_venue, to: e.to_venue,
+  }));
   if(!rows.length) return null;
   const dated = rows.filter(r => r.era);
   const undated = rows.filter(r => !r.era);
@@ -970,20 +987,23 @@ function timelineHTML(tl, ql, chipFor){
     const e = r.e;
     const mentor = e.mentor ? `<div class="tlmentor">under ${esc(e.mentor)}</div>` : '';
     const meta = [e.role, e.date].filter(Boolean).join(' · ');
-    return `<div class="tlrow">
+    return `<div class="tlrow" role="listitem">
       <div class="tlyr">${esc(r.era)}</div>
-      <div class="tlrail"><span class="tldot${(isHere(r.from)||isHere(r.to))?' here':''}" aria-hidden="true"></span></div>
+      <div class="tlrail" aria-hidden="true"><span class="tldot${(isHere(r.from)||isHere(r.to))?' here':''}"></span></div>
       <div class="tlbody">
-        <div class="tlvenues">${venue(r.from)}${r.to ? '<span class="arr">→</span>' + venue(r.to) : ''}</div>
+        <div class="tlvenues">${venue(r.from)}${r.to ? '<span class="arr" aria-hidden="true">→</span>' + venue(r.to) : ''}</div>
         ${meta ? `<div class="tlmeta">${esc(meta)}</div>` : ''}
         ${mentor}
       </div>
     </div>`;
   }).join('');
   const und = tl.undated.length ? `<div class="tlundated">
-      <div class="tlhdr">${tl.undated.length} move${tl.undated.length===1?'':'s'} with no stated year</div>
-      ${tl.undated.map(r => `<div class="urow">${venue(r.from)}${r.to ? '<span class="arr">→</span>' + venue(r.to) : ''}${
-        r.e.role ? `<span class="tlmeta">${esc(r.e.role)}</span>` : ''}</div>`).join('')}
+      <div class="tlhdr" id="tl-und">${tl.undated.length} move${tl.undated.length===1?'':'s'} with no stated year</div>
+      <div role="list" aria-labelledby="tl-und">
+      ${tl.undated.map(r => `<div class="urow" role="listitem"><span class="urowmain">${venue(r.from)}${r.to ? '<span class="arr" aria-hidden="true">→</span>' + venue(r.to) : ''}${
+        r.e.role ? `<span class="tlmeta">${esc(r.e.role)}</span>` : ''}</span>${
+        r.e.mentor ? `<span class="tlmentor">under ${esc(r.e.mentor)}</span>` : ''}</div>`).join('')}
+      </div>
     </div>` : '';
   return `<div class="tl" role="list" aria-label="Career timeline">${rows}${und}</div>`;
 }
