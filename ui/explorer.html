@@ -941,33 +941,57 @@ const ERA_ORDER = ['pre-1990', '1990s', '2000s', '2010s', '2020s'];
 
 function buildTimeline(edges, ql){
   if(!edges || !edges.length) return null;
-  const qlL = looseKey(ql);
-  // One row per MOVE, not per edge. A single career move is often reported by
-  // several articles (Mourad Lahlou's Aziza->Mourad is cited by three), and
-  // each citation is a separate edge. Rendering them all would repeat the same
-  // move and make a career look busier than it was.
+  // One row per career EVENT, not per edge, and not per venue pair either.
   //
-  // Identity is person + endpoints ONLY. Role is deliberately excluded: the
-  // corpus words the same move differently across articles ("chef" vs "chef
-  // and restaurateur" for one Aziza->Mourad move), and keying on it would split
-  // one move into two rows for a difference that is editorial, not real.
-  const byMove = new Map();
+  // Identity is person + endpoints. Role is excluded because the corpus words
+  // the same move differently across articles ("chef" vs "chef and
+  // restaurateur" for one Aziza->Mourad move) — keying on it split one move
+  // into two rows.
+  //
+  // Era is handled by grouping rather than by the key: the same route in two
+  // different eras is two real events (a return, or a second promotion), so a
+  // group with more than one distinct era fans out into one row per era. A
+  // group with one era (or where only some citations carry one) merges.
+  //
+  // Fields are MERGED across citations rather than taking one whole citation:
+  // a dated source and a mentor-naming source describing the same move should
+  // yield one row carrying both, not whichever scored higher.
+  const groups = new Map();
   edges
     .filter(e => e.from_venue || e.to_venue)
     .forEach(e => {
       const k = [e.person||'', e.from_venue||'', e.to_venue||''].join('\u0001');
-      const prev = byMove.get(k);
-      // Prefer the citation carrying more usable detail, so the merged row
-      // keeps a mentor/era when only one of its sources reported them.
-      const rank = x => (x.era_bucket ? 4 : 0) + (x.date ? 2 : 0) +
-                        (x.mentor ? 1 : 0) + (x.role ? 0.5 : 0);
-      if(!prev || rank(e) > rank(prev)) byMove.set(k, e);
+      if(!groups.has(k)) groups.set(k, []);
+      groups.get(k).push(e);
     });
-  const rows = [...byMove.values()].map(e => ({
-    e,
-    era: ERA_ORDER.includes(e.era_bucket) ? e.era_bucket : null,
-    from: e.from_venue, to: e.to_venue,
-  }));
+
+  const rows = [];
+  groups.forEach(cites => {
+    const eras = [...new Set(cites.map(c => c.era_bucket).filter(Boolean))];
+    // no era at all, or exactly one: one event
+    const buckets = eras.length > 1 ? eras : [eras[0] || null];
+    buckets.forEach(era => {
+      // citations belonging to this event: those whose era matches, plus the
+      // undated ones when there is only a single era to belong to
+      const members = buckets.length === 1
+        ? cites
+        : cites.filter(c => c.era_bucket === era || !c.era_bucket);
+      const base = members[0];
+      rows.push({
+        // merge: first citation supplying each field wins
+        e: {
+          ...base,
+          era_bucket: era,
+          mentor: members.map(m => m.mentor).find(Boolean) || base.mentor,
+          date: members.map(m => m.date).find(Boolean) || base.date,
+          role: members.map(m => m.role).find(Boolean) || base.role,
+          source_url: members.map(m => m.source_url).find(Boolean) || base.source_url,
+        },
+        era: ERA_ORDER.includes(era) ? era : null,
+        from: base.from_venue, to: base.to_venue,
+      });
+    });
+  });
   if(!rows.length) return null;
   const dated = rows.filter(r => r.era);
   const undated = rows.filter(r => !r.era);
@@ -979,10 +1003,16 @@ function buildTimeline(edges, ql){
   return { dated, undated };
 }
 
-function timelineHTML(tl, ql, chipFor){
+function timelineHTML(tl, ql, chipFor, uid){
   const qlL = looseKey(ql);
   const isHere = v => !!v && (looseKey(v) === qlL || sameLoose(v, ql));
   const venue = v => v ? chipFor(v) : '<span class="vchip" style="color:var(--dim);font-style:italic">unspecified</span>';
+  // The arrow is decorative, but it is also the ONLY signal of direction. Hide
+  // the glyph, keep the meaning: an explicit word for screen readers.
+  const ARROW = '<span class="arr" aria-hidden="true">→</span><span class="sr-only">moved to</span>';
+  // A dossier shows one card per chef, so the undated heading must not reuse a
+  // fixed id — a later list would take its spoken label from the first chef's.
+  const undId = 'tl-und-' + (uid || '0');
   const rows = tl.dated.map(r => {
     const e = r.e;
     const mentor = e.mentor ? `<div class="tlmentor">under ${esc(e.mentor)}</div>` : '';
@@ -991,16 +1021,16 @@ function timelineHTML(tl, ql, chipFor){
       <div class="tlyr">${esc(r.era)}</div>
       <div class="tlrail" aria-hidden="true"><span class="tldot${(isHere(r.from)||isHere(r.to))?' here':''}"></span></div>
       <div class="tlbody">
-        <div class="tlvenues">${venue(r.from)}${r.to ? '<span class="arr" aria-hidden="true">→</span>' + venue(r.to) : ''}</div>
+        <div class="tlvenues">${venue(r.from)}${r.to ? ARROW + venue(r.to) : ''}</div>
         ${meta ? `<div class="tlmeta">${esc(meta)}</div>` : ''}
         ${mentor}
       </div>
     </div>`;
   }).join('');
   const und = tl.undated.length ? `<div class="tlundated">
-      <div class="tlhdr" id="tl-und">${tl.undated.length} move${tl.undated.length===1?'':'s'} with no stated year</div>
-      <div role="list" aria-labelledby="tl-und">
-      ${tl.undated.map(r => `<div class="urow" role="listitem"><span class="urowmain">${venue(r.from)}${r.to ? '<span class="arr" aria-hidden="true">→</span>' + venue(r.to) : ''}${
+      <div class="tlhdr" id="${undId}">${tl.undated.length} move${tl.undated.length===1?'':'s'} with no stated year</div>
+      <div role="list" aria-labelledby="${undId}">
+      ${tl.undated.map(r => `<div class="urow" role="listitem"><span class="urowmain">${venue(r.from)}${r.to ? ARROW + venue(r.to) : ''}${
         r.e.role ? `<span class="tlmeta">${esc(r.e.role)}</span>` : ''}</span>${
         r.e.mentor ? `<span class="tlmentor">under ${esc(r.e.mentor)}</span>` : ''}</div>`).join('')}
       </div>
@@ -1066,7 +1096,7 @@ function render(q, edges, ms, ped, identity, roleFilter, serverFilter){
       ? `<span class="vchip here" aria-current="true">${esc(v)}</span>`
       : `<button type="button" class="vchip" data-pick="${esc(v)}">${esc(v)}</button>`;
     const chainHTML = tl
-      ? timelineHTML(tl, ql, chipFor)
+      ? timelineHTML(tl, ql, chipFor, cards.length)
       : c.chain.map((v, i) => {
           const yr = i > 0 ? c.years[c.chain[i-1] + '>' + v] : null;
           const linked = i > 0 && c.hasEdge && c.hasEdge[c.chain[i-1] + '>' + v];

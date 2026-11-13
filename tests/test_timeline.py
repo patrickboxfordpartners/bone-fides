@@ -33,7 +33,8 @@ def _html():
 
 def _runtime():
     """A JS runtime that can run a file, or None."""
-    for name, args in (("bun", ["run"]), ("deno", ["run", "--quiet"])):
+    for name, args in (("bun", ["run"]), ("deno", ["run", "--quiet"]),
+                       ("node", [])):
         path = shutil.which(name)
         if path:
             return [path] + args
@@ -193,6 +194,65 @@ def test_different_endpoints_are_different_moves():
         f"const t=buildTimeline({json.dumps(edges)},'X');"
         f"console.log(JSON.stringify({{d:t.dated.length}}));")
     assert got["d"] == 3, "distinct venue pairs must remain distinct moves"
+
+
+def test_same_route_in_two_eras_is_two_events():
+    """A chef can be promoted twice at one kitchen, or return years later.
+
+    Collapsing on venue pair alone would drop a real, separately-dated event.
+    """
+    edges = [_edge(frm="A", to="B", era="2000s", url="u1"),
+             _edge(frm="A", to="B", era="2020s", url="u2"),
+             _edge(frm="B", to="C", era="2010s", url="u3")]
+    got = _run_js(
+        f"const t=buildTimeline({json.dumps(edges)},'X');"
+        f"console.log(JSON.stringify(t.dated.map(r=>r.era)));")
+    assert got == ["2000s", "2010s", "2020s"], (
+        "the same route in two eras must yield two rows, not one")
+
+
+def test_merging_citations_keeps_mentor_from_a_different_source():
+    """Taking one whole citation discards the other's detail.
+
+    A dated citation and a mentor-naming citation describe the same move; the
+    row must carry both, not whichever one scored higher.
+    """
+    edges = [_edge(era="2010s", mentor=None, url="u1"),
+             _edge(era=None, mentor="Bocuse", url="u2"),
+             _edge(frm="Y", to="Z", era="2020s", url="u3")]
+    got = _run_js(
+        f"const t=buildTimeline({json.dumps(edges)},'X');"
+        f"console.log(JSON.stringify(t.dated.map(r=>({{era:r.era,m:r.e.mentor}}))));")
+    assert got[0]["m"] == "Bocuse", (
+        "the mentor from the undated citation must survive the merge")
+    assert got[0]["era"] == "2010s", "the dated citation must supply the era"
+
+
+def test_undated_heading_id_is_unique_per_card():
+    """A dossier shows several chef cards; a fixed id makes later lists take
+    their spoken label from the first chef's heading."""
+    edges = [_edge(era="2010s", url="u1"),
+             _edge(frm="Y", to="Z", era="2020s", url="u2"),
+             _edge(frm="Q", to="R", era=None, url="u3")]
+    got = _run_js(
+        f"const t=buildTimeline({json.dumps(edges)},'X');"
+        f"console.log(JSON.stringify([timelineHTML(t,'X',{_CHIP},0),"
+        f"timelineHTML(t,'X',{_CHIP},1)]));")
+    assert 'id="tl-und-0"' in got[0] and 'id="tl-und-1"' in got[1], (
+        "each card's undated heading needs its own id")
+
+
+def test_direction_is_announced_not_only_drawn():
+    """aria-hidden on the arrow removes the only direction cue. Screen-reader
+    users must still hear that the move goes from one venue to another."""
+    edges = [_edge(era="2010s", url="u1"),
+             _edge(frm="Y", to="Z", era="2020s", url="u2"),
+             _edge(frm="Q", to="R", era=None, url="u3")]
+    got = _run_js(
+        f"const t=buildTimeline({json.dumps(edges)},'X');"
+        f"console.log(JSON.stringify(timelineHTML(t,'X',{_CHIP})));")
+    assert "sr-only" in got and "moved to" in got, (
+        "the arrow is aria-hidden, so direction needs a screen-reader phrase")
 
 
 def test_deduped_row_keeps_richer_citation():
