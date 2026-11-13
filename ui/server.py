@@ -85,6 +85,14 @@ def lineage(es, query, size=25, role=None, era=None, hood=None):
             "evidence": s.get("evidence") or "",
             "source_url": s.get("source_url"),
             "source_image": s.get("source_image"),
+            # Timeline fields. era_bucket places a move in time where the
+            # article yielded a citable year; mentor marks the rare edges that
+            # name who someone trained under; published_at is when the ARTICLE
+            # ran, never when the move happened. A timeline must not conflate
+            # the three, so all three travel.
+            "era_bucket": s.get("era_bucket"),
+            "mentor": s.get("mentor"),
+            "published_at": s.get("published_at"),
             "score": h.get("_score", 0),
         })
     return edges
@@ -792,7 +800,11 @@ def fetch_person_edges(es, names, limit=100):
         {"terms": {"person.keyword": names}}]}},
         "_source": ["person", "from_venue", "to_venue", "role", "date",
                     "confidence", "source", "action", "evidence", "source_url",
-                    "source_image", "role_bucket", "era_bucket", "venue_hoods"]}
+                    "source_image", "role_bucket", "era_bucket", "venue_hoods",
+                    # mentor + published_at travel too: completion edges land in
+                    # the same timeline, and omitting mentor drops the "under …"
+                    # line from a row that has one stored
+                    "mentor", "published_at"]}
     r = es.search(index=INDEX, body=body)
     out = []
     for h in r["hits"]["hits"]:
@@ -810,6 +822,8 @@ def fetch_person_edges(es, names, limit=100):
             "role_bucket": s.get("role_bucket"),
             "era_bucket": s.get("era_bucket"),
             "venue_hoods": s.get("venue_hoods") or [],
+            "mentor": s.get("mentor"),
+            "published_at": s.get("published_at"),
         })
     return out
 

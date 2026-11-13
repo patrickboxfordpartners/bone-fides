@@ -141,6 +141,32 @@
            color: var(--ink); line-height: 1.4; border-bottom: 1px solid transparent; }
   .vchip:hover { color: var(--accent); border-bottom-color: var(--accent); }
   .vchip.here { color: var(--accent); font-weight: 640; cursor: default; }
+  /* ── Career timeline ─────────────────────────────────────────────
+     A vertical sequence, used when an edge carries a citable year.
+     Moves with no year are NOT interleaved — they render in their own
+     labelled group below, because inventing an order from prose that
+     states none is exactly the kind of claim this project refuses. */
+  .tl { margin-top: 10px; padding-left: 2px; }
+  .tlrow { display: grid; grid-template-columns: 74px 14px 1fr; gap: 0 10px; align-items: start; }
+  .tlyr { font: 340 11.5px Fraunces, Georgia, serif; color: var(--gold); letter-spacing: .06em;
+          text-align: right; padding-top: 3px; font-variant-numeric: tabular-nums; }
+  .tlrail { position: relative; display: flex; justify-content: center; align-self: stretch; }
+  .tlrail::before { content: ''; position: absolute; top: 0; bottom: 0; width: 1px; background: var(--faint); }
+  .tlrow:first-child .tlrail::before { top: 11px; }
+  .tlrow:last-child .tlrail::before { bottom: auto; height: 11px; }
+  .tldot { position: relative; z-index: 1; width: 7px; height: 7px; border-radius: 50%;
+           background: var(--accent); margin-top: 8px; box-shadow: 0 0 0 3px var(--bg); }
+  .tldot.here { background: var(--gold); }
+  .tlbody { padding-bottom: 14px; min-width: 0; }
+  .tlvenues { display: flex; align-items: baseline; flex-wrap: wrap; gap: 2px 7px; }
+  .tlmeta { font-size: 11.5px; color: var(--dim); font-style: italic; margin-top: 2px; }
+  .tlmentor { font-size: 11.5px; color: var(--ok); margin-top: 2px; }
+  .tlundated { margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--faint); }
+  .tlundated .tlhdr { font: 340 11px Fraunces, Georgia, serif; color: var(--dim);
+                      letter-spacing: .14em; text-transform: uppercase; margin-bottom: 7px; }
+  .tlundated .urow { display: flex; align-items: baseline; flex-wrap: wrap; gap: 2px 7px; margin-bottom: 5px; }
+  .tlundated .urowmain { display: flex; align-items: baseline; flex-wrap: wrap; gap: 2px 7px; }
+  @media (max-width: 560px) { .tlrow { grid-template-columns: 52px 12px 1fr; gap: 0 8px; } }
   .arr { color: #54493a; font-size: 16px; }
   .arr .yr { font-size: 12px; color: var(--dim); font-weight: 340; font-style: italic; margin-left: 5px; }
   .chef .ev { font-size: 14.5px; margin-top: 10px; line-height: 1.5; color: var(--dim); font-weight: 350; font-style: italic; }
@@ -905,6 +931,234 @@ function buildChain(person_edges, ql){
   return { chain, years, pivot, hasEdge };
 }
 
+// ── Career timeline ────────────────────────────────────────────────────
+// Ordered by era_bucket where the article yielded a citable year. Moves with
+// no year are NOT placed in the sequence: the corpus states no order for them,
+// and inventing one (by article date, by array position, by chain hop count)
+// would be a claim the data does not support. They render in a separate,
+// clearly labelled group so a reader can see exactly how much is dated.
+const ERA_ORDER = ['pre-1990', '1990s', '2000s', '2010s', '2020s'];
+
+function buildTimeline(edges, ql){
+  if(!edges || !edges.length) return null;
+  // One row per career EVENT.
+  //
+  // An event is identified by person + endpoints + ITS STATED TIME. Route alone
+  // is not enough: a chef can be promoted twice at one kitchen, or return along
+  // the same route years later, and those are separate dated events. Route plus
+  // role is also not enough, because the corpus words one move differently
+  // across articles ("chef" vs "chef and restaurateur" for one Aziza->Mourad
+  // move) — keying on role split one move in two.
+  //
+  // So: group by route, then partition each group by what the citations
+  // actually state about time. Within a partition, the citations are the same
+  // event reported more than once and merge.
+  //
+  // AMBIGUOUS citations — ones with no era and no date — belong to no
+  // partition. They cannot be attributed to an event without inventing one, so
+  // they stay separate. A mentor named in an undated article must NOT be
+  // pasted onto both a 2000s and a 2020s promotion; it supports the move, not a
+  // particular instance of it.
+  const groups = new Map();
+  edges
+    .filter(e => e.from_venue || e.to_venue)
+    .forEach(e => {
+      const k = [e.person||'', e.from_venue||'', e.to_venue||''].join('\u0001');
+      if(!groups.has(k)) groups.set(k, []);
+      groups.get(k).push(e);
+    });
+
+  // Time is resolved in two levels, because citation precision varies.
+  //
+  // Level 1 — era. Citations stating no era are ambiguous and belong to no
+  // event (a mentor named in an undated article supports the move, not a
+  // particular instance of it).
+  //
+  // Level 2 — date, but only where dates actually CONFLICT, judged on the
+  // times they denote rather than the strings they are written as. The stored
+  // date is free-form prose: "2013", "January 2013", "2013-01" and "early
+  // 2013" all describe one moment, and treating the text as identity reported
+  // one move twice — even manufacturing a timeline out of a single move.
+  //
+  // normalizeDate returns { y, m, d } for anything that pins a year, with m/d
+  // null where the source was vaguer. Two citations conflict only if every
+  // field both state is equal and differs. That makes "2013" vs "January 2013"
+  // compatible (no conflict on year; month stated by one side only) while
+  // "2012" vs "2017" conflicts, and "March 2013" vs "November 2013" conflicts
+  // on month.
+  //
+  // Returns null for prose that pins no calendar time ("a decade ago",
+  // "recently") — guessing those into a year would fabricate a date.
+  const MONTHS = { jan:1, feb:2, mar:3, apr:4, may:5, jun:6, jul:7, aug:8, sep:9, oct:10, nov:11, dec:12 };
+  function normalizeDate(raw){
+    if(!raw) return null;
+    const s = String(raw).toLowerCase();
+    const y = s.match(/\b(1[89]\d{2}|20\d{2})\b/);       // first 4-digit year
+    if(!y) return null;                                   // relative/unknown
+    let m = null, d = null;
+    // ISO-ish: 2013-01, 2013-01-05
+    const iso = s.match(/\b(1[89]\d{2}|20\d{2})-(\d{2})(?:-(\d{2}))?\b/);
+    if(iso){ m = parseInt(iso[2], 10); if(iso[3]) d = parseInt(iso[3], 10); }
+    if(m === null){
+      // a month name anywhere ("January 2013", "early March 2012")
+      const mn = s.match(/\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)/);
+      if(mn) m = MONTHS[mn[1]];
+    }
+    return { y: parseInt(y[1], 10), m, d };
+  }
+  // Do two normalized dates contradict each other?
+  // Compatible when at least one is silent on every field where they differ.
+  function datesConflict(a, b){
+    if(!a || !b) return false;            // nothing to contradict
+    for(const f of ['y','m','d']){
+      if(a[f] != null && b[f] != null && a[f] !== b[f]) return true;
+    }
+    return false;
+  }
+  const timeKey = c => c.era_bucket || null;
+
+  const rows = [];
+  groups.forEach(cites => {
+    const byEra = new Map();
+    const ambiguous = [];
+    cites.forEach(c => {
+      const ek = timeKey(c);
+      if(ek === null){ ambiguous.push(c); return; }
+      if(!byEra.has(ek)) byEra.set(ek, []);
+      byEra.get(ek).push(c);
+    });
+
+    const mkRow = (members, era) => {
+      const base = members[0];
+      return {
+        e: {
+          ...base,
+          era_bucket: era,
+          // merge only WITHIN one event: every member describes it
+          mentor: members.map(m => m.mentor).find(Boolean) || null,
+          date: members.map(m => m.date).find(Boolean) || null,
+          role: members.map(m => m.role).find(Boolean) || null,
+          source_url: members.map(m => m.source_url).find(Boolean) || null,
+        },
+        era: ERA_ORDER.includes(era) ? era : null,
+        from: base.from_venue, to: base.to_venue,
+      };
+    };
+
+    byEra.forEach((members, era) => {
+      // Form the distinct EVENTS first, and do it most-specific-first.
+      //
+      // Order must not decide the answer. Processing citations in corpus order
+      // let a year-only "2013" absorb "March 2013" before "November 2013" was
+      // ever seen, so a mentor named by an ambiguous citation landed on
+      // whichever row happened to be built first.
+      //
+      // Sorting by how much the citation pins (year+month+day before year+month
+      // before year alone) makes the specific events exist before anything
+      // vague is attached. A citation then joins an event only if it fits
+      // EXACTLY ONE; if it fits several it is genuinely ambiguous and stays on
+      // its own row rather than inventing a tie.
+      const spec = c => {
+        const n = normalizeDate(c.date);
+        return n ? (n.y != null) + (n.m != null) + (n.d != null) : 0;
+      };
+      const timed = members.filter(c => normalizeDate(c.date) !== null)
+        .sort((a, b) => spec(b) - spec(a));      // most specific first
+      const untimed = members.filter(c => normalizeDate(c.date) === null);
+
+      const events = [];
+      // Ambiguous citations (fitting more than one event) collapse into groups,
+      // but ONLY with others whose stated time agrees. A year-only "2013" and a
+      // year-only "2017" both fail to pick an event, yet they contradict each
+      // other: merging them would keep one date and one mentor and silently
+      // drop the other, putting a 2017 mentorship beside a 2013 date.
+      const leftoverGroups = [];
+      const holdAmbiguous = c => {
+        const nd = normalizeDate(c.date);
+        const g = leftoverGroups.find(grp =>
+          !grp.some(o => datesConflict(normalizeDate(o.date), nd)));
+        if(g) g.push(c); else leftoverGroups.push([c]);
+      };
+
+      timed.forEach(c => {
+        const nd = normalizeDate(c.date);
+        const fits = events.filter(ev =>
+          !ev.some(o => datesConflict(normalizeDate(o.date), nd)));
+        // exactly one compatible event -> that is its event.
+        // none -> a genuinely new event.
+        // several -> ambiguous. Held aside, grouped by agreeing time.
+        if(fits.length === 1) fits[0].push(c);
+        else if(fits.length === 0) events.push([c]);
+        else holdAmbiguous(c);
+      });
+
+      // Citations that pin no calendar time ("a decade ago") join a single
+      // unambiguous event when exactly one fits; otherwise they join the
+      // ambiguous groups, where (pinning nothing) they can always agree.
+      untimed.forEach(c => {
+        const compatible = events.filter(ev =>
+          !ev.some(o => datesConflict(normalizeDate(o.date), normalizeDate(c.date))));
+        if(compatible.length === 1) compatible[0].push(c);
+        else holdAmbiguous(c);
+      });
+
+      if(events.length === 0){
+        rows.push(mkRow(members, era));          // nothing pinned a time
+        return;
+      }
+      events.forEach(ev => rows.push(mkRow(ev, era)));
+      leftoverGroups.forEach(grp => rows.push(mkRow(grp, era)));
+    });
+
+    // nothing stated about when: one row per route, never folded into a dated one
+    if(ambiguous.length) rows.push(mkRow(ambiguous, null));
+  });
+  if(!rows.length) return null;
+  const dated = rows.filter(r => r.era);
+  const undated = rows.filter(r => !r.era);
+  // Within an era, keep corpus order — we have no finer grain than the bucket,
+  // so imposing any further sort would be fiction dressed as precision.
+  dated.sort((a, b) => ERA_ORDER.indexOf(a.era) - ERA_ORDER.indexOf(b.era));
+  // Only become a timeline when it actually sequences something.
+  if(dated.length < 2) return null;
+  return { dated, undated };
+}
+
+function timelineHTML(tl, ql, chipFor, uid){
+  const qlL = looseKey(ql);
+  const isHere = v => !!v && (looseKey(v) === qlL || sameLoose(v, ql));
+  const venue = v => v ? chipFor(v) : '<span class="vchip" style="color:var(--dim);font-style:italic">unspecified</span>';
+  // The arrow is decorative, but it is also the ONLY signal of direction. Hide
+  // the glyph, keep the meaning: an explicit word for screen readers.
+  const ARROW = '<span class="arr" aria-hidden="true">→</span><span class="sr-only">moved to</span>';
+  // A dossier shows one card per chef, so the undated heading must not reuse a
+  // fixed id — a later list would take its spoken label from the first chef's.
+  const undId = 'tl-und-' + (uid || '0');
+  const rows = tl.dated.map(r => {
+    const e = r.e;
+    const mentor = e.mentor ? `<div class="tlmentor">under ${esc(e.mentor)}</div>` : '';
+    const meta = [e.role, e.date].filter(Boolean).join(' · ');
+    return `<div class="tlrow" role="listitem">
+      <div class="tlyr">${esc(r.era)}</div>
+      <div class="tlrail" aria-hidden="true"><span class="tldot${(isHere(r.from)||isHere(r.to))?' here':''}"></span></div>
+      <div class="tlbody">
+        <div class="tlvenues">${venue(r.from)}${r.to ? ARROW + venue(r.to) : ''}</div>
+        ${meta ? `<div class="tlmeta">${esc(meta)}</div>` : ''}
+        ${mentor}
+      </div>
+    </div>`;
+  }).join('');
+  const und = tl.undated.length ? `<div class="tlundated">
+      <div class="tlhdr" id="${undId}">${tl.undated.length} move${tl.undated.length===1?'':'s'} with no stated year</div>
+      <div role="list" aria-labelledby="${undId}">
+      ${tl.undated.map(r => `<div class="urow" role="listitem"><span class="urowmain">${venue(r.from)}${r.to ? ARROW + venue(r.to) : ''}${
+        r.e.role ? `<span class="tlmeta">${esc(r.e.role)}</span>` : ''}</span>${
+        r.e.mentor ? `<span class="tlmentor">under ${esc(r.e.mentor)}</span>` : ''}</div>`).join('')}
+      </div>
+    </div>` : '';
+  return `<div class="tl" role="list" aria-label="Career timeline">${rows}${und}</div>`;
+}
+
 function render(q, edges, ms, ped, identity, roleFilter, serverFilter){
   // serverFilter is now the object {role, era, hood} of active server-side
   // facet filters (roadmap 4.4); null when none are active
@@ -955,12 +1209,20 @@ function render(q, edges, ms, ped, identity, roleFilter, serverFilter){
     if(!c) return;
     const pivot = c.pivot;
     const hereChip = v => (v.toLowerCase() === ql || sameLoose(v, ql)) ? ' here' : '';
-    const chainHTML = c.chain.map((v, i) => {
-      const yr = i > 0 ? c.years[c.chain[i-1] + '>' + v] : null;
-      const linked = i > 0 && c.hasEdge && c.hasEdge[c.chain[i-1] + '>' + v];
-      return (linked ? `<span class="arr">→${yr ? '<span class="yr">'+esc(yr)+'</span>' : ''}</span>` : '') +
-             (hereChip(v) ? `<span class="vchip here" aria-current="true">${esc(v)}</span>` : `<button type="button" class="vchip" data-pick="${esc(v)}">${esc(v)}</button>`);
-    }).join('');
+    // Timeline when the record carries at least two dated moves; otherwise the
+    // chain. The chain shows connectivity, the timeline shows sequence — a
+    // reader wants the sequence when the years exist.
+    const tl = buildTimeline(pedges, ql);
+    const chipFor = v => hereChip(v)
+      ? `<span class="vchip here" aria-current="true">${esc(v)}</span>`
+      : `<button type="button" class="vchip" data-pick="${esc(v)}">${esc(v)}</button>`;
+    const chainHTML = tl
+      ? timelineHTML(tl, ql, chipFor, cards.length)
+      : c.chain.map((v, i) => {
+          const yr = i > 0 ? c.years[c.chain[i-1] + '>' + v] : null;
+          const linked = i > 0 && c.hasEdge && c.hasEdge[c.chain[i-1] + '>' + v];
+          return (linked ? `<span class="arr">→${yr ? '<span class="yr">'+esc(yr)+'</span>' : ''}</span>` : '') + chipFor(v);
+        }).join('');
     // identity badges: name variants + homonym / possible-same-chef flags
     let idBadge = '';
     const bits = [];

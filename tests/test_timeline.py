@@ -1,0 +1,551 @@
+"""Executable tests for the career timeline.
+
+Greptile's finding, and it was right: the previous version of this file asserted
+on source TEXT. Finding `dated.length < 2` in the source does not prove one dated
+move returns null, and finding two `filter` calls does not prove undated moves
+stay separate. A broken split, a broken fallback, or a broken render all passed.
+
+So these tests EXTRACT the real functions from ui/explorer.html and execute them
+in a JavaScript runtime (bun, falling back to deno). What runs in the test is the
+same code the browser runs.
+
+If neither runtime is present the behavioural tests skip rather than fail — but
+the source-shape checks below still run, and CI should have bun.
+"""
+import json
+import os
+import re
+import shutil
+import subprocess
+import sys
+import tempfile
+
+import pytest
+
+_HERE = os.path.dirname(os.path.abspath(__file__))
+_ROOT = os.path.dirname(_HERE)
+_EXPLORER = os.path.join(_ROOT, "ui", "explorer.html")
+
+
+def _html():
+    return open(_EXPLORER).read()
+
+
+def _runtime():
+    """A JS runtime that can run a file, or None."""
+    for name, args in (("bun", ["run"]), ("deno", ["run", "--quiet"]),
+                       ("node", [])):
+        path = shutil.which(name)
+        if path:
+            return [path] + args
+    return None
+
+
+_RUNTIME = _runtime()
+
+# The functions under test, plus the minimal helpers they call. Extracted from
+# the explorer so the test executes the shipped code, not a reimplementation.
+_WANTED = ("buildTimeline", "timelineHTML", "looseKey", "sameLoose", "esc")
+
+def _extract_js():
+    """Grab the wanted function declarations out of the inline script."""
+    html = _html()
+    script = re.search(r"<script>\n(.*?)\n</script>", html, re.S)
+    assert script, "inline script not found in explorer.html"
+    src = script.group(1)
+    chunks = []
+    for name in _WANTED:
+        m = re.search(rf"function {name}\([^)]*\)\{{.*?\n\}}\n", src, re.S)
+        if not m:
+            m = re.search(rf"const {name} = [^\n]+\n", src)
+        assert m, f"could not extract {name}() from explorer.html"
+        chunks.append(m.group(0))
+    era = re.search(r"const ERA_ORDER = \[[^\]]+\];\n", src)
+    assert era, "ERA_ORDER not found"
+    return era.group(0) + "\n" + "\n".join(chunks)
+
+
+def _run_js(body):
+    """Run `body` after the extracted functions; return parsed stdout JSON."""
+    rt = _RUNTIME
+    if not rt:
+        pytest.skip("no JS runtime (bun/deno) available")
+    prelude = _extract_js()
+    script = prelude + "\n" + body
+    with tempfile.NamedTemporaryFile("w", suffix=".js", delete=False) as f:
+        f.write(script)
+        path = f.name
+    try:
+        out = subprocess.run(rt + [path], capture_output=True, text=True, timeout=60)
+    finally:
+        os.unlink(path)
+    assert out.returncode == 0, f"JS failed:\n{out.stderr[:1200]}"
+    line = out.stdout.strip().splitlines()[-1] if out.stdout.strip() else ""
+    return json.loads(line)
+
+
+def _edge(person="A", frm="X", to="Y", era=None, role="chef",
+          mentor=None, date=None, url="u1"):
+    return {"person": person, "from_venue": frm, "to_venue": to,
+            "era_bucket": era, "role": role, "mentor": mentor,
+            "date": date, "source_url": url}
+
+
+# ── behavioural: buildTimeline ─────────────────────────────────────────────
+
+def test_zero_edges_returns_null():
+    assert _run_js("console.log(JSON.stringify(buildTimeline([], 'X')));") is None
+
+
+def test_one_dated_move_is_not_a_timeline():
+    """One dated move is not a sequence. The chain is the right render."""
+    edges = [_edge(era="2010s")]
+    got = _run_js(
+        f"console.log(JSON.stringify(buildTimeline({json.dumps(edges)}, 'X')));")
+    assert got is None, "a single dated move must not produce a timeline"
+
+
+def test_two_dated_moves_produce_a_timeline():
+    edges = [_edge(era="2010s"), _edge(frm="Y", to="Z", era="2020s", url="u2")]
+    got = _run_js(
+        f"const t=buildTimeline({json.dumps(edges)},'X');"
+        f"console.log(JSON.stringify(t && {{d:t.dated.length,u:t.undated.length}}));")
+    assert got == {"d": 2, "u": 0}
+
+
+def test_dated_moves_sort_by_era():
+    edges = [_edge(era="2020s", url="u1"),
+             _edge(frm="Y", to="Z", era="1990s", url="u2"),
+             _edge(frm="Z", to="W", era="2000s", url="u3")]
+    got = _run_js(
+        f"const t=buildTimeline({json.dumps(edges)},'X');"
+        f"console.log(JSON.stringify(t.dated.map(r=>r.era)));")
+    assert got == ["1990s", "2000s", "2020s"]
+
+
+def test_undated_moves_are_kept_separate_never_interleaved():
+    """The whole honesty claim: undated moves get no position in the sequence."""
+    edges = [_edge(era="2010s", url="u1"),
+             _edge(frm="Y", to="Z", era="2020s", url="u2"),
+             _edge(frm="Q", to="R", era=None, url="u3"),
+             _edge(frm="R", to="S", era=None, url="u4")]
+    got = _run_js(
+        f"const t=buildTimeline({json.dumps(edges)},'X');"
+        f"console.log(JSON.stringify({{d:t.dated.length,u:t.undated.length,"
+        f"eras:t.dated.map(r=>r.era),uHasEra:t.undated.some(r=>r.era)}}));")
+    assert got["d"] == 2 and got["u"] == 2
+    assert got["uHasEra"] is False, "an undated row must not carry an era"
+    assert all(e in ("2010s", "2020s") for e in got["eras"])
+
+
+def test_unknown_era_value_is_treated_as_undated():
+    """A bucket the UI cannot order must not enter the sequence."""
+    edges = [_edge(era="2010s", url="u1"),
+             _edge(frm="Y", to="Z", era="2020s", url="u2"),
+             _edge(frm="Q", to="R", era="1899s", url="u3")]
+    got = _run_js(
+        f"const t=buildTimeline({json.dumps(edges)},'X');"
+        f"console.log(JSON.stringify({{d:t.dated.length,u:t.undated.length}}));")
+    assert got == {"d": 2, "u": 1}, "an unrecognized era bucket must go undated"
+
+
+def test_same_move_cited_twice_renders_once():
+    """A move reported by several articles is ONE move.
+
+    Mourad Lahlou's Aziza->Mourad is cited by three sources; rendering per-edge
+    would show the same move three times and inflate a career.
+    """
+    edges = [_edge(era="2010s", url="u1"),
+             _edge(era="2010s", url="u2"),   # same move, second citation
+             _edge(frm="Y", to="Z", era="2020s", url="u3")]
+    got = _run_js(
+        f"const t=buildTimeline({json.dumps(edges)},'X');"
+        f"console.log(JSON.stringify({{d:t.dated.length}}));")
+    assert got["d"] == 2, "duplicate citations of one move must collapse to one row"
+
+
+def test_role_wording_difference_does_not_split_a_move():
+    """The corpus words one move differently across articles.
+
+    Lahlou's Aziza->Mourad appears as 'chef' in one source and 'chef and
+    restaurateur' in another. Role is an attribute of the move, not part of its
+    identity — keying on it split one move into two rows.
+    """
+    edges = [_edge(era="2010s", role="chef", url="u1"),
+             _edge(era="2010s", role="chef and restaurateur", url="u2"),
+             _edge(frm="Y", to="Z", era="2020s", url="u3")]
+    got = _run_js(
+        f"const t=buildTimeline({json.dumps(edges)},'X');"
+        f"console.log(JSON.stringify({{d:t.dated.length}}));")
+    assert got["d"] == 2, (
+        "one move worded two ways must still be one move, not two rows")
+
+
+def test_different_endpoints_are_different_moves():
+    """The inverse guard: dedupe must not over-collapse.
+
+    Two genuinely different moves by the same person must stay two rows.
+    """
+    edges = [_edge(frm="A", to="B", era="2010s", url="u1"),
+             _edge(frm="B", to="C", era="2020s", url="u2"),
+             _edge(frm="A", to="C", era="2020s", url="u3")]
+    got = _run_js(
+        f"const t=buildTimeline({json.dumps(edges)},'X');"
+        f"console.log(JSON.stringify({{d:t.dated.length}}));")
+    assert got["d"] == 3, "distinct venue pairs must remain distinct moves"
+
+
+def test_same_route_in_two_eras_is_two_events():
+    """A chef can be promoted twice at one kitchen, or return years later.
+
+    Collapsing on venue pair alone would drop a real, separately-dated event.
+    """
+    edges = [_edge(frm="A", to="B", era="2000s", url="u1"),
+             _edge(frm="A", to="B", era="2020s", url="u2"),
+             _edge(frm="B", to="C", era="2010s", url="u3")]
+    got = _run_js(
+        f"const t=buildTimeline({json.dumps(edges)},'X');"
+        f"console.log(JSON.stringify(t.dated.map(r=>r.era)));")
+    assert got == ["2000s", "2010s", "2020s"], (
+        "the same route in two eras must yield two rows, not one")
+
+
+def test_merging_citations_keeps_mentor_from_a_different_source():
+    """Citations describing the SAME event merge across fields.
+
+    Two sources for one 2010s move — one giving the date, one naming the mentor —
+    must yield one row carrying both. Taking either citation whole would drop
+    the other's detail.
+    """
+    edges = [_edge(era="2010s", date="2013", mentor=None, url="u1"),
+             _edge(era="2010s", date=None, mentor="Bocuse", url="u2"),
+             _edge(frm="Y", to="Z", era="2020s", url="u3")]
+    got = _run_js(
+        f"const t=buildTimeline({json.dumps(edges)},'X');"
+        f"console.log(JSON.stringify(t.dated.map(r=>({{era:r.era,m:r.e.mentor,d:r.e.date}}))));")
+    row = next(r for r in got if r["era"] == "2010s")
+    assert row["m"] == "Bocuse", "the mentor from the second citation was dropped"
+    assert row["d"] == "2013", "the date from the first citation was dropped"
+
+
+def test_undated_citation_does_not_attach_to_every_era():
+    """An undated citation belongs to no specific event.
+
+    A route walked in the 2000s AND the 2020s is two events. A third citation
+    naming a mentor but stating no year supports the move, not a particular
+    instance of it — pasting it onto both rows invents two mentorships.
+    """
+    edges = [_edge(frm="X", to="Y", era="2000s", date="2001", url="u1"),
+             _edge(frm="X", to="Y", era="2020s", date="2021", url="u2"),
+             _edge(frm="X", to="Y", era=None, date="recently", mentor="Bocuse", url="u3")]
+    got = _run_js(
+        f"const t=buildTimeline({json.dumps(edges)},'X');"
+        f"console.log(JSON.stringify({{dated:t.dated.map(r=>({{era:r.era,m:r.e.mentor,d:r.e.date}})),"
+        f"undated:t.undated.map(r=>({{m:r.e.mentor}}))}}));")
+    assert len(got["dated"]) == 2, "two eras on one route are two events"
+    for row in got["dated"]:
+        assert row["m"] is None, (
+            f"the {row['era']} event claimed a mentor stated by an undated citation")
+    # the ambiguous citation stays on its own row, keeping its mentor
+    assert got["undated"], "the undated citation must remain a separate row"
+    assert got["undated"][0]["m"] == "Bocuse"
+
+
+def test_same_route_same_era_two_dates_is_two_events():
+    """Two promotions at one kitchen in the same era are still two events.
+
+    Collapsing on route+era alone drops one; the stated dates distinguish them.
+    """
+    edges = [_edge(frm="X", to="Y", era="2010s", date="2012", url="u1"),
+             _edge(frm="X", to="Y", era="2010s", date="2017", url="u2"),
+             _edge(frm="A", to="B", era="2020s", url="u3")]
+    got = _run_js(
+        f"const t=buildTimeline({json.dumps(edges)},'X');"
+        f"console.log(JSON.stringify(t.dated.map(r=>({{era:r.era,d:r.e.date}}))));")
+    same = [r for r in got if r["era"] == "2010s"]
+    assert len(same) == 2, (
+        "two distinct dates in one era are two events, not one")
+    assert {r["d"] for r in same} == {"2012", "2017"}
+
+
+@pytest.mark.parametrize("a,b", [
+    ("2013", "January 2013"),
+    ("2013", "2013-01"),
+    ("2013", "early 2013"),
+    ("January 2013", "2013-01-15"),
+    ("2005-12", "December 2005"),
+    ("2013", "summer 2013"),
+])
+def test_dates_of_different_precision_are_one_event(a, b):
+    """The stored date is free-form prose, so identity cannot be the string.
+
+    "2013" and "January 2013" describe one moment. Treating unequal text as
+    unequal events reported one move twice — and manufactured a timeline out of
+    a single move, turning a non-answer into an answer.
+    """
+    edges = [_edge(frm="X", to="Y", era="2010s", date=a, url="u1"),
+             _edge(frm="X", to="Y", era="2010s", date=b, url="u2")]
+    got = _run_js(
+        f"const t=buildTimeline({json.dumps(edges)},'X');"
+        f"console.log(JSON.stringify(t===null?'null':t.dated.length));")
+    assert got == "null", (
+        f"{a!r} and {b!r} are one move, so there is no sequence to draw")
+
+
+@pytest.mark.parametrize("a,b", [
+    ("2012", "2017"),
+    ("March 2013", "November 2013"),
+    ("2013-01", "2013-06"),
+])
+def test_dates_that_genuinely_conflict_are_two_events(a, b):
+    """The inverse guard: normalization must not over-merge.
+
+    Two real, differently-dated promotions at one kitchen stay two rows.
+    """
+    edges = [_edge(frm="X", to="Y", era="2010s", date=a, url="u1"),
+             _edge(frm="X", to="Y", era="2010s", date=b, url="u2")]
+    got = _run_js(
+        f"const t=buildTimeline({json.dumps(edges)},'X');"
+        f"console.log(JSON.stringify(t===null?'null':t.dated.length));")
+    assert got == 2, f"{a!r} and {b!r} conflict, so they are two events"
+
+
+def test_relative_dates_pin_no_calendar_time():
+    """A date that states no year cannot contradict one that does.
+
+    "a decade ago" is a real answer in prose but not a calendar time; treating
+    it as a distinct event would fabricate a date the article never gave.
+    """
+    edges = [_edge(frm="X", to="Y", era="2010s", date="2013", url="u1"),
+             _edge(frm="X", to="Y", era="2010s", date="a decade ago", url="u2")]
+    got = _run_js(
+        f"const t=buildTimeline({json.dumps(edges)},'X');"
+        f"console.log(JSON.stringify(t===null?'null':t.dated.length));")
+    assert got == "null", "a relative date must not fabricate a second event"
+
+
+@pytest.mark.parametrize("perm", [
+    ("M", "N", "Y"), ("N", "M", "Y"), ("Y", "M", "N"), ("Y", "N", "M"),
+    ("M", "Y", "N"), ("N", "Y", "M"),
+])
+def test_ambiguous_citation_placement_is_order_independent(perm):
+    """A year-only citation beside a March and a November event fits both.
+
+    It therefore belongs to neither. The old greedy attach joined the first
+    matching event, so the mentor moved between March and November purely by
+    array order — the same evidence yielding a different answer.
+    """
+    E = {
+        "M": _edge(frm="X", to="Y", era="2010s", date="March 2013", url="u1"),
+        "N": _edge(frm="X", to="Y", era="2010s", date="November 2013", url="u2"),
+        "Y": _edge(frm="X", to="Y", era="2010s", date="2013", mentor="Bocuse", url="u3"),
+    }
+    edges = [E[k] for k in perm]
+    got = _run_js(
+        f"const t=buildTimeline({json.dumps(edges)},'X');"
+        f"console.log(JSON.stringify(t.dated.map(r=>({{d:r.e.date,m:r.e.mentor}}))));")
+    for row in got:
+        if row["d"] in ("March 2013", "November 2013"):
+            assert row["m"] is None, (
+                f"the {row['d']} event claimed a mentor from an ambiguous "
+                f"citation — order {perm} changed the answer")
+    amb = [r for r in got if r["d"] == "2013"]
+    assert amb and amb[0]["m"] == "Bocuse", (
+        "the ambiguous citation must keep its own mentor on its own row")
+
+
+def test_ambiguous_citations_of_conflicting_years_stay_separate():
+    """Ambiguous citations collapse only with others whose time agrees.
+
+    March and November exist in both 2013 and 2017, plus a year-only "2013" and
+    a year-only "2017". Neither vague citation can pick an event, but they
+    contradict each other. Merging them kept one date and one mentor, so a 2017
+    mentorship appeared beside a 2013 date and the 2017 detail vanished.
+    """
+    edges = [_edge(frm="X", to="Y", era="2010s", date="March 2013", url="u1"),
+             _edge(frm="X", to="Y", era="2010s", date="November 2013", url="u2"),
+             _edge(frm="X", to="Y", era="2010s", date="March 2017", url="u3"),
+             _edge(frm="X", to="Y", era="2010s", date="November 2017", url="u4"),
+             _edge(frm="X", to="Y", era="2010s", date="2013", url="u5"),
+             _edge(frm="X", to="Y", era="2010s", date="2017", mentor="Bocuse", url="u6")]
+    got = _run_js(
+        f"const t=buildTimeline({json.dumps(edges)},'X');"
+        f"console.log(JSON.stringify(t.dated.map(r=>({{d:r.e.date,m:r.e.mentor}}))));")
+    vague = [r for r in got if r["d"] in ("2013", "2017")]
+    assert len(vague) == 2, (
+        f"conflicting ambiguous years must stay separate; got {vague}")
+    by_year = {r["d"]: r["m"] for r in vague}
+    assert by_year.get("2017") == "Bocuse", (
+        "the 2017 mentorship was lost from the 2017 row")
+    assert by_year.get("2013") is None, (
+        "the 2017 mentor leaked onto the 2013 row")
+
+
+def test_duplicate_ambiguous_citations_collapse_to_one_row():
+    """Two year-only citations beside March and November are ONE vague fact.
+
+    They fit several events, so neither can be attributed to one. But they are
+    also not two career events — they are two sources for the same imprecise
+    statement. Pushing each into a new event inflates a career with rows that
+    carry no new information.
+    """
+    edges = [_edge(frm="X", to="Y", era="2010s", date="March 2013", url="u1"),
+             _edge(frm="X", to="Y", era="2010s", date="November 2013", url="u2"),
+             _edge(frm="X", to="Y", era="2010s", date="2013", mentor="Bocuse", url="u3"),
+             _edge(frm="X", to="Y", era="2010s", date="2013", url="u4")]
+    got = _run_js(
+        f"const t=buildTimeline({json.dumps(edges)},'X');"
+        f"console.log(JSON.stringify(t.dated.map(r=>({{d:r.e.date,m:r.e.mentor}}))));")
+    assert len(got) == 3, (
+        f"expected March, November and one ambiguous row; got {len(got)} rows: {got}")
+    amb = [r for r in got if r["d"] == "2013"]
+    assert len(amb) == 1, "duplicate ambiguous citations must collapse to one row"
+    assert amb[0]["m"] == "Bocuse", "the ambiguous row must keep its mentor"
+
+
+def test_unambiguous_vague_citation_still_attaches():
+    """The inverse guard: when exactly ONE event fits, attach.
+
+    Over-caution would strip a mentor from the only event it can describe.
+    A second, clearly-separate event is present so the timeline actually renders
+    (one event alone is correctly not a sequence).
+    """
+    edges = [_edge(frm="X", to="Y", era="2010s", date="March 2013", url="u1"),
+             _edge(frm="X", to="Y", era="2010s", date="2013", mentor="Bocuse", url="u2"),
+             _edge(frm="A", to="B", era="2020s", date="2021", url="u3")]
+    got = _run_js(
+        f"const t=buildTimeline({json.dumps(edges)},'X');"
+        f"console.log(JSON.stringify(t.dated.map(r=>({{era:r.era,d:r.e.date,m:r.e.mentor}}))));")
+    ten = [r for r in got if r["era"] == "2010s"]
+    assert len(ten) == 1, "a year-only citation fitting one event must merge into it"
+    assert ten[0]["m"] == "Bocuse", "the mentor was lost from its only possible event"
+
+
+def test_undated_heading_id_is_unique_per_card():
+    """A dossier shows several chef cards; a fixed id makes later lists take
+    their spoken label from the first chef's heading."""
+    edges = [_edge(era="2010s", url="u1"),
+             _edge(frm="Y", to="Z", era="2020s", url="u2"),
+             _edge(frm="Q", to="R", era=None, url="u3")]
+    got = _run_js(
+        f"const t=buildTimeline({json.dumps(edges)},'X');"
+        f"console.log(JSON.stringify([timelineHTML(t,'X',{_CHIP},0),"
+        f"timelineHTML(t,'X',{_CHIP},1)]));")
+    assert 'id="tl-und-0"' in got[0] and 'id="tl-und-1"' in got[1], (
+        "each card's undated heading needs its own id")
+
+
+def test_direction_is_announced_not_only_drawn():
+    """aria-hidden on the arrow removes the only direction cue. Screen-reader
+    users must still hear that the move goes from one venue to another."""
+    edges = [_edge(era="2010s", url="u1"),
+             _edge(frm="Y", to="Z", era="2020s", url="u2"),
+             _edge(frm="Q", to="R", era=None, url="u3")]
+    got = _run_js(
+        f"const t=buildTimeline({json.dumps(edges)},'X');"
+        f"console.log(JSON.stringify(timelineHTML(t,'X',{_CHIP})));")
+    assert "sr-only" in got and "moved to" in got, (
+        "the arrow is aria-hidden, so direction needs a screen-reader phrase")
+
+
+def test_deduped_row_keeps_richer_citation():
+    """When two citations differ in detail, the merged row keeps the fuller one
+    so a mentor or era is not lost to ordering luck."""
+    edges = [_edge(era="2010s", url="u1"),
+             _edge(era="2010s", mentor="Bocuse", url="u2"),
+             _edge(frm="Y", to="Z", era="2020s", url="u3")]
+    got = _run_js(
+        f"const t=buildTimeline({json.dumps(edges)},'X');"
+        f"console.log(JSON.stringify(t.dated.map(r=>r.e.mentor)));")
+    assert "Bocuse" in got, "the citation carrying a mentor must win the merge"
+
+
+def test_moves_with_no_venue_at_all_are_excluded():
+    edges = [{"person": "A", "from_venue": None, "to_venue": None,
+              "era_bucket": "2010s", "source_url": "u1"}]
+    assert _run_js(
+        f"console.log(JSON.stringify(buildTimeline({json.dumps(edges)},'X')));"
+    ) is None
+
+
+# ── behavioural: timelineHTML ─────────────────────────────────────────────
+
+_CHIP = "v => '<b>'+v+'</b>'"
+
+
+def test_render_marks_the_queried_venue_and_labels_undated():
+    edges = [_edge(era="2010s", url="u1"),
+             _edge(frm="Y", to="Z", era="2020s", url="u2"),
+             _edge(frm="Q", to="R", era=None, url="u3")]
+    got = _run_js(
+        f"const t=buildTimeline({json.dumps(edges)},'X');"
+        f"console.log(JSON.stringify(timelineHTML(t,'X',{_CHIP})));")
+    assert "Career timeline" in got
+    assert "1 move with no stated year" in got
+    assert "role=\"listitem\"" in got
+    assert "tldot here" in got, "the queried venue's dot must be marked"
+
+
+def test_render_shows_mentor_on_both_dated_and_undated_rows():
+    """A mentor fact must not disappear because the move has no year."""
+    edges = [_edge(era="2010s", mentor="Bocuse", url="u1"),
+             _edge(frm="Y", to="Z", era="2020s", url="u2"),
+             _edge(frm="Q", to="R", era=None, mentor="Troisgros", url="u3")]
+    got = _run_js(
+        f"const t=buildTimeline({json.dumps(edges)},'X');"
+        f"console.log(JSON.stringify(timelineHTML(t,'X',{_CHIP})));")
+    assert "under Bocuse" in got, "dated row lost its mentor"
+    assert "under Troisgros" in got, "undated row lost its mentor"
+
+
+def test_render_does_not_call_bare_here():
+    """The bug a browser caught: timelineHTML called `here()` from buildTimeline's
+    scope, which threw at render time. Executing the render proves it is gone."""
+    edges = [_edge(era="2010s", url="u1"),
+             _edge(frm="Y", to="Z", era="2020s", url="u2")]
+    got = _run_js(
+        f"const t=buildTimeline({json.dumps(edges)},'X');"
+        f"console.log(JSON.stringify(timelineHTML(t,'X',{_CHIP}).length>0));")
+    assert got is True, "timelineHTML must render without a ReferenceError"
+
+
+# ── source-shape (cheap guards, run without a JS runtime) ──────────────────
+
+def test_timeline_functions_exist():
+    html = _html()
+    for fn in ("buildTimeline", "timelineHTML"):
+        assert f"function {fn}(" in html, f"explorer lost {fn}()"
+
+
+def test_era_order_is_the_shared_vocabulary():
+    from src.eras import ERA_BUCKETS
+    m = re.search(r"const ERA_ORDER = \[([^\]]+)\]", _html())
+    assert m, "ERA_ORDER missing"
+    order = [s.strip().strip("'\"") for s in m.group(1).split(",")]
+    assert set(order) == set(ERA_BUCKETS), (
+        f"ERA_ORDER {sorted(order)} != server vocabulary {sorted(ERA_BUCKETS)}")
+
+
+def test_timeline_payload_carries_era_mentor_and_published_at():
+    """The UI can only sequence what the server sends — in BOTH twins."""
+    for path in (os.path.join(_ROOT, "ui", "server.py"),
+                 os.path.join(_ROOT, "vercel-app", "api", "search.py")):
+        src = open(path).read()
+        m = re.search(r"def lineage\(.*?\n    return edges", src, re.S)
+        assert m, f"{path}: lineage() not found"
+        for field in ("era_bucket", "mentor", "published_at"):
+            assert f'"{field}"' in m.group(0), (
+                f"{path}: lineage() does not return {field!r}")
+
+
+def test_completion_fetch_carries_mentor():
+    """fetch_person_edges feeds the same timeline; omitting mentor there drops
+    the 'under …' line from rows whose stored edge names one."""
+    for path in (os.path.join(_ROOT, "ui", "server.py"),
+                 os.path.join(_ROOT, "vercel-app", "api", "search.py")):
+        src = open(path).read()
+        m = re.search(r"def fetch_person_edges\(.*?\n    return out", src, re.S)
+        assert m, f"{path}: fetch_person_edges() not found"
+        body = m.group(0)
+        assert '"mentor"' in body, f"{path}: fetch_person_edges omits mentor"
+        assert '"published_at"' in body, f"{path}: fetch_person_edges omits published_at"
