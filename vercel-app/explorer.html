@@ -968,19 +968,54 @@ function buildTimeline(edges, ql){
       groups.get(k).push(e);
     });
 
-  // Time is resolved in two levels, because precision varies by citation.
+  // Time is resolved in two levels, because citation precision varies.
   //
-  // Level 1 — era. Citations stating no era belong to no event; they are
-  // ambiguous and stay separate (a mentor named in an undated article supports
-  // the move, not a particular instance of it).
+  // Level 1 — era. Citations stating no era are ambiguous and belong to no
+  // event (a mentor named in an undated article supports the move, not a
+  // particular instance of it).
   //
-  // Level 2 — date, but only where dates actually CONFLICT. Two promotions at
-  // one kitchen inside a decade carry different dates and are two events. But a
-  // citation that states 2013 and one that states no date at all are not in
-  // conflict — they describe the same event, one less precisely than the
-  // other, so they merge.
+  // Level 2 — date, but only where dates actually CONFLICT, judged on the
+  // times they denote rather than the strings they are written as. The stored
+  // date is free-form prose: "2013", "January 2013", "2013-01" and "early
+  // 2013" all describe one moment, and treating the text as identity reported
+  // one move twice — even manufacturing a timeline out of a single move.
+  //
+  // normalizeDate returns { y, m, d } for anything that pins a year, with m/d
+  // null where the source was vaguer. Two citations conflict only if every
+  // field both state is equal and differs. That makes "2013" vs "January 2013"
+  // compatible (no conflict on year; month stated by one side only) while
+  // "2012" vs "2017" conflicts, and "March 2013" vs "November 2013" conflicts
+  // on month.
+  //
+  // Returns null for prose that pins no calendar time ("a decade ago",
+  // "recently") — guessing those into a year would fabricate a date.
+  const MONTHS = { jan:1, feb:2, mar:3, apr:4, may:5, jun:6, jul:7, aug:8, sep:9, oct:10, nov:11, dec:12 };
+  function normalizeDate(raw){
+    if(!raw) return null;
+    const s = String(raw).toLowerCase();
+    const y = s.match(/\b(1[89]\d{2}|20\d{2})\b/);       // first 4-digit year
+    if(!y) return null;                                   // relative/unknown
+    let m = null, d = null;
+    // ISO-ish: 2013-01, 2013-01-05
+    const iso = s.match(/\b(1[89]\d{2}|20\d{2})-(\d{2})(?:-(\d{2}))?\b/);
+    if(iso){ m = parseInt(iso[2], 10); if(iso[3]) d = parseInt(iso[3], 10); }
+    if(m === null){
+      // a month name anywhere ("January 2013", "early March 2012")
+      const mn = s.match(/\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)/);
+      if(mn) m = MONTHS[mn[1]];
+    }
+    return { y: parseInt(y[1], 10), m, d };
+  }
+  // Do two normalized dates contradict each other?
+  // Compatible when at least one is silent on every field where they differ.
+  function datesConflict(a, b){
+    if(!a || !b) return false;            // nothing to contradict
+    for(const f of ['y','m','d']){
+      if(a[f] != null && b[f] != null && a[f] !== b[f]) return true;
+    }
+    return false;
+  }
   const timeKey = c => c.era_bucket || null;
-  const dateKey = c => c.date ? String(c.date).trim().toLowerCase() : '';
 
   const rows = [];
   groups.forEach(cites => {
@@ -1011,17 +1046,27 @@ function buildTimeline(edges, ql){
     };
 
     byEra.forEach((members, era) => {
-      const dates = [...new Set(members.map(dateKey).filter(Boolean))];
-      if(dates.length <= 1){
-        // no conflict: one event, all citations of it
+      // Cluster citations into events by whether their dates CONTRADICT.
+      // Compatible dates merge regardless of how they were written; only a
+      // genuine contradiction (two different pinned years) splits.
+      const clusters = [];
+      members.forEach(c => {
+        const nd = normalizeDate(c.date);
+        const hit = clusters.find(cl => !cl.some(o => datesConflict(normalizeDate(o.date), nd)));
+        if(hit) hit.push(c); else clusters.push([c]);
+      });
+      if(clusters.length === 1){
         rows.push(mkRow(members, era));
         return;
       }
-      // conflicting dates: one event per date. A citation with no date cannot
-      // be attributed to one of them without guessing, so it stays separate.
-      dates.forEach(d => rows.push(mkRow(members.filter(c => dateKey(c) === d), era)));
-      const noDate = members.filter(c => !dateKey(c));
-      if(noDate.length) rows.push(mkRow(noDate, era));
+      // Real conflicts. A citation pinning no calendar time cannot be assigned
+      // to one side without guessing, so it stays separate.
+      const floating = [];
+      clusters.forEach(cl => {
+        if(cl.every(c => normalizeDate(c.date) === null)) floating.push(...cl);
+        else rows.push(mkRow(cl, era));
+      });
+      if(floating.length) rows.push(mkRow(floating, era));
     });
 
     // nothing stated about when: one row per route, never folded into a dated one

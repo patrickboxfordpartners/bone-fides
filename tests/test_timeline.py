@@ -47,7 +47,6 @@ _RUNTIME = _runtime()
 # the explorer so the test executes the shipped code, not a reimplementation.
 _WANTED = ("buildTimeline", "timelineHTML", "looseKey", "sameLoose", "esc")
 
-
 def _extract_js():
     """Grab the wanted function declarations out of the inline script."""
     html = _html()
@@ -267,6 +266,62 @@ def test_same_route_same_era_two_dates_is_two_events():
     assert len(same) == 2, (
         "two distinct dates in one era are two events, not one")
     assert {r["d"] for r in same} == {"2012", "2017"}
+
+
+@pytest.mark.parametrize("a,b", [
+    ("2013", "January 2013"),
+    ("2013", "2013-01"),
+    ("2013", "early 2013"),
+    ("January 2013", "2013-01-15"),
+    ("2005-12", "December 2005"),
+    ("2013", "summer 2013"),
+])
+def test_dates_of_different_precision_are_one_event(a, b):
+    """The stored date is free-form prose, so identity cannot be the string.
+
+    "2013" and "January 2013" describe one moment. Treating unequal text as
+    unequal events reported one move twice — and manufactured a timeline out of
+    a single move, turning a non-answer into an answer.
+    """
+    edges = [_edge(frm="X", to="Y", era="2010s", date=a, url="u1"),
+             _edge(frm="X", to="Y", era="2010s", date=b, url="u2")]
+    got = _run_js(
+        f"const t=buildTimeline({json.dumps(edges)},'X');"
+        f"console.log(JSON.stringify(t===null?'null':t.dated.length));")
+    assert got == "null", (
+        f"{a!r} and {b!r} are one move, so there is no sequence to draw")
+
+
+@pytest.mark.parametrize("a,b", [
+    ("2012", "2017"),
+    ("March 2013", "November 2013"),
+    ("2013-01", "2013-06"),
+])
+def test_dates_that_genuinely_conflict_are_two_events(a, b):
+    """The inverse guard: normalization must not over-merge.
+
+    Two real, differently-dated promotions at one kitchen stay two rows.
+    """
+    edges = [_edge(frm="X", to="Y", era="2010s", date=a, url="u1"),
+             _edge(frm="X", to="Y", era="2010s", date=b, url="u2")]
+    got = _run_js(
+        f"const t=buildTimeline({json.dumps(edges)},'X');"
+        f"console.log(JSON.stringify(t===null?'null':t.dated.length));")
+    assert got == 2, f"{a!r} and {b!r} conflict, so they are two events"
+
+
+def test_relative_dates_pin_no_calendar_time():
+    """A date that states no year cannot contradict one that does.
+
+    "a decade ago" is a real answer in prose but not a calendar time; treating
+    it as a distinct event would fabricate a date the article never gave.
+    """
+    edges = [_edge(frm="X", to="Y", era="2010s", date="2013", url="u1"),
+             _edge(frm="X", to="Y", era="2010s", date="a decade ago", url="u2")]
+    got = _run_js(
+        f"const t=buildTimeline({json.dumps(edges)},'X');"
+        f"console.log(JSON.stringify(t===null?'null':t.dated.length));")
+    assert got == "null", "a relative date must not fabricate a second event"
 
 
 def test_undated_heading_id_is_unique_per_card():
