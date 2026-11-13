@@ -354,6 +354,28 @@ def test_ambiguous_citation_placement_is_order_independent(perm):
         "the ambiguous citation must keep its own mentor on its own row")
 
 
+def test_duplicate_ambiguous_citations_collapse_to_one_row():
+    """Two year-only citations beside March and November are ONE vague fact.
+
+    They fit several events, so neither can be attributed to one. But they are
+    also not two career events — they are two sources for the same imprecise
+    statement. The old code pushed each into a new event, inflating a career
+    with rows that carry no new information.
+    """
+    edges = [_edge(frm="X", to="Y", era="2010s", date="March 2013", url="u1"),
+             _edge(frm="X", to="Y", era="2010s", date="November 2013", url="u2"),
+             _edge(frm="X", to="Y", era="2010s", date="2013", mentor="Bocuse", url="u3"),
+             _edge(frm="X", to="Y", era="2010s", date="2013", url="u4")]
+    got = _run_js(
+        f"const t=buildTimeline({json.dumps(edges)},'X');"
+        f"console.log(JSON.stringify(t.dated.map(r=>({{d:r.e.date,m:r.e.mentor}}))));")
+    assert len(got) == 3, (
+        f"expected March, November and one ambiguous row; got {len(got)} rows: {got}")
+    amb = [r for r in got if r["d"] == "2013"]
+    assert len(amb) == 1, "duplicate ambiguous citations must collapse to one row"
+    assert amb[0]["m"] == "Bocuse", "the ambiguous row must keep its mentor"
+
+
 def test_unambiguous_vague_citation_still_attaches():
     """The inverse guard: when exactly ONE event fits, attach.
 

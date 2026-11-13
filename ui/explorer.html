@@ -1067,19 +1067,25 @@ function buildTimeline(edges, ql){
       const untimed = members.filter(c => normalizeDate(c.date) === null);
 
       const events = [];
+      const leftover = [];                       // ambiguous: fits no single event
       timed.forEach(c => {
         const nd = normalizeDate(c.date);
         const fits = events.filter(ev =>
           !ev.some(o => datesConflict(normalizeDate(o.date), nd)));
         // exactly one compatible event -> that is its event.
-        // none -> a new event. more than one -> ambiguous, keep it alone.
+        // none -> a genuinely new event.
+        // several -> ambiguous. It goes to the leftover group, which collapses
+        //   to ONE row, not to a new event per citation. Two year-only "2013"
+        //   citations beside March and November are two sources for the same
+        //   vague fact, not two career events.
         if(fits.length === 1) fits[0].push(c);
-        else events.push([c]);
+        else if(fits.length === 0) events.push([c]);
+        else leftover.push(c);
       });
 
       // Citations that pin no calendar time ("a decade ago") join only a single
-      // unambiguous event; otherwise they stay separate.
-      const leftover = [];
+      // unambiguous event; otherwise they join the same leftover group, so
+      // ambiguous citations collapse to ONE row however many sources state them.
       untimed.forEach(c => {
         const compatible = events.filter(ev =>
           !ev.some(o => datesConflict(normalizeDate(o.date), normalizeDate(c.date))));
