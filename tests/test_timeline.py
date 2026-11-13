@@ -354,13 +354,40 @@ def test_ambiguous_citation_placement_is_order_independent(perm):
         "the ambiguous citation must keep its own mentor on its own row")
 
 
+def test_ambiguous_citations_of_conflicting_years_stay_separate():
+    """Ambiguous citations collapse only with others whose time agrees.
+
+    March and November exist in both 2013 and 2017, plus a year-only "2013" and
+    a year-only "2017". Neither vague citation can pick an event, but they
+    contradict each other. Merging them kept one date and one mentor, so a 2017
+    mentorship appeared beside a 2013 date and the 2017 detail vanished.
+    """
+    edges = [_edge(frm="X", to="Y", era="2010s", date="March 2013", url="u1"),
+             _edge(frm="X", to="Y", era="2010s", date="November 2013", url="u2"),
+             _edge(frm="X", to="Y", era="2010s", date="March 2017", url="u3"),
+             _edge(frm="X", to="Y", era="2010s", date="November 2017", url="u4"),
+             _edge(frm="X", to="Y", era="2010s", date="2013", url="u5"),
+             _edge(frm="X", to="Y", era="2010s", date="2017", mentor="Bocuse", url="u6")]
+    got = _run_js(
+        f"const t=buildTimeline({json.dumps(edges)},'X');"
+        f"console.log(JSON.stringify(t.dated.map(r=>({{d:r.e.date,m:r.e.mentor}}))));")
+    vague = [r for r in got if r["d"] in ("2013", "2017")]
+    assert len(vague) == 2, (
+        f"conflicting ambiguous years must stay separate; got {vague}")
+    by_year = {r["d"]: r["m"] for r in vague}
+    assert by_year.get("2017") == "Bocuse", (
+        "the 2017 mentorship was lost from the 2017 row")
+    assert by_year.get("2013") is None, (
+        "the 2017 mentor leaked onto the 2013 row")
+
+
 def test_duplicate_ambiguous_citations_collapse_to_one_row():
     """Two year-only citations beside March and November are ONE vague fact.
 
     They fit several events, so neither can be attributed to one. But they are
     also not two career events — they are two sources for the same imprecise
-    statement. The old code pushed each into a new event, inflating a career
-    with rows that carry no new information.
+    statement. Pushing each into a new event inflates a career with rows that
+    carry no new information.
     """
     edges = [_edge(frm="X", to="Y", era="2010s", date="March 2013", url="u1"),
              _edge(frm="X", to="Y", era="2010s", date="November 2013", url="u2"),

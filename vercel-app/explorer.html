@@ -1067,30 +1067,39 @@ function buildTimeline(edges, ql){
       const untimed = members.filter(c => normalizeDate(c.date) === null);
 
       const events = [];
-      const leftover = [];                       // ambiguous: fits no single event
+      // Ambiguous citations (fitting more than one event) collapse into groups,
+      // but ONLY with others whose stated time agrees. A year-only "2013" and a
+      // year-only "2017" both fail to pick an event, yet they contradict each
+      // other: merging them would keep one date and one mentor and silently
+      // drop the other, putting a 2017 mentorship beside a 2013 date.
+      const leftoverGroups = [];
+      const holdAmbiguous = c => {
+        const nd = normalizeDate(c.date);
+        const g = leftoverGroups.find(grp =>
+          !grp.some(o => datesConflict(normalizeDate(o.date), nd)));
+        if(g) g.push(c); else leftoverGroups.push([c]);
+      };
+
       timed.forEach(c => {
         const nd = normalizeDate(c.date);
         const fits = events.filter(ev =>
           !ev.some(o => datesConflict(normalizeDate(o.date), nd)));
         // exactly one compatible event -> that is its event.
         // none -> a genuinely new event.
-        // several -> ambiguous. It goes to the leftover group, which collapses
-        //   to ONE row, not to a new event per citation. Two year-only "2013"
-        //   citations beside March and November are two sources for the same
-        //   vague fact, not two career events.
+        // several -> ambiguous. Held aside, grouped by agreeing time.
         if(fits.length === 1) fits[0].push(c);
         else if(fits.length === 0) events.push([c]);
-        else leftover.push(c);
+        else holdAmbiguous(c);
       });
 
-      // Citations that pin no calendar time ("a decade ago") join only a single
-      // unambiguous event; otherwise they join the same leftover group, so
-      // ambiguous citations collapse to ONE row however many sources state them.
+      // Citations that pin no calendar time ("a decade ago") join a single
+      // unambiguous event when exactly one fits; otherwise they join the
+      // ambiguous groups, where (pinning nothing) they can always agree.
       untimed.forEach(c => {
         const compatible = events.filter(ev =>
           !ev.some(o => datesConflict(normalizeDate(o.date), normalizeDate(c.date))));
         if(compatible.length === 1) compatible[0].push(c);
-        else leftover.push(c);
+        else holdAmbiguous(c);
       });
 
       if(events.length === 0){
@@ -1098,7 +1107,7 @@ function buildTimeline(edges, ql){
         return;
       }
       events.forEach(ev => rows.push(mkRow(ev, era)));
-      if(leftover.length) rows.push(mkRow(leftover, era));
+      leftoverGroups.forEach(grp => rows.push(mkRow(grp, era)));
     });
 
     // nothing stated about when: one row per route, never folded into a dated one
