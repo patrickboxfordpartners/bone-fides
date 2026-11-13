@@ -1046,27 +1046,53 @@ function buildTimeline(edges, ql){
     };
 
     byEra.forEach((members, era) => {
-      // Cluster citations into events by whether their dates CONTRADICT.
-      // Compatible dates merge regardless of how they were written; only a
-      // genuine contradiction (two different pinned years) splits.
-      const clusters = [];
-      members.forEach(c => {
+      // Form the distinct EVENTS first, and do it most-specific-first.
+      //
+      // Order must not decide the answer. Processing citations in corpus order
+      // let a year-only "2013" absorb "March 2013" before "November 2013" was
+      // ever seen, so a mentor named by an ambiguous citation landed on
+      // whichever row happened to be built first.
+      //
+      // Sorting by how much the citation pins (year+month+day before year+month
+      // before year alone) makes the specific events exist before anything
+      // vague is attached. A citation then joins an event only if it fits
+      // EXACTLY ONE; if it fits several it is genuinely ambiguous and stays on
+      // its own row rather than inventing a tie.
+      const spec = c => {
+        const n = normalizeDate(c.date);
+        return n ? (n.y != null) + (n.m != null) + (n.d != null) : 0;
+      };
+      const timed = members.filter(c => normalizeDate(c.date) !== null)
+        .sort((a, b) => spec(b) - spec(a));      // most specific first
+      const untimed = members.filter(c => normalizeDate(c.date) === null);
+
+      const events = [];
+      timed.forEach(c => {
         const nd = normalizeDate(c.date);
-        const hit = clusters.find(cl => !cl.some(o => datesConflict(normalizeDate(o.date), nd)));
-        if(hit) hit.push(c); else clusters.push([c]);
+        const fits = events.filter(ev =>
+          !ev.some(o => datesConflict(normalizeDate(o.date), nd)));
+        // exactly one compatible event -> that is its event.
+        // none -> a new event. more than one -> ambiguous, keep it alone.
+        if(fits.length === 1) fits[0].push(c);
+        else events.push([c]);
       });
-      if(clusters.length === 1){
-        rows.push(mkRow(members, era));
+
+      // Citations that pin no calendar time ("a decade ago") join only a single
+      // unambiguous event; otherwise they stay separate.
+      const leftover = [];
+      untimed.forEach(c => {
+        const compatible = events.filter(ev =>
+          !ev.some(o => datesConflict(normalizeDate(o.date), normalizeDate(c.date))));
+        if(compatible.length === 1) compatible[0].push(c);
+        else leftover.push(c);
+      });
+
+      if(events.length === 0){
+        rows.push(mkRow(members, era));          // nothing pinned a time
         return;
       }
-      // Real conflicts. A citation pinning no calendar time cannot be assigned
-      // to one side without guessing, so it stays separate.
-      const floating = [];
-      clusters.forEach(cl => {
-        if(cl.every(c => normalizeDate(c.date) === null)) floating.push(...cl);
-        else rows.push(mkRow(cl, era));
-      });
-      if(floating.length) rows.push(mkRow(floating, era));
+      events.forEach(ev => rows.push(mkRow(ev, era)));
+      if(leftover.length) rows.push(mkRow(leftover, era));
     });
 
     // nothing stated about when: one row per route, never folded into a dated one

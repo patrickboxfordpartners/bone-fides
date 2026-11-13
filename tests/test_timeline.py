@@ -324,6 +324,54 @@ def test_relative_dates_pin_no_calendar_time():
     assert got == "null", "a relative date must not fabricate a second event"
 
 
+@pytest.mark.parametrize("perm", [
+    ("M", "N", "Y"), ("N", "M", "Y"), ("Y", "M", "N"), ("Y", "N", "M"),
+    ("M", "Y", "N"), ("N", "Y", "M"),
+])
+def test_ambiguous_citation_placement_is_order_independent(perm):
+    """A year-only citation beside a March and a November event fits both.
+
+    It therefore belongs to neither. The old greedy attach joined the first
+    matching event, so the mentor moved between March and November purely by
+    array order — the same evidence yielding a different answer.
+    """
+    E = {
+        "M": _edge(frm="X", to="Y", era="2010s", date="March 2013", url="u1"),
+        "N": _edge(frm="X", to="Y", era="2010s", date="November 2013", url="u2"),
+        "Y": _edge(frm="X", to="Y", era="2010s", date="2013", mentor="Bocuse", url="u3"),
+    }
+    edges = [E[k] for k in perm]
+    got = _run_js(
+        f"const t=buildTimeline({json.dumps(edges)},'X');"
+        f"console.log(JSON.stringify(t.dated.map(r=>({{d:r.e.date,m:r.e.mentor}}))));")
+    for row in got:
+        if row["d"] in ("March 2013", "November 2013"):
+            assert row["m"] is None, (
+                f"the {row['d']} event claimed a mentor from an ambiguous "
+                f"citation — order {perm} changed the answer")
+    amb = [r for r in got if r["d"] == "2013"]
+    assert amb and amb[0]["m"] == "Bocuse", (
+        "the ambiguous citation must keep its own mentor on its own row")
+
+
+def test_unambiguous_vague_citation_still_attaches():
+    """The inverse guard: when exactly ONE event fits, attach.
+
+    Over-caution would strip a mentor from the only event it can describe.
+    A second, clearly-separate event is present so the timeline actually renders
+    (one event alone is correctly not a sequence).
+    """
+    edges = [_edge(frm="X", to="Y", era="2010s", date="March 2013", url="u1"),
+             _edge(frm="X", to="Y", era="2010s", date="2013", mentor="Bocuse", url="u2"),
+             _edge(frm="A", to="B", era="2020s", date="2021", url="u3")]
+    got = _run_js(
+        f"const t=buildTimeline({json.dumps(edges)},'X');"
+        f"console.log(JSON.stringify(t.dated.map(r=>({{era:r.era,d:r.e.date,m:r.e.mentor}}))));")
+    ten = [r for r in got if r["era"] == "2010s"]
+    assert len(ten) == 1, "a year-only citation fitting one event must merge into it"
+    assert ten[0]["m"] == "Bocuse", "the mentor was lost from its only possible event"
+
+
 def test_undated_heading_id_is_unique_per_card():
     """A dossier shows several chef cards; a fixed id makes later lists take
     their spoken label from the first chef's heading."""
