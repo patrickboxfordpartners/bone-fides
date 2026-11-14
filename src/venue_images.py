@@ -591,22 +591,40 @@ def main(argv):
             if v.get("website"):
                 sites[v["name"].lower()] = v["website"]
 
+    # Human verdicts (ui/venue_sites.json) outrank SERP. For a closed
+    # restaurant SERP returns dead domains, lookalikes and directory pages, and
+    # retrying it forever turns "this place is gone" into "no image yet".
+    closed, decided_site = set(), {}
+    sp = os.path.join(BASE, "ui", "venue_sites.json")
+    if os.path.exists(sp):
+        verdicts = json.load(open(sp))
+        closed = set(verdicts.get("closed") or {})
+        decided_site = dict(verdicts.get("website") or {})
+
     cache = load_cache()
     # A "failed" entry is retried on the next run; only a real answer is final.
+    # A human verdict is final too: closed venues are never re-probed.
     todo = [v for v in venues
-            if norm(v) not in cache or cache[norm(v)].get("status") == "failed"]
+            if norm(v) not in closed
+            and (norm(v) not in cache or cache[norm(v)].get("status") == "failed")]
     if limit:
         todo = todo[:limit]
 
-    print(f"{len(venues)} venue names · {len(cache)} cached · resolving {len(todo)}")
+    print(f"{len(venues)} venue names · {len(cache)} cached · "
+          f"{len(closed)} closed by verdict · resolving {len(todo)}")
     hits = 0
     for i, v in enumerate(todo, 1):
-        r, status = resolve_venue(v, token=token, known_website=sites.get(v.lower()))
+        k = norm(v)
+        site = decided_site.get(k) or sites.get(v.lower())
+        r, status = resolve_venue(v, token=token, known_website=site)
         if status == "failed":
             # do NOT cache: an outage must not look like "this venue has no site"
-            cache[norm(v)] = {"url": None, "source": None, "status": "failed"}
+            cache[k] = {"url": None, "source": None, "status": "failed"}
         else:
-            cache[norm(v)] = dict(r or {"url": None, "source": None}, status=status)
+            cache[k] = dict(r or {"url": None, "source": None}, status=status)
+            if k in decided_site:
+                cache[k]["site"] = decided_site[k]
+                cache[k]["site_source"] = "verdict"
             hits += 1 if (r and r.get("url")) else 0
         if i % 25 == 0 or i == len(todo):
             save_cache(cache)
