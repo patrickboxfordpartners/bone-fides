@@ -1,0 +1,41 @@
+{
+  "_comment": "Venue website + closure decisions that override SERP discovery. SERP is unreliable for closed restaurants (dead domains, lookalikes, directory pages), so a human answer here is final: 'website' is used directly and never re-resolved, and 'closed' suppresses discovery entirely. Keys are norm() of the venue name (lowercase alphanumerics only).",
+  "closed": {
+    "fifthfloor": "Fifth Floor",
+    "cheztj": "Chez TJ",
+    "bartartine": "Bar Tartine",
+    "lafolie": "La Folie",
+    "parktavern": "Park Tavern",
+    "plum": "Plum",
+    "postrio": "Postrio",
+    "gitane": "Gitane",
+    "oliveto": "Oliveto",
+    "noosh": "Noosh",
+    "grandcafe": "Grand Cafe",
+    "marlena": "Marlena",
+    "mourad": "Mourad",
+    "charlesnobhill": "Charles Nob Hill",
+    "incanto": "Incanto",
+    "ame": "Ame",
+    "luce": "Luce",
+    "mecca": "Mecca",
+    "dine": "Dine",
+    "aq": "AQ",
+    "elisabethdaniel": "Elisabeth Daniel"
+  },
+  "website": {
+    "coi": "https://coirestaurant.com/",
+    "a16": "https://www.a16pizza.com/san-francisco",
+    "delfina": "https://www.delfinasf.com/",
+    "perse": "https://thomaskeller.com/perseny/",
+    "commis": "https://commisrestaurant.com/",
+    "bix": "https://bixrestaurant.com/",
+    "parallel37": "https://fp.sevenrooms.com/reservations/parallel37theritzcarltonsanfrancisco"
+  },
+  "broken_tls_chain": {
+    "commis": "Serves a DigiCert GeoTrust leaf with no intermediate, so a client with a full trust store fails with 'unable to verify the first certificate'. Browsers fetch the missing intermediate; requests does not. Confirmed live at 28KB naming Commis with a valid og:image."
+  },
+  "booking_only": {
+    "parallel37": "Resy/SevenRooms page is the only live presence; the restaurant itself is closed."
+  }
+}
