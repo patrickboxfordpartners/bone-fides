@@ -50,12 +50,22 @@ def test_known_sites_are_recorded():
     assert sites["perse"].startswith("https://thomaskeller.com/")
 
 
-def test_commis_is_not_marked_closed():
-    # Commis was supplied as a live site but its host refused connections on
-    # recheck, so it is NOT a closure — it is unresolved and must stay eligible.
+def test_commis_is_resolved_and_flagged_for_broken_tls():
+    # Commis serves a leaf without its intermediate. It is a live site, not a
+    # closure, and the broken chain is recorded so the resolver may relax
+    # verification for this host only rather than for everything.
     reg = _registry()
     assert norm("Commis") not in reg["closed"]
-    assert norm("Commis") not in reg["website"]
+    assert reg["website"][norm("Commis")] == "https://commisrestaurant.com/"
+    assert norm("Commis") in reg.get("broken_tls_chain", {})
+
+
+def test_broken_tls_flag_only_covers_hosts_in_the_registry():
+    # A broken-chain host with no recorded website would never be fetched, so
+    # the pair must move together.
+    reg = _registry()
+    sites, broken = reg.get("website", {}), reg.get("broken_tls_chain", {})
+    assert set(broken) <= set(sites), sorted(set(broken) - set(sites))
 
 
 def test_parallel37_booking_only_site_is_documented():

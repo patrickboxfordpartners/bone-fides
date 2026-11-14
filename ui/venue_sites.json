@@ -28,8 +28,12 @@
     "a16": "https://www.a16pizza.com/san-francisco",
     "delfina": "https://www.delfinasf.com/",
     "perse": "https://thomaskeller.com/perseny/",
+    "commis": "https://commisrestaurant.com/",
     "bix": "https://bixrestaurant.com/",
     "parallel37": "https://fp.sevenrooms.com/reservations/parallel37theritzcarltonsanfrancisco"
+  },
+  "broken_tls_chain": {
+    "commis": "Serves a DigiCert GeoTrust leaf with no intermediate, so a client with a full trust store fails with 'unable to verify the first certificate'. Browsers fetch the missing intermediate; requests does not. Confirmed live at 28KB naming Commis with a valid og:image."
   },
   "booking_only": {
     "parallel37": "Resy/SevenRooms page is the only live presence; the restaurant itself is closed."

@@ -114,13 +114,22 @@ def _url_is_public(url):
     return _is_public_host(m.group(1))
 
 
-def safe_get(url, timeout=20, max_redirects=5):
+def safe_get(url, timeout=20, max_redirects=5, allow_broken_chain=False):
     """GET that refuses to touch a private address, on the first hop or any
     redirect. Returns the response, or None when the destination is unsafe or
     the chain is too long.
 
     Redirects are followed manually so each destination is checked; letting
     requests follow them silently is what made this SSRF-able.
+
+    `allow_broken_chain` exists for sites that serve an INCOMPLETE TLS chain —
+    the leaf certificate without its intermediate (Commis does this: DigiCert
+    GeoTrust leaf, no intermediate sent, so a client with a full trust store
+    fails with "unable to verify the first certificate"). Browsers paper over
+    it by fetching the missing intermediate; requests does not. It relaxes
+    verification ONLY: the host is still resolved and still has to pass the
+    private-address check above, and it is never used for a redirect target.
+    Keep it off unless a caller is reading a page we already trust by name.
     """
     import requests
     current = url
@@ -130,8 +139,16 @@ def safe_get(url, timeout=20, max_redirects=5):
         try:
             r = requests.get(current, headers=UA, timeout=timeout,
                              allow_redirects=False)
-        except Exception:
-            return None
+        except Exception as e:
+            if not allow_broken_chain or "CERTIFICATE_VERIFY_FAILED" not in str(e):
+                return None
+            try:
+                import urllib3
+                urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+                r = requests.get(current, headers=UA, timeout=timeout,
+                                 allow_redirects=False, verify=False)
+            except Exception:
+                return None
         if r.status_code in (301, 302, 303, 307, 308) and r.headers.get("location"):
             nxt = urllib.parse.urljoin(current, r.headers["location"])
             if not _url_is_public(nxt):
@@ -382,12 +399,17 @@ def _page_names_venue(html, venue):
     return n in norm(text)
 
 
-def tier_website(venue, known_website=None, timeout=15):
+def tier_website(venue, known_website=None, timeout=15, broken_chain=False):
     """The venue's own page, fetched only from a public address, redirects
     checked hop by hop. Returns None unless the page both names the venue and
-    declares an image."""
+    declares an image.
+
+    `broken_chain` retries once with verification relaxed, for a site recorded
+    in venue_sites.json as serving an incomplete TLS chain. It is never
+    inferred from the response — a caller has to say so.
+    """
     for url in _candidate_sites(venue, known_website)[0]:
-        r = safe_get(url, timeout=timeout)
+        r = safe_get(url, timeout=timeout, allow_broken_chain=broken_chain)
         if r is None or r.status_code != 200:
             continue
         if not _page_names_venue(r.text, venue):
@@ -400,16 +422,19 @@ def tier_website(venue, known_website=None, timeout=15):
     return None
 
 
-def download_image(url, venue_key, timeout=25):
+def download_image(url, venue_key, timeout=25, broken_chain=False):
     """Fetch an image once and store it locally. Returns a relative path or None.
 
     This is the half that makes "lookup only" true: a remote URL in the cache
     would still be a hotlink, which is the exact thing this module exists to
     remove. Nothing is served from a third-party CDN at render time.
+
+    `broken_chain` mirrors safe_get's: a host that omits its TLS intermediate
+    fails on the image request too, not just the page.
     """
     if not url or not _url_is_public(url):
         return None
-    r = safe_get(url, timeout=timeout)
+    r = safe_get(url, timeout=timeout, allow_broken_chain=broken_chain)
     if r is None or r.status_code != 200:
         return None
     ctype = (r.headers.get("content-type") or "").lower()
@@ -498,7 +523,8 @@ def tier_social(venue, known_website=None, timeout=15):
 
 # ── driver ──────────────────────────────────────────────────────────────────
 
-def resolve_venue(venue, token=None, known_website=None, use_serp=True):
+def resolve_venue(venue, token=None, known_website=None, use_serp=True,
+                  broken_chain=False):
     """Run the tiers in order. Returns (record, status).
 
     status is "found", "absent" or "failed". Only "absent" may be cached as a
@@ -517,7 +543,7 @@ def resolve_venue(venue, token=None, known_website=None, use_serp=True):
 
     img = None
     if site:
-        img = tier_website(venue, site)
+        img = tier_website(venue, site, broken_chain=broken_chain)
     if not img:
         img = tier_social(venue, site)      # reads only the CONFIRMED site
     if not img and token:
@@ -531,7 +557,7 @@ def resolve_venue(venue, token=None, known_website=None, use_serp=True):
     # still a hotlink, which is the exact thing this module removes — so tier 1
     # and tier 2 download here too, not just Mapbox.
     if out.get("url") and str(out["url"]).startswith(("http://", "https://")):
-        local = download_image(out["url"], venue)
+        local = download_image(out["url"], venue, broken_chain=broken_chain)
         if local:
             out["remote"] = out["url"]
             out["url"] = local
@@ -594,12 +620,13 @@ def main(argv):
     # Human verdicts (ui/venue_sites.json) outrank SERP. For a closed
     # restaurant SERP returns dead domains, lookalikes and directory pages, and
     # retrying it forever turns "this place is gone" into "no image yet".
-    closed, decided_site = set(), {}
+    closed, decided_site, broken = set(), {}, set()
     sp = os.path.join(BASE, "ui", "venue_sites.json")
     if os.path.exists(sp):
         verdicts = json.load(open(sp))
         closed = set(verdicts.get("closed") or {})
         decided_site = dict(verdicts.get("website") or {})
+        broken = set(verdicts.get("broken_tls_chain") or {})
 
     cache = load_cache()
     # A "failed" entry is retried on the next run; only a real answer is final.
@@ -616,7 +643,8 @@ def main(argv):
     for i, v in enumerate(todo, 1):
         k = norm(v)
         site = decided_site.get(k) or sites.get(v.lower())
-        r, status = resolve_venue(v, token=token, known_website=site)
+        r, status = resolve_venue(v, token=token, known_website=site,
+                                  broken_chain=k in broken)
         if status == "failed":
             # do NOT cache: an outage must not look like "this venue has no site"
             cache[k] = {"url": None, "source": None, "status": "failed"}
