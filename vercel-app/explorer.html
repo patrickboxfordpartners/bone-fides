@@ -128,11 +128,18 @@
   .idflag.homonym { color: var(--bad); border-color: color-mix(in srgb, var(--bad) 40%, transparent); }
   .idflag.possible { color: #a07d3f; border-color: color-mix(in srgb, #a07d3f 40%, transparent); }
   .evrow { display: flex; gap: 12px; margin-top: 8px; align-items: flex-start; }
-  .evimg { width: 88px; height: 88px; object-fit: cover; border-radius: 6px; flex: none;
+  .evfig { margin: 0; flex: none; width: 88px; }
+  .evimg { width: 88px; height: 88px; object-fit: cover; border-radius: 6px; display: block;
            border: 1px solid var(--faint); background: var(--faint); }
   .evimg:not([src]) { display: none; }
   .evimg[src=""] { display: none; }
   img.evimg.broken { display: none; }
+  /* The photo belongs to the publisher, so it is never shown uncaptioned. */
+  .imgcredit { font-size: 9.5px; line-height: 1.25; margin-top: 3px; color: var(--dim);
+               text-align: center; letter-spacing: .02em; }
+  .imgcredit a { color: inherit; text-decoration: none;
+                 border-bottom: 1px solid color-mix(in srgb, var(--dim) 45%, transparent); }
+  .imgcredit a:hover { color: var(--ink); border-color: var(--ink); }
   .evtext { min-width: 0; flex: 1; }
   .chef .conf { width: 8px; height: 8px; border-radius: 50%; flex: none; align-self: center; }
   .conf.high { background: var(--ok); } .conf.medium { background: var(--gold); } .conf.low { background: var(--bad); }
@@ -486,6 +493,25 @@ function sameLoose(a, b){
   return !!la && la.length >= 4 && la === lb;
 }
 function hostOf(u){ try { return new URL(u).hostname.replace('www.',''); } catch(e){ return u; } }
+// Publication name for a credit line. Same host→outlet resolution srcBadge
+// uses, kept in one place so a credit and a badge can never disagree.
+function outletName(u, source){
+  const h = (() => { try { return new URL(u).hostname; } catch(e){ return ''; } })();
+  const infer = host => host.includes('sfchronicle') ? 'sfchronicle'
+                    : host.includes('sfgate') ? 'sfgate'
+                    : host.includes('eater') ? 'eater' : '';
+  let tier = (source === 'sfchronicle' || source === 'sfgate' || source === 'eater') ? source : '';
+  if(!tier) tier = infer(h);
+  // A stored "eater" label must not rename a different publisher's photo — the
+  // same rule srcBadge enforces. Re-infer from the host rather than dropping
+  // straight to the raw hostname, so a mislabelled SFGate photo still reads
+  // "SFGate" instead of "sfgate.com".
+  if(tier === 'eater' && h && !h.includes('eater')) tier = infer(h);
+  if(tier === 'sfchronicle') return 'San Francisco Chronicle';
+  if(tier === 'sfgate') return 'SFGate';
+  if(tier === 'eater') return 'Eater SF';
+  return hostOf(u);
+}
 function srcBadge(u, source, outlet){
   const h = (() => { try { return new URL(u).hostname; } catch(e){ return ''; } })();
   let tier = outlet;
@@ -881,7 +907,13 @@ document.addEventListener('click', e => {
   }
 });
 document.addEventListener('error', e => {
-  if(e.target && e.target.classList && e.target.classList.contains('evimg')) e.target.classList.add('broken');
+  // Hide the whole figure, not just the <img>: a broken photo must not leave
+  // an orphaned credit line pointing at an image nobody can see.
+  if(e.target && e.target.classList && e.target.classList.contains('evimg')){
+    const fig = e.target.closest && e.target.closest('.evfig');
+    if(fig) fig.style.display = 'none';
+    e.target.classList.add('broken');
+  }
 }, true);
 
 function trunc(s, n){
@@ -1232,8 +1264,16 @@ function render(q, edges, ms, ped, identity, roleFilter, serverFilter){
     if(bits.length) idBadge = '<div class="idline">'+bits.join(' · ')+'</div>';
     const meta = [pivot.role, pivot.date && !Object.values(c.years).includes(pivot.date) ? pivot.date : null]
       .filter(Boolean).join(' · ');
-    // imagery: the cited article's own photo, lazy-loaded, with graceful fallback
-    const img = pivot.source_image ? `<img class="evimg" src="${esc(pivot.source_image)}" alt="" loading="lazy" referrerpolicy="no-referrer">` : '';
+    // imagery: the cited article's own photo, lazy-loaded, with graceful
+    // fallback. It is ALWAYS captioned: the photo is the publisher's, and the
+    // card is a claim about what that publisher reported, so the picture has
+    // to be visibly tied to the article rather than floating free beside it.
+    const imgCredit = pivot.source_url
+      ? `<figcaption class="imgcredit">photo: <a href="${esc(pivot.source_url)}" target="_blank" rel="noopener">${esc(outletName(pivot.source_url, pivot.source))}</a></figcaption>`
+      : '';
+    const img = pivot.source_image
+      ? `<figure class="evfig"><img class="evimg" src="${esc(pivot.source_image)}" alt="" loading="lazy" referrerpolicy="no-referrer">${imgCredit}</figure>`
+      : '';
     // per-edge flag affordance: the flag knows which chef and edge it sits on
     const flagEdge = `<button type="button" class="flaglink" data-flag="edge" data-person="${esc(cl.name)}" data-source="${esc(pivot.source_url||'')}" title="Something wrong with this cited move? Flag it">flag or add</button>`;
     cards.push({ bucket: pivot.role_bucket || 'other', html: `
