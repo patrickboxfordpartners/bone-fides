@@ -426,9 +426,6 @@
   "url": null
  },
  "abiquiu": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-abiquiu-lake"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -624,7 +621,6 @@
  },
  "adhoc": {
   "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-ad-hoc-restaurant",
    "resy": "https://resy.com/cities/yountville-ca/venues/ad-hoc"
   },
   "confidence": "high",
@@ -1031,9 +1027,6 @@
   "url": null
  },
  "altaplaza": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-alta-plaza"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "http://static1.squarespace.com/static/6908fba894943c222b2fb45e/t/69126637ddd9827a2d2927f0/1762813495264/Social+Sharing.png?format=1500w",
@@ -1181,9 +1174,6 @@
   "url": null
  },
  "anchorbrewing": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-anchor-brewing-company"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://www.anchorbrewing.com/wp-content/themes/ninetwentytwentythree/assets/imgs/anchor.png",
@@ -1503,8 +1493,7 @@
  },
  "arcadia": {
   "booking": {
-   "opentable": "https://www.opentable.com/r/melange-arcadia",
-   "resy": "https://resy.com/cities/arcadia-ca/list/book-tonight"
+   "opentable": "https://www.opentable.com/r/melange-arcadia"
   },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
@@ -1544,9 +1533,6 @@
   "url": null
  },
  "arguello": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-arguello-park-san-francisco"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -1833,7 +1819,6 @@
  },
  "atrium": {
   "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-atrium-center-shopping-center",
    "resy": "https://resy.com/cities/glendale-ca/venues/atrium-estiatorio"
   },
   "confidence": "high",
@@ -2182,9 +2167,6 @@
   "url": "venue-images/bacar.jpg"
  },
  "bacchanal": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-bacchanal-buffet-at-caesars-palace"
-  },
   "site": "https://www.bottlebacchanal.com/",
   "source": null,
   "status": "found",
@@ -2304,7 +2286,6 @@
  },
  "baia": {
   "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-baia",
    "tock": "https://www.exploretock.com/baia"
   },
   "confidence": "high",
@@ -2924,7 +2905,6 @@
  },
  "beaulieuvineyard": {
   "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-beaulieu-vineyard",
    "tock": "https://www.exploretock.com/beaulieuvineyard/"
   },
   "site": null,
@@ -3742,9 +3722,6 @@
   "url": null
  },
  "bluenote": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-blue-note-napa"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://www.bluenote.com/wp-content/uploads/sites/956/2026/11/GrantGreen_AmIBlue_product2_TPSsticker_1-540x320.jpg",
@@ -4591,7 +4568,6 @@
  },
  "buenavistawinery": {
   "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-buena-vista-winery",
    "tock": "https://www.exploretock.com/buenavistawinery/"
   },
   "confidence": "high",
@@ -4808,9 +4784,6 @@
   "url": "venue-images/bywater.jpg"
  },
  "cachecreekcasinoresort": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-cache-creek-casino-resort"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://www.cachecreek.com/resourcefiles/mainimages/hotelpage-slider-2026.jpg",
@@ -5114,9 +5087,6 @@
   "url": null
  },
  "californiaacademyofsciences": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-california-academy-of-sciences"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "http://www.calacademy.org/sites/default/files/assets/images/KW_IMAGES_DO_NOT_USE/sa_hero_slideshow_lg_2-2.jpg",
@@ -5168,9 +5138,6 @@
   "url": null
  },
  "calistogaranch": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-calistoga-ranch"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -5231,8 +5198,7 @@
  },
  "campbell": {
   "booking": {
-   "opentable": "https://www.opentable.com/food-near-me/campbell",
-   "resy": "https://resy.com/cities/campbell-ca/list/collection_888"
+   "opentable": "https://www.opentable.com/food-near-me/campbell"
   },
   "site": "https://www.campbellfoundation.org/organizations/66497/",
   "source": null,
@@ -5364,9 +5330,6 @@
   "url": "venue-images/carbone.jpg"
  },
  "carlylehotel": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-carlyle-hotel"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://www.carlyle-hotel.com/site/assets/files/14667/carlyle_hotel-1.1200x0.jpg",
@@ -5396,9 +5359,6 @@
   "url": null
  },
  "carnerosinn": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-the-carneros-inn"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -5498,9 +5458,6 @@
   "url": null
  },
  "cashmanfield": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-cashman-field"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -5817,7 +5774,6 @@
  },
  "charleskrug": {
   "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-charles-krug-winery",
    "tock": "https://www.exploretock.com/charleskrug/event/602618/faq"
   },
   "confidence": "high",
@@ -5829,9 +5785,6 @@
   "url": "venue-images/charles-krug.webp"
  },
  "charleskrugwinery": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-charles-krug-winery"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -5922,9 +5875,6 @@
   "url": null
  },
  "chasecenter": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-chase-center"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://images.prismic.io/chasecenterprod/9182f47b-bf31-40c4-b0d6-5b910373557b_contained-visit-desktop.jpg?auto=compress,format",
@@ -5934,18 +5884,12 @@
   "url": "venue-images/chase-center.jpg"
  },
  "chateaumontelena": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-chateau-montelena"
-  },
   "site": null,
   "source": null,
   "status": "found",
   "url": null
  },
  "chateaumorrisettewinery": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-chateau-morrisette-winery-inc"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -6648,9 +6592,6 @@
   "url": null
  },
  "cliffhouse": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-cliff-house"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -6667,9 +6608,6 @@
   "url": null
  },
  "clifthotel": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-clift-hotel-san-francisco"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -6682,7 +6620,6 @@
  },
  "closduval": {
   "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-clos-du-val-winery",
    "tock": "https://www.exploretock.com/closduval/"
   },
   "confidence": "high",
@@ -6825,9 +6762,6 @@
   "url": null
  },
  "coittower": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-north-beach---coit-tower"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://nebula.wsimg.com/50a04c1e9058e2386b07f775548218e0?AccessKeyId=96EA0F15D79FCC763C84&disposition=0&alloworigin=1",
@@ -7973,9 +7907,6 @@
   "url": null
  },
  "delmar": {
-  "booking": {
-   "opentable": "https://www.opentable.com/nearby/restaurants-near-me-del-mar-ca"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -8077,9 +8008,6 @@
   "url": "venue-images/devil-s-thumb.jpg"
  },
  "deyoung": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-deyoung-museum"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -8306,9 +8234,6 @@
   "url": null
  },
  "dolorespark": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-mission-dolores-park"
-  },
   "site": "https://sfrecpark.org/facilities/facility/details/Mission-Dolores-Park-188",
   "source": null,
   "status": "found",
@@ -8590,9 +8515,6 @@
   "url": null
  },
  "dunesclub": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-hammock-dunes-club"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -8795,9 +8717,6 @@
   "url": null
  },
  "ejgallo": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-e-and-j-gallo-winery"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -9060,9 +8979,6 @@
   "url": null
  },
  "emma": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-hotel-emma"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -9422,9 +9338,6 @@
   "url": "venue-images/fairmont.jpg"
  },
  "fairmontheritageplaceghirardellisquare": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-the-fairmont-heritage-place-ghirardelli-square"
-  },
   "confidence": "low",
   "evidence": "profile image from a handle linked by the venue's own site",
   "handle": "fairmontghirardelli",
@@ -9491,9 +9404,6 @@
   "url": "venue-images/fang.png"
  },
  "farallon": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-farallon-beach"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://www.restaurantfarallon.com/assets/img/exterior-night.jpg",
@@ -9808,9 +9718,6 @@
   "url": null
  },
  "fetzervineyards": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-fetzer-vineyards"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -10336,9 +10243,6 @@
   "url": null
  },
  "fortpoint": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-fort-point-national-historic-site-172841"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://fortpointbeer.com/cdn/shop/products/Fort-Point-Pint-Glass-5_140x_crop_center.jpg?v=1665174798",
@@ -10366,9 +10270,6 @@
   "url": "venue-images/four-barrel.jpg"
  },
  "fourcorners": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-four-corners"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -10401,9 +10302,6 @@
   "url": null
  },
  "fourseasonshotelsiliconvalley": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-four-seasons-hotel-silicon-valley-at-east-palo-alto"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -10785,9 +10683,6 @@
   "url": null
  },
  "geyserpeak": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-geyser-peak-winery?lang=es"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -10808,9 +10703,6 @@
   "url": "venue-images/ghee-indian-kitchen.jpg"
  },
  "ghirardellisquare": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-ghirardelli-square"
-  },
   "site": "https://www.ghirardelli.com/storelocations-sanfranciscosquare?srsltid=AYCX9vIUtbOwrJgujifLB8zsyuaS0lJNcnS4X277oTLuqtSkP-mTkgMs",
   "source": null,
   "status": "found",
@@ -11557,9 +11449,6 @@
   "url": "venue-images/harborview-restaurant-bar.jpg"
  },
  "harborvillage": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-harbor-village-square-shopping-center"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -11960,9 +11849,6 @@
   "url": null
  },
  "hilltop": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-hilltop-park-san-francisco"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -12310,9 +12196,6 @@
   "url": null
  },
  "hotelcarlton": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-hotel-carlton,-a-joie-de-vivre-hotel"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://cdn.foundhotels.com/s3-uploads/sites/9/20250215202936/hero.jpg",
@@ -12823,9 +12706,6 @@
   "url": null
  },
  "istanbulmodern": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-istanbul-modern"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://www.istanbulmodern.org/contents/piclib/vinyet.jpg",
@@ -14749,9 +14629,6 @@
   "url": null
  },
  "lasuite": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-la-quinta-inn-and-suites-san-francisco-airport-west"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -14805,9 +14682,6 @@
   "url": null
  },
  "laubergecarmel": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-lauberge-carmel-relais-and-chateaux"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/4768c322847a4f1a0fc166fcd2903ed1/id-preview-57df35d9--659ff71c-6d89-457f-a67a-9f605dad40d7.lovable.app-1787597201854.png",
@@ -15372,9 +15246,6 @@
   "url": null
  },
  "levisstadium": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-levis-stadium"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://www.levisstadium.com/wp-content/uploads/2019/06/apple-btn.png",
@@ -15459,9 +15330,6 @@
   "url": null
  },
  "lincoln": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-lincoln-playground-san-francisco"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://service.secureoffersites.com/images/GetLibraryImage?fileNameOrId=189476&Width=0&Height=0&logo=y",
@@ -15925,9 +15793,6 @@
   "url": "venue-images/luna-blu.jpg"
  },
  "lunapark": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-luna-park"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -16704,9 +16569,6 @@
   "url": null
  },
  "maverick": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-mavericks"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://storage.googleapis.com/gpt-engineer-file-uploads/8qH6y83eP6akya2lXZL1kPpSKxF3/social-images/social-1782104492931-Screenshot_2026-06-21_at_10.01.07_PM.webp",
@@ -16729,7 +16591,6 @@
  },
  "mayacamasvineyards": {
   "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-mayacamas-vineyards",
    "tock": "https://www.exploretock.com/mayacamasvineyards"
   },
   "confidence": "high",
@@ -18354,9 +18215,6 @@
   "url": null
  },
  "neworleans": {
-  "booking": {
-   "resy": "https://resy.com/cities/new-orleans-la/list/collection_1185"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/neworleans/new_orleans_jackson_square_4b02acd9-9970-458e-9266-18d0e178e8a1.jpg",
@@ -19139,9 +18997,6 @@
   "url": null
  },
  "olympicclub": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-olympic-club"
-  },
   "confidence": "low",
   "evidence": "profile image from a handle linked by the venue's own site",
   "handle": "theolympicclub",
@@ -19254,9 +19109,6 @@
   "url": null
  },
  "orchardhotel": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-orchard-hotel"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://symphony.cdn.tambourine.com/the-orchard-hotel/media/orchard-exterior-57c8bfc51e78d.jpg",
@@ -19770,9 +19622,6 @@
   "url": null
  },
  "palmetto": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-palmetto-avenue-shopping-center"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -19792,8 +19641,7 @@
  },
  "paloalto": {
   "booking": {
-   "opentable": "https://www.opentable.com/food-near-me/palo-alto",
-   "resy": "https://resy.com/cities/palo-alto-ca/list/collection_888"
+   "opentable": "https://www.opentable.com/food-near-me/palo-alto"
   },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
@@ -21182,9 +21030,6 @@
   "url": null
  },
  "plumpjacksquawvalley": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-plumpjack-squaw-valley-inn"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -21600,9 +21445,6 @@
   "url": null
  },
  "providence": {
-  "booking": {
-   "resy": "https://resy.com/cities/providence-ri/list/collection_1031"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://www.providence.org/-/media/project/psjh/shared/images/donotmodify/homepageimage2-80.jpg?rev=298835039e1140ca867038f06d7a0243",
@@ -22423,9 +22265,6 @@
   "url": null
  },
  "reverie": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-reverie-winery"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -22725,9 +22564,6 @@
   "url": null
  },
  "rivera": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-diego-rivera-mural"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://www.DiegoRivera.org/assets/img/diego-rivera.jpg",
@@ -22822,7 +22658,6 @@
  },
  "robertmondaviwinery": {
   "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-robert-mondavi-winery",
    "tock": "https://www.exploretock.com/robertmondaviwinery"
   },
   "confidence": "high",
@@ -23095,9 +22930,6 @@
   "url": "venue-images/round-table-pizza.jpg"
  },
  "route66": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-historic-route-66"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://route66ca.org/wp-content/uploads/2026/04/Landing-Banner.jpg",
@@ -23280,9 +23112,6 @@
   "url": null
  },
  "rusticcanyon": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-rustic-canyon-recreation-center"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://rusticcanyonrestaurant.com/wp-content/uploads/2026/06/RC-byalexscott-2026-57_websize-1.jpg",
@@ -23629,8 +23458,7 @@
  },
  "sanfrancisco": {
   "booking": {
-   "opentable": "https://www.opentable.com/metro/san-francisco-restaurants",
-   "resy": "https://resy.com/cities/san-francisco-ca/list/collection_14"
+   "opentable": "https://www.opentable.com/metro/san-francisco-restaurants"
   },
   "site": null,
   "source": null,
@@ -24031,7 +23859,6 @@
  },
  "seaglass": {
   "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-sea-glass-museum",
    "resy": "https://resy.com/cities/portland-me/venues/sea-glass"
   },
   "site": null,
@@ -24492,9 +24319,6 @@
   "url": null
  },
  "simiwinery": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-simi-winery"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -25386,9 +25210,6 @@
   "url": "venue-images/standard-fare.webp"
  },
  "stanfordcourt": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-stanford-court-san-francisco"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://d18slle4wlf9ku.cloudfront.net/stanfordcourt.com-1629253948/cms/imagepool/67347ed862de2.jpg",
@@ -25620,7 +25441,6 @@
  },
  "stillwater": {
   "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-stillwater-cove-access",
    "resy": "https://resy.com/cities/brighton-mi/venues/stillwater-grill-brighton"
   },
   "site": null,
@@ -25844,9 +25664,6 @@
   "url": null
  },
  "sunnyside": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-sunnyside-playground"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://www.sunnysidesf.org/uploads/6/1/7/6/6176375/published/brain_4.png?1502147050",
@@ -26232,9 +26049,6 @@
   "url": null
  },
  "tanglewood": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-tanglewood-park-santa-rosa"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -26497,9 +26311,6 @@
   "url": "venue-images/taylor-street-coffee-shop.jpg"
  },
  "teatrozinzanni": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-teatro-zinzanni"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://zinzanni.com/sf/wp-content/uploads/sites/12/2024/10/NewWebFullScreenSFHeader-c.png",
@@ -27188,9 +26999,6 @@
   "url": null
  },
  "thelodgeatsonoma": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-the-lodge-at-sonoma-renaissance-resort"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://www.thelodgeatsonoma.com/content/uploads/2021/04/WW-2.jpg",
@@ -27310,9 +27118,6 @@
   "url": "venue-images/the-oxford.jpg"
  },
  "thepalace": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-palace-hotel,-a-luxury-collection-hotel,-san-francisco"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://www.sfpalace.com/wp-content/uploads/2024/06/mark@3x.png",
@@ -28041,9 +27846,6 @@
   "url": "venue-images/torc.webp"
  },
  "toronado": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-toronado-pub"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://www.toronado.com/assets/header.jpg",
@@ -28383,9 +28185,6 @@
   "url": null
  },
  "tru": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-tru"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -29008,9 +28807,6 @@
   "url": null
  },
  "ventanainn": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-ventana-inn-and-spa-a-jdv-hotel-adult-only-resort"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -29078,9 +28874,6 @@
   "url": null
  },
  "vertigo": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-hotel-vertigo-san-francisco"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -29364,9 +29157,6 @@
   "url": null
  },
  "warmemorialoperahouse": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-war-memorial-opera-house"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://sfwarmemorial.org/wp-content/uploads/home-slider-davis-symphony.jpg",
@@ -29544,18 +29334,12 @@
   "url": null
  },
  "westinbonaventurehotel": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-the-westin-bonaventure-hotel-and-suites"
-  },
   "site": null,
   "source": null,
   "status": "found",
   "url": null
  },
  "westinstfrancis": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-the-westin-st-francis-on-union-square"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -29624,9 +29408,6 @@
   "url": "venue-images/whitechapel.webp"
  },
  "whitehouse": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-the-white-house-inn-and-spa"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://www.whitehouseblackmarket.com/_assets/cms/v3/assets/blt6ad139f4fe18a15b/blt65fe9635bc7fb194/6af47b61f321be1e778fa32a/dsk_hero_11.12.png?imwidth=3840&quality=80",
@@ -29880,9 +29661,6 @@
   "url": "venue-images/wolfsbane.jpg"
  },
  "woodbridge": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-woodbridge-regional-park"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -29935,9 +29713,6 @@
   "url": null
  },
  "xanadu": {
-  "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-xanadu-gallery"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://www.xanadugallery.us/images/about.png",
@@ -30122,8 +29897,7 @@
  },
  "yountville": {
   "booking": {
-   "opentable": "https://www.opentable.com/features/restaurants-that-are-worth-the-drive-yountville-ca",
-   "resy": "https://resy.com/cities/yountville-ca/list/new-on-resy?date=2025-03-24&seats=2&time=all-day"
+   "opentable": "https://www.opentable.com/features/restaurants-that-are-worth-the-drive-yountville-ca"
   },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",

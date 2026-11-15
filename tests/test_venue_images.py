@@ -726,3 +726,37 @@ def test_plugin_and_tracker_assets_are_not_venue_photos():
         '<meta property="og:image" content="https://x.com/assets/assets/placeholder.jpg">',
     ):
         assert _og_image(html) is None, html
+
+
+# ── booking links must be venue pages, not maps or lists ───────────────────
+
+def test_proximity_and_landmark_pages_are_not_bookings(monkeypatch):
+    """OpenTable emits /landmark/restaurants-near-<place> constantly — 79
+    reached the cache. They list what is NEAR a place; a diner cannot book."""
+    import src.brightdata as bd
+    import src.venue_images as v
+    monkeypatch.setattr(bd, "serp", lambda q, num=10: [
+        {"url": "https://www.opentable.com/landmark/restaurants-near-benu", "title": ""},
+        {"url": "https://www.opentable.com/nearby/restaurants-near-me-benu", "title": ""},
+        {"url": "https://resy.com/cities/arcadia-ca/list/book-tonight", "title": ""},
+    ])
+    assert v.find_booking_links("Benu") == {}
+
+
+def test_a_resy_city_venue_page_is_still_a_booking(monkeypatch):
+    """The normal Resy shape has the city in the path. Rejecting every
+    /cities/ URL would drop 150 real links."""
+    import src.brightdata as bd
+    import src.venue_images as v
+    monkeypatch.setattr(bd, "serp", lambda q, num=10: [
+        {"url": "https://resy.com/cities/san-francisco-ca/venues/7-adams", "title": ""}])
+    assert v.find_booking_links("7 Adams").get("resy") == \
+        "https://resy.com/cities/san-francisco-ca/venues/7-adams"
+
+
+def test_all_three_platforms_are_searched():
+    import inspect
+    import src.venue_images as v
+    src = inspect.getsource(v.find_booking_links)
+    for p in ('"resy"', '"opentable"', '"tock"'):
+        assert p in src, f"{p} is not searched"

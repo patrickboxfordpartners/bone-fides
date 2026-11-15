@@ -503,6 +503,19 @@ def find_booking_links(venue):
                                                "/blog/", "/stories/", "/article/",
                                                "/news/", "/guides/")):
                     continue
+                # Proximity and landmark pages list what is NEAR a place; they
+                # are maps, not bookings. OpenTable emits them constantly:
+                # /landmark/restaurants-near-abiquiu and /nearby/... reached
+                # the cache 79 times.
+                if "/nearby/" in path or "/landmark/" in path:
+                    continue
+                # Resy city LISTS (/cities/x-ca/list/book-tonight) are not
+                # venues. A city path WITH /venues/ is the normal Resy shape
+                # and must keep working: /cities/san-francisco-ca/venues/7-adams
+                if "/list/" in path:
+                    continue
+                if "/cities/" in path and "/venues/" not in path:
+                    continue
                 # OpenTable's search is a bare "/s"
                 if path.rstrip("/") in ("/s", "/searches", ""):
                     continue
