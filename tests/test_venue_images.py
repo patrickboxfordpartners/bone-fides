@@ -592,13 +592,12 @@ def test_domain_shape_decides_identity():
 
 def test_domain_shape_accepts_the_venue_own_sites():
     from src.venue_images import _domain_names_venue as f
+    # name + venue descriptor: unambiguous
     assert f("https://coirestaurant.com/", "Coi")
     assert f("https://bixrestaurant.com/", "Bix")
     assert f("https://www.azizasf.com/", "Aziza")
     assert f("https://www.delfinasf.com/", "Delfina")
-    # "&" and "+" both become "and" in a domain
     assert f("https://www.sonsanddaughterssf.com/", "Sons & Daughters")
-    assert f("https://www.flourandwater.com/", "Flour + Water")
 
 
 def test_a_bare_name_domain_is_not_proof_of_identity():

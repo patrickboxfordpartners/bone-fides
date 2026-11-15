@@ -563,7 +563,13 @@ def _domain_verdict(url, venue):
     forms.add("".join(re.split(r"[^a-z0-9]+", spelled)))
     for squash in filter(None, forms):
         if label == squash:
-            # The name alone on a company TLD is a fintech, not a restaurant.
+            # A bare name proves little: any business owns its own name, so
+            # parktavern.net is a Minnesota bowling alley and flourandwater.com
+            # could be a flour company. A company TLD is a definite no; a
+            # generic one is inconclusive and the page has to corroborate.
+            # Trying to separate "distinctive" multi-word names from generic
+            # ones here was a guess — "Park Tavern" and "Flour + Water" are
+            # structurally identical — so it is not attempted.
             return False if tld in _COMPANY_TLDS else None
         if not label.startswith(squash):
             continue
