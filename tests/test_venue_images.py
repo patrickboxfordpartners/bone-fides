@@ -738,9 +738,37 @@ def test_proximity_and_landmark_pages_are_not_bookings(monkeypatch):
     monkeypatch.setattr(bd, "serp", lambda q, num=10: [
         {"url": "https://www.opentable.com/landmark/restaurants-near-benu", "title": ""},
         {"url": "https://www.opentable.com/nearby/restaurants-near-me-benu", "title": ""},
-        {"url": "https://resy.com/cities/arcadia-ca/list/book-tonight", "title": ""},
     ])
     assert v.find_booking_links("Benu") == {}
+
+
+def test_opentable_directory_and_editorial_pages_are_not_bookings(monkeypatch):
+    """Also directory shapes, also name-matched: /food-near-me/campbell passed
+    for venue "Campbell", /metro/... for "San Francisco", and the editorial
+    /features/ pages for whoever they list."""
+    import src.brightdata as bd
+    import src.venue_images as v
+    cases = [
+        ("Campbell", "https://www.opentable.com/food-near-me/campbell"),
+        ("San Francisco", "https://www.opentable.com/metro/san-francisco-restaurants"),
+        ("Waterfront", "https://www.opentable.com/features/best-waterfront-restaurants-sf"),
+        ("Mother", "https://www.opentable.com/events/mothers-day/metro/san-francisco"),
+    ]
+    for venue, url in cases:
+        monkeypatch.setattr(bd, "serp", lambda q, num=10, u=url: [{"url": u, "title": ""}])
+        assert v.find_booking_links(venue) == {}, f"{url} accepted for {venue}"
+
+
+def test_a_resy_city_list_is_rejected_for_a_venue_named_in_it(monkeypatch):
+    """The earlier version searched "Benu" for a URL containing only
+    `arcadia`, so _slug_names_venue rejected it on NAME and the test passed
+    even with the Resy list filter removed. Ask for the venue the URL actually
+    names, so only the list check can reject it."""
+    import src.brightdata as bd
+    import src.venue_images as v
+    monkeypatch.setattr(bd, "serp", lambda q, num=10: [
+        {"url": "https://resy.com/cities/arcadia-ca/list/book-tonight", "title": ""}])
+    assert v.find_booking_links("Arcadia") == {}
 
 
 def test_a_resy_city_venue_page_is_still_a_booking(monkeypatch):

@@ -450,6 +450,14 @@ _TOO_GENERIC_ALONE = {
     "fire", "smoke", "vine", "oak", "bay", "sea", "river", "farm",
 }
 
+# Path segments that mark an OpenTable directory/editorial page rather than one
+# restaurant's booking page. Each was observed in the cache; the venue's name
+# appears in them, which is why name matching alone let them through.
+_DIRECTORY_PATH_SEGMENTS = (
+    "/landmark/", "/nearby/", "/food-near-me/", "/metro/", "/features/",
+    "/events/", "/best-restaurants/", "/restaurants-near/",
+)
+
 # Metros that appear in Resy/OpenTable URLs and are far outside this corpus.
 # Deliberately NOT a complete list and deliberately excludes the Bay Area and
 # nearby wine country: the graph already carries non-SF venues (French
@@ -503,11 +511,17 @@ def find_booking_links(venue):
                                                "/blog/", "/stories/", "/article/",
                                                "/news/", "/guides/")):
                     continue
-                # Proximity and landmark pages list what is NEAR a place; they
-                # are maps, not bookings. OpenTable emits them constantly:
-                # /landmark/restaurants-near-abiquiu and /nearby/... reached
-                # the cache 79 times.
-                if "/nearby/" in path or "/landmark/" in path:
+                # OpenTable's DIRECTORY shapes. None of these names a single
+                # restaurant, so none can be a booking page — the venue slug
+                # only appears because the list is about that place or city:
+                #   /landmark/restaurants-near-abiquiu    (a map)
+                #   /nearby/restaurants-near-me-x
+                #   /food-near-me/campbell                (a city's listings)
+                #   /metro/san-francisco-restaurants      (a city hub)
+                #   /features/best-waterfront-restaurants (editorial)
+                #   /events/mothers-day/metro/x           (a holiday promo)
+                # Matching the place name is exactly why these slipped through.
+                if any(seg in path for seg in _DIRECTORY_PATH_SEGMENTS):
                     continue
                 # Resy city LISTS (/cities/x-ca/list/book-tonight) are not
                 # venues. A city path WITH /venues/ is the normal Resy shape

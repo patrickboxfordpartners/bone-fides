@@ -754,9 +754,6 @@
   "url": null
  },
  "alameda": {
-  "booking": {
-   "opentable": "https://www.opentable.com/features/best-restaurants-for-people-watching-alameda-ca"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://downtownalameda.com/wp-content/uploads/2026/10/2026WinterMarket900x900.jpg",
@@ -4488,9 +4485,6 @@
   "url": null
  },
  "brunos": {
-  "booking": {
-   "opentable": "https://www.opentable.com/food-near-me/san-bruno"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://images.squarespace-cdn.com/content/v1/674f6a3e4061325485cfecd5/1ded9a0c-32da-4c6f-8f68-2d75ec968507/BrunosSat0103.jpg",
@@ -5197,9 +5191,6 @@
   "url": null
  },
  "campbell": {
-  "booking": {
-   "opentable": "https://www.opentable.com/food-near-me/campbell"
-  },
   "site": "https://www.campbellfoundation.org/organizations/66497/",
   "source": null,
   "status": "found",
@@ -7337,9 +7328,6 @@
   "url": "venue-images/crepe-house.png"
  },
  "crescent": {
-  "booking": {
-   "opentable": "https://www.opentable.com/features/best-restaurants-for-late-night-dining-san-francisco-bay-area-klamath-crescent-city"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://wp.actionlife.com/crescentnobhill/wp-content/uploads/sites/335/2021/10/image7.jpg",
@@ -14044,9 +14032,6 @@
   "url": null
  },
  "kyotorestaurant": {
-  "booking": {
-   "opentable": "https://www.opentable.com/metro/kyoto-restaurants"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -17736,9 +17721,6 @@
   "url": null
  },
  "mother": {
-  "booking": {
-   "opentable": "https://www.opentable.com/events/mothers-day/metro/san-francisco"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://static1.squarespace.com/static/63c71a6c90f4b726ad305adf/t/67a2b2319e668254fbb9d577/1791936750373/",
@@ -19640,9 +19622,6 @@
   "url": "venue-images/palm-house.webp"
  },
  "paloalto": {
-  "booking": {
-   "opentable": "https://www.opentable.com/food-near-me/palo-alto"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://i0.wp.com/www.paloaltoonline.com/wp-content/uploads/2023/11/PAO.png?fit=800%2C245&ssl=1",
@@ -23457,9 +23436,6 @@
   "url": null
  },
  "sanfrancisco": {
-  "booking": {
-   "opentable": "https://www.opentable.com/metro/san-francisco-restaurants"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -23610,7 +23586,6 @@
  },
  "saratoga": {
   "booking": {
-   "opentable": "https://www.opentable.com/food-near-me/saratoga",
    "resy": "https://resy.com/cities/saratoga-springs-ny/venues/heritage-restaurant"
   },
   "site": null,
@@ -29125,9 +29100,6 @@
   "url": null
  },
  "walnutcreek": {
-  "booking": {
-   "opentable": "https://www.opentable.com/food-near-me/walnut-creek-ca"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://static1.squarespace.com/static/604e4c7978231847fc102150/t/6a5abb0282ab053b6d2e4773/1788390412145/",
@@ -29218,18 +29190,12 @@
   "url": null
  },
  "waterfront": {
-  "booking": {
-   "opentable": "https://www.opentable.com/features/best-waterfront-restaurants-san-francisco-bay-area-ca"
-  },
   "site": null,
   "source": null,
   "status": "found",
   "url": null
  },
  "waterfrontrestaurant": {
-  "booking": {
-   "opentable": "https://www.opentable.com/features/best-waterfront-restaurants-san-francisco-bay-area-ca"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -29896,9 +29862,6 @@
   "url": null
  },
  "yountville": {
-  "booking": {
-   "opentable": "https://www.opentable.com/features/restaurants-that-are-worth-the-drive-yountville-ca"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://yountville.com/wp-content/uploads/2023/10/Mobile-homepage-image.webp",
