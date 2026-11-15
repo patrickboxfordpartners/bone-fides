@@ -3,7 +3,7 @@ import os
 
 from src.roles import role_bucket
 from src.eras import era_bucket, _year
-from src.venue_images import canonical_venue
+from src.venue_images import venue_identity
 from src.hoods import load_hood_maps, hood_for
 
 INDEX = "bone-fides-edges"
@@ -82,8 +82,8 @@ def build_edge_doc(edge):
         # counts as one. The corpus held 1,114 raw names for 442 venues:
         # "Jardinière" (13 edges) and "Jardiniere" (15) were separate nodes,
         # which makes every per-venue count wrong and splits a dossier in two.
-        "from_venue_key": canonical_venue(edge.get("from_venue")),
-        "to_venue_key": canonical_venue(edge.get("to_venue")),
+        "from_venue_key": venue_identity(edge.get("from_venue")),
+        "to_venue_key": venue_identity(edge.get("to_venue")),
         "venue_text": " ".join(venue_bits) if venue_bits else edge.get("role", ""),
         "role": edge.get("role"),
         "role_bucket": role_bucket(edge.get("role")),

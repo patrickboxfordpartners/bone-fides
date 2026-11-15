@@ -91,6 +91,9 @@ def canonical_venue(x):
     themselves: "(Oakland location)" is content, not formatting, and merging it
     into the Divisadero one would put a different restaurant's moves on a
     dossier.
+
+    A leading "The" is folded by `venue_identity()`, not here: it is a separate,
+    visible rule rather than something buried in the general normalizer.
     """
     s = unicodedata.normalize("NFKD", x or "")
     s = "".join(c for c in s if not unicodedata.combining(c))
@@ -103,6 +106,26 @@ def canonical_venue(x):
     # words, which is what keeps SF and Seattle apart.
     s = re.sub(r"[()]", " ", s)
     return re.sub(r"[^a-z0-9]", "", s.lower())
+
+
+def venue_identity(x):
+    """The identity used for counting and grouping: canonical_venue, minus a
+    leading "the".
+
+    "The French Laundry" and "French Laundry" are one restaurant; so are "The
+    Slanted Door" and "Slanted Door". Kept as a SECOND rule rather than folded
+    into canonical_venue so its effect is visible and reviewable — it merged 34
+    venues and none of them was wrong.
+
+    ONLY "the", and only as a leading whole word. An earlier draft folded
+    "a"/"an" too, which destroyed real names: "Alamar" became "La Mar" (two
+    different restaurants) and "AQ Restaurant & Bar" became "Q Restaurant &
+    Bar". Articles other than "the" are not safe to strip from a venue name.
+    """
+    k = canonical_venue(x)
+    if k.startswith("the") and len(k) > 6:
+        return k[3:]
+    return k
 
 
 def _host(url):
@@ -1177,7 +1200,7 @@ def main(argv):
     for name in raw:
         if not name or ui._is_junk_venue(name):
             continue
-        _by_key.setdefault(canonical_venue(name), []).append(name)
+        _by_key.setdefault(venue_identity(name), []).append(name)
 
     def _preferred(variants):
         return min(variants, key=lambda n: (

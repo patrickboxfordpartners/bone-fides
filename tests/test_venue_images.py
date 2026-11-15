@@ -847,3 +847,24 @@ def test_build_edge_doc_stamps_canonical_venue_keys():
     assert d["from_venue_key"] == canonical_venue("Jardinière") == "jardiniere"
     assert d["to_venue_key"] == canonical_venue("Tosca Café") == "toscacafe"
     assert d["from_venue"] == "Jardinière"       # display form preserved
+
+
+def test_a_leading_the_is_folded_for_identity():
+    """"The French Laundry" and "French Laundry" are one restaurant — 65 and
+    46 edges were being counted as two venues."""
+    from src.venue_images import venue_identity as v
+    assert v("The French Laundry") == v("French Laundry")
+    assert v("The Slanted Door") == v("Slanted Door")
+    assert v("the Commissary") == v("Commissary")
+    assert v("The Fifth Floor") == v("Fifth Floor")
+
+
+def test_only_the_is_stripped_never_a_or_an():
+    """An earlier draft folded every article, which destroyed real names:
+    Alamar became "La Mar" and "AQ Restaurant & Bar" became "Q Restaurant &
+    Bar" — different restaurants in both cases."""
+    from src.venue_images import venue_identity as v
+    assert v("Alamar") != v("La Mar")
+    assert v("AQ Restaurant & Bar") != v("Q Restaurant & Bar")
+    # and identity still respects location, as canonical_venue does
+    assert v("Stars (San Francisco)") != v("Stars (Seattle)")
