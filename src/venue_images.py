@@ -288,6 +288,76 @@ def find_official_site(venue, attempts=3):
     return None, ("failed" if errored else "absent")
 
 
+def _slug_names_venue(path, venue):
+    """Does this booking path name `venue`, on a boundary?
+
+    Two shapes have to work at once:
+      "Per Se"     -> /r/per-se          (name split across slug fragments)
+      "Rich Table" -> /r/rich-table-...  (same)
+      "Zuni Cafe"  -> /zunicafe          (name run together, no separators)
+    and one has to fail:
+      "Coi"        -> /r/coin-op-san-francisco
+
+    A plain substring test passes the last one, because `coi` occurs inside
+    `coinop`. Matching only whole fragments fixes that but then drops every
+    venue whose words are too short (`per`/`se`) or whose slug is concatenated.
+    So: the venue's words must appear as a CONSECUTIVE run of fragments, or as
+    a run-together block inside one fragment — and in either case the match must
+    consume whole fragments except at a word boundary, which `coin-op` fails.
+    """
+    bits = [b for b in re.split(r"[^a-z0-9]+", path.lower()) if b]
+    if not bits:
+        return False
+    stop = {"and", "the", "of", "at", "by", "a", "an", "de", "la", "le"}
+    raw = [w for w in re.split(r"[^a-z0-9]+", venue.lower()) if w]
+    # Drop connectives from BOTH sides so "Sons & Daughters" matches
+    # /sons-and-daughters, and strip a possessive so "Mister Jiu's" does not
+    # leave a stray trailing "s" as its own word.
+    words = [w for w in raw if w not in stop]
+    if words and words[-1] == "s" and len(words) > 1:
+        words = words[:-1]
+    if not words:
+        return False
+    sig = [w for w in bits if w not in stop]
+    if not sig:
+        return False
+
+    # 1. consecutive run of significant fragments: /r/per-se, /r/rich-table,
+    #    /r/sons-and-daughters (with "and" dropped from the path side too)
+    n = len(words)
+    for i in range(len(sig) - n + 1):
+        if sig[i:i + n] == words:
+            return True
+
+    # 2. the name run together, either in one fragment (/zunicafe) or across
+    #    adjacent fragments (/mister-jius -> "misterjius"). The match must be
+    #    followed only by a venue descriptor or a possessive "s", which is what
+    #    rejects "coin"+"op" for Coi.
+    squash = "".join(words)
+    for i in range(len(sig)):
+        acc = ""
+        for j in range(i, len(sig)):
+            acc += sig[j]
+            if acc == squash or (len(acc) > len(squash) and acc.startswith(squash)):
+                tail = acc[len(squash):]
+                if tail == "" or tail == "s" or tail in _SLUG_TAILS:
+                    return True
+            if len(acc) > len(squash) + 24:
+                break                     # stop runaway concatenation
+    return False
+
+
+# Suffixes a venue appends to its own name in a URL. "coirestaurant" splits as
+# coi + restaurant and is the venue; "coinop" splits as coi + nop and is not.
+_SLUG_TAILS = {
+    "", "sf", "sfo", "sanfrancisco", "restaurant", "restaurants", "resto",
+    "cafe", "bar", "kitchen", "bistro", "grill", "pizza", "sushi", "taqueria",
+    "group", "hospitality", "dining", "eatery", "food", "foods", "noodle",
+    "noodles", "ramen", "bakery", "brasserie", "trattoria", "osteria", "wine",
+    "steak", "steakhouse", "house", "and", "the", "co", "inc", "llc",
+}
+
+
 def find_booking_links(venue):
     """Reservation-platform URLs SERP returns for this venue.
 
@@ -320,9 +390,9 @@ def find_booking_links(venue):
                     continue
                 parts = urllib.parse.urlsplit(r["url"])
                 path = urllib.parse.unquote(parts.path).lower()
-                # A SEARCH page is not a booking page: resy.com/city/san-francisco
-                # ?query=Rich%20Table passed the old whole-URL check and would
-                # have been offered as "Book on Resy".
+                # A SEARCH or editorial page is not a booking page:
+                # resy.com/city/san-francisco?query=Rich%20Table passed the old
+                # whole-URL check and would have been offered as "Book on Resy".
                 if any(seg in path for seg in ("/city/", "/search", "/discover",
                                                "/cuisine/", "/neighborhood/",
                                                "/blog/", "/stories/", "/article/",
@@ -333,23 +403,7 @@ def find_booking_links(venue):
                     continue
                 if parts.query and "query=" in parts.query.lower():
                     continue
-                # The venue must appear in the PATH, not the query string, and
-                # must land on a SLUG BOUNDARY. A plain substring test accepted
-                # opentable.com/r/coin-op-san-francisco for "Coi", because `coi`
-                # occurs inside `coinop` — handing Coi another restaurant's
-                # booking page. Slugs are split on non-alphanumerics, so the
-                # name has to be its own run of characters.
-                slug_bits = [b for b in re.split(r"[^a-z0-9]+", path.lower()) if b]
-                full = norm(venue)
-                # Exact slug fragment only. A prefix test ("coi" matches
-                # "coinop") was still admitting the other restaurant's page.
-                if full and (full in slug_bits or slug_bits == [full]):
-                    out[platform] = r["url"]
-                    break
-                # multi-word names: every distinctive token must be its own
-                # slug fragment, not merely present inside a longer word
-                words = [w for w in re.split(r"[^a-z0-9]+", venue.lower()) if len(w) >= 4]
-                if words and all(w in slug_bits for w in words):
+                if _slug_names_venue(path, venue):
                     out[platform] = r["url"]
                     break
         except Exception:
@@ -650,6 +704,28 @@ def resolve_venue(venue, token=None, known_website=None, use_serp=True,
     return out, "found"
 
 
+def _is_field_shape_error(exc):
+    """True only for "this cluster maps the field differently than I assumed".
+
+    These are the errors a wrong field NAME or TYPE produces, and they are
+    recoverable by trying the other shape. A connection failure, a timeout, or
+    a 401/403 is NOT this: those mean the run cannot do its job, and treating
+    them as "no venues" would report success while resolving nothing.
+    """
+    text = f"{type(exc).__name__}: {exc}".lower()
+    if "fielddata" in text:
+        return True                       # text field, needs .keyword
+    if "unknown field" in text or "no mapping found" in text:
+        return True                       # .keyword absent on a fresh index
+    if "illegal_argument_exception" in text or "query_shard_exception" in text:
+        return True
+    if "search_phase_execution_exception" in text:
+        # ES wraps a per-shard mapping failure in this; unwrap on the cause text
+        return any(k in text for k in ("fielddata", "unknown field",
+                                       "no mapping", "not aggregatable"))
+    return False
+
+
 def load_cache():
     if os.path.exists(CACHE):
         try:
@@ -696,13 +772,25 @@ def main(argv):
     # exception or an empty result. Getting this wrong is silent in one
     # direction (zero venues, "resolved successfully") and fatal in the other.
     def distinct(field):
+        """Values of `field` from whichever index shape this cluster has.
+
+        Only FIELD-SHAPE failures may be swallowed. An unreachable cluster or a
+        rejected credential must stop the run: swallowing those made `main`
+        report "0 venues" and exit 0, which reads exactly like "nothing to do".
+        """
+        last = None
         for name in (field, field + ".keyword"):
             try:
                 vals = ui._distinct_values(es, name)
-            except Exception:
-                continue                  # field absent or not aggregatable
+            except Exception as e:        # noqa: BLE001 — narrowed just below
+                if not _is_field_shape_error(e):
+                    raise
+                last = e
+                continue                  # wrong shape for this cluster
             if vals:
                 return vals
+        if last:
+            raise last                    # both shapes rejected: not a run
         return set()
 
     raw = distinct("to_venue") | distinct("from_venue")

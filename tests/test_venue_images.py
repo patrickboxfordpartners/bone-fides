@@ -421,3 +421,65 @@ def test_a_changed_verdict_reopens_a_cached_venue():
     src = inspect.getsource(v.main)
     assert "superseded(" in src, "no cache invalidation on verdict change"
     assert 'entry.get("site")' in src, "verdict is not compared to the cache"
+
+
+# ── round 9 findings ────────────────────────────────────────────────────────
+
+def test_booking_slug_matches_short_words_in_sequence():
+    """`Per Se` has no 4-letter token and its name is not one slug fragment, so
+    both old checks failed and valid links were dropped."""
+    from src.venue_images import _slug_names_venue as f
+    assert f("/r/per-se", "Per Se")
+    assert f("/r/rich-table-san-francisco", "Rich Table")
+    assert f("/r/state-bird-provisions", "State Bird Provisions")
+
+
+def test_booking_slug_still_rejects_a_different_restaurant():
+    """The boundary check must survive the sequence match."""
+    from src.venue_images import _slug_names_venue as f
+    assert not f("/r/coin-op-san-francisco", "Coi")
+    assert not f("/r/coin-op", "Coi")
+    assert not f("/r/state-bird-annex", "State Bird Provisions")
+
+
+def test_booking_slug_handles_connectives_and_possessives():
+    from src.venue_images import _slug_names_venue as f
+    assert f("/r/sons-and-daughters", "Sons & Daughters")
+    assert f("/r/mister-jius", "Mister Jiu's")
+    assert f("/zunicafe", "Zuni Cafe")
+    assert f("/r/coirestaurant", "Coi")
+
+
+def test_booking_link_search_pages_still_rejected(monkeypatch):
+    """Search/editorial pages must not come back when the matcher changed."""
+    import src.brightdata as bd
+    import src.venue_images as v
+    bad = ["https://resy.com/city/san-francisco?query=Per%20Se",
+           "https://www.opentable.com/s?term=per%20se",
+           "https://blog.resy.com/2024/04/per-se"]
+    monkeypatch.setattr(bd, "serp", lambda q, num=10: [{"url": u, "title": ""} for u in bad])
+    assert v.find_booking_links("Per Se") == {}
+
+
+def test_field_shape_errors_are_recoverable():
+    from src.venue_images import _is_field_shape_error
+    assert _is_field_shape_error(RuntimeError("Fielddata is disabled on [to_venue]"))
+    assert _is_field_shape_error(RuntimeError("unknown field [keyword]"))
+
+
+def test_infrastructure_errors_are_not_swallowed():
+    """A dead cluster used to look like "0 venues, exit 0"."""
+    from src.venue_images import _is_field_shape_error
+    assert not _is_field_shape_error(RuntimeError("Connection refused"))
+    assert not _is_field_shape_error(RuntimeError("401 Unauthorized"))
+    assert not _is_field_shape_error(RuntimeError("no such index [bone-fides-edges]"))
+    assert not _is_field_shape_error(TimeoutError("timed out"))
+
+
+def test_main_stops_the_run_on_a_connection_failure():
+    import inspect
+    import src.venue_images as v
+    src = inspect.getsource(v.main)
+    assert "_is_field_shape_error" in src, "fallback is not restricted to shape errors"
+    assert "raise" in src.split("def distinct")[1][:900], \
+        "distinct does not re-raise a non-shape failure"
