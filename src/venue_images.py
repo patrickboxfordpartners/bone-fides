@@ -529,18 +529,20 @@ def _og_image(html, base_url=""):
 def _domain_verdict(url, venue):
     """True / False / None — does this domain settle the venue's identity?
 
-    True  — the domain is the venue's own: name alone (`coirestaurant.com`,
-            `sonsanddaughterssf.com`) or name + a venue descriptor
-            (`azizasf.com`, `flourandwater.com`).
+    True  — the domain is unmistakably the venue's own: name + a venue
+            descriptor (`azizasf.com`, `flourandwater.com`,
+            `sonsanddaughterssf.com`).
     False — the domain says this is a DIFFERENT kind of business carrying the
             same name: `plumorganicbeauty.com` (a salon — "beauty" is not a
             venue word) or `haven.inc` (a company TLD).
-    None  — the domain tells us nothing either way (`theminagroup.com` for
-            Michael Mina), so the caller falls back to the page's own text.
+    None  — the domain tells us nothing either way, so the caller falls back
+            to the page's own text.
 
-    The three-way answer matters: a two-way bool forced a choice between
-    rejecting every group site and letting a beauty salon win a restaurant's
-    dossier because its page happens to say "San Francisco".
+    A bare name with NO descriptor (`parktavern.net`, `coi.com`, `benu.com`)
+    is deliberately None, not True. Any business anywhere can own its own name
+    on a generic TLD — parktavern.net is a bowling alley in Minnesota — so an
+    exact match alone proves nothing about WHICH Park Tavern. Those venues get
+    resolved by the page's locality instead.
     """
     h = _host(url)
     if not h:
@@ -561,8 +563,8 @@ def _domain_verdict(url, venue):
     forms.add("".join(re.split(r"[^a-z0-9]+", spelled)))
     for squash in filter(None, forms):
         if label == squash:
-            # An exact match on a company TLD is a fintech, not a restaurant.
-            return tld not in _COMPANY_TLDS
+            # The name alone on a company TLD is a fintech, not a restaurant.
+            return False if tld in _COMPANY_TLDS else None
         if not label.startswith(squash):
             continue
         tail = label[len(squash):]
@@ -631,7 +633,12 @@ _SF_TOKENS = ("san francisco", "sanfrancisco", "bay area", "oakland",
               "nob hill", "north beach", "financial district", "marina",
               "richmond", "sunset", "castro", "potrero", "dogpatch",
               "tenderloin", "japantown", "chinatown", "presidio",
-              "embarcadero", "union square", "fidi")
+              "embarcadero", "union square", "fidi",
+              # A group site covering San Francisco often names the state, not
+              # the city (theminagroup.com says "California"). Narrower would
+              # reject real venues; the name still has to match, so this is
+              # only the corroborating signal, not the identity claim.
+              "california", ", ca ", "ca 9")
 
 
 def _reads_as_sf(text):

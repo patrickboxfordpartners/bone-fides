@@ -596,10 +596,21 @@ def test_domain_shape_accepts_the_venue_own_sites():
     assert f("https://bixrestaurant.com/", "Bix")
     assert f("https://www.azizasf.com/", "Aziza")
     assert f("https://www.delfinasf.com/", "Delfina")
-    assert f("https://www.betelnut.co/", "Betelnut")
     # "&" and "+" both become "and" in a domain
     assert f("https://www.sonsanddaughterssf.com/", "Sons & Daughters")
     assert f("https://www.flourandwater.com/", "Flour + Water")
+
+
+def test_a_bare_name_domain_is_not_proof_of_identity():
+    """Any business anywhere owns its own name on a generic TLD. parktavern.net
+    is a bowling alley in Minnesota; betelnut.co is 39 characters of nothing.
+    A bare name has to be corroborated by the page."""
+    from src.venue_images import _domain_verdict, _domain_names_venue
+    assert _domain_verdict("https://parktavern.net/", "Park Tavern") is None
+    assert _domain_verdict("https://www.betelnut.co/", "Betelnut") is None
+    assert not _domain_names_venue("https://parktavern.net/", "Park Tavern")
+    # a company TLD on a bare name is a definite NO
+    assert _domain_verdict("https://haven.inc/", "Haven") is False
 
 
 def test_a_local_namesake_is_still_rejected():
