@@ -103,6 +103,15 @@
   "source": null,
   "url": null
  },
+ "20spot": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://images.squarespace-cdn.com/content/v1/655cffd4cec46b0d00c182f8/9ef54d78-2f76-4a1d-9c3c-35724aba4429/20-spot_white.png",
+  "site": "https://www.20spot.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/20-spot.webp"
+ },
  "20thcenturycafe": {
   "source": null,
   "url": null
@@ -165,8 +174,2778 @@
   "source": null,
   "url": null
  },
+ "369californiaaveinpaloalto": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "3rdcousin": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/3rd-cousin-san-francisco"
+  },
+  "site": "https://www.3rdcousinsf.com/",
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "3sumeats": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "3worldscafe": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
  "415415presidioatcalifornia": {
   "source": null,
+  "url": null
+ },
+ "41degreesbarcelona": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "42degrees": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://42degrees.com/wp-content/uploads/2021/12/42-degrees-cbd-kratom-and-vape-shop-omaha-1.png",
+  "site": "https://42degrees.com/register/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/42-degrees.png"
+ },
+ "4505burgersandbbqdivisaderolocation": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "4505burgersandbbqoaklandlocation": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "4505burgersbbqdivisaderolocation": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "4505burgersbbqoaklandlocation": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "4505meats": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://4505meats.com/cdn/shop/files/4505_Sausage_Making_midrange_1200x.jpeg?v=1614321461",
+  "site": "https://4505meats.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/4505-meats.jpg"
+ },
+ "4505meatsferrybuildingmarketplace": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "450broadwaykearny": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "455marketstmomonoodlestandalonerestaurant": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "500jacksonst": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "584valenciastslanteddoor": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "610magnolia": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://610magnolia.com/wp-content/uploads/2011/10/header-image-door@2x-1200x625.jpg",
+  "site": "https://610magnolia.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/610-magnolia.jpg"
+ },
+ "620jones": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/620-jones-san-francisco"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://620-jones.com/wp-content/uploads/2026/07/holiday-party-union-square-san-francisco1-1024x683.jpg",
+  "site": "https://620-jones.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/620-jones.png"
+ },
+ "717b": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "7adams": {
+  "booking": {
+   "resy": "https://resy.com/cities/san-francisco-ca/venues/7-adams"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://static.wixstatic.com/media/5a647b_72c951eb24144194b0b1ee428de6e1a2~mv2.jpg/v1/fill/w_2500,h_3750,al_c/5a647b_72c951eb24144194b0b1ee428de6e1a2~mv2.jpg",
+  "site": "https://www.7adamsrestaurant.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/7-adams.jpg"
+ },
+ "7hills": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://images.squarespace-cdn.com/content/v1/5ed6870a18661000fb1faac1/1591119574924-QSLOMM4GUA5KBZ886B53/ian-simmonds-pNG31nypHWE-unsplash.jpg",
+  "site": "https://www.7hills-sf.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/7-hills.webp"
+ },
+ "83proof": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "http://www.83proof.com/images/top_off.jpg",
+  "site": "http://www.83proof.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/83-proof.jpg"
+ },
+ "8arm": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "a16": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://static1.squarespace.com/static/67e4d46d5560ca2cbf4abeb8/t/6834e120e5912b0231d61d5d/1793221913144/",
+  "site": "https://www.a16pizza.com/san-francisco",
+  "site_source": "verdict",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/a16.webp"
+ },
+ "a16oakland": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "a16oaklandlocation": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "a16sanfrancisco": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/a16-san-francisco"
+  },
+  "site": null,
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "a16tokyo": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "aatxe": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "abac": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://lirp.cdn-website.com/09f5b7d7/dms3rep/multi/opt/Photo+Dec+12+2025-+6+58+41+PM-1920w.jpg",
+  "site": "https://www.restaurantabaca.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/abac.jpg"
+ },
+ "abaca": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/abaca-san-francisco"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://lirp.cdn-website.com/09f5b7d7/dms3rep/multi/opt/Photo+Dec+12+2025-+6+58+41+PM-1920w.jpg",
+  "site": "https://www.restaurantabaca.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/abaca.jpg"
+ },
+ "abacaspastrychef": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "abacfishermanswharf": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "abanicocoffeeroasters": {
+  "confidence": "medium",
+  "evidence": "Mapbox POI primary_photo, exact name match, downloaded locally",
+  "remote": "https://images.squarespace-cdn.com/content/v1/5f3d6073f697ff31d1d1c7c9/566e858f-65c9-40bc-a9e3-ff99606c6238/20131015_Abanico_004.jpg?format=300w",
+  "site": null,
+  "source": "mapbox-primary-photo",
+  "status": "found",
+  "url": "venue-images/abanico-coffee-roasters.webp"
+ },
+ "abbotscellar": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "abckitchenandabccocina": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "abespizza": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "abiquiu": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://static.wixstatic.com/media/a64309_ddc2c21b62df49b6a9985e7f7ec232a0~mv2.jpg/v1/fill/w_2500,h_1482,al_c/a64309_ddc2c21b62df49b6a9985e7f7ec232a0~mv2.jpg",
+  "site": "https://www.abiquiuinn.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/abiquiu.jpg"
+ },
+ "abrazo": {
+  "confidence": "low",
+  "evidence": "profile image from a handle linked by the venue's own site",
+  "handle": "AbrazoSF",
+  "remote": "https://scontent-den2-1.xx.fbcdn.net/v/t39.30808-1/292082302_444633134338682_3803762167577280567_n.jpg?stp=dst-jpg_tt6&cstp=mx750x750&ctp=s720x720&_nc_cat=110&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=3ab345&_nc_ohc=QwxuDhwUJVQQ7kNvwE9BOIu&_nc_oc=AdpAbwpiWeHn4F-FnFE-NnqawqZs_5hLaiv65Ko53hFrgZ3P4QbN_wF7QeLrSSYQDls&_nc_zt=24&_nc_ht=scontent-den2-1.xx&_nc_gid=X5ncGoe3LOkSsSzTMHuJrA&_nc_ss=7b20f&oh=00_AQSQ1VEuhckYd3hOgQb3Yg-SpvITd7SsWRySZQnzJmrXsw&oe=6AFF1C51",
+  "site": "https://www.abrazosf.com/",
+  "source": "venue-social",
+  "status": "found",
+  "url": "venue-images/abrazo.jpg"
+ },
+ "absinthe": {
+  "booking": {
+   "opentable": "https://www.opentable.com/absinthe-brasserie-and-bar"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://images.squarespace-cdn.com/content/v1/624f382421799e11a4bac2d8/82893d80-a81b-41a6-bace-de5c8e4f23f2/11314043035_ab87655a26_k.jpg",
+  "site": "https://www.absinthe.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/absinthe.webp"
+ },
+ "absinthebrasserieandbar": {
+  "booking": {
+   "opentable": "https://www.opentable.com/absinthe-brasserie-and-bar"
+  },
+  "confidence": "medium",
+  "evidence": "Mapbox POI primary_photo, exact name match, downloaded locally",
+  "remote": "https://images.squarespace-cdn.com/content/v1/624f382421799e11a4bac2d8/82893d80-a81b-41a6-bace-de5c8e4f23f2/11314043035_ab87655a26_k.jpg",
+  "site": null,
+  "source": "mapbox-primary-photo",
+  "status": "found",
+  "url": "venue-images/absinthe-brasserie-and-bar.jpg"
+ },
+ "absinthebrasseriebar": {
+  "booking": {
+   "opentable": "https://www.opentable.com/absinthe-brasserie-and-bar"
+  },
+  "site": null,
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "absinthegroup": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "http://static1.squarespace.com/static/5f48375ebfd3a05e70e36e79/t/5f4edc2a86e9682f711fc87e/1641577287656/Absinthe_Service+%281%29.jpg?format=1500w",
+  "site": "https://www.absinthegroup.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/absinthe-group.webp"
+ },
+ "abv": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://static1.squarespace.com/static/5893882c1b631b3cbfd54515/t/58938a413e00be593d1a9e11/1785179034876/",
+  "site": "https://www.abvsf.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/abv.webp"
+ },
+ "abvoverproof": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "acaciahouse": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/acacia-house-by-chris-cosentino-napa"
+  },
+  "site": null,
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "academia": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "academycafe": {
+  "confidence": "medium",
+  "evidence": "Mapbox POI primary_photo, exact name match, downloaded locally",
+  "remote": "https://www.calacademy.org/sites/default/files/styles/manual_crop_square_460px/public/assets/cafe_update.png?itok=xgsR3sHL&c=c417e56e8cd7aed777dc01e7ee821ee4",
+  "site": null,
+  "source": "mapbox-primary-photo",
+  "status": "found",
+  "url": "venue-images/academy-cafe.png"
+ },
+ "acadiachicago": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "acme": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/acme-food-and-beverage-co-carrboro"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://acmeworkwear.com/wp-content/uploads/2023/08/home_banner.webp",
+  "site": "https://acmeworkwear.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/acme.webp"
+ },
+ "acmebarcompany": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://images.squarespace-cdn.com/content/v1/55fd9a6ee4b0518e87693557/1639437762416-TMR9WMR8F60ET4SWTLYC/Slideshow_UP_01.jpg",
+  "site": "https://www.acmebarandcompany.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/acme-bar-company.webp"
+ },
+ "acmechophouse": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "acorncaf": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "acote": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://images.squarespace-cdn.com/content/v1/5f9c3b0372869a67fb0fb4fa/1608241170952-PQVGSILJW565H0NB61UI/food1.jpg",
+  "site": "https://www.acoterestaurant.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/a-cote.webp"
+ },
+ "acotecitron1550hyde": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "acquarello": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "acquerello": {
+  "booking": {
+   "tock": "https://www.exploretock.com/acquerellosf/"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://static1.squarespace.com/static/5b873f4d9d5abb3165aa122d/t/672be69a68ce5c3465a56971/1794688132320/",
+  "site": "https://www.acquerellosf.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/acquerello.png"
+ },
+ "acre": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/acre-kitchen-and-bar-oakland"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "http://static1.squarespace.com/static/596288a6db29d63c63e7fa22/t/6529b94c1bcaf95cb802dc1b/1697233228655/Acre+Orange+Photo+.jpeg?format=1500w",
+  "site": "https://www.acregourmet.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/acre.jpg"
+ },
+ "activandjoachimsplichalspatina": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "adcaquadevelopmentcorp": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "adega": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/adega-san-jose",
+   "tock": "https://www.exploretock.com/adega"
+  },
+  "site": null,
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "adhoc": {
+  "booking": {
+   "opentable": "https://www.opentable.com/landmark/restaurants-near-ad-hoc-restaurant",
+   "resy": "https://resy.com/cities/yountville-ca/venues/ad-hoc"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://adhoc.team/images/shareimage-join.jpg",
+  "site": "https://adhoc.team/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/ad-hoc.jpg"
+ },
+ "afici": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "afivemeats": {
+  "booking": {
+   "tock": "https://www.exploretock.com/afivemeats/"
+  },
+  "site": null,
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "agern": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "agferrari": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "agferrarifoods": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "aina": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://www.aina.com/opengraph-image-12o0cb.jpg?opengraph-image.0zky_9kcrn6lf.jpg",
+  "site": "https://www.aina.com/about",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/aina.jpg"
+ },
+ "aix": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "akabistrolafolie": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "akikos": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/akikos-san-francisco"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://akikosrestaurant.com/wp-content/themes/akikos/library/images/fish.png",
+  "site": "https://akikosrestaurant.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/akiko-s.png"
+ },
+ "akikosataverylane": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "akkitchen": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "alacarte": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://sfalacarte.com/images/print_access_code_1.png",
+  "site": "https://sfalacarte.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/a-la-carte.png"
+ },
+ "alainducasse": {
+  "booking": {
+   "opentable": "https://www.opentable.com/alain-ducasse-at-the-dorchester"
+  },
+  "site": null,
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "alainducasseboulevardprospect": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "alamar": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/alamar-dominican-kitchen-oakland"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://static.spotapps.co/website_images/ab_websites/147824_website_v1/shared_image.jpg",
+  "site": "https://alamaroakland.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/alamar.jpg"
+ },
+ "alamardominicankitchen": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/alamar-dominican-kitchen-oakland"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://static.spotapps.co/website_images/ab_websites/147824_website_v1/shared_image.jpg",
+  "site": "https://alamaroakland.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/alamar-dominican-kitchen.jpg"
+ },
+ "alamarkitchenbar": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "alameda": {
+  "booking": {
+   "opentable": "https://www.opentable.com/features/best-restaurants-for-people-watching-alameda-ca"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://downtownalameda.com/wp-content/uploads/2026/10/2026WinterMarket900x900.jpg",
+  "site": "https://downtownalameda.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/alameda.jpg"
+ },
+ "alamodrafthouse": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "alamodrafthouseatthenewmission": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "alaromana": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "albarays": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "alborzfremont": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "alborzrestaurantsanrafael": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "alborzsanfrancisco": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "alchemycaterers": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "alderwoodsantacruz": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "aldila": {
+  "booking": {
+   "resy": "https://resy.com/cities/new-york-ny/venues/al-di-la-trattoria"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "http://www.aldila.com/cdn/shop/files/MCA-ALD_Aldila2020-BLK.png?v=1787102514",
+  "site": "https://www.aldila.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/al-di-la.png"
+ },
+ "alebrijesmexicanbistro": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "aleindustries": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "alembic": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/the-alembic-san-francisco"
+  },
+  "site": "https://alembicsf.com/",
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "alembicandrickhouse": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "alexanderssteakhouse": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "alexanderssteakhousecupertino": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "alexitalianrestaurant": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "alfreds": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/alfreds-steakhouse-san-francisco"
+  },
+  "site": null,
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "alfredssteakhouse": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/alfreds-steakhouse-san-francisco"
+  },
+  "site": null,
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "alfys": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "http://www.alfyspizza.com/images/nav/nav-menu-gry.png",
+  "site": "http://www.alfyspizza.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/alfy-s.png"
+ },
+ "aliciastamaleslosmayas": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "alimentariaurora": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://www.alimentariaurora.com/uploads/b/66f18630-134f-11eb-9554-6520765428b1/Aurora_patterns_01-01_NTU1Mj.jpg",
+  "site": "https://www.alimentariaurora.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/alimentari-aurora.jpg"
+ },
+ "alinea": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://alinea.institute/og-alinea.jpg",
+  "site": "https://alinea.institute/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/alinea.jpg"
+ },
+ "allegroromano": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "alleyvine": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/alley-and-vine-alameda"
+  },
+  "site": null,
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "allseasonscafe": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "allspice": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/all-spice-san-mateo"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://allspicerestaurant.com/wp-content/uploads/2020/01/exterior_day_1.jpg",
+  "site": "https://allspicerestaurant.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/all-spice.jpg"
+ },
+ "alltheseyears": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "alma": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/alma-portland",
+   "resy": "https://resy.com/cities/new-york-ny/venues/alma-ny"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://cdn.prod.website-files.com/67899ab4e6c7ecc71a7add09/67aa309974787a9771a7dbe8_graphurl-image.png",
+  "site": "https://www.tryalma.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/alma.png"
+ },
+ "almanactaproom": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "alohabowl": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "alohaclubbar": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "alsdeli": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "alsplace": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/als-place"
+  },
+  "site": null,
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "alta": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://hips.hearstapps.com/hmg-prod/images/0d6c7158-1ffd-4190-ace7-1ac6794ef2fb.jpg?crop=0.529xw:0.907xh;0.216xw,0.0641xh&resize=480:*",
+  "site": "https://www.altaonline.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/alta.jpg"
+ },
+ "altaadams": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/alta-adams-los-angeles",
+   "tock": "https://www.exploretock.com/altaadams/event/116122/family-meal"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://images.squarespace-cdn.com/content/v1/69d7e7a5b527d043b618e98f/704599f9-2c67-45c7-aedc-2c51e5160037/Group+12+%281%29.png",
+  "site": "https://www.altaadams.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/alta-adams.webp"
+ },
+ "altabakery": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "altaca": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "altagroup": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "altamsp": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "altaplaza": {
+  "booking": {
+   "opentable": "https://www.opentable.com/landmark/restaurants-near-alta-plaza"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "http://static1.squarespace.com/static/6908fba894943c222b2fb45e/t/69126637ddd9827a2d2927f0/1762813495264/Social+Sharing.png?format=1500w",
+  "site": "https://www.altaplazapark.org/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/alta-plaza.webp"
+ },
+ "altaplazabargrill": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "altaplazarestaurantandbar": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "altaplazarestaurantbar": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "altarestaurantgroup": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "ama": {
+  "booking": {
+   "resy": "https://resy.com/cities/washington-dc/venues/ama-dc"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://www.amasf.org/wp-content/uploads/2019/07/american-marketing-association-san-francisco.jpg",
+  "site": "https://www.amasf.org/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/ama.jpg"
+ },
+ "amalfitrattoria": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "amantesasapopup": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "amara": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/amara-san-francisco"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://images.getbento.com/accounts/95f6095c86baaad751e4b935ec905346/media/images/13948119.jpg?w=1200&fit=crop&auto=compress,format&cs=origin&crop=focalpoint&fp-x=0.5&fp-y=0.5",
+  "site": "https://www.amararestaurants.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/amara.jpg"
+ },
+ "amberdhara": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "amberindia": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "amberindiaandamberdhara": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "amberyerbabuenalaneandmountainview": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "amelios": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "americanaeatery": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "http://static1.squarespace.com/static/67a2813a5ab5ce0972a160f4/t/67e431d95f9b1d2655c5af67/1743008218023/Untitled+design-12.png?format=1500w",
+  "site": "https://www.americanaeatery.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/americana-eatery.webp"
+ },
+ "americanagrill": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "americanbox": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "americano": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/americano-restaurant-hotel-vitale-san-francisco",
+   "resy": "https://resy.com/cities/bayonne-nj/venues/americano-nj"
+  },
+  "site": null,
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "amourarestaurant": {
+  "booking": {
+   "opentable": "https://www.opentable.com/amoura-restaurant"
+  },
+  "site": null,
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "amusecochon": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "anamandara": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "anasazirestaurant": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/anasazi-restaurant"
+  },
+  "site": null,
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "anavivstable": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "anchorbrewing": {
+  "booking": {
+   "opentable": "https://www.opentable.com/landmark/restaurants-near-anchor-brewing-company"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://www.anchorbrewing.com/wp-content/themes/ninetwentytwentythree/assets/imgs/anchor.png",
+  "site": "https://www.anchorbrewing.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/anchor-brewing.png"
+ },
+ "anchorhope": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "anchoroysterbar": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "http://www.anchoroysterbar.com/anchorlay.png",
+  "site": "http://www.anchoroysterbar.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/anchor-oyster-bar.png"
+ },
+ "anchorpublictaps": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/anchor-public-taps-san-francisco"
+  },
+  "site": null,
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "anchovybar": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "http://static1.squarespace.com/static/62ea97761f96742025443c34/t/664cb6fe1cae4e5426709616/1716303614509/Screenshot+2024-05-21+at+9.59.44%E2%80%AFAM.png?format=1500w",
+  "site": "https://www.theanchovybar.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/anchovy-bar.webp"
+ },
+ "andalu": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "andazfarmerstable": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/andaz-farmers-table"
+  },
+  "site": null,
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "andina": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/andina-portland"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://images.squarespace-cdn.com/content/v1/5b747f617e3c3a0811711c60/1729925404791-70A5B12A2LX5859NKCQG/AAA_7902copy.jpg",
+  "site": "https://www.andinarestaurant.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/andina.webp"
+ },
+ "andina201franklinstreet": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "andinahomebased": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "angele": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/angele-restaurant-and-bar-napa",
+   "tock": "https://www.exploretock.com/angelerestaurant"
+  },
+  "site": null,
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "angiespizza": {
+  "booking": {
+   "resy": "https://resy.com/cities/san-francisco-ca/venues/angies-pizza"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "http://angiespizzasf.com/wp-content/uploads/elementor/thumbs/nicolaparisi-angies-pizza-winter22_0228-pzaupnx8u7vj5x4e0l88yeemt5uz89kzz7oihnqp9m.jpg",
+  "site": "https://angiespizzasf.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/angie-s-pizza.jpg"
+ },
+ "angkorbistro": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://irp.cdn-website.com/8c66a064/dms3rep/multi/opt/AngkorBistro-1920w.png",
+  "site": "https://www.angkorbistro.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/angkor-bistro.png"
+ },
+ "angkorwat": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "angle": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "angleandthefrenchlaundry": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "angler": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/angler-san-francisco"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://anglerrestaurants.com/wp-content/uploads/2025/11/Untitled-design-8-576x1024.png",
+  "site": "https://anglerrestaurants.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/angler.png"
+ },
+ "anglersaisonandthejosandrsgroupindc": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "animo": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "http://static1.squarespace.com/static/62f1fe2ea8990e69272321f1/t/6ae82b466da4711e03603ac5/1793600326073/animon-social-yellow.png?format=1500w",
+  "site": "https://www.animonlifeofficial.com/?srsltid=AYCX9vLCTQuqdAMZTqN-ihGH2J5Gx1-ScBSfhI_FqkUWN8EE-3pqhPlh",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/animo.webp"
+ },
+ "anju": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://static1.squarespace.com/static/5caf5fcefb18204eb3d74b4b/t/5caf61e4ee6eb04f442c45a4/1792083739689/",
+  "site": "https://www.anjurestaurant.com/contact-1",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/anju.webp"
+ },
+ "anomaly": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "anomalypermanentat2600sutterstreet": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "anomalypopup": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "anomalypopupatmansiononsutter": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "anomalypopupatserpentine": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "anomalypopupatstablecafe": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "anonaneobistro": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "anothermonkey": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "antidote": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://cdn.prod.website-files.com/6a7e24562744599a4d25e442/6a9139ae97f7625a48ace9ce_homepage-pic-promo.jpg",
+  "site": "https://www.antidote.me/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/antidote.jpg"
+ },
+ "antipastiandluisas": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "antoinette": {
+  "booking": {
+   "resy": "https://resy.com/cities/cancun-mexico/venues/cafe-antoinette-puerto-cancun"
+  },
+  "site": null,
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "anzuinthehotelnikko": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "aphotic": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/aphotic-san-francisco"
+  },
+  "site": null,
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "aplrestaurant": {
+  "booking": {
+   "tock": "https://www.exploretock.com/aplrestaurant/faq"
+  },
+  "site": null,
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "aponiente": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://secure.gravatar.com/avatar/7d4b87c5ce7c4924f7e004e3dfd77523f0e38ed01047d6221a5f1653b3edcb07?s=96&d=mm&r=g",
+  "site": "https://www.aponiente.com/en/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/aponiente.jpg"
+ },
+ "apstumps": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "aqrestaurantbar": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "aqua": {
+  "confidence": "low",
+  "evidence": "profile image from a handle linked by the venue's own site",
+  "handle": "aquariumofthebay",
+  "remote": "https://scontent-den2-1.cdninstagram.com/v/t51.82787-19/829452903_18640469902009326_6093063012376212300_n.jpg?stp=dst-jpg_s150x150_tt6&_nc_cat=109&_nc_map=urlgen_bucketless&ig_cache_key=GGdycDHuo-SaaDlCAExzwf6G6I5UbmNDAQAB1501500j-ccb7-5&ccb=7-5&_nc_sid=669407&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy4xMDgwLkMzIn0%3D&_nc_ohc=-SwQmQAK9rwQ7kNvwGERB-s&_nc_oc=AdrLjJnojEaBR2QuWOqqXE8QGQh_qrrzQPoiSNFUriuECGJsmuSg9UiI-nmbhyBRk38&_nc_zt=24&_nc_ht=scontent-den2-1.cdninstagram.com&_nc_gid=mUq0hvumKWsjZlUkNu0Pjw&_nc_ss=7b60f&_nc_ct=RQosPBUCFQIAAAA&oh=00_AQTGhC0ia-2sXGdBUUntb96hZ8zk4_HFmANpAJxY75Nsww&oe=6AFEF8FC",
+  "site": "https://www.aquariumofthebay.org/",
+  "source": "venue-social",
+  "status": "found",
+  "url": "venue-images/aqua.jpg"
+ },
+ "aquadevelopmentcorp": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "aquainsanfrancisco": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "aquaonemarketfifthfloorredwoodpark": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "aquitaine": {
+  "booking": {
+   "opentable": "https://www.opentable.com/aquitaine-san-francisco"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "http://aquitainesf.com/wp-content/uploads/2021/01/home-aquitaine0.jpg",
+  "site": "https://aquitainesf.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/aquitaine.jpg"
+ },
+ "aracely": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/aracely-cafe-san-francisco"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://static1.squarespace.com/static/5a57a5a9a803bbfd4a36c17f/t/6892a9aeb031f2471b98f088/1792453310947/",
+  "site": "https://www.aracelysf.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/aracely.webp"
+ },
+ "aramark": {
+  "site": "https://www.aramark.com/home",
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "arcadia": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/melange-arcadia",
+   "resy": "https://resy.com/cities/arcadia-ca/list/book-tonight"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://arcadiahomecare.com/wp-content/uploads/2022/01/cropped-UPDATED-Arcadia_Addus_Cobrand_Blue-Gray-v2.png",
+  "site": "https://arcadiahomecare.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/arcadia.png"
+ },
+ "archetype": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://cdn.prod.website-files.com/63d92d9c721566158610f4d9/67b4ad1f485b522bb83f08cf_Archetype_opengraph.png",
+  "site": "https://www.archetype.co/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/archetype.png"
+ },
+ "archivebarkitchen": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "ardiana": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "arepasenbici": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "argentinafrancismallmannsrestaurants": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "arguello": {
+  "booking": {
+   "opentable": "https://www.opentable.com/landmark/restaurants-near-arguello-park-san-francisco"
+  },
+  "site": null,
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "ariel": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://static.wixstatic.com/media/f93699_f8e480b6226743c48396e24632815e00~mv2.png",
+  "site": "https://www.arielsbreakfast.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/ariel.png"
+ },
+ "arinellpizzaberkeley": {
+  "confidence": "low",
+  "evidence": "profile image from a handle linked by the venue's own site",
+  "handle": "arinellpizza",
+  "remote": "https://scontent-den2-1.xx.fbcdn.net/v/t39.30808-1/301375810_459145966227233_5876619237852498817_n.jpg?stp=dst-jpg_tt6&cstp=mx1224x1224&ctp=s720x720&_nc_cat=111&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=3ab345&_nc_ohc=gBLxpShIHm4Q7kNvwHkKT06&_nc_oc=AdpCLf0RTDmWh-FReOFM9cheCfyIWUfgquXjfglbG4jZ2nFIVM5_siwBGF9F5xYmvT4&_nc_zt=24&_nc_ht=scontent-den2-1.xx&_nc_gid=15ARzCvumwmEcFWgmC9hcQ&_nc_ss=7b20f&oh=00_AQQHrmogVjlQtEjTO-wkey6lwm1wHYagTAUoWNtd2V3q1Q&oe=6AFF1B13",
+  "site": "https://www.arinellpizza.net/",
+  "source": "venue-social",
+  "status": "found",
+  "url": "venue-images/arinell-pizza-berkeley.jpg"
+ },
+ "arinellpizzavalenciast": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "arizonaunspecifiedvenue": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "arka": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://www.arkawindowsdoors.com/wp-content/uploads/2022/04/16-Maestro-RKPIVOTDOOR.jpg",
+  "site": "https://www.arkawindowsdoors.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/arka.jpg"
+ },
+ "armanicafe": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "aromi": {
+  "booking": {
+   "resy": "https://resy.com/cities/new-york-ny/venues/aromi"
+  },
+  "site": null,
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "arquet": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/arquet-san-francisco"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://static1.squarespace.com/static/6839027f7774d32a83a5c90d/t/68efd8adf5cc130fc2792149/1784760049680/",
+  "site": "https://www.arquetrestaurant.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/arquet.png"
+ },
+ "arrowsrestaurant": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "arsenalandthehunted": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "arsicaultbakery": {
+  "confidence": "medium",
+  "evidence": "Mapbox POI primary_photo, exact name match, downloaded locally",
+  "remote": "https://arsicault-bakery.com/images/carousel/inside_store.webp",
+  "site": null,
+  "source": "mapbox-primary-photo",
+  "status": "found",
+  "url": "venue-images/arsicault-bakery.webp"
+ },
+ "arthcupertino": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "artistictaste7": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "arzak": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://www.arzak.es/wp-content/themes/arzak/library/images/og.jpg",
+  "site": "https://www.arzak.es/en/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/arzak.jpg"
+ },
+ "asahiru": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "asiala": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "asialive": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "asianbox": {
+  "confidence": "medium",
+  "evidence": "Mapbox POI primary_photo, exact name match, downloaded locally",
+  "remote": "https://images.getbento.com/accounts/f8a6e174ba49c165bc7109a4cc54b225/mediausers/custom_fields_galleries/images/evScFQ1QXWlZ0R2Vnlup_ab2.png?w=3000&fit=max&auto=compress,format&cs=origin",
+  "site": null,
+  "source": "mapbox-primary-photo",
+  "status": "found",
+  "url": "venue-images/asian-box.jpg"
+ },
+ "asianboxmountainview": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "asianboxpaloalto": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "asiasf": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "asiento": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://asientosf.com/wp-content/uploads/2025/09/JuicyBurger-sidePM-scaled.jpeg",
+  "site": "https://asientosf.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/asiento.jpg"
+ },
+ "askneadedbakery": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "http://static1.squarespace.com/static/68f7d177eef4bd48f27c2da4/t/68f7d184eef4bd48f27c39f2/1759250288533/bread0257.webp?format=1500w",
+  "site": "https://www.askneadedbakery.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/as-kneaded-bakery.webp"
+ },
+ "assemblerestaurant": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "assembly": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "http://static1.squarespace.com/static/5e8b7d7a7569b550b6293c7c/t/5e8cc6c672d67858e73a3c50/1586284237380/Home+Mat+-+Nancy.JPG?format=1500w",
+  "site": "https://www.theassembly.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/assembly.jpg"
+ },
+ "asta": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://irp.cdn-website.com//3b58c61e/dms3rep/multi/opt/CALASTAF-1920w.png?jxl&v=jxl",
+  "site": "https://www.calasta.org/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/asta.png"
+ },
+ "aster": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://astersanfrancisco.com/cdn/shop/files/sf-large-arrangement.jpg?v=1783520382&width=600",
+  "site": "https://astersanfrancisco.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/aster.jpg"
+ },
+ "astridygastn": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "astromotel": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://static.wixstatic.com/media/b9f17d_2f0ea0fe17ed42828b6781130e4ce8e7%7Emv2.png/v1/fit/w_2500,h_1330,al_c/b9f17d_2f0ea0fe17ed42828b6781130e4ce8e7%7Emv2.png",
+  "site": "https://www.theastrohotel.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/astro-motel.png"
+ },
+ "atasteofdenmark": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/taste-of-denmark-san-diego"
+  },
+  "site": null,
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "atelier": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/atelier-crenn"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://static.wixstatic.com/media/60926d_edb6b53912d74d06a90743911a054e0e~mv2.jpg/v1/fill/w_859,h_766,al_c/60926d_edb6b53912d74d06a90743911a054e0e~mv2.jpg",
+  "site": "https://www.sadievaleriatelier.com/about-the-atelier",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/atelier.jpg"
+ },
+ "ateliercolibri": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://atelier-colibri.com/themes/default/images/open_fb.png",
+  "site": "https://atelier-colibri.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/atelier-colibri.png"
+ },
+ "ateliercrenn": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/atelier-crenn"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://images.getbento.com/accounts/36789046647a4c4439ca1d65879fe4f7/media/images/64119ACNESTgold_Artboard_1.png?w=1200&fit=fill&auto=compress,format&cs=origin&h=600&bg=EDEDF1&pad=100",
+  "site": "https://www.ateliercrenn.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/atelier-crenn.jpg"
+ },
+ "ateliercrennandmourad": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "atera": {
+  "confidence": "low",
+  "evidence": "profile image from a handle linked by the venue's own site",
+  "handle": "ateranyc",
+  "remote": "https://scontent-den2-1.cdninstagram.com/v/t51.2885-19/25025908_395673947558292_8005085832991997952_n.jpg?stp=dst-jpg_s150x150_tt6&_nc_cat=101&_nc_map=urlgen_bucketless&ig_cache_key=GHTdfQGUURcF3WcBAAAAAAAnxxdvbkULAAAB1501500j-ccb7-5&ccb=7-5&_nc_sid=669407&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy43NTAuQzMifQ%3D%3D&_nc_ohc=LNy9u2qOKYwQ7kNvwFjtiSR&_nc_oc=AdpcQNJQJTkMcqXHY9kgHEBAUe3P1pPGW2rYxHAmKol8oFAGQmuyScgu1Rge_1pUPr0&_nc_zt=24&_nc_ht=scontent-den2-1.cdninstagram.com&_nc_ss=7b60f&_nc_ct=RQosPBUCFQIAAAA&oh=00_AQR57A8KureH11Eyz6jHup5-qLcYfpv4gh23dDT4DdCi2Q&oe=6AFF077D",
+  "site": "https://ateranyc.com/",
+  "source": "venue-social",
+  "status": "found",
+  "url": "venue-images/atera.jpg"
+ },
+ "athanor": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://static.wixstatic.com/media/425350_65dccef40ed8420c970455eac9f5153c%7Emv2.png/v1/fit/w_2500,h_1330,al_c/425350_65dccef40ed8420c970455eac9f5153c%7Emv2.png",
+  "site": "https://www.athanorsf.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/athanor.png"
+ },
+ "atlantasritzcarltonhotel": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "atomix": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://img1.wsimg.com/isteam/ip/5a75af2a-0dc0-4e08-8ec1-ce42e035570c/Energy_Arc_(central_electrode_of_a_Plasma_Lamp).jpg",
+  "site": "https://atomixinc.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/atomix.jpg"
+ },
+ "atrium": {
+  "booking": {
+   "opentable": "https://www.opentable.com/landmark/restaurants-near-atrium-center-shopping-center",
+   "resy": "https://resy.com/cities/glendale-ca/venues/atrium-estiatorio"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://www.atriumsf.com/uploads/8/4/6/9/84697178/ruggedrookie.jpg",
+  "site": "https://www.atriumsf.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/atrium.jpg"
+ },
+ "attic": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/attic"
+  },
+  "site": null,
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "attpark": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "attrarosthaieatery": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "atwatertavern": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/atwater-tavern-san-francisco"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://static1.squarespace.com/static/56649b77e4b03851362210c0/t/56fb066a8a65e2ecc12f2ea5/1793067016175/",
+  "site": "https://www.atwatertavern.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/atwater-tavern.webp"
+ },
+ "aubergedusoleil": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/the-restaurant-at-auberge-du-soleil-rutherford",
+   "tock": "https://www.exploretock.com/auberge-du-soleil"
+  },
+  "site": null,
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "aubergine": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "aubergineatlauberge": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/aubergine-at-lauberge-carmel"
+  },
+  "site": null,
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "aubergineinlauberge": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "august1five": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/august-1-five-san-francisco",
+   "tock": "https://www.exploretock.com/august1five"
+  },
+  "site": null,
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "aupieddecochon": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/au-pied-de-cochon-paris"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://cdn.shoplightspeed.com/shops/649413/themes/16825/v/787359/assets/social-media-image.jpg?20230922185302",
+  "site": "https://www.aupieddecochon.ca/us/restaurants/au-pied-de-cochon-restaurant/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/au-pied-de-cochon.jpg"
+ },
+ "aura": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/aura-modern-mediterranean-camp-hill",
+   "resy": "https://resy.com/cities/new-york-ny/venues/aura-cocina"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://auragracecathedral.com/_astro/AURA-LANDING-P4-16X9-SFO_a8y6sl_cc4npx_jbOix.webp",
+  "site": "https://auragracecathedral.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/aura.webp"
+ },
+ "aureole": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "aureoleinnewyork": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "aureolenewyorkandlasvegas": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "aureolenewyorkcity": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "auro": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/auro-calistoga"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://aurora.tech/_nuxt/hero-scrim.DzShv0rj.png",
+  "site": "https://aurora.tech/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/auro.png"
+ },
+ "aurum": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/aurum-los-altos"
+  },
+  "site": null,
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "austins": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/austin/Downtown_Skyline_Upscale_Paulina_Skarbowska_Wiewior_bateyes_atx_Lifetime_Usage__4469f6fe-40d5-4df8-8fee-22b3b75c9862.jpg",
+  "site": "https://www.austintexas.org/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/austin-s.jpg"
+ },
+ "automat": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://cdn.prod.website-files.com/690942210854e5c7d0b74b4e/6a99d6e7cce049dc060d1d1b__.png",
+  "site": "https://runautomat.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/automat.png"
+ },
+ "autumnmooncafe": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "avedanosmeats": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://avedanos.com/new2019/wp-content/uploads/2019/08/cropped-avedanosSign-copy-2-1.jpg",
+  "site": "https://avedanos.com/new2019/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/avedano-s-meats.jpg"
+ },
+ "aveline": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://media-production.lp-cdn.com/media/fee0a1aa-7eb4-43cb-bc8c-0c33eb2fcfa6",
+  "site": "https://avelinerealty.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/aveline.jpg"
+ },
+ "avery": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/avery-san-francisco"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "http://static1.squarespace.com/static/65c38c9e0011bc4920e01b7a/t/69eb8973999a4e7e515fc68f/1777043827347/the-avery-light.png?format=1500w",
+  "site": "https://www.theaverysf.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/avery.webp"
+ },
+ "averyedinburgh": {
+  "booking": {
+   "tock": "https://www.exploretock.com/averyedinburgh"
+  },
+  "site": null,
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "averysanfrancisco": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/avery-san-francisco"
+  },
+  "site": null,
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "axe": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "axiscafe": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "ayala": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/ayala-san-francisco"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://storage.googleapis.com/idx-code-gs.ihouseprd.com/idxv3/6-63-06-00000/images/web/icons/ihouseweb_branding.png",
+  "site": "https://www.ayalarealty.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/ayala.png"
+ },
+ "azalinas": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://images.getbento.com/accounts/f8194d40a15b976a1bce5338d622a254/media/images/99097CKmJL5kTBytRFQHlzNzO_533593_567145296630856_962075461_n.png?w=1200&fit=fill&auto=compress,format&cs=origin&h=600&bg=ffec98&pad=100",
+  "site": "https://www.azalinas.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/azalina-s.jpg"
+ },
+ "azie": {
+  "booking": {
+   "resy": "https://resy.com/cities/media-pa/venues/azie-media"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://static1.squarespace.com/static/59427d878419c24dd94b64f4/t/5948ae84f5e23161d7db7631/1776451380901/",
+  "site": "https://www.azie-restaurant.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/azie.webp"
+ },
+ "aziza": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/aziza-san-francisco"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://static1.squarespace.com/static/6983c4e9211dcf5cebf4a2a2/t/698e316099f4ff41a3841f3e/1776458908531/",
+  "site": "https://www.azizasf.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/aziza.webp"
+ },
+ "aziza5800gearyblvd": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "babbo": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/babbo-italian-eatery-phoenix",
+   "resy": "https://resy.com/cities/new-york-ny/venues/babbo-ristorante"
+  },
+  "site": null,
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "babboganzo": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "babesmontecarlo": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "babettes": {
+  "booking": {
+   "resy": "https://resy.com/cities/miami-fl/venues/babette"
+  },
+  "site": null,
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "babite": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "babo": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "babuji": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/babu-ji-new-york"
+  },
+  "site": null,
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "babujiaustralia": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "babujinewyork": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/babu-ji-new-york"
+  },
+  "site": null,
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "babujinewyorkcity": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "babujinewyorkcitynewlocation": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "babujinewyorkcityoriginallocation": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "babujisanfrancisco": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "bacar": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://bacar2.org/wp-content/uploads/2021/04/thumbnail-4.jpg",
+  "site": "https://bacar2.org/who-we-are/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/bacar.jpg"
+ },
+ "bacchanal": {
+  "booking": {
+   "opentable": "https://www.opentable.com/landmark/restaurants-near-bacchanal-buffet-at-caesars-palace"
+  },
+  "site": "https://www.bottlebacchanal.com/",
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "bacchanalia": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "bacchusmanagementgroup": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://images.squarespace-cdn.com/content/v1/60e299a296ddb81c3518afbb/6a3d8b18-ac95-41da-a53c-8d65eadcc788/Augustine_Caviar_PotatoChips_03.jpg",
+  "site": "https://www.bacchusmanagement.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/bacchus-management-group.webp"
+ },
+ "bacchusmanagementgroupincludingsprucethesaratogathevillagepubmayfieldbakeryandcafethevillagebakery": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "bacchusonhyde": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "bacco": {
+  "booking": {
+   "resy": "https://resy.com/cities/north-wales-pa/venues/bacco-italian-restaurant"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://www.perbaccosf.com/wp-content/uploads/2023/07/Perbacco-SF-overhead-interior.jpg",
+  "site": "https://www.perbaccosf.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/bacco.jpg"
+ },
+ "backayardcaribbeangrill": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://static.hungerrush.com/menufy/width=1920,height=1080,fit=scale-down,format=auto/638144084154076061+1090806.png",
+  "site": "https://www.backayardcaribbeangrill.com/locations",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/back-a-yard-caribbean-grill.png"
+ },
+ "backroom": {
+  "booking": {
+   "opentable": "https://www.opentable.com/the-back-room-steakhouse"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://static1.squarespace.com/static/56fb738520c64782fb3954f1/t/56fb7419e32140a6677b01e0/1790076652643/",
+  "site": "https://backroommusic.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/back-room.webp"
+ },
+ "backtoback": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/back-to-back-san-francisco"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://static.wixstatic.com/media/62a879_9098f2302c6a4688bb34913733154893%7Emv2.png/v1/fit/w_2500,h_1330,al_c/62a879_9098f2302c6a4688bb34913733154893%7Emv2.png",
+  "site": "https://www.backtobacksf.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/back-to-back.png"
+ },
+ "baconbacon": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://c-p.rmcdn.net/65cbb3b886b41500520caf13/Image-5bd4a53f-1342-4467-96c3-a602bff45fee.jpg",
+  "site": "https://www.baconbaconsf.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/bacon-bacon.jpg"
+ },
+ "baconbaconfrederickstreetcafe": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "baconbaconsemipermanenthomewithinbrickmortar": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "badanimal": {
+  "booking": {
+   "tock": "https://www.exploretock.com/badanimal/"
+  },
+  "site": null,
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "badwaltersbootlegicecreampermanentspaceinrockridge": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "badwaltersbootlegicecreampopup": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "baggysbythelake": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "baia": {
+  "booking": {
+   "opentable": "https://www.opentable.com/landmark/restaurants-near-baia",
+   "tock": "https://www.exploretock.com/baia"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://static.wixstatic.com/media/ffd58b_c914f067617c49d6a431b9109304cd22.png/v1/fit/w_2500,h_1330,al_c/ffd58b_c914f067617c49d6a431b9109304cd22.png",
+  "site": "https://www.baia-network.org/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/baia.png"
+ },
+ "bakerbanker": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "bakerbankerbakery": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "bakesalebetty": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "balboa": {
+  "booking": {
+   "opentable": "https://www.opentable.com/balboa-cafe-sf",
+   "tock": "https://www.exploretock.com/balboacafe/event/141574/faq"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "http://static1.squarespace.com/static/656a2b4d1b49002965c529ad/t/66995e99b6011e22bdb44a4f/1721327257162/Vintage+Balboa+B+-Oval.png?format=1500w",
+  "site": "https://www.balboacafesf.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/balboa.webp"
+ },
+ "balboacafe": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "http://static1.squarespace.com/static/656a2b4d1b49002965c529ad/t/66995e99b6011e22bdb44a4f/1721327257162/Vintage+Balboa+B+-Oval.png?format=1500w",
+  "site": "https://www.balboacafesf.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/balboa-cafe.webp"
+ },
+ "balboacafmillvalley": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "balis": {
+  "booking": {
+   "opentable": "https://www.opentable.com/region/indonesia/bali"
+  },
+  "site": null,
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "balispacificandbattery": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "balissansomestreet": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "baltickiss": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "bamboohut": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://images.squarespace-cdn.com/content/v1/59543df420099ea4c7e14f01/1570666240711-0UWA18KDHNYCF9DN1T27/the+wrecking+crew+web.jpeg",
+  "site": "https://www.bamboohutsf.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/bamboo-hut.webp"
+ },
+ "bandidos": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/lovp_5mjvtbcbrd99srhfb16e4pg7wv/99af02ba77c6f49955376d7c276f0b5a_1794531349701.png",
+  "site": "https://bandidosrestaurant.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/bandidos.png"
+ },
+ "bangkokstreetthaikitchen": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "banhmijointlaterrenamedmonsterpho2": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "banhmini": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "banterwine": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "http://static1.squarespace.com/static/61afd78f62e30c4f24ba00a6/t/61c373aed3b8a669f8ba1ca9/1640199086884/Border_clear+%281%29.png?format=1500w",
+  "site": "https://www.banterwine.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/banter-wine.webp"
+ },
+ "baohiroo": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://www.baohiroo.com/accounts/76d1e9949baa4e57783d202960518d36/media/images/bao_hiroo_red_wordmark_on_white_background_cs5_1_7801707e46b404.png",
+  "site": "https://www.baohiroo.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/bao-hiroo.png"
+ },
+ "bar821": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "bar8ristoranteraphael": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "baragricole": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "baragricole1540missionst": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "baragricole35511thst": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "baragricoledelfinaandabbotscellar": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "baraka": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "barakaandeos": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "barakachezpapa": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "baram": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "barbacco": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "barbambino": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://images.getbento.com/accounts/fb4157b454ba512687bccb1dbb3527ea/media/images/91693BB_ELEPHANTMARTINI_1.png?w=786&fit=crop&auto=compress,format&cs=origin&crop=focalpoint&fp-x=0.5&fp-y=0.5",
+  "site": "https://www.barbambino.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/bar-bambino.png"
+ },
+ "barbarossa": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://barbarossalounge.com/wp-content/uploads/2015/10/thanksgiving_webbanner2019.jpg",
+  "site": "https://barbarossalounge.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/barbarossa.jpg"
+ },
+ "barbarycoastbistro": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "barbersq": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "barbuto": {
+  "booking": {
+   "resy": "https://resy.com/cities/new-york-ny/venues/barbuto"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "http://static1.squarespace.com/static/681b7672e4fef16388e7431b/t/692fc67bebf8ce6f2fa72f6d/1764738684037/Tony+Barbuto+Hair+Stylist.jpg?format=1500w",
+  "site": "https://www.tonybarbuto.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/barbuto.webp"
+ },
+ "barceloneta": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/barceloneta-miami-beach",
+   "resy": "https://resy.com/cities/barcelona-spain/venues/lostia-de-la-barceloneta"
+  },
+  "site": null,
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "barcha": {
+  "booking": {
+   "opentable": "https://www.opentable.com/barcha",
+   "tock": "https://www.exploretock.com/barcha-sf"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "http://static1.squarespace.com/static/68cb5c068b764e59ebff4173/t/68e5d84028e4bc6fb8d5d0fd/1759893569015/dark+page.png?format=1500w",
+  "site": "https://www.barcha-sf.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/barcha.webp"
+ },
+ "barchaandsens": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "barcoto": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "barcrenn": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/bar-crenn-san-francisco",
+   "tock": "https://www.exploretock.com/barcrenn/"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://images.getbento.com/accounts/764669aa778a28f968b6bd1eb56c19bc/media/images/19709TH5A4793-Enhanced-NR-2.jpg?w=1000&fit=max&auto=compress,format&cs=origin&h=1000",
+  "site": "https://www.barcrenn.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/bar-crenn.jpg"
+ },
+ "barcrudo": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/bar-crudo-divisadero-st-san-francisco"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://static1.squarespace.com/static/59b09e6ecd39c3450a1b8098/t/5d02afbeb03e2900017a5147/1793388201386/",
+  "site": "https://www.barcrudo.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/bar-crudo.webp"
+ },
+ "bardellis": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "bardesseno": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "bardessono": {
+  "booking": {
+   "opentable": "https://www.opentable.com/lucy-restaurant-and-bar-at-bardessono"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://www.bardessono.com/files/7196/Bardessono-Courtyard.jpg",
+  "site": "https://www.bardessono.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/bardessono.jpg"
+ },
+ "bardoloungesupperclub": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/bardo-lounge-and-supper-club-oakland"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://static1.squarespace.com/static/5b0de4215b409b0d89f23ff0/t/5b351798f950b7043a8e9efc/1792262830254/",
+  "site": "https://www.bardooakland.com/menus",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/bardo-lounge-supper-club.webp"
+ },
+ "bargemini": {
+  "booking": {
+   "resy": "https://resy.com/cities/san-francisco-ca/venues/bar-gemini"
+  },
+  "site": "https://bargeminisf.com/",
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "bariris": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/bar-iris-san-francisco"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "http://static1.squarespace.com/static/60b5970904a41108e1aa1f47/t/63af511d21e1133e41798234/1672433955150/NEW+POP+QUIZ_sm.jpg?format=1500w",
+  "site": "https://www.bar-iris.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/bar-iris.webp"
+ },
+ "barmaze": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "barnzu": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "baronsmeatpoultrybrooklyn": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "baronsmeatsalameda": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "baronsmeatsnoevalley": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "barorso": {
+  "booking": {
+   "tock": "https://www.exploretock.com/bar-orso-san-francisco/"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://images.squarespace-cdn.com/content/v1/689c072decbbd60f0c6f39e3/1767844460595-IWVSX145RVPWVWMSRMF5/image-asset.jpeg",
+  "site": "https://barorso.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/bar-orso.webp"
+ },
+ "barpanisse": {
+  "site": "https://www.barpanisse.com/",
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "barranco": {
+  "site": "https://barrancokitchen.com/",
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "barshiru": {
+  "booking": {
+   "tock": "https://www.exploretock.com/barshiru/"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "http://static1.squarespace.com/static/5abbe7a1f2e6b18135abbf19/t/5d2a439b4c2184000141c702/1563050910714/Shiru_Chiclet_BlackCircle.png?format=1500w",
+  "site": "https://www.barshiru.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/bar-shiru.webp"
+ },
+ "barsprezzatura": {
+  "confidence": "medium",
+  "evidence": "Mapbox POI primary_photo, exact name match, downloaded locally",
+  "remote": "https://images.squarespace-cdn.com/content/v1/62c9ddb9f44af23264f5b290/75a6f45f-b96e-4c5b-b722-5a13dfb38e95/Bar+Sprz_14Nov2022_17.39.04__GALDOPHOTO.jpg",
+  "site": null,
+  "source": "mapbox-primary-photo",
+  "status": "found",
+  "url": "venue-images/bar-sprezzatura.webp"
+ },
+ "bartavelle": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "bartletthall": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/bartlett-hall-san-francisco"
+  },
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://images.getbento.com/accounts/ce8973f0b73df6edc2d4664a6529696c/media/images/Belgian-Style_Strong_Specialty_Ale_2023_Bronze_Converted.png?w=1000&fit=max&auto=compress,format&cs=origin&h=1000",
+  "site": "https://www.bartletthall.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/bartlett-hall.png"
+ },
+ "barvale": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "barzotto": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "basalt": {
+  "booking": {
+   "opentable": "https://www.opentable.com/r/basalt-ivins"
+  },
+  "site": "https://basalt.space/",
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "basque": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "http://static1.squarespace.com/static/631f68340f0abb7a4c59f2a2/t/631f84047415fc19beae16fe/1663009796551/BCCSF.jpeg?format=1500w",
+  "site": "https://sfbasqueculturalcenter.org/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/basque.webp"
+ },
+ "basquecountryeurope": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "basqueculturalcenter": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "http://static1.squarespace.com/static/631f68340f0abb7a4c59f2a2/t/631f84047415fc19beae16fe/1663009796551/BCCSF.jpeg?format=1500w",
+  "site": "https://sfbasqueculturalcenter.org/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/basque-cultural-center.webp"
+ },
+ "bastapasta": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "bastide": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "batterbakery": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://static1.squarespace.com/static/5372f045e4b0b339e9da3030/t/54ff2bade4b091088db471a9/1793906796117/",
+  "site": "https://www.batterbakery.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/batter-bakery.webp"
+ },
+ "baum": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "baume": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "http://dyn.yelpcdn.com/extimg/rrc/yoe2NDvn1wbL3GGeNF9KJg.png",
+  "site": "http://www.baumeswissjeweler.com/contact.html",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/baume.png"
+ },
+ "bauraulachotel": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://www.bauraulac.ch/upload/rm/ba/lh/bal-hotel-entrance-exterior-christmas-winter-seaso-1.jpg?_=1793284827000",
+  "site": "https://www.bauraulac.ch/en/footer-navigation/facts.html",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/baur-au-lac-hotel.jpg"
+ },
+ "bayareadiscoverymuseumcafe": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "bayareageneral": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "bayona": {
+  "booking": {
+   "resy": "https://resy.com/cities/new-orleans-la/venues/bayona"
+  },
+  "site": null,
+  "source": null,
+  "status": "found",
+  "url": null
+ },
+ "bayonnesoutherndining": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "bayviewproductionkitchen": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "baywolf": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "bazaarsonomabaso": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "bcubed": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://www.bcubedshipping.com/assets/images/f1ccfab12bb972d26c7be809a9bb76c0.jpg",
+  "site": "https://www.bcubedshipping.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/b-cubed.jpg"
+ },
+ "bdama": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "bdk": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "beaconbakery": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "bludbitcheslivenupdinner": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "bnranch": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "bpatisserie": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "bpatisseriehonoluluoutpost": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "bpatisseriesoutpostinseoul": {
+  "source": null,
+  "status": "absent",
+  "url": null
+ },
+ "bside": {
+  "confidence": "high",
+  "evidence": "declared image on the venue's own site",
+  "remote": "https://images.squarespace-cdn.com/content/v1/58926dee440243ce4415f0d5/1492663115815-518UD953I0K5ERO7FBX4/Bside_4.18.17-1.jpg",
+  "site": "http://www.b-sidesf.com/",
+  "source": "venue-website",
+  "status": "found",
+  "url": "venue-images/b-side.webp"
+ },
+ "bxbhospitalitykaiyorooftopwhitechapelnovella": {
+  "source": null,
+  "status": "absent",
   "url": null
  },
  "wichcraft": {
