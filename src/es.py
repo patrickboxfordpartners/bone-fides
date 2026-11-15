@@ -2,7 +2,7 @@
 import os
 
 from src.roles import role_bucket
-from src.eras import era_bucket
+from src.eras import era_bucket, _year
 from src.hoods import load_hood_maps, hood_for
 
 INDEX = "bone-fides-edges"
@@ -81,6 +81,13 @@ def build_edge_doc(edge):
         "role": edge.get("role"),
         "role_bucket": role_bucket(edge.get("role")),
         "era_bucket": era_bucket(edge.get("date")),
+        # The citable year itself, not only its decade. `era_bucket` answers
+        # "which era", which is all the facet filter needs, but a career
+        # timeline needs to ORDER moves and a decade cannot. 80% of dated edges
+        # yield a year through eras._year; the field is absent when the date is
+        # prose with no year in it ("last June", "two years ago"), which is the
+        # honest answer rather than a guess.
+        "year": _year(edge.get("date")),
         "venue_hoods": _hood_stamps(edge),
         "action": edge.get("action"),
         "mentor": edge.get("mentor"),
@@ -107,6 +114,9 @@ INDEX_SETTINGS = {
             "role": {"type": "text"},
             "role_bucket": {"type": "keyword"},
             "era_bucket": {"type": "keyword"},
+            # integer, so a timeline can sort and range-filter on it. Absent
+            # when the date carries no citable year.
+            "year": {"type": "integer"},
             "venue_hoods": {"type": "keyword"},
             "action": {"type": "keyword"},
             "mentor": {"type": "keyword"},
@@ -147,9 +157,10 @@ def ensure_index(es, index=INDEX):
         es.indices.create(index=index, mappings=INDEX_SETTINGS["mappings"])
         return
     try:
+        props = INDEX_SETTINGS["mappings"]["properties"]
         es.indices.put_mapping(
             index=index,
-            properties={"published_at": INDEX_SETTINGS["mappings"]["properties"]["published_at"]})
+            properties={k: props[k] for k in ("published_at", "year")})
     except Exception:
         pass  # older clusters or a race with another writer; never block indexing
 

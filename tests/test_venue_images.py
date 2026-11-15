@@ -573,3 +573,117 @@ def test_distinct_propagates_a_non_shape_failure():
 
     with pytest.raises(RuntimeError, match="Connection refused"):
         _distinct_field("from_venue", connection_refused, None)
+
+
+# ── identity: a name match is not a venue match ─────────────────────────────
+
+def test_domain_shape_decides_identity():
+    """Recovered results included a beauty salon, a fintech and a
+    Minnesota bar that all contain the venue's name."""
+    from src.venue_images import _domain_names_venue as f
+    # rejected: name + a different KIND of business, or a company TLD
+    assert not f("https://plumorganicbeauty.com/", "Plum")
+    assert not f("https://haven.inc/", "Haven")
+    assert not f("https://www.antidotelegal.com/", "Antidote")
+    assert not f("https://www.astastrings.org/", "Asta")
+    assert not f("https://alembicrarebooks.com/", "Alembic")
+    assert not f("https://theminagroup.com/", "Michael Mina")
+
+
+def test_domain_shape_accepts_the_venue_own_sites():
+    from src.venue_images import _domain_names_venue as f
+    # name + venue descriptor: unambiguous
+    assert f("https://coirestaurant.com/", "Coi")
+    assert f("https://bixrestaurant.com/", "Bix")
+    assert f("https://www.azizasf.com/", "Aziza")
+    assert f("https://www.delfinasf.com/", "Delfina")
+    assert f("https://www.sonsanddaughterssf.com/", "Sons & Daughters")
+
+
+def test_a_bare_name_domain_is_not_proof_of_identity():
+    """Any business anywhere owns its own name on a generic TLD. parktavern.net
+    is a bowling alley in Minnesota; betelnut.co is 39 characters of nothing.
+    A bare name has to be corroborated by the page."""
+    from src.venue_images import _domain_verdict, _domain_names_venue
+    assert _domain_verdict("https://parktavern.net/", "Park Tavern") is None
+    assert _domain_verdict("https://www.betelnut.co/", "Betelnut") is None
+    assert not _domain_names_venue("https://parktavern.net/", "Park Tavern")
+    # a company TLD on a bare name is a definite NO
+    assert _domain_verdict("https://haven.inc/", "Haven") is False
+
+
+def test_a_local_namesake_is_still_rejected():
+    """Plum Organic Beauty is IN San Francisco, so a locality check alone
+    would hand it the restaurant's dossier."""
+    from src.venue_images import _page_names_venue
+    page = "<h1>Plum Organic Beauty</h1><p>holistic beauty in San Francisco</p>"
+    assert not _page_names_venue(page, "Plum", url="https://plumorganicbeauty.com/")
+
+
+def test_locality_still_admits_a_domain_that_is_not_name_shaped():
+    """A domain whose shape settles nothing falls back to the page's own
+    locality. Name + "group" IS a recognised descriptor, so it would settle it;
+    a descriptive phrase the word lists don't know does not."""
+    from src.venue_images import _page_names_venue, _domain_verdict
+    assert _domain_verdict("https://www.somebistrogroup.com/", "Some Bistro") is True
+    # "hospitalitygroupcollective" is not in the descriptor vocabulary, so the
+    # domain is inconclusive and the page has to carry identity.
+    page = "<h1>Some Bistro</h1><p>Open nightly in San Francisco</p>"
+    assert _page_names_venue(page, "Some Bistro",
+                             url="https://www.somebistrohospitalitygroupcollective.com/")
+    # the same page without a locality signal is not enough
+    assert not _page_names_venue("<h1>Some Bistro</h1>", "Some Bistro",
+                                 url="https://www.somebistrohospitalitygroupcollective.com/")
+
+
+def test_limit_zero_resolves_nothing():
+    """`if limit:` treated 0 as "no limit" and started the full 4,754-venue
+    run, downloading images for a corpus when the caller asked for none."""
+    import inspect
+    import src.venue_images as v
+    src = inspect.getsource(v.main)
+    assert "if limit is not None:" in src
+    assert "max(0, int(" in src
+
+
+# ── round 11 findings (Greptile on PR #14) ──────────────────────────────────
+
+def test_decade_phrases_do_not_become_exact_years():
+    """"the 1970s" names a span. Stamping year=1970 displays and sorts an
+    exact year the citation never supported."""
+    from src.eras import _year, era_bucket
+    assert _year("1970s") is None
+    assert _year("mid-1980s") is None
+    assert _year("1990s") is None
+    # the decade stamp survives, which is the honest grain
+    assert era_bucket("1970s") == "pre-1990"
+    assert era_bucket("1990s") == "1990s"
+    # a real year is still a year
+    assert _year("October 2014") == 2014
+    assert _year("fall 2017") == 2017
+
+
+def test_completion_rows_carry_year_in_both_twins():
+    """fetch_person_edges requested year but dropped it, so a completion row
+    merged beside a ranked row partitioned on a different time key and one move
+    split into an e2010s row and a y2013 row."""
+    import inspect
+    import src.venue_images  # noqa: F401  (import path sanity)
+    import importlib.util, os
+    root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    for rel in ("ui/server.py", "vercel-app/api/search.py"):
+        src = open(os.path.join(root, rel), encoding="utf-8").read()
+        # the completion builder must copy year out of _source
+        assert src.count('"year": s.get("year")') >= 2, (
+            f"{rel}: year is missing from one of the two payload paths")
+
+
+def test_resolve_errors_are_reported_not_swallowed():
+    """A disk or code error could fail hundreds of venues while the run printed
+    only progress and exited 0."""
+    import inspect
+    import src.venue_images as v
+    src = inspect.getsource(v.main)
+    assert "failed.append" in src, "per-venue errors are discarded"
+    assert "venues raised while resolving" in src, "no failure report"
+    assert "return 1" in src, "a failed run must not exit 0"

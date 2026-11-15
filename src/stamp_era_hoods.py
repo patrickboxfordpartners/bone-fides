@@ -25,19 +25,20 @@ def main(argv=None):
     # only applies at create time, so put the mapping on explicitly.
     stamps = INDEX_SETTINGS["mappings"]["properties"]
     facet_fields = {k: stamps[k] for k in ("era_bucket", "venue_hoods",
-                                           "role_bucket") if k in stamps}
+                                           "role_bucket", "year") if k in stamps}
     existing = es.indices.get_mapping(index=INDEX).get(INDEX, {}).get(
         "mappings", {}).get("properties", {})
     missing = {k: v for k, v in facet_fields.items()
-               if existing.get(k, {}).get("type") != "keyword"}
+               if existing.get(k, {}).get("type") != v["type"]}
     if missing and not dry:
         es.indices.put_mapping(index=INDEX, properties=missing)
     elif missing and dry:
-        print(f"[dry-run] would add keyword mappings for: {sorted(missing)}")
+        print(f"[dry-run] would add mappings for: {sorted(missing)}")
     era_counts = {}
     hood_counts = {}
     updated = 0
     scanned = 0
+    stamps_year = 0
     actions = []
     for hit in scan(es, index=INDEX, query={"query": {"match_all": {}}},
                     source_includes=["date", "from_venue", "to_venue"],
@@ -52,8 +53,13 @@ def main(argv=None):
             "to_venue": s.get("to_venue"),
         })
         patch = {"era_bucket": doc["era_bucket"],
-                 "venue_hoods": doc["venue_hoods"]}
+                 "venue_hoods": doc["venue_hoods"],
+                 # The citable year, not only its decade. A facet can filter
+                 # on a decade; a career timeline cannot ORDER moves by one.
+                 "year": doc.get("year")}
         era_counts[patch["era_bucket"]] = era_counts.get(patch["era_bucket"], 0) + 1
+        if patch["year"] is not None:
+            stamps_year += 1
         for h in patch["venue_hoods"]:
             hood_counts[h] = hood_counts.get(h, 0) + 1
         if dry:
@@ -68,6 +74,8 @@ def main(argv=None):
         _bulk(es, actions)
         updated += len(actions)
     print(f"scanned {scanned} docs, updated {updated} era/hood stamps")
+    print(f"  year stamped on {stamps_year} of {scanned} "
+          f"({stamps_year/max(scanned,1)*100:.0f}%)")
     print("era distribution:")
     for e, n in sorted((era_counts.items()), key=lambda kv: -(kv[1] or 0)):
         print(f"  {n:5d}  {e}")

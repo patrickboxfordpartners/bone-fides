@@ -37,23 +37,52 @@ _YEAR_RE = re.compile(r"\b(19|20)(\d{2})(?:s)?(?!\w)")
 
 
 def _year(date_str):
-    """First citable year in a loose date string, or None."""
+    """First citable year in a loose date string, or None.
+
+    A DECADE PHRASE ("the 1970s", "mid-1980s") is not a year: it names a span.
+    It still yields an era bucket (see era_bucket), but an exact year would be
+    false precision — the source never said 1970, and a timeline that sorts and
+    displays "1970" asserts something the citation does not.
+    """
     s = (date_str or "").strip()
     if not s:
         return None
     m = _YEAR_RE.search(s)
     if not m:
         return None
-    # group(1)+group(2): the year digits (group(0) can carry the "s")
+    # group(0) carries the trailing "s" when the source said a decade.
+    if m.group(0).lower().endswith("s"):
+        return None
     y = int(m.group(1) + m.group(2))
     if 1900 <= y <= 2026:
         return y
     return None
 
 
+def _decade_year(date_str):
+    """First year that starts a DECADE phrase, or None.
+
+    Only for era_bucket: "the 1970s" belongs in the 1970s bucket even though it
+    is not a citable year.
+    """
+    s = (date_str or "").strip()
+    if not s:
+        return None
+    m = _YEAR_RE.search(s)
+    if not m:
+        return None
+    y = int(m.group(1) + m.group(2))
+    return y if 1900 <= y <= 2026 else None
+
+
 def era_bucket(date_str):
-    """Loose date string -> era bucket, or None when no citable year."""
-    y = _year(date_str)
+    """Loose date string -> era bucket, or None when no citable year.
+
+    Uses _decade_year, not _year: "the 1970s" is a decade phrase with no exact
+    year, but it plainly belongs in the 1970s bucket. The year field stays
+    empty for it — a bucket makes no claim finer than the source.
+    """
+    y = _decade_year(date_str)
     if y is None:
         return None
     if y < 1990:
