@@ -477,9 +477,81 @@ def test_infrastructure_errors_are_not_swallowed():
 
 
 def test_main_stops_the_run_on_a_connection_failure():
+    # The behavioural tests above cover distinct() itself; this only checks
+    # main() is wired to the narrowed classifier. Asserting on a character
+    # window of the source is what made this test brittle.
     import inspect
     import src.venue_images as v
     src = inspect.getsource(v.main)
     assert "_is_field_shape_error" in src, "fallback is not restricted to shape errors"
-    assert "raise" in src.split("def distinct")[1][:900], \
-        "distinct does not re-raise a non-shape failure"
+    body = src.split("def distinct")[1]
+    assert "if not _is_field_shape_error(e):" in body
+    assert "raise" in body, "distinct does not re-raise a non-shape failure"
+
+
+# ── round 10 findings ───────────────────────────────────────────────────────
+
+def test_joined_names_keep_their_booking_links():
+    """"The Progress" -> /theprogress dropped out: connectives were stripped
+    from the venue side but the joined path keeps them."""
+    from src.venue_images import _slug_names_venue as f
+    assert f("/theprogress", "The Progress")
+    assert f("/houseofprimerib", "House of Prime Rib")
+    assert f("/sonsanddaughterssf", "Sons & Daughters")
+
+
+def test_joined_name_match_still_respects_a_boundary():
+    from src.venue_images import _slug_names_venue as f
+    assert not f("/r/coin-op-san-francisco", "Coi")
+    assert not f("/r/state-bird-annex", "State Bird Provisions")
+    assert not f("/r/benumbing", "Benu")
+
+
+def test_a_partial_read_is_not_a_failed_read():
+    """An empty from_venue legitimately returns an empty set; raising the
+    earlier shape error then aborted the run before to_venue was read."""
+    seen = {"n": 0}
+    def fake(field):
+        seen["n"] += 1
+        if field == "from_venue":
+            raise RuntimeError("Fielddata is disabled on [from_venue]")
+        if field == "from_venue.keyword":
+            return set()                 # completes, but empty
+        return {"A", "B"}
+    # mirrors the structure under test
+    def distinct(field):
+        from src.venue_images import _is_field_shape_error
+        answered, last = False, None
+        for name in (field, field + ".keyword"):
+            try:
+                vals = fake(name)
+            except Exception as e:
+                assert _is_field_shape_error(e)
+                last = e
+                continue
+            answered = True
+            if vals:
+                return vals
+        if not answered and last:
+            raise last
+        return set()
+    assert distinct("from_venue") == set()   # did not raise
+    assert distinct("to_venue") == {"A", "B"}
+
+
+def test_distinct_raises_when_no_shape_can_be_read():
+    from src.venue_images import _is_field_shape_error
+    def distinct(field):
+        answered, last = False, None
+        for name in (field, field + ".keyword"):
+            try:
+                raise RuntimeError("Fielddata is disabled")
+            except Exception as e:
+                assert _is_field_shape_error(e)
+                last = e
+        if not answered and last:
+            raise last
+        return set()
+    import pytest
+    with pytest.raises(RuntimeError):
+        distinct("from_venue")

@@ -310,9 +310,37 @@ def _slug_names_venue(path, venue):
         return False
     stop = {"and", "the", "of", "at", "by", "a", "an", "de", "la", "le"}
     raw = [w for w in re.split(r"[^a-z0-9]+", venue.lower()) if w]
-    # Drop connectives from BOTH sides so "Sons & Daughters" matches
-    # /sons-and-daughters, and strip a possessive so "Mister Jiu's" does not
-    # leave a stray trailing "s" as its own word.
+    if not raw:
+        return False
+
+    # 1. EXACT full-name match first, over the whole path with separators
+    #    removed. This is what accepts a slug joining every word of the name —
+    #    /theprogress for "The Progress", /houseofprimerib for "House of Prime
+    #    Rib" — where dropping connectives from the venue side alone leaves a
+    #    name that can never match the joined path.
+    #
+    #    The match must consume the WHOLE fragment. A bare startswith would
+    #    accept /theprogressbar for "The Progress", which is the same
+    #    substring mistake as matching Coi inside Coin-Op.
+    path_flat = "".join(bits)
+    # "&" is written as "and" in a slug far more often than it is dropped:
+    # "Sons & Daughters" -> /sonsanddaughterssf. Build both forms and accept
+    # either, so the connective convention does not silently lose a venue.
+    name_forms = {"".join(raw)}
+    if "&" in venue:
+        name_forms.add("".join(w if w != "&" else "and"
+                               for w in re.split(r"(\s*&\s*)", venue.lower()) if w.strip()))
+        name_forms.add("".join(re.split(r"[^a-z0-9]+",
+                                        venue.lower().replace("&", "and"))))
+    for nf in filter(None, name_forms):
+        if path_flat == nf or any(b == nf for b in bits):
+            return True
+        if path_flat.startswith(nf) and path_flat[len(nf):] in _SLUG_TAILS:
+            return True
+
+    # 2. connectives dropped from BOTH sides, so "Sons & Daughters" matches
+    #    /sons-and-daughters. A possessive trailing "s" is stripped so
+    #    "Mister Jiu's" does not leave a stray word.
     words = [w for w in raw if w not in stop]
     if words and words[-1] == "s" and len(words) > 1:
         words = words[:-1]
@@ -779,6 +807,11 @@ def main(argv):
         report "0 venues" and exit 0, which reads exactly like "nothing to do".
         """
         last = None
+        # A read that COMPLETES is an answer, even an empty one. Raising an
+        # earlier shape error then would abort the run before the other field
+        # was read — an empty `from_venue` legitimately returns an empty set,
+        # and that must not be mistaken for "both shapes failed".
+        answered = False
         for name in (field, field + ".keyword"):
             try:
                 vals = ui._distinct_values(es, name)
@@ -787,10 +820,11 @@ def main(argv):
                     raise
                 last = e
                 continue                  # wrong shape for this cluster
+            answered = True               # this shape works, even if empty
             if vals:
                 return vals
-        if last:
-            raise last                    # both shapes rejected: not a run
+        if not answered and last:
+            raise last                    # neither shape could be read
         return set()
 
     raw = distinct("to_venue") | distinct("from_venue")
