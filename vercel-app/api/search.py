@@ -859,6 +859,10 @@ def lineage(es, query, size=25, role=None, era=None, hood=None):
             # ran, never when the move happened. A timeline must not conflate
             # the three, so all three travel.
             "era_bucket": s.get("era_bucket"),
+            # The citable year itself. era_bucket orders by decade, which is
+            # all a facet filter needs, but a timeline has to place two moves
+            # from the SAME decade relative to each other and a bucket cannot.
+            "year": s.get("year"),
             "mentor": s.get("mentor"),
             "published_at": s.get("published_at"),
             "score": h.get("_score", 0),
@@ -885,6 +889,7 @@ def fetch_person_edges(es, names, limit=100):
         "_source": ["person", "from_venue", "to_venue", "role", "date",
                     "confidence", "source", "action", "evidence", "source_url",
                     "source_image", "role_bucket", "era_bucket", "venue_hoods",
+                    "year",
                     # mentor + published_at travel too: completion edges land in
                     # the same timeline, and omitting mentor drops the "under …"
                     # line from a row that has one stored

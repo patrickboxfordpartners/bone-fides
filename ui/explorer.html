@@ -1047,7 +1047,17 @@ function buildTimeline(edges, ql){
     }
     return false;
   }
-  const timeKey = c => c.era_bucket || null;
+  // Time key for partitioning one route's citations into distinct events.
+  //
+  // The year is finer than the era and is what actually separates two moves on
+  // the same route (a chef leaving and returning within one decade). Use it
+  // when the edge carries one, and fall back to the era for edges whose date is
+  // prose the index could not resolve ("last June"): those still have a decade,
+  // and refusing them would drop the move from the timeline entirely.
+  //
+  // Both keys are prefixed so a year can never collide with an era string.
+  const timeKey = c => (c.year != null) ? `y${c.year}`
+                    : (c.era_bucket ? `e${c.era_bucket}` : null);
 
   const rows = [];
   groups.forEach(cites => {
@@ -1060,8 +1070,16 @@ function buildTimeline(edges, ql){
       byEra.get(ek).push(c);
     });
 
-    const mkRow = (members, era) => {
+    const mkRow = (members, key) => {
       const base = members[0];
+      // `key` is the partition key (y2013 / e2010s). The row keeps both: the
+      // finer year when there is one, and the era for the decade heading and
+      // sort. The era comes from the edge itself when it has one; a year-only
+      // edge derives it from the year.
+      const yr = key && key[0] === 'y' ? parseInt(key.slice(1), 10) : null;
+      const era = (key && key[0] === 'e') ? key.slice(1)
+                : (yr == null ? null
+                   : yr < 1990 ? 'pre-1990' : Math.floor(yr / 10) * 10 + 's');
       return {
         e: {
           ...base,
@@ -1073,6 +1091,7 @@ function buildTimeline(edges, ql){
           source_url: members.map(m => m.source_url).find(Boolean) || null,
         },
         era: ERA_ORDER.includes(era) ? era : null,
+        year: yr,
         from: base.from_venue, to: base.to_venue,
       };
     };
@@ -1150,7 +1169,10 @@ function buildTimeline(edges, ql){
   const undated = rows.filter(r => !r.era);
   // Within an era, keep corpus order — we have no finer grain than the bucket,
   // so imposing any further sort would be fiction dressed as precision.
-  dated.sort((a, b) => ERA_ORDER.indexOf(a.era) - ERA_ORDER.indexOf(b.era));
+  dated.sort((a, b) => (ERA_ORDER.indexOf(a.era) - ERA_ORDER.indexOf(b.era))
+                       // within one decade, order by the actual year: two
+                       // moves five years apart must not sort arbitrarily
+                       || ((a.year ?? 9999) - (b.year ?? 9999)));
   // Only become a timeline when it actually sequences something.
   if(dated.length < 2) return null;
   return { dated, undated };
@@ -1171,7 +1193,7 @@ function timelineHTML(tl, ql, chipFor, uid){
     const mentor = e.mentor ? `<div class="tlmentor">under ${esc(e.mentor)}</div>` : '';
     const meta = [e.role, e.date].filter(Boolean).join(' · ');
     return `<div class="tlrow" role="listitem">
-      <div class="tlyr">${esc(r.era)}</div>
+      <div class="tlyr">${esc(r.year != null ? String(r.year) : r.era)}</div>
       <div class="tlrail" aria-hidden="true"><span class="tldot${(isHere(r.from)||isHere(r.to))?' here':''}"></span></div>
       <div class="tlbody">
         <div class="tlvenues">${venue(r.from)}${r.to ? ARROW + venue(r.to) : ''}</div>
