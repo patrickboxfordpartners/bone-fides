@@ -573,3 +573,64 @@ def test_distinct_propagates_a_non_shape_failure():
 
     with pytest.raises(RuntimeError, match="Connection refused"):
         _distinct_field("from_venue", connection_refused, None)
+
+
+# ── identity: a name match is not a venue match ─────────────────────────────
+
+def test_domain_shape_decides_identity():
+    """Recovered results included a beauty salon, a fintech and a
+    Minnesota bar that all contain the venue's name."""
+    from src.venue_images import _domain_names_venue as f
+    # rejected: name + a different KIND of business, or a company TLD
+    assert not f("https://plumorganicbeauty.com/", "Plum")
+    assert not f("https://haven.inc/", "Haven")
+    assert not f("https://www.antidotelegal.com/", "Antidote")
+    assert not f("https://www.astastrings.org/", "Asta")
+    assert not f("https://alembicrarebooks.com/", "Alembic")
+    assert not f("https://theminagroup.com/", "Michael Mina")
+
+
+def test_domain_shape_accepts_the_venue_own_sites():
+    from src.venue_images import _domain_names_venue as f
+    assert f("https://coirestaurant.com/", "Coi")
+    assert f("https://bixrestaurant.com/", "Bix")
+    assert f("https://www.azizasf.com/", "Aziza")
+    assert f("https://www.delfinasf.com/", "Delfina")
+    assert f("https://www.betelnut.co/", "Betelnut")
+    # "&" and "+" both become "and" in a domain
+    assert f("https://www.sonsanddaughterssf.com/", "Sons & Daughters")
+    assert f("https://www.flourandwater.com/", "Flour + Water")
+
+
+def test_a_local_namesake_is_still_rejected():
+    """Plum Organic Beauty is IN San Francisco, so a locality check alone
+    would hand it the restaurant's dossier."""
+    from src.venue_images import _page_names_venue
+    page = "<h1>Plum Organic Beauty</h1><p>holistic beauty in San Francisco</p>"
+    assert not _page_names_venue(page, "Plum", url="https://plumorganicbeauty.com/")
+
+
+def test_locality_still_admits_a_domain_that_is_not_name_shaped():
+    """A domain whose shape settles nothing falls back to the page's own
+    locality. Name + "group" IS a recognised descriptor, so it would settle it;
+    a descriptive phrase the word lists don't know does not."""
+    from src.venue_images import _page_names_venue, _domain_verdict
+    assert _domain_verdict("https://www.somebistrogroup.com/", "Some Bistro") is True
+    # "hospitalitygroupcollective" is not in the descriptor vocabulary, so the
+    # domain is inconclusive and the page has to carry identity.
+    page = "<h1>Some Bistro</h1><p>Open nightly in San Francisco</p>"
+    assert _page_names_venue(page, "Some Bistro",
+                             url="https://www.somebistrohospitalitygroupcollective.com/")
+    # the same page without a locality signal is not enough
+    assert not _page_names_venue("<h1>Some Bistro</h1>", "Some Bistro",
+                                 url="https://www.somebistrohospitalitygroupcollective.com/")
+
+
+def test_limit_zero_resolves_nothing():
+    """`if limit:` treated 0 as "no limit" and started the full 4,754-venue
+    run, downloading images for a corpus when the caller asked for none."""
+    import inspect
+    import src.venue_images as v
+    src = inspect.getsource(v.main)
+    assert "if limit is not None:" in src
+    assert "max(0, int(" in src

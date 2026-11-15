@@ -281,7 +281,7 @@ def find_official_site(venue, attempts=3):
             r = safe_get(url)
             if r is None or r.status_code != 200:
                 continue
-            if not _page_names_venue(r.text, venue):
+            if not _page_names_venue(r.text, venue, url=r.url or url):
                 continue
             return (r.url or url), "found"
         return None, "absent"            # SERP answered, nothing qualified
@@ -374,6 +374,22 @@ def _slug_names_venue(path, venue):
                 break                     # stop runaway concatenation
     return False
 
+
+# TLDs that name a company rather than a place. A domain ending in one of
+# these is a business registry entry, not a restaurant's own site even when
+# the label matches the venue exactly (haven.inc).
+_COMPANY_TLDS = {"inc", "llc", "corp", "company", "ltd", "gmbh", "ai", "io",
+                 "app", "dev", "tech", "finance", "capital", "ventures"}
+
+# Words that look like a venue descriptor but name a different KIND of
+# business. "plumorganicbeauty.com" is name + "beauty": a salon, not a
+# restaurant. These never count as the suffix that makes a domain the venue's.
+_NON_VENUE_TAILS = {
+    "beauty", "salon", "spa", "organic", "cosmetics", "skincare", "nails",
+    "hair", "fitness", "gym", "hotel", "motel", "inn", "realty", "properties",
+    "law", "legal", "dental", "medical", "pharmacy", "clinic", "vet",
+    "bank", "finance", "capital", "insurance", "software", "labs", "studio",
+}
 
 # Suffixes a venue appends to its own name in a URL. "coirestaurant" splits as
 # coi + restaurant and is the venue; "coinop" splits as coi + nop and is not.
@@ -510,16 +526,72 @@ def _og_image(html, base_url=""):
     return None
 
 
-def _page_names_venue(html, venue):
-    """Does the page name this venue anywhere in its visible text?
+def _domain_verdict(url, venue):
+    """True / False / None — does this domain settle the venue's identity?
 
-    Searches the TEXT, not the raw markup: normalizing the whole HTML made tag
-    names, class names and script payloads count as a match, so a page could
-    "name" a venue it never mentions.
+    True  — the domain is the venue's own: name alone (`coirestaurant.com`,
+            `sonsanddaughterssf.com`) or name + a venue descriptor
+            (`azizasf.com`, `flourandwater.com`).
+    False — the domain says this is a DIFFERENT kind of business carrying the
+            same name: `plumorganicbeauty.com` (a salon — "beauty" is not a
+            venue word) or `haven.inc` (a company TLD).
+    None  — the domain tells us nothing either way (`theminagroup.com` for
+            Michael Mina), so the caller falls back to the page's own text.
 
-    Entities are decoded first. Without that, `<h1>Sons &amp; Daughters</h1>`
-    normalizes to `sonsampdaughters`, which never matches — so the venue's real
-    site failed verification and could be cached as absent.
+    The three-way answer matters: a two-way bool forced a choice between
+    rejecting every group site and letting a beauty salon win a restaurant's
+    dossier because its page happens to say "San Francisco".
+    """
+    h = _host(url)
+    if not h:
+        return None
+    parts = h.split(".")
+    if len(parts) < 2:
+        return None
+    label = parts[-2].replace("-", "")
+    tld = parts[-1].lower()
+    words = [w for w in re.split(r"[^a-z0-9]+", venue.lower()) if w]
+    if not words or not label:
+        return None
+    # "&" and "+" are written as "and" in a domain far more often than dropped:
+    # "Sons & Daughters" -> sonsanddaughterssf.com, "Flour + Water" ->
+    # flourandwater.com.
+    forms = {"".join(words)}
+    spelled = venue.lower().replace("&", "and").replace("+", "and")
+    forms.add("".join(re.split(r"[^a-z0-9]+", spelled)))
+    for squash in filter(None, forms):
+        if label == squash:
+            # An exact match on a company TLD is a fintech, not a restaurant.
+            return tld not in _COMPANY_TLDS
+        if not label.startswith(squash):
+            continue
+        tail = label[len(squash):]
+        if tail in _NON_VENUE_TAILS or any(t in tail for t in _NON_VENUE_TAILS):
+            return False                # name + a different kind of business
+        if tail in _SLUG_TAILS:
+            return True                 # name + a venue descriptor
+        return None                     # unrecognised: defer to the page
+    return None
+
+
+def _domain_names_venue(url, venue):
+    """Does the domain itself prove ownership? (True only; see verdict above.)"""
+    return _domain_verdict(url, venue) is True
+
+
+def _page_names_venue(html, venue, url=None):
+    """Does this page plausibly belong to `venue`?
+
+    Identity needs more than the name appearing somewhere. Recovered results
+    included `plumorganicbeauty.com` for Plum (a beauty salon, in San
+    Francisco), `haven.inc` for Haven ("a bank account for art"), and a Park
+    Tavern in St. Louis Park, Minnesota. Every one contains the venue's name,
+    so a name-only test passes them all and the dossier gets a stranger's
+    photograph.
+
+    So: the NAME must appear, and identity must be corroborated by either the
+    domain shape (name + venue descriptor) or an explicit local signal in the
+    text. JS-shell pages have no text, which is why the domain check leads.
     """
     n = norm(venue)
     if not n:
@@ -527,6 +599,7 @@ def _page_names_venue(html, venue):
     text = re.sub(r"<(script|style)\b[^>]*>.*?</\1>", " ", html, flags=re.S | re.I)
     text = re.sub(r"<[^>]+>", " ", text)
     text = html_module.unescape(text)
+
     # Short names need a TOKEN match, not a substring. norm() only strips
     # punctuation, so "Coi" would match inside "coin-op", "coincidence", or
     # "Coin-Op Restaurant" — and the venue would be given a stranger's page.
@@ -534,8 +607,41 @@ def _page_names_venue(html, venue):
     # are vanishingly rare and markup-heavy pages would otherwise fail.
     if len(n) < 4:
         toks = re.split(r"[^a-z0-9]+", text.lower())
-        return n in toks
-    return n in norm(text)
+        named = n in toks
+    else:
+        named = n in norm(text)
+    if not named:
+        return False
+    if not url:
+        # No URL to judge: the name match is all the evidence there is. Used by
+        # social-profile checks, which already opened a confirmed handle.
+        return True
+    verdict = _domain_verdict(url, venue)
+    if verdict is not None:
+        return verdict                  # the domain settles it, either way
+    # Domain tells us nothing (a group site, an unrecognised shape). The page's
+    # own locality has to carry it, and a bare name in an <h1> does not.
+    return _reads_as_sf(text)
+
+
+# A venue's own site says where it is. Anything claiming to be one of these
+# venues without this signal is a namesake in another city.
+_SF_TOKENS = ("san francisco", "sanfrancisco", "bay area", "oakland",
+              "berkeley", "mission district", "soma", "hayes valley",
+              "nob hill", "north beach", "financial district", "marina",
+              "richmond", "sunset", "castro", "potrero", "dogpatch",
+              "tenderloin", "japantown", "chinatown", "presidio",
+              "embarcadero", "union square", "fidi")
+
+
+def _reads_as_sf(text):
+    """Locality gate: does the page situate the venue in the Bay Area?
+
+    Deliberately requires a place NAME, not the bare token "sf" — "sf" appears
+    inside countless words and abbreviations and would pass everything.
+    """
+    low = " " + re.sub(r"\s+", " ", text.lower()) + " "
+    return any(t in low for t in _SF_TOKENS)
 
 
 def tier_website(venue, known_website=None, timeout=15, broken_host=None):
@@ -552,7 +658,7 @@ def tier_website(venue, known_website=None, timeout=15, broken_host=None):
         r = safe_get(url, timeout=timeout, allow_broken_chain_for=broken_host)
         if r is None or r.status_code != 200:
             continue
-        if not _page_names_venue(r.text, venue):
+        if not _page_names_venue(r.text, venue, url=r.url or url):
             continue                          # someone else's site
         img = _og_image(r.text, base_url=r.url or url)
         if img:
@@ -659,6 +765,9 @@ def tier_social(venue, known_website=None, timeout=15, broken_host=None):
     if pr is None or pr.status_code != 200:
         return None
     # The profile has to name the venue before its picture is the venue's.
+    # Domain verdict is deliberately not applied: a social profile lives on
+    # instagram.com / facebook.com, which is never name-shaped, and the handle
+    # itself was read from the venue's confirmed website.
     if not _page_names_venue(pr.text, venue):
         return None
     img = _og_image(pr.text, base_url=pr.url or profile)
@@ -819,7 +928,9 @@ def main(argv):
 
     limit = None
     if "--limit" in argv:
-        limit = int(argv[argv.index("--limit") + 1])
+        # int(), not a truthiness check: `if limit:` treated 0 as "no limit" and
+        # started the full 4,754-venue run when the caller asked for none.
+        limit = max(0, int(argv[argv.index("--limit") + 1]))
 
     # Venues worth resolving: those the lineage graph actually names.
     import importlib.util
@@ -883,34 +994,57 @@ def main(argv):
             and (norm(v) not in cache
                  or cache[norm(v)].get("status") == "failed"
                  or superseded(norm(v), cache[norm(v)]))]
-    if limit:
+    if limit is not None:
         todo = todo[:limit]
 
     print(f"{len(venues)} venue names · {len(cache)} cached · "
           f"{len(closed)} closed by verdict · resolving {len(todo)}")
-    hits = 0
-    for i, v in enumerate(todo, 1):
+
+    # Each venue costs several network calls (SERP, page, image). Serially with
+    # a sleep between them the full corpus is hours of wall clock, so fan out.
+    # Concurrency is deliberate but modest: the SERP zone returns empty bodies
+    # under load, and a burst just converts into retries.
+    workers = 1
+    for flag in ("--workers", "-j"):
+        if flag in argv:
+            workers = max(1, int(argv[argv.index(flag) + 1]))
+
+    def resolve_one(v):
         k = norm(v)
         site = decided_site.get(k) or sites.get(v.lower())
         # Pass the HOST to relax, not a boolean: safe_get compares it against
         # the host actually being fetched, so redirect targets and image CDNs
         # keep full certificate verification.
         broken_host = _host(site) if (k in broken and site) else None
-        r, status = resolve_venue(v, token=token, known_website=site,
-                                  broken_host=broken_host)
-        if status == "failed":
-            # do NOT cache: an outage must not look like "this venue has no site"
-            cache[k] = {"url": None, "source": None, "status": "failed"}
-        else:
-            cache[k] = dict(r or {"url": None, "source": None}, status=status)
-            if k in decided_site:
-                cache[k]["site"] = decided_site[k]
-                cache[k]["site_source"] = "verdict"
-            hits += 1 if (r and r.get("url")) else 0
-        if i % 25 == 0 or i == len(todo):
-            save_cache(cache)
-            print(f"  [{i}/{len(todo)}] resolved {hits} ({hits/max(i,1)*100:.0f}%)")
-        time.sleep(0.1)
+        try:
+            r, status = resolve_venue(v, token=token, known_website=site,
+                                      broken_host=broken_host)
+        except Exception as e:            # one venue must not kill the run
+            return v, None, "failed", None
+        return v, r, status, broken_host
+
+    hits, done = 0, 0
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+    with ThreadPoolExecutor(max_workers=workers) as ex:
+        futures = {ex.submit(resolve_one, v): v for v in todo}
+        for fut in as_completed(futures):
+            v, r, status, _ = fut.result()
+            k = norm(v)
+            if status == "failed":
+                # do NOT cache: an outage must not look like "this venue has no site"
+                cache[k] = {"url": None, "source": None, "status": "failed"}
+            else:
+                cache[k] = dict(r or {"url": None, "source": None}, status=status)
+                if k in decided_site:
+                    cache[k]["site"] = decided_site[k]
+                    cache[k]["site_source"] = "verdict"
+                hits += 1 if (r and r.get("url")) else 0
+            done += 1
+            # Cache writes stay on this thread: the workers only return records.
+            if done % 25 == 0 or done == len(todo):
+                save_cache(cache)
+                print(f"  [{done}/{len(todo)}] resolved {hits} "
+                      f"({hits/max(done,1)*100:.0f}%)", flush=True)
     save_cache(cache)
 
     found = sum(1 for x in cache.values() if x.get("url"))
