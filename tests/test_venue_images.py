@@ -400,17 +400,27 @@ def test_social_photo_is_rejected_when_the_profile_does_not_name_the_venue(monke
     assert v.tier_social("Some Bistro", "https://somebistro.example/") is None
 
 
-def test_venue_read_uses_the_mapped_field_not_a_missing_subfield():
-    """to_venue/from_venue are plain keyword fields, so `.keyword` does not
-    exist on an index ensure_index created. Reading it returned nothing and the
-    resolver finished "successfully" having resolved zero venues."""
-    import inspect
-    import src.venue_images as v
-    src = inspect.getsource(v.main)
-    assert '"to_venue.keyword"' not in src and '"from_venue.keyword"' not in src, \
-        "main still reads a subfield that a fresh index does not have"
-    assert 'distinct("to_venue")' in src
-    assert 'distinct("from_venue")' in src
+def test_venue_read_tries_both_index_shapes():
+    """to_venue/from_venue are plain keyword fields on an index ensure_index
+    created, but text-with-subfield on the legacy live index. Reading only one
+    shape returns zero venues on the other. Asserted behaviourally through the
+    real function, not by grepping main()'s source."""
+    from src.venue_images import _distinct_field
+    asked = []
+
+    def only_subfield(_es, name):
+        asked.append(name)
+        if name.endswith(".keyword"):
+            return {"Zuni Cafe"}
+        raise RuntimeError("Fielddata is disabled")   # bare field unusable
+    assert _distinct_field("to_venue", only_subfield, None) == {"Zuni Cafe"}
+    assert asked == ["to_venue", "to_venue.keyword"], "did not try both shapes"
+
+    def only_bare(_es, name):
+        if name.endswith(".keyword"):
+            raise RuntimeError("unknown field [keyword]")
+        return {"Benu"}
+    assert _distinct_field("to_venue", only_bare, None) == {"Benu"}
 
 
 def test_a_changed_verdict_reopens_a_cached_venue():
@@ -476,17 +486,15 @@ def test_infrastructure_errors_are_not_swallowed():
     assert not _is_field_shape_error(TimeoutError("timed out"))
 
 
-def test_main_stops_the_run_on_a_connection_failure():
-    # The behavioural tests above cover distinct() itself; this only checks
-    # main() is wired to the narrowed classifier. Asserting on a character
-    # window of the source is what made this test brittle.
+def test_main_uses_the_real_distinct_helper():
+    """main() must read venues through distinct_venues(), not a copy that could
+    drift from the tested implementation."""
     import inspect
     import src.venue_images as v
     src = inspect.getsource(v.main)
-    assert "_is_field_shape_error" in src, "fallback is not restricted to shape errors"
-    body = src.split("def distinct")[1]
-    assert "if not _is_field_shape_error(e):" in body
-    assert "raise" in body, "distinct does not re-raise a non-shape failure"
+    assert "distinct_venues(es" in src, "main does not use the tested helper"
+    body = inspect.getsource(v.distinct_venues)
+    assert "_distinct_field" in body
 
 
 # ── round 10 findings ───────────────────────────────────────────────────────
@@ -507,51 +515,61 @@ def test_joined_name_match_still_respects_a_boundary():
     assert not f("/r/benumbing", "Benu")
 
 
-def test_a_partial_read_is_not_a_failed_read():
+def test_a_partial_read_is_not_a_failed_read(monkeypatch):
     """An empty from_venue legitimately returns an empty set; raising the
-    earlier shape error then aborted the run before to_venue was read."""
-    seen = {"n": 0}
-    def fake(field):
-        seen["n"] += 1
-        if field == "from_venue":
+    earlier shape error then aborted the run before to_venue was read.
+
+    Drives the REAL _distinct_field: the previous version defined its own copy,
+    so reverting the production fix left this test green.
+    """
+    from src.venue_images import _distinct_field
+
+    def fake_read(_es, name):
+        if name == "from_venue":
             raise RuntimeError("Fielddata is disabled on [from_venue]")
-        if field == "from_venue.keyword":
+        if name == "from_venue.keyword":
             return set()                 # completes, but empty
         return {"A", "B"}
-    # mirrors the structure under test
-    def distinct(field):
-        from src.venue_images import _is_field_shape_error
-        answered, last = False, None
-        for name in (field, field + ".keyword"):
-            try:
-                vals = fake(name)
-            except Exception as e:
-                assert _is_field_shape_error(e)
-                last = e
-                continue
-            answered = True
-            if vals:
-                return vals
-        if not answered and last:
-            raise last
-        return set()
-    assert distinct("from_venue") == set()   # did not raise
-    assert distinct("to_venue") == {"A", "B"}
+
+    assert _distinct_field("from_venue", fake_read, None) == set()   # no raise
+    assert _distinct_field("to_venue", fake_read, None) == {"A", "B"}
+
+
+def test_distinct_venues_reads_both_fields_through_the_real_function(monkeypatch):
+    """The end-to-end path main() uses: an empty `from_venue` must not stop
+    `to_venue` from being read."""
+    from src.venue_images import distinct_venues
+
+    def fake_read(_es, name):
+        if name == "from_venue":
+            raise RuntimeError("Fielddata is disabled on [from_venue]")
+        if name == "from_venue.keyword":
+            return set()
+        if name == "to_venue.keyword":
+            return {"Zuni Cafe"}
+        raise RuntimeError("Fielddata is disabled on [to_venue]")
+    assert distinct_venues(None, fake_read) == {"Zuni Cafe"}
 
 
 def test_distinct_raises_when_no_shape_can_be_read():
-    from src.venue_images import _is_field_shape_error
-    def distinct(field):
-        answered, last = False, None
-        for name in (field, field + ".keyword"):
-            try:
-                raise RuntimeError("Fielddata is disabled")
-            except Exception as e:
-                assert _is_field_shape_error(e)
-                last = e
-        if not answered and last:
-            raise last
-        return set()
+    """Reverting `answered` would make this raise on the empty read instead."""
     import pytest
+    from src.venue_images import _distinct_field
+
+    def always_shape_error(_es, _name):
+        raise RuntimeError("Fielddata is disabled")
+
     with pytest.raises(RuntimeError):
-        distinct("from_venue")
+        _distinct_field("from_venue", always_shape_error, None)
+
+
+def test_distinct_propagates_a_non_shape_failure():
+    """A dead cluster must stop the run, not read as "0 venues"."""
+    import pytest
+    from src.venue_images import _distinct_field
+
+    def connection_refused(_es, _name):
+        raise RuntimeError("Connection refused")
+
+    with pytest.raises(RuntimeError, match="Connection refused"):
+        _distinct_field("from_venue", connection_refused, None)
