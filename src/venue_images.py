@@ -349,6 +349,29 @@ def _slug_names_venue(path, venue):
     sig = [w for w in bits if w not in stop]
     if not sig:
         return False
+    # A name reduced to ONE word identifies little on its own: "The Bird"
+    # collapses to "bird", which appears inside /state-bird-provisions — a
+    # different restaurant. One word has to earn it:
+    #   - short (Coi, Bix, A16): only as a whole fragment, or as the head of a
+    #     fragment whose remainder is a venue descriptor (/coirestaurant)
+    #   - longer: the whole fragment, with little else in the slug
+    if len(words) == 1:
+        w = words[0]
+        # Some single words are so common in restaurant names that matching one
+        # identifies nothing: "The Bird" matched both state-bird-provisions and
+        # social-bird, which are other restaurants. These require a descriptor
+        # or a longer fragment, never a bare word match.
+        if w in _TOO_GENERIC_ALONE:
+            return False
+        if w in sig:
+            others = [b for b in sig if b != w]
+            if len(w) <= 5:
+                return True                   # exact fragment, e.g. /r/coi
+            return len(others) <= 1
+        if len(w) <= 5:
+            return any(b.startswith(w) and b[len(w):] in _SLUG_TAILS
+                       for b in sig)          # /coirestaurant
+        return False
 
     # 1. consecutive run of significant fragments: /r/per-se, /r/rich-table,
     #    /r/sons-and-daughters (with "and" dropped from the path side too)
@@ -402,6 +425,44 @@ _SLUG_TAILS = {
 }
 
 
+def _booking_city_mismatch(path, query=""):
+    """Does the URL name a city other than the Bay Area?
+
+    Resy and OpenTable put the city in the path
+    (`/cities/dallas-fort-worth-tx/venues/...`). Matching words alone let
+    "The Beehive" resolve to a Dallas restaurant and "Ubuntu" to a café in San
+    Juan Capistrano. The corpus is San Francisco, so a booking page naming
+    another metro is the wrong restaurant no matter how well the name fits.
+    """
+    low = (path + "?" + (query or "")).lower()
+    for city in _OTHER_CITIES:
+        if city in low:
+            return True
+    return False
+
+
+# Single words that appear in so many restaurant names that matching one proves
+# nothing. "The Bird" resolved to State Bird Provisions and to Social Bird.
+_TOO_GENERIC_ALONE = {
+    "bird", "bar", "cafe", "grill", "kitchen", "house", "table", "spoon",
+    "fork", "salt", "stone", "garden", "market", "corner", "street", "park",
+    "blue", "red", "black", "white", "gold", "green", "star", "sun", "moon",
+    "fire", "smoke", "vine", "oak", "bay", "sea", "river", "farm",
+}
+
+# Metros that appear in Resy/OpenTable URLs and are far outside this corpus.
+# Deliberately NOT a complete list and deliberately excludes the Bay Area and
+# nearby wine country: the graph already carries non-SF venues (French
+# Laundry, Meadowood, Gramercy Tavern) as legitimate nodes, so "not San
+# Francisco" is not by itself wrong.
+_OTHER_CITIES = (
+    "dallas", "fort-worth", "houston", "austin", "chicago", "boston",
+    "new-york", "brooklyn", "seattle", "denver", "atlanta", "miami",
+    "philadelphia", "washington-dc", "las-vegas", "los-angeles",
+    "san-diego", "san-juan", "toronto", "vancouver", "london", "paris",
+)
+
+
 def find_booking_links(venue):
     """Reservation-platform URLs SERP returns for this venue.
 
@@ -446,6 +507,10 @@ def find_booking_links(venue):
                 if path.rstrip("/") in ("/s", "/searches", ""):
                     continue
                 if parts.query and "query=" in parts.query.lower():
+                    continue
+                # Right name, wrong city: "The Beehive" resolved to a Dallas
+                # restaurant, "Ubuntu" to a café in San Juan Capistrano.
+                if _booking_city_mismatch(path, parts.query):
                     continue
                 if _slug_names_venue(path, venue):
                     out[platform] = r["url"]
@@ -520,7 +585,13 @@ def _og_image(html, base_url=""):
                 continue
             if any(x in fname for x in ("logo", "favicon", "sprite", "icon",
                                         "placeholder", "default", "spacer",
-                                        "avatar", "badge")):
+                                        "avatar", "badge", "dummy")):
+                continue
+            # A declared lead image is not automatically a photograph of the
+            # place. Real captures: a slider plugin's bundled `dummy.png`
+            # (RevSlider) and a tracker's `c3po.jpg` (metricool) were both
+            # stored as high-confidence venue photos.
+            if any(x in u.lower() for x in _NON_PHOTO_PATH_PARTS):
                 continue
             return u
     return None
@@ -585,6 +656,16 @@ def _domain_verdict(url, venue):
 def _domain_names_venue(url, venue):
     """Does the domain itself prove ownership? (True only; see verdict above.)"""
     return _domain_verdict(url, venue) is True
+
+
+# URL path fragments that mark a NON-photograph: theme/plugin bulk assets and
+# analytics trackers. A venue page can declare any of these as its lead image —
+# a slider plugin's own `dummy.png`, a metricool tracker pixel — and none of
+# them is a picture of the restaurant.
+_NON_PHOTO_PATH_PARTS = (
+    "/plugins/", "/wp-content/plugins/", "/assets/assets/",
+    "/tracker.", "tracker.metricool.", "/pixel.", "analytics.",
+)
 
 
 def _page_names_venue(html, venue, url=None):
