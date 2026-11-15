@@ -788,3 +788,24 @@ def test_all_three_platforms_are_searched():
     src = inspect.getsource(v.find_booking_links)
     for p in ('"resy"', '"opentable"', '"tock"'):
         assert p in src, f"{p} is not searched"
+
+
+# ── a venue's own site can settle that it closed ───────────────────────────
+
+def test_a_closure_announcement_is_detected():
+    from src.venue_images import _announces_closure
+    assert _announces_closure("<p>Range Restaurant San Francisco is Now Closed</p>")
+    assert _announces_closure("<p>Trick Dog has closed. Thank you for the years.</p>")
+    assert _announces_closure("<p>It is with great sadness that we announce...</p>")
+    assert _announces_closure("<p>We are closed. Thank you for 20 years.</p>")
+
+
+def test_a_weekly_schedule_is_not_a_closure():
+    """Farallon's own page says "We are closed on Sundays and Mondays" — a
+    working restaurant. Reading that as closure marks it shut."""
+    from src.venue_images import _announces_closure
+    assert not _announces_closure("<p>We are closed on Sundays and Mondays.</p>")
+    assert not _announces_closure("<p>We are closed for special events.</p>")
+    assert not _announces_closure("<p>Closed on Thanksgiving Day.</p>")
+    assert not _announces_closure("<p>Sundays: CLOSED</p>")
+    assert not _announces_closure("<p>We are open Tuesday to Sunday.</p>")

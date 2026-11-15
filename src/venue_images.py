@@ -765,6 +765,38 @@ def _reads_as_sf(text):
     return any(t in low for t in _SF_TOKENS)
 
 
+def _announces_closure(html):
+    """Does the venue's own page say it has closed?
+
+    Six high-lineage venues in the corpus resolve to a live site that plainly
+    states closure — Bar Agricole, Tosca Cafe, Farallon, Trick Dog, Le Central,
+    Range. They were being listed as "no link yet", which invites someone to go
+    find a website for a restaurant that no longer exists. Closure is an
+    ANSWER, and the venue's own site is the best source for it.
+
+    Deliberately narrow: needs a closure phrase AND a first-person or venue-page
+    context, so an article about someone ELSE closing ("Chez Panisse mourns the
+    closing of...") does not mark this venue shut.
+    """
+    text = re.sub(r"<(script|style)\b[^>]*>.*?</\1>", " ", html, flags=re.S | re.I)
+    text = re.sub(r"<[^>]+>", " ", text)
+    low = re.sub(r"\s+", " ", html_module.unescape(text).lower())
+    # "We are closed on Sundays" and "closed on Thanksgiving" are SCHEDULES,
+    # not closures — Farallon's own page says the first, and reading it as
+    # closure would mark a working restaurant shut.
+    for m in re.finditer(r"\bwe are closed\b", low):
+        tail = low[m.end():m.end() + 40].lstrip()
+        if tail.startswith(("on ", "for ")):
+            continue
+        return True
+    return any(p in low for p in (
+        "has closed", "is now closed", "has now closed",
+        "we have closed", "permanently closed", "closed permanently",
+        "closed its doors", "has shut", "thank you for the years",
+        "thank you for all the", "it is with great sadness",
+    ))
+
+
 def tier_website(venue, known_website=None, timeout=15, broken_host=None):
     """The venue's own page, fetched only from a public address, redirects
     checked hop by hop. Returns None unless the page both names the venue and
@@ -783,9 +815,17 @@ def tier_website(venue, known_website=None, timeout=15, broken_host=None):
             continue                          # someone else's site
         img = _og_image(r.text, base_url=r.url or url)
         if img:
-            return {"url": img, "source": "venue-website", "site": r.url or url,
-                    "confidence": "high",
-                    "evidence": "declared image on the venue's own site"}
+            out = {"url": img, "source": "venue-website", "site": r.url or url,
+                   "confidence": "high",
+                   "evidence": "declared image on the venue's own site"}
+            if _announces_closure(r.text):
+                out["closed"] = True
+            return out
+        if _announces_closure(r.text):
+            # no usable photo, but the page settles that the venue is shut
+            return {"url": None, "source": None, "site": r.url or url,
+                    "confidence": "high", "closed": True,
+                    "evidence": "the venue's own site announces closure"}
     return None
 
 
@@ -959,6 +999,10 @@ def resolve_venue(venue, token=None, known_website=None, use_serp=True,
     out["site"] = site
     if booking:
         out["booking"] = booking
+    # A closure the venue's own site announces is a verdict, not a gap: it
+    # means "do not go looking for a website for this one".
+    if out.get("closed"):
+        out["status"] = "closed"
     return out, "found"
 
 
@@ -1110,9 +1154,16 @@ def main(argv):
 
     # A "failed" entry is retried on the next run; only a real answer is final.
     # A human verdict is final too: closed venues are never re-probed.
+    # --refresh re-resolves venues that are already cached. The cache normally
+    # wins — that is what makes a run hours shorter than a cold start — but it
+    # also freezes a stale answer: Michael Mina sat as "absent" while its site
+    # resolved live, and a venue whose own page announces closure kept the
+    # photo and status written before closure detection existed.
+    refresh = "--refresh" in argv
     todo = [v for v in venues
             if norm(v) not in closed
-            and (norm(v) not in cache
+            and (refresh
+                 or norm(v) not in cache
                  or cache[norm(v)].get("status") == "failed"
                  or superseded(norm(v), cache[norm(v)]))]
     if limit is not None:
