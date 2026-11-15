@@ -732,6 +732,46 @@ def resolve_venue(venue, token=None, known_website=None, use_serp=True,
     return out, "found"
 
 
+def _distinct_field(field, distinct_values, es, field_names=None):
+    """Values of `field` from whichever index shape this cluster has.
+
+    Lives at module level, not nested in main(), so tests can exercise the REAL
+    function. The first version was defined inside main() and the tests
+    reimplemented it — reverting the fix would have left them green.
+
+    Only FIELD-SHAPE failures may be swallowed. An unreachable cluster or a
+    rejected credential must stop the run: swallowing those made `main`
+    report "0 venues" and exit 0, which reads exactly like "nothing to do".
+    """
+    names = field_names or (field, field + ".keyword")
+    last = None
+    # A read that COMPLETES is an answer, even an empty one. Raising an earlier
+    # shape error then would abort the run before the other field was read —
+    # an empty `from_venue` legitimately returns an empty set, and that must
+    # not be mistaken for "both shapes failed".
+    answered = False
+    for name in names:
+        try:
+            vals = distinct_values(es, name)
+        except Exception as e:            # noqa: BLE001 — narrowed just below
+            if not _is_field_shape_error(e):
+                raise
+            last = e
+            continue                      # wrong shape for this cluster
+        answered = True                   # this shape works, even if empty
+        if vals:
+            return vals
+    if not answered and last:
+        raise last                        # neither shape could be read
+    return set()
+
+
+def distinct_venues(es, distinct_values):
+    """Every venue name the lineage graph mentions, from either index shape."""
+    return (_distinct_field("to_venue", distinct_values, es)
+            | _distinct_field("from_venue", distinct_values, es))
+
+
 def _is_field_shape_error(exc):
     """True only for "this cluster maps the field differently than I assumed".
 
@@ -799,35 +839,7 @@ def main(argv):
     # Try the mapped field, and fall back to the subfield on either an
     # exception or an empty result. Getting this wrong is silent in one
     # direction (zero venues, "resolved successfully") and fatal in the other.
-    def distinct(field):
-        """Values of `field` from whichever index shape this cluster has.
-
-        Only FIELD-SHAPE failures may be swallowed. An unreachable cluster or a
-        rejected credential must stop the run: swallowing those made `main`
-        report "0 venues" and exit 0, which reads exactly like "nothing to do".
-        """
-        last = None
-        # A read that COMPLETES is an answer, even an empty one. Raising an
-        # earlier shape error then would abort the run before the other field
-        # was read — an empty `from_venue` legitimately returns an empty set,
-        # and that must not be mistaken for "both shapes failed".
-        answered = False
-        for name in (field, field + ".keyword"):
-            try:
-                vals = ui._distinct_values(es, name)
-            except Exception as e:        # noqa: BLE001 — narrowed just below
-                if not _is_field_shape_error(e):
-                    raise
-                last = e
-                continue                  # wrong shape for this cluster
-            answered = True               # this shape works, even if empty
-            if vals:
-                return vals
-        if not answered and last:
-            raise last                    # neither shape could be read
-        return set()
-
-    raw = distinct("to_venue") | distinct("from_venue")
+    raw = distinct_venues(es, ui._distinct_values)
     venues = sorted({v for v in raw if v and not ui._is_junk_venue(v)})
 
     # curated websites, where we have them
