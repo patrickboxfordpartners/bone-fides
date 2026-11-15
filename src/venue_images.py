@@ -1166,7 +1166,25 @@ def main(argv):
     # exception or an empty result. Getting this wrong is silent in one
     # direction (zero venues, "resolved successfully") and fatal in the other.
     raw = distinct_venues(es, ui._distinct_values)
-    venues = sorted({v for v in raw if v and not ui._is_junk_venue(v)})
+    # Collapse spelling variants BEFORE resolving. The corpus holds 1,114 raw
+    # names for 442 venues; resolving every raw name would fetch the same
+    # restaurant's site twice and write both answers to one cache key, so
+    # whichever finished last would win arbitrarily. Resolve ONE display form
+    # per canonical identity: prefer the accented/complete spelling (how the
+    # restaurant writes itself), tie-broken alphabetically so a run is
+    # reproducible.
+    _by_key = {}
+    for name in raw:
+        if not name or ui._is_junk_venue(name):
+            continue
+        _by_key.setdefault(canonical_venue(name), []).append(name)
+
+    def _preferred(variants):
+        return min(variants, key=lambda n: (
+            -sum(1 for c in n if ord(c) > 127),     # keep accents
+            -len(n),                                 # then the fuller name
+            n.lower()))                              # then deterministic
+    venues = sorted(_preferred(v) for v in _by_key.values())
 
     # curated websites, where we have them
     sites = {}
