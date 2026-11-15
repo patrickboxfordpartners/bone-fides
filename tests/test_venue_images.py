@@ -687,3 +687,42 @@ def test_resolve_errors_are_reported_not_swallowed():
     assert "failed.append" in src, "per-venue errors are discarded"
     assert "venues raised while resolving" in src, "no failure report"
     assert "return 1" in src, "a failed run must not exit 0"
+
+
+# ── round 12 findings (Greptile on PR #15) ─────────────────────────────────
+
+def test_booking_links_must_be_in_this_metro():
+    """Resy/OpenTable put the city in the path. "The Beehive" resolved to a
+    Dallas restaurant and "Ubuntu" to a café in San Juan Capistrano."""
+    from src.venue_images import _booking_city_mismatch
+    assert _booking_city_mismatch("/cities/dallas-fort-worth-tx/venues/beehive-restaurant-lounge")
+    assert _booking_city_mismatch("/cities/san-juan-capistrano-ca/venues/ubuntu-cafe")
+    assert _booking_city_mismatch("/r/au-pied-de-cochon-paris")
+    # the Bay Area and nearby wine country are in-corpus, not mismatches
+    assert not _booking_city_mismatch("/cities/san-francisco-ca/venues/7-adams")
+    assert not _booking_city_mismatch("/r/benu-san-francisco")
+    assert not _booking_city_mismatch("/r/the-progress-san-francisco-1")
+
+
+def test_a_generic_single_word_does_not_identify_a_restaurant():
+    """"The Bird" matched state-bird-provisions and social-bird, which are
+    different restaurants."""
+    from src.venue_images import _slug_names_venue as f
+    assert not f("/r/state-bird-provisions-san-francisco", "The Bird")
+    assert not f("/cities/san-francisco-ca/venues/social-bird", "The Bird")
+    # a short DISTINCTIVE name is still fine
+    assert f("/r/coi-san-francisco", "Coi")
+    assert f("/r/coirestaurant", "Coi")
+    assert f("/r/a16", "A16")
+
+
+def test_plugin_and_tracker_assets_are_not_venue_photos():
+    """RevSlider's bundled dummy.png and a metricool tracker pixel were both
+    stored as high-confidence venue photographs."""
+    from src.venue_images import _og_image
+    for html in (
+        '<meta property="og:image" content="https://x.com/wp-content/plugins/revslider/public/assets/assets/dummy.png">',
+        '<meta property="og:image" content="https://tracker.metricool.com/c3po.jpg">',
+        '<meta property="og:image" content="https://x.com/assets/assets/placeholder.jpg">',
+    ):
+        assert _og_image(html) is None, html

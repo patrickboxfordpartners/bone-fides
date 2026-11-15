@@ -815,9 +815,6 @@
   "url": null
  },
  "aldila": {
-  "booking": {
-   "resy": "https://resy.com/cities/new-york-ny/venues/al-di-la-trattoria"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "http://www.aldila.com/cdn/shop/files/MCA-ALD_Aldila2020-BLK.png?v=1787102514",
@@ -953,8 +950,7 @@
  },
  "alma": {
   "booking": {
-   "opentable": "https://www.opentable.com/r/alma-portland",
-   "resy": "https://resy.com/cities/new-york-ny/venues/alma-ny"
+   "opentable": "https://www.opentable.com/r/alma-portland"
   },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
@@ -1004,7 +1000,6 @@
  },
  "altaadams": {
   "booking": {
-   "opentable": "https://www.opentable.com/r/alta-adams-los-angeles",
    "tock": "https://www.exploretock.com/altaadams/event/116122/family-meal"
   },
   "confidence": "high",
@@ -1068,9 +1063,6 @@
   "url": null
  },
  "ama": {
-  "booking": {
-   "resy": "https://resy.com/cities/washington-dc/venues/ama-dc"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://www.amasf.org/wp-content/uploads/2019/07/american-marketing-association-san-francisco.jpg",
@@ -1604,9 +1596,6 @@
   "url": null
  },
  "aromi": {
-  "booking": {
-   "resy": "https://resy.com/cities/new-york-ny/venues/aromi"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -1766,9 +1755,6 @@
   "url": "venue-images/astro-motel.png"
  },
  "atasteofdenmark": {
-  "booking": {
-   "opentable": "https://www.opentable.com/r/taste-of-denmark-san-diego"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -1929,9 +1915,6 @@
   "url": null
  },
  "aupieddecochon": {
-  "booking": {
-   "opentable": "https://www.opentable.com/r/au-pied-de-cochon-paris"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://cdn.shoplightspeed.com/shops/649413/themes/16825/v/787359/assets/social-media-image.jpg?20230922185302",
@@ -1942,8 +1925,7 @@
  },
  "aura": {
   "booking": {
-   "opentable": "https://www.opentable.com/r/aura-modern-mediterranean-camp-hill",
-   "resy": "https://resy.com/cities/new-york-ny/venues/aura-cocina"
+   "opentable": "https://www.opentable.com/r/aura-modern-mediterranean-camp-hill"
   },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
@@ -2120,8 +2102,7 @@
  },
  "babbo": {
   "booking": {
-   "opentable": "https://www.opentable.com/r/babbo-italian-eatery-phoenix",
-   "resy": "https://resy.com/cities/new-york-ny/venues/babbo-ristorante"
+   "opentable": "https://www.opentable.com/r/babbo-italian-eatery-phoenix"
   },
   "site": null,
   "source": null,
@@ -2139,9 +2120,6 @@
   "url": null
  },
  "babettes": {
-  "booking": {
-   "resy": "https://resy.com/cities/miami-fl/venues/babette"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -2158,9 +2136,6 @@
   "url": null
  },
  "babuji": {
-  "booking": {
-   "opentable": "https://www.opentable.com/r/babu-ji-new-york"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -2172,9 +2147,6 @@
   "url": null
  },
  "babujinewyork": {
-  "booking": {
-   "opentable": "https://www.opentable.com/r/babu-ji-new-york"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -2544,9 +2516,6 @@
   "url": null
  },
  "barbuto": {
-  "booking": {
-   "resy": "https://resy.com/cities/new-york-ny/venues/barbuto"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "http://static1.squarespace.com/static/681b7672e4fef16388e7431b/t/692fc67bebf8ce6f2fa72f6d/1764738684037/Tony+Barbuto+Hair+Stylist.jpg?format=1500w",
@@ -2557,7 +2526,6 @@
  },
  "barceloneta": {
   "booking": {
-   "opentable": "https://www.opentable.com/r/barceloneta-miami-beach",
    "resy": "https://resy.com/cities/barcelona-spain/venues/lostia-de-la-barceloneta"
   },
   "site": null,
@@ -3142,9 +3110,6 @@
   "url": "venue-images/beretta.png"
  },
  "bergdorfgoodman": {
-  "booking": {
-   "opentable": "https://www.opentable.com/r/bergdorf-goodman-mens-bar-new-york"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -3215,18 +3180,12 @@
   "url": null
  },
  "bestia": {
-  "booking": {
-   "opentable": "https://www.opentable.com/r/bestia-los-angeles"
-  },
   "site": null,
   "source": null,
   "status": "found",
   "url": null
  },
  "bestialosangeles": {
-  "booking": {
-   "opentable": "https://www.opentable.com/r/bestia-los-angeles"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -3367,8 +3326,7 @@
  },
  "birba": {
   "booking": {
-   "opentable": "https://www.opentable.com/r/birba-palm-springs",
-   "resy": "https://resy.com/cities/new-york-ny/venues/bar-birba"
+   "opentable": "https://www.opentable.com/r/birba-palm-springs"
   },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
@@ -3767,7 +3725,6 @@
  "bluehillatstonebarns": {
   "booking": {
    "opentable": "https://www.opentable.com/r/blue-hill-at-stone-barns",
-   "resy": "https://resy.com/cities/new-york-ny/venues/blue-hill-at-stone-barns-events",
    "tock": "https://www.exploretock.com/bluehillatstonebarns"
   },
   "site": null,
@@ -3777,8 +3734,7 @@
  },
  "bluehillstonebarns": {
   "booking": {
-   "opentable": "https://www.opentable.com/r/blue-hill-at-stone-barns",
-   "resy": "https://resy.com/cities/new-york-ny/venues/blue-hill-at-stone-barns-events"
+   "opentable": "https://www.opentable.com/r/blue-hill-at-stone-barns"
   },
   "site": null,
   "source": null,
@@ -4198,8 +4154,7 @@
  },
  "bourbonbranch": {
   "booking": {
-   "opentable": "https://www.opentable.com/r/bourbon-and-branch-sf-san-francisco",
-   "resy": "https://resy.com/cities/new-york-ny/venues/bourbon-and-branch"
+   "opentable": "https://www.opentable.com/r/bourbon-and-branch-sf-san-francisco"
   },
   "site": null,
   "source": null,
@@ -4866,7 +4821,6 @@
  },
  "cadence": {
   "booking": {
-   "resy": "https://resy.com/cities/chicago-il/venues/cadence-kitchen-and-co",
    "tock": "https://www.exploretock.com/cadencesf"
   },
   "site": null,
@@ -4906,8 +4860,7 @@
  },
  "cafeboulud": {
   "booking": {
-   "opentable": "https://www.opentable.com/r/cafe-boulud-palm-beach",
-   "resy": "https://resy.com/cities/new-york-ny/venues/cafe-boulud-at-maison-barnes"
+   "opentable": "https://www.opentable.com/r/cafe-boulud-palm-beach"
   },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
@@ -4949,9 +4902,6 @@
   "url": "venue-images/cafe-de-la-presse.webp"
  },
  "cafedeparis": {
-  "booking": {
-   "resy": "https://resy.com/cities/asturias-spain/venues/cafe-de-paris-le-bistro"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -5379,9 +5329,6 @@
   "url": null
  },
  "capitalgrille": {
-  "booking": {
-   "opentable": "https://www.opentable.com/the-capital-grille-las-vegas"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -5406,8 +5353,7 @@
  },
  "carbone": {
   "booking": {
-   "opentable": "https://www.opentable.com/r/carbone",
-   "resy": "https://resy.com/cities/new-york-ny/venues/carbone"
+   "opentable": "https://www.opentable.com/r/carbone"
   },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
@@ -5512,9 +5458,6 @@
   "url": null
  },
  "casasanchez": {
-  "booking": {
-   "opentable": "https://www.opentable.com/r/casa-sanchez-los-angeles"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://casasanchezfoods.com/wp-content/uploads/2024/07/PXL_20240704_221901552-1024x771.webp",
@@ -5604,9 +5547,6 @@
   "url": null
  },
  "catahoula": {
-  "booking": {
-   "resy": "https://resy.com/cities/washington-dc/venues/catahoula-dc"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -5804,7 +5744,6 @@
  },
  "cesar": {
   "booking": {
-   "resy": "https://resy.com/cities/new-york-ny/venues/cesar",
    "tock": "https://www.exploretock.com/cesarrestaurant"
   },
   "confidence": "high",
@@ -6398,9 +6337,6 @@
   "url": null
  },
  "chow": {
-  "booking": {
-   "resy": "https://resy.com/cities/washington-dc/venues/philippe-chow-dc"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://static.wixstatic.com/media/ba9a30_cb95829736454d9a8dd221190c861a89~mv2.png/v1/crop/x_3,y_1,w_2090,h_921/fill/w_148,h_65,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/ba9a30_cb95829736454d9a8dd221190c861a89~mv2.png",
@@ -6548,9 +6484,6 @@
   "url": "venue-images/cinch.jpg"
  },
  "cincin": {
-  "booking": {
-   "resy": "https://resy.com/cities/new-york-ny/venues/ciccio-cincin"
-  },
   "site": "https://www.cincin.nyc/",
   "source": null,
   "status": "found",
@@ -6815,9 +6748,6 @@
   "url": null
  },
  "coconutgrove": {
-  "booking": {
-   "resy": "https://resy.com/cities/miami-fl/venues/sadelles-coconut-grove"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://secure.gravatar.com/avatar/38185880e8f3158e4cc628c8f8076f0223a4e7b2ea2ae44a508b5ba3c2824589?s=96&d=mm&r=g",
@@ -7369,9 +7299,6 @@
   "url": null
  },
  "craft": {
-  "booking": {
-   "resy": "https://resy.com/cities/philadelphia-pa/venues/craft-hall"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://static.wixstatic.com/media/f6ca78_48643d21668949cd9d3461c5cf8ee9b9%7Emv2.png/v1/fit/w_2500,h_1330,al_c/f6ca78_48643d21668949cd9d3461c5cf8ee9b9%7Emv2.png",
@@ -7381,9 +7308,6 @@
   "url": "venue-images/craft.png"
  },
  "craftla": {
-  "booking": {
-   "resy": "https://resy.com/cities/philadelphia-pa/venues/craft-hall"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -7817,9 +7741,6 @@
   "url": "venue-images/dandelion-chocolate.jpg"
  },
  "daniel": {
-  "booking": {
-   "resy": "https://resy.com/cities/new-york-ny/venues/daniel"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://daniellurie.com/wp-content/uploads/2024/04/daniel-lurie-home.png",
@@ -8053,8 +7974,7 @@
  },
  "delmar": {
   "booking": {
-   "opentable": "https://www.opentable.com/nearby/restaurants-near-me-del-mar-ca",
-   "resy": "https://resy.com/cities/washington-dc/venues/del-mar-dc"
+   "opentable": "https://www.opentable.com/nearby/restaurants-near-me-del-mar-ca"
   },
   "site": null,
   "source": null,
@@ -8095,9 +8015,6 @@
   "url": null
  },
  "denver": {
-  "booking": {
-   "opentable": "https://www.opentable.com/metro/denver-restaurants"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -8326,9 +8243,6 @@
   "url": null
  },
  "dizengoff": {
-  "booking": {
-   "resy": "https://resy.com/cities/philadelphia-pa/venues/dizengoff"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -8801,8 +8715,7 @@
  },
  "ecco": {
   "booking": {
-   "opentable": "https://www.opentable.com/r/ecco-burlingame",
-   "resy": "https://resy.com/cities/atlanta-ga/venues/ecco-buckhead"
+   "opentable": "https://www.opentable.com/r/ecco-burlingame"
   },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
@@ -8956,8 +8869,7 @@
  },
  "elevenmadison": {
   "booking": {
-   "opentable": "https://www.opentable.com/r/eleven-madison-park",
-   "resy": "https://resy.com/cities/new-york-ny/venues/eleven-madison-park"
+   "opentable": "https://www.opentable.com/r/eleven-madison-park"
   },
   "site": null,
   "source": null,
@@ -8966,8 +8878,7 @@
  },
  "elevenmadisonpark": {
   "booking": {
-   "opentable": "https://www.opentable.com/r/eleven-madison-park",
-   "resy": "https://resy.com/cities/new-york-ny/venues/eleven-madison-park"
+   "opentable": "https://www.opentable.com/r/eleven-madison-park"
   },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
@@ -9143,9 +9054,6 @@
   "url": null
  },
  "emily": {
-  "booking": {
-   "resy": "https://resy.com/cities/new-york-ny/venues/emily-west-village"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -9161,10 +9069,6 @@
   "url": null
  },
  "emmysquared": {
-  "booking": {
-   "opentable": "https://www.opentable.com/r/emmy-squared-pizza-east-village-new-york",
-   "resy": "https://resy.com/cities/new-york-ny/venues/emmy-squared-pizza-hells-kitchen"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://images.getbento.com/accounts/244ddd96a018b50fa0cda273a138f5fa/media/images/46242EmmySquaredPizza-069_Final.jpg?w=1200&fit=crop&auto=compress,format&cs=origin&crop=focalpoint&fp-x=0.5&fp-y=0.5",
@@ -9255,9 +9159,6 @@
   "url": null
  },
  "eos": {
-  "booking": {
-   "resy": "https://resy.com/cities/miami-fl/venues/eos-garden"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -9425,9 +9326,6 @@
   "url": null
  },
  "etoile": {
-  "booking": {
-   "resy": "https://resy.com/cities/los-angeles-ca/venues/bar-etoile"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "http://etoile.com/cdn/shop/files/Untitled_197_x_50px.png?v=1677278995",
@@ -10142,7 +10040,6 @@
  },
  "flora": {
   "booking": {
-   "opentable": "https://www.opentable.com/r/flora-north-park-san-diego",
    "tock": "https://www.exploretock.com/flora/faq"
   },
   "confidence": "high",
@@ -10350,9 +10247,6 @@
   "url": null
  },
  "fonda": {
-  "booking": {
-   "resy": "https://resy.com/cities/austin-tx/venues/fonda-san-miguel"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://lafondasantafe.com/wp-content/uploads/2024/12/adobe-building-dusk.webp",
@@ -10905,9 +10799,6 @@
   "url": null
  },
  "gheeindiankitchen": {
-  "booking": {
-   "opentable": "https://www.opentable.com/r/ghee-indian-kitchen-atlanta"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://images.getbento.com/accounts/16458ac94bdf2a2e2ce87889467ac888/media/images/71640ghee_3749.JPG?w=1800\\u0026fit=max\\u0026auto=compress,format\\u0026cs=origin\\u0026h=1800",
@@ -10993,9 +10884,6 @@
   "url": null
  },
  "gios": {
-  "booking": {
-   "resy": "https://resy.com/cities/atlanta-ga/venues/gios-italian"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -11228,9 +11116,6 @@
   "url": null
  },
  "gramercytavern": {
-  "booking": {
-   "opentable": "https://www.opentable.com/r/gramercy-tavern-new-york"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://images.getbento.com/accounts/c96fa153fcd99197529b15a71ab913e4/media/images/1619719318314.png?w=1000&fit=max&auto=compress,format&cs=origin&h=1000",
@@ -11438,9 +11323,6 @@
   "url": null
  },
  "guysavoy": {
-  "booking": {
-   "opentable": "https://www.opentable.com/r/restaurant-guy-savoy-caesars-palace-las-vegas"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://www.guysavoy.com/img/academie-beaux-arts.jpg",
@@ -11506,9 +11388,6 @@
   "url": null
  },
  "hakkasan": {
-  "booking": {
-   "resy": "https://resy.com/cities/miami-fl/venues/hakkasan-miami"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://hakkasangroup.com/wp-content/uploads/2024/11/LOUIS-XIII.jpg",
@@ -12147,12 +12026,12 @@
  },
  "hitops": {
   "confidence": "high",
-  "evidence": "declared image on the venue's own site",
-  "remote": "https://hitopsbar.com/wp-content/plugins/revslider/public/assets/assets/dummy.png",
+  "evidence": null,
+  "remote": null,
   "site": "https://hitopsbar.com/",
-  "source": "venue-website",
+  "source": null,
   "status": "found",
-  "url": "venue-images/hi-tops.png"
+  "url": null
  },
  "hmartmarketeateryfoodcourt": {
   "source": null,
@@ -12249,8 +12128,7 @@
  },
  "holywater": {
   "booking": {
-   "opentable": "https://www.opentable.com/r/holy-water-a-heavenly-lounge-port-orchard",
-   "resy": "https://resy.com/cities/new-york-ny/venues/holywater"
+   "opentable": "https://www.opentable.com/r/holy-water-a-heavenly-lounge-port-orchard"
   },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
@@ -12586,9 +12464,6 @@
   "url": null
  },
  "hurleys": {
-  "booking": {
-   "opentable": "https://www.opentable.com/r/hurleys-saloon-new-york"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "http://www.hurley.com/cdn/shop/files/Screen_Shot_2024-10-16_at_10.13.58_AM.png?v=1729105257&width=2048",
@@ -12598,9 +12473,6 @@
   "url": "venue-images/hurley-s.png"
  },
  "hutong": {
-  "booking": {
-   "opentable": "https://www.opentable.com/r/hutong-miami"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -12698,9 +12570,6 @@
   "url": null
  },
  "ilbucoalimentari": {
-  "booking": {
-   "resy": "https://resy.com/cities/new-york-ny/venues/il-buco-alimentari"
-  },
   "site": "https://ilbuco.com/?srsltid=AYCX9vI6H2Z2fUPz5QW-dXLUESa6i2svf6QKM3OsYhRzLbMf_W99GJcN",
   "source": null,
   "status": "found",
@@ -12917,8 +12786,7 @@
  },
  "ironside": {
   "booking": {
-   "opentable": "https://www.opentable.com/ironside-fish-and-oyster",
-   "resy": "https://resy.com/cities/miami-fl/venues/ironside-pizza"
+   "opentable": "https://www.opentable.com/ironside-fish-and-oyster"
   },
   "site": null,
   "source": null,
@@ -13275,7 +13143,6 @@
  },
  "jeangeorges": {
   "booking": {
-   "resy": "https://resy.com/cities/new-york-ny/venues/jean-georges",
    "tock": "https://www.exploretock.com/group/jean-georgesrestaurants"
   },
   "site": null,
@@ -13435,9 +13302,6 @@
   "url": null
  },
  "jojo": {
-  "booking": {
-   "resy": "https://resy.com/cities/new-york-ny/venues/jojo"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -13666,9 +13530,6 @@
   "url": null
  },
  "junoon": {
-  "booking": {
-   "resy": "https://resy.com/cities/new-york-ny/venues/junoon"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://junoon.org/wp-content/uploads/2024/11/social-media-1.png",
@@ -13792,9 +13653,6 @@
   "url": "venue-images/kappo.webp"
  },
  "kasbah": {
-  "booking": {
-   "resy": "https://resy.com/cities/new-york-ny/venues/kasbah-grill"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://secure.gravatar.com/avatar/98ae56f4ddac0e07aee07befcbe70abd2289969b9229987fab1a26f10457fcd0?s=96&d=mm&r=g",
@@ -13925,9 +13783,6 @@
   "url": "venue-images/kiln.webp"
  },
  "kimballhouse": {
-  "booking": {
-   "resy": "https://resy.com/cities/atlanta-ga/venues/kimball-house"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -13944,9 +13799,6 @@
   "url": null
  },
  "kinfolk": {
-  "booking": {
-   "resy": "https://resy.com/cities/austin-tx/venues/kinfolk"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://ik.imagekit.io/kinfolk/wp-content/uploads/2024/05/KF-Share-Card.jpeg",
@@ -14298,9 +14150,6 @@
   "url": "venue-images/kusakabe.jpg"
  },
  "kuyalord": {
-  "booking": {
-   "opentable": "https://www.opentable.com/r/kuya-lord-los-angeles"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://kuyalord.com/wp-content/uploads/2022/04/JakobLayman.0222.KuyaLord_049-scaled.jpg",
@@ -14466,8 +14315,7 @@
  },
  "lacondesa": {
   "booking": {
-   "opentable": "https://www.opentable.com/la-condesa",
-   "resy": "https://resy.com/cities/philadelphia-pa/venues/condesa"
+   "opentable": "https://www.opentable.com/la-condesa"
   },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
@@ -14524,9 +14372,6 @@
   "url": null
  },
  "laesquina": {
-  "booking": {
-   "resy": "https://resy.com/cities/new-york-ny/venues/la-esquina-midtown"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://l.icdbcdn.com/oh/181535f1-7a9f-4d55-a93c-6304135514c3.png?w=1200",
@@ -14743,9 +14588,6 @@
   "url": "venue-images/la-playa.jpg"
  },
  "lappart": {
-  "booking": {
-   "opentable": "https://www.opentable.com/r/lappart-los-angeles"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -15124,8 +14966,7 @@
  },
  "lebernardin": {
   "booking": {
-   "opentable": "https://www.opentable.com/r/le-bernardin",
-   "resy": "https://resy.com/cities/new-york-ny/venues/le-bernardin"
+   "opentable": "https://www.opentable.com/r/le-bernardin"
   },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
@@ -15136,9 +14977,6 @@
   "url": "venue-images/le-bernardin.jpg"
  },
  "lebistro": {
-  "booking": {
-   "resy": "https://resy.com/cities/new-york-ny/venues/le-district-bar-&-bistro"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://static.wixstatic.com/media/128cd9_bc086b9e99d048d386615a8063c19e45~mv2.jpg/v1/fill/w_1902,h_971,al_c/128cd9_bc086b9e99d048d386615a8063c19e45~mv2.jpg",
@@ -15190,9 +15028,6 @@
   "url": "venue-images/le-cirque.webp"
  },
  "leclub": {
-  "booking": {
-   "opentable": "https://www.opentable.com/r/le-club-by-partage-las-vegas"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://www.leclubrestaurant.paris/img/salle-soir2.jpg",
@@ -15329,9 +15164,6 @@
   "url": "venue-images/le-garage.png"
  },
  "legavroche": {
-  "booking": {
-   "resy": "https://resy.com/cities/chicago-il/venues/gavroche"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -15376,9 +15208,6 @@
   "url": null
  },
  "lemarais": {
-  "booking": {
-   "resy": "https://resy.com/cities/new-york-ny/venues/le-marais"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://static1.squarespace.com/static/636c3fd21955982154b6f1f5/t/68dece76ebd0840fd62b4f13/1726765644933/",
@@ -15908,9 +15737,6 @@
   "url": null
  },
  "longbar": {
-  "booking": {
-   "resy": "https://resy.com/cities/boston-ma/venues/long-bar-and-terrace"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -16059,9 +15885,6 @@
   "url": null
  },
  "luella": {
-  "booking": {
-   "opentable": "https://www.opentable.com/r/luella-atlanta"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -16077,9 +15900,6 @@
   "url": null
  },
  "lulu": {
-  "booking": {
-   "opentable": "https://www.opentable.com/r/lulu-los-angeles"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -16491,8 +16311,7 @@
  },
  "mantra": {
   "booking": {
-   "opentable": "https://www.opentable.com/r/mantra-india-mountain-view",
-   "resy": "https://resy.com/cities/houston-tx/venues/mantra"
+   "opentable": "https://www.opentable.com/r/mantra-india-mountain-view"
   },
   "site": null,
   "source": null,
@@ -16879,9 +16698,6 @@
   "url": null
  },
  "maven": {
-  "booking": {
-   "resy": "https://resy.com/cities/toronto-on/venues/maven"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -16901,7 +16717,6 @@
  },
  "maya": {
   "booking": {
-   "opentable": "https://www.opentable.com/r/coco-maya-san-diego",
    "resy": "https://resy.com/cities/san-francisco-ca/venues/cantina-los-mayas"
   },
   "confidence": "high",
@@ -17758,9 +17573,6 @@
   "url": null
  },
  "mojo": {
-  "booking": {
-   "resy": "https://resy.com/cities/new-york-ny/venues/mojo-east"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://static1.squarespace.com/static/6715ab8fcd45ed0cd4aa9253/t/673049bd9379a47ae723875c/1785787635302/",
@@ -17804,9 +17616,6 @@
   "url": null
  },
  "momofukunoodlebar": {
-  "booking": {
-   "opentable": "https://www.opentable.com/r/momofuku-noodle-bar-east-village-new-york-2"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -18286,9 +18095,6 @@
   "url": null
  },
  "myth": {
-  "booking": {
-   "resy": "https://resy.com/cities/new-york-ny/venues/myth"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -18598,9 +18404,6 @@
   "url": "venue-images/next.jpg"
  },
  "nextdoor": {
-  "booking": {
-   "opentable": "https://www.opentable.com/r/next-door-brooklyn"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://d33c41ebahvfs6.cloudfront.net/static/images/ND-invite-next-d86278df5dc0536d148c041bc519a1e7.png",
@@ -18872,9 +18675,6 @@
   "url": null
  },
  "noma": {
-  "booking": {
-   "resy": "https://resy.com/cities/los-angeles-ca/venues/noma-la"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://www.noma.net/wp-content/uploads/2026/10/VSD_4849.jpg",
@@ -19155,7 +18955,6 @@
  },
  "odette": {
   "booking": {
-   "opentable": "https://www.opentable.com/r/odette-lauberge-urbaine-paris",
    "resy": "https://resy.com/cities/florence-al/venues/odette"
   },
   "site": "https://www.odette.org/",
@@ -19631,8 +19430,7 @@
  },
  "otto": {
   "booking": {
-   "opentable": "https://www.opentable.com/r/ottos-uptown-kitchen-kissel-uptown-oakland",
-   "resy": "https://resy.com/cities/miami-fl/venues/otto-and-pepe"
+   "opentable": "https://www.opentable.com/r/ottos-uptown-kitchen-kissel-uptown-oakland"
   },
   "site": null,
   "source": null,
@@ -19745,9 +19543,6 @@
   "url": null
  },
  "ozzies": {
-  "booking": {
-   "resy": "https://resy.com/cities/washington-dc/venues/ozzies-good-eats"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -20146,9 +19941,6 @@
   "url": null
  },
  "parcbistro": {
-  "booking": {
-   "opentable": "https://www.opentable.com/r/parc-bistro-brasserie-san-diego"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://www.leparcbistrobar.com/site/assets/files/11831/golnazshahmirzadi_parcbistrobar_mgl8272_2000x0.1200x0.jpg",
@@ -20284,9 +20076,6 @@
   "url": null
  },
  "pastis": {
-  "booking": {
-   "resy": "https://resy.com/cities/new-york-ny/venues/pastis"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -20351,10 +20140,6 @@
   "url": null
  },
  "peacockalley": {
-  "booking": {
-   "opentable": "https://www.opentable.com/peacock-alley-waldorf-astoria-new-york",
-   "resy": "https://resy.com/cities/new-york-ny/venues/peacock-alley-bar-at-waldorf-astoria-new-york"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://www.peacockalley.com/cdn/shop/files/12c4e6688f3de01f62dc7d6b51845332_300x.png?v=1657549917",
@@ -20615,8 +20400,7 @@
  },
  "pesce": {
   "booking": {
-   "opentable": "https://www.opentable.com/r/pesce-four-seasons-costa-rica-peninsula-papagayo",
-   "resy": "https://resy.com/cities/washington-dc/venues/pesce-seafood-house"
+   "opentable": "https://www.opentable.com/r/pesce-four-seasons-costa-rica-peninsula-papagayo"
   },
   "site": null,
   "source": null,
@@ -20634,9 +20418,6 @@
   "url": null
  },
  "petestavern": {
-  "booking": {
-   "resy": "https://resy.com/cities/new-york-ny/venues/petes-tavern"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://static.wixstatic.com/media/23e35e_eb457d50644a4d67b76df94ea5575df2~mv2.jpg/v1/fit/w_930,h_696,q_90/23e35e_eb457d50644a4d67b76df94ea5575df2~mv2.webp",
@@ -21485,8 +21266,7 @@
  },
  "popina": {
   "booking": {
-   "opentable": "https://www.opentable.com/r/la-popina-cordoba",
-   "resy": "https://resy.com/cities/new-york-ny/venues/popina-nyc"
+   "opentable": "https://www.opentable.com/r/la-popina-cordoba"
   },
   "site": null,
   "source": null,
@@ -21821,7 +21601,6 @@
  },
  "providence": {
   "booking": {
-   "opentable": "https://www.opentable.com/r/providence-los-angeles",
    "resy": "https://resy.com/cities/providence-ri/list/collection_1031"
   },
   "confidence": "high",
@@ -22238,9 +22017,6 @@
   "url": "venue-images/rasa.jpg"
  },
  "rasika": {
-  "booking": {
-   "resy": "https://resy.com/cities/washington-dc/venues/rasika"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -22249,7 +22025,6 @@
  "rasikawestend": {
   "booking": {
    "opentable": "https://www.opentable.com/r/rasika-west-end-washington",
-   "resy": "https://resy.com/cities/washington-dc/venues/rasika-west-end",
    "tock": "https://www.exploretock.com/rasikawestend"
   },
   "site": null,
@@ -22361,8 +22136,7 @@
  },
  "redhen": {
   "booking": {
-   "opentable": "https://www.opentable.com/r/the-red-hen-washington",
-   "resy": "https://resy.com/cities/washington-dc/venues/the-red-hen"
+   "opentable": "https://www.opentable.com/r/the-red-hen-washington"
   },
   "site": null,
   "source": null,
@@ -23274,9 +23048,6 @@
   "url": "venue-images/rose-s-cafe.webp"
  },
  "roshambo": {
-  "booking": {
-   "opentable": "https://www.opentable.com/r/roshambo-atlanta"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "http://www.roshambo.com/cdn/shop/files/roshambo-eyewear-kids.png?v=1698861158",
@@ -23325,8 +23096,7 @@
  },
  "route66": {
   "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-historic-route-66",
-   "resy": "https://resy.com/cities/new-york-ny/venues/route-66-smokehouse"
+   "opentable": "https://www.opentable.com/landmark/restaurants-near-historic-route-66"
   },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
@@ -23362,8 +23132,7 @@
  },
  "roxanne": {
   "booking": {
-   "opentable": "https://www.opentable.com/r/roxanne-cafe",
-   "resy": "https://resy.com/cities/philadelphia-pa/venues/roxanne"
+   "opentable": "https://www.opentable.com/r/roxanne-cafe"
   },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
@@ -23505,9 +23274,6 @@
   "url": null
  },
  "russiantearoom": {
-  "booking": {
-   "opentable": "https://www.opentable.com/r/russian-tea-room-nyc-new-york"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -23515,8 +23281,7 @@
  },
  "rusticcanyon": {
   "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-rustic-canyon-recreation-center",
-   "resy": "https://resy.com/cities/los-angeles-ca/venues/rustic-canyon"
+   "opentable": "https://www.opentable.com/landmark/restaurants-near-rustic-canyon-recreation-center"
   },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
@@ -23569,9 +23334,6 @@
   "url": "venue-images/sababa.png"
  },
  "saddlerock": {
-  "booking": {
-   "tock": "https://www.exploretock.com/saddlerock-fort-worth"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://images.squarespace-cdn.com/content/v1/5df26ec94c28cd08c35241d9/1576172063143-DRX5ZROC0WE1D6OX3MB6/SPB-28-x-12-natural-orange.jpg",
@@ -23694,10 +23456,6 @@
   "url": null
  },
  "salathai": {
-  "booking": {
-   "opentable": "https://www.opentable.com/r/sala-thai-new-york",
-   "resy": "https://resy.com/cities/washington-dc/venues/sala-thai-park-kennedy"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://static.wixstatic.com/media/c9be4e_b110e706449245cdba694281c1658335~mv2.png",
@@ -24003,9 +23761,6 @@
   "url": null
  },
  "santi": {
-  "booking": {
-   "resy": "https://resy.com/cities/new-york-ny/venues/santi"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -24146,9 +23901,6 @@
   "url": null
  },
  "scarpetta": {
-  "booking": {
-   "resy": "https://resy.com/cities/new-york-ny/venues/scarpetta-nyc"
-  },
   "site": "https://www.scarpettarestaurants.com/",
   "source": null,
   "status": "found",
@@ -24300,9 +24052,6 @@
   "url": "venue-images/seaglass-restaurant.jpg"
  },
  "seasalt": {
-  "booking": {
-   "resy": "https://resy.com/cities/new-york-ny/venues/sea-salt"
-  },
   "site": "https://sfsalt.com/?srsltid=AYCX9vJl2p9TG4qHI4hhl3y8C438gO7OyyH6CxKE4W_XsR9d4v0E60-h",
   "source": null,
   "status": "found",
@@ -24553,8 +24302,7 @@
  },
  "shakingcrab": {
   "booking": {
-   "opentable": "https://www.opentable.com/r/shaking-crab-clifton",
-   "resy": "https://resy.com/cities/new-york-ny/venues/shaking-crab-park-slope"
+   "opentable": "https://www.opentable.com/r/shaking-crab-clifton"
   },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
@@ -24683,9 +24431,6 @@
   "url": null
  },
  "shukette": {
-  "booking": {
-   "resy": "https://resy.com/cities/new-york-ny/venues/shukette"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://secure.gravatar.com/avatar/404b36da66e60bd4c6ada09b952008415da038a115692d24588e8f15a0277bc4?s=96&d=mm&r=g",
@@ -24705,9 +24450,6 @@
   "url": null
  },
  "sightglass": {
-  "booking": {
-   "opentable": "https://www.opentable.com/r/sightglass-coffee-los-angeles"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://dov7r31oq5dkj.cloudfront.net/66d16e3c-0353-48b5-8039-703f399e9878/7c64d0b8-9717-4729-92ce-1357f84da879",
@@ -24910,9 +24652,6 @@
   "url": null
  },
  "sloanes": {
-  "booking": {
-   "opentable": "https://www.opentable.com/r/sloanes-new-york"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -25171,10 +24910,6 @@
   "url": null
  },
  "somni": {
-  "booking": {
-   "opentable": "https://www.opentable.com/r/somni-los-angeles",
-   "resy": "https://resy.com/cities/los-angeles-ca/venues/somni-ca"
-  },
   "confidence": "low",
   "evidence": "profile image from a handle linked by the venue's own site",
   "handle": "somnirestaurant",
@@ -25384,9 +25119,6 @@
   "url": "venue-images/sozai.png"
  },
  "spago": {
-  "booking": {
-   "resy": "https://resy.com/cities/los-angeles-ca/venues/spago"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -25410,7 +25142,6 @@
  "sparrow": {
   "booking": {
    "opentable": "https://www.opentable.com/r/sparrow-st-pete-st-petersburg",
-   "resy": "https://resy.com/cities/atlanta-ga/venues/little-sparrow",
    "tock": "https://www.exploretock.com/golden-sparrow-edmonton"
   },
   "confidence": "high",
@@ -26027,9 +25758,6 @@
   "url": "venue-images/studio-aurora.jpg"
  },
  "stvincent": {
-  "booking": {
-   "resy": "https://resy.com/cities/washington-dc/venues/st-vincent-wine"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://ilovestvincent.com/cdn/shop/files/STV9-920.png?v=1773750297&width=1080",
@@ -26117,8 +25845,7 @@
  },
  "sunnyside": {
   "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-sunnyside-playground",
-   "resy": "https://resy.com/cities/atlanta-ga/venues/sunnyside-pizzeria"
+   "opentable": "https://www.opentable.com/landmark/restaurants-near-sunnyside-playground"
   },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
@@ -26450,9 +26177,6 @@
   "url": null
  },
  "taishoken": {
-  "booking": {
-   "resy": "https://resy.com/cities/new-york-ny/venues/taishoken"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "http://static1.squarespace.com/static/5cce888e77b9030a4261d725/t/5ccff4aee5e5f08d2c9202b6/1647121903173/taishoken.png?format=1500w",
@@ -26509,8 +26233,7 @@
  },
  "tanglewood": {
   "booking": {
-   "opentable": "https://www.opentable.com/landmark/restaurants-near-tanglewood-park-santa-rosa",
-   "resy": "https://resy.com/cities/dallas-fort-worth-tx/venues/meso-maya-tanglewood"
+   "opentable": "https://www.opentable.com/landmark/restaurants-near-tanglewood-park-santa-rosa"
   },
   "site": null,
   "source": null,
@@ -26587,12 +26310,12 @@
    "opentable": "https://www.opentable.com/r/tarla-mediterranean-grill-napa"
   },
   "confidence": "high",
-  "evidence": "declared image on the venue's own site",
-  "remote": "https://tracker.metricool.com/c3po.jpg?hash=75ce83134e9f127d5fd54e0020934e9d",
+  "evidence": null,
+  "remote": null,
   "site": "https://www.tarlagrill.com/",
-  "source": "venue-website",
+  "source": null,
   "status": "found",
-  "url": "venue-images/tarla.png"
+  "url": null
  },
  "tartare": {
   "source": null,
@@ -27055,7 +26778,6 @@
  },
  "thebeehive": {
   "booking": {
-   "resy": "https://resy.com/cities/dallas-fort-worth-tx/venues/beehive-restaurant-lounge",
    "tock": "https://www.exploretock.com/thebeehivesf/"
   },
   "confidence": "high",
@@ -27065,19 +26787,6 @@
   "source": "venue-website",
   "status": "found",
   "url": "venue-images/the-beehive.webp"
- },
- "thebird": {
-  "booking": {
-   "opentable": "https://www.opentable.com/r/state-bird-provisions-san-francisco",
-   "resy": "https://resy.com/cities/san-francisco-ca/venues/social-bird"
-  },
-  "confidence": "high",
-  "evidence": "declared image on the venue's own site",
-  "remote": "https://images.getbento.com/accounts/35ef20bf607c83753d46887f03046d3b/media/images/78187the-bird-text.png?w=1200&fit=fill&auto=compress,format&cs=origin&h=600&bg=EDEDF1&pad=100",
-  "site": "https://www.thebirdsf.com/",
-  "source": "venue-website",
-  "status": "found",
-  "url": "venue-images/the-bird.jpg"
  },
  "theblackcat": {
   "booking": {
@@ -27392,8 +27101,7 @@
  },
  "thegrill": {
   "booking": {
-   "opentable": "https://www.opentable.com/r/tadich-grill-san-francisco",
-   "resy": "https://resy.com/cities/new-york-ny/venues/the-grill-ny"
+   "opentable": "https://www.opentable.com/r/tadich-grill-san-francisco"
   },
   "site": null,
   "source": null,
@@ -27497,9 +27205,6 @@
   "url": null
  },
  "theloveboat": {
-  "booking": {
-   "opentable": "https://www.opentable.com/r/love-boat-sushi-san-diego"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -27617,9 +27322,6 @@
   "url": "venue-images/the-palace.png"
  },
  "theparish": {
-  "booking": {
-   "opentable": "https://www.opentable.com/r/the-parish-cafe-healdsburg"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://starparish.com/wp-content/uploads/2026/11/Weekly-Bulletin-895975-11-15-2026-2-pdf.webp",
@@ -27821,8 +27523,7 @@
  },
  "theshota": {
   "booking": {
-   "opentable": "https://www.opentable.com/r/the-shota-san-francisco",
-   "resy": "https://resy.com/cities/new-york-ny/venues/shota-omakase"
+   "opentable": "https://www.opentable.com/r/the-shota-san-francisco"
   },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
@@ -27856,12 +27557,12 @@
  },
  "thesouledomain": {
   "confidence": "high",
-  "evidence": "declared image on the venue's own site",
-  "remote": "https://souledomain.com/wp-content/plugins/revslider/public/assets/assets/dummy.png",
+  "evidence": null,
+  "remote": null,
   "site": "https://souledomain.com/",
-  "source": "venue-website",
+  "source": null,
   "status": "found",
-  "url": "venue-images/the-soule-domain.png"
+  "url": null
  },
  "thespinstersisters": {
   "booking": {
@@ -27917,9 +27618,6 @@
   "url": null
  },
  "thethomas": {
-  "booking": {
-   "resy": "https://resy.com/cities/new-york-ny/venues/the-thomas"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://thomasdigital.com/wp-content/uploads/2021/07/thomas-digital.png",
@@ -28107,9 +27805,6 @@
   "url": null
  },
  "thunderbolt": {
-  "booking": {
-   "resy": "https://resy.com/cities/los-angeles-ca/venues/thunderbolt-ca"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -28122,8 +27817,7 @@
  },
  "tides": {
   "booking": {
-   "opentable": "https://www.opentable.com/r/tides-danville",
-   "resy": "https://resy.com/cities/houston-tx/venues/field-and-tides"
+   "opentable": "https://www.opentable.com/r/tides-danville"
   },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
@@ -28134,9 +27828,6 @@
   "url": "venue-images/tides.jpg"
  },
  "tiffin": {
-  "booking": {
-   "resy": "https://resy.com/cities/philadelphia-pa/venues/tiffin-indian-cuisine-fairmount"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://img1.wsimg.com/isteam/stock/18546",
@@ -28907,27 +28598,12 @@
   "status": "absent",
   "url": null
  },
- "ubuntu": {
-  "booking": {
-   "resy": "https://resy.com/cities/san-juan-capistrano-ca/venues/ubuntu-cafe-san-juan-capistrano"
-  },
-  "confidence": "high",
-  "evidence": "declared image on the venue's own site",
-  "remote": "https://assets.ubuntu.com/v1/47f12466-og_%20ubuntu.png",
-  "site": "https://ubuntu.com/",
-  "source": "venue-website",
-  "status": "found",
-  "url": "venue-images/ubuntu.png"
- },
  "ubunturestaurantyogastudio": {
   "source": null,
   "status": "absent",
   "url": null
  },
  "uchi": {
-  "booking": {
-   "resy": "https://resy.com/cities/dallas-fort-worth-tx/venues/uchi"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://www.uchirestaurants.com/wp-content/uploads/2022/12/uchirestaurants-img-opengraph-sitecover.png",
@@ -28937,10 +28613,6 @@
   "url": "venue-images/uchi.png"
  },
  "uchiko": {
-  "booking": {
-   "opentable": "https://www.opentable.com/r/uchiko-austin",
-   "resy": "https://resy.com/cities/austin-tx/venues/uchiko"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -28967,9 +28639,6 @@
   "url": null
  },
  "umami": {
-  "booking": {
-   "resy": "https://resy.com/cities/boston-ma/venues/umami-crudo"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://umamimart.com/cdn/shop/files/3D_Everyday_Sake_500.png?crop=center&height=76&v=1779139670&width=76",
@@ -28999,9 +28668,6 @@
   "url": null
  },
  "unapizzanapoletana": {
-  "booking": {
-   "opentable": "https://www.opentable.com/r/una-pizza-napoletana-new-york"
-  },
   "site": "https://unapizza.com/sf-dinner-giveaway-rules/",
   "source": null,
   "status": "found",
@@ -29018,9 +28684,6 @@
   "url": null
  },
  "unapizzanapoletananewyork": {
-  "booking": {
-   "opentable": "https://www.opentable.com/r/una-pizza-napoletana-new-york"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -29180,8 +28843,7 @@
  },
  "uva": {
   "booking": {
-   "opentable": "https://www.opentable.com/r/uva-enoteca-san-francisco",
-   "resy": "https://resy.com/cities/new-york-ny/venues/uva"
+   "opentable": "https://www.opentable.com/r/uva-enoteca-san-francisco"
   },
   "site": null,
   "source": null,
@@ -29221,9 +28883,6 @@
   "url": null
  },
  "valbella": {
-  "booking": {
-   "opentable": "https://www.opentable.com/r/valbella-at-the-park-new-york"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -29428,9 +29087,6 @@
   "url": null
  },
  "verve": {
-  "booking": {
-   "resy": "https://resy.com/cities/new-york-ny/venues/verve-wine"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "http://www.vervecoffee.com/cdn/shop/articles/sf_header_e759d3df-a7da-41b3-a087-e948e5169a80.jpg?v=1743523936",
@@ -29645,9 +29301,6 @@
   "url": null
  },
  "wahlburgers": {
-  "booking": {
-   "opentable": "https://www.opentable.com/r/wahlburgers-las-vegas"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -29663,10 +29316,6 @@
   "url": "venue-images/wahpepah-s-kitchen.webp"
  },
  "waldorfastoria": {
-  "booking": {
-   "opentable": "https://www.opentable.com/features/best-casual-restaurants-las-vegas-waldorf-astoria",
-   "tock": "https://www.exploretock.com/waldorf-astoria-new-york"
-  },
   "site": null,
   "source": null,
   "status": "found",
@@ -30031,9 +29680,6 @@
   "url": null
  },
  "wildhare": {
-  "booking": {
-   "opentable": "https://www.opentable.com/r/wild-hare-bar-garden-san-diego"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://images.getbento.com/accounts/c37981f80219b965dda574b4adc0ceea/media/images/21754WH_Secondary_PMS_2x.png?w=1200&fit=fill&auto=compress,format&cs=origin&h=600&bg=EDEDF1&pad=100",
@@ -30318,9 +29964,6 @@
   "url": "venue-images/xica.jpg"
  },
  "xolo": {
-  "booking": {
-   "opentable": "https://www.opentable.com/r/xolo-houston"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://framerusercontent.com/assets/ZpiidPcx9S7JrH6q3c8ZIwXOe6U.png",
@@ -30524,10 +30167,6 @@
   "url": "venue-images/zachary-s-pizza.jpg"
  },
  "zahav": {
-  "booking": {
-   "opentable": "https://www.opentable.com/r/zahav-philadelphia",
-   "resy": "https://resy.com/cities/philadelphia-pa/venues/zahav"
-  },
   "confidence": "high",
   "evidence": "declared image on the venue's own site",
   "remote": "https://shaarzahav.org/app/themes/shaar-zahav/images/static/Fireman-Footer.png",
