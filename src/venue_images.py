@@ -30,6 +30,7 @@ Usage:
     ./.venv/bin/python src/venue_images.py --limit 50      # sample
     ./.venv/bin/python src/venue_images.py --all           # full corpus
 """
+import html as html_module
 import ipaddress
 import json
 import os
@@ -114,7 +115,7 @@ def _url_is_public(url):
     return _is_public_host(m.group(1))
 
 
-def safe_get(url, timeout=20, max_redirects=5, allow_broken_chain=False):
+def safe_get(url, timeout=20, max_redirects=5, allow_broken_chain_for=None):
     """GET that refuses to touch a private address, on the first hop or any
     redirect. Returns the response, or None when the destination is unsafe or
     the chain is too long.
@@ -122,25 +123,27 @@ def safe_get(url, timeout=20, max_redirects=5, allow_broken_chain=False):
     Redirects are followed manually so each destination is checked; letting
     requests follow them silently is what made this SSRF-able.
 
-    `allow_broken_chain` exists for sites that serve an INCOMPLETE TLS chain —
-    the leaf certificate without its intermediate (Commis does this: DigiCert
-    GeoTrust leaf, no intermediate sent, so a client with a full trust store
-    fails with "unable to verify the first certificate"). Browsers paper over
-    it by fetching the missing intermediate; requests does not. It relaxes
-    verification ONLY: the host is still resolved and still has to pass the
-    private-address check above, and it is never used for a redirect target.
-    Keep it off unless a caller is reading a page we already trust by name.
+    `allow_broken_chain_for` names ONE host whose incomplete TLS chain we
+    accept (Commis serves a DigiCert GeoTrust leaf with no intermediate, so a
+    client with a full trust store fails with "unable to verify the first
+    certificate"; browsers fetch the missing intermediate, requests does not).
+    It is a host, not a boolean, on purpose: verification is relaxed only when
+    the host being fetched is that exact host. A redirect to anywhere else —
+    or an image served from a different CDN — keeps full certificate checks,
+    so a network attacker cannot trade on the exception to supply a false photo.
     """
     import requests
     current = url
     for _ in range(max_redirects + 1):
         if not _url_is_public(current):
             return None
+        relax = bool(allow_broken_chain_for) and \
+            _host(current) == allow_broken_chain_for.lower()
         try:
             r = requests.get(current, headers=UA, timeout=timeout,
                              allow_redirects=False)
         except Exception as e:
-            if not allow_broken_chain or "CERTIFICATE_VERIFY_FAILED" not in str(e):
+            if not relax or "CERTIFICATE_VERIFY_FAILED" not in str(e):
                 return None
             try:
                 import urllib3
@@ -212,10 +215,33 @@ def _is_official(url, venue):
     words = [w for w in re.split(r"[^a-z0-9]+", venue.lower()) if len(w) >= 4]
     if not words:
         # Short names ("Coi", "A16") cannot be matched on the domain safely —
-        # "coi" appears in countless hosts. They are never accepted on the
-        # domain alone; only tier_website's page-names-venue check can admit
-        # one, and it must run before the site is saved.
-        return False
+        # "coi" appears in countless hosts — so they are never accepted on the
+        # domain ALONE. Returning False here rejected every SERP hit for them,
+        # which meant their real site (coirestaurant.com) was never even tried
+        # and got cached as absent forever. Let a short-name candidate through
+        # only if the name is the WHOLE registered domain or its leading label
+        # ("coirestaurant.com", "a16pizza.com"), and rely on the page-names-the-
+        # venue check downstream to admit or reject it.
+        short = [w for w in re.split(r"[^a-z0-9]+", venue.lower()) if w]
+        if not short:
+            return False
+        squash = "".join(short)
+        # A short name must be a WHOLE WORD in the label, not a prefix. Tested
+        # against the label split on the places a brand would put a boundary:
+        # start of the label, and before a descriptor word. `coirestaurant` and
+        # `coisyntax` split as coi|restaurant / coi|syntax; `coinoprestaurant`
+        # does not split after "coi" at all, so it is rejected. A startswith
+        # test cannot tell those apart — coi is a prefix of all three.
+        label = parts[-2].replace("-", "")
+        bounds = ("restaurant", "restaurants", "cafe", "sf", "sanfrancisco",
+                  "kitchen", "bar", "bistro", "grill", "pizza", "sushi",
+                  "group", "hospitality", "dining", "food", "eatery")
+        is_word = (label == squash) or any(
+            label == squash + b or label == b + squash for b in bounds)
+        if not is_word:
+            return False
+        sub = ".".join(parts[:-2])
+        return not sub or sub == "www"
     base_flat = base.replace("-", "")
     if not any(w in base_flat for w in words):
         return False
@@ -271,19 +297,26 @@ def find_booking_links(venue):
     """
     from src.brightdata import serp
     out = {}
-    for platform, host in (("resy", "resy.com"), ("opentable", "opentable."),
-                           ("tock", "exploretock.")):
+    for platform, host in (("resy", "resy.com"), ("opentable", "opentable.com"),
+                           ("tock", "exploretock.com")):
         try:
             for r in serp(f"{venue} San Francisco {platform}", num=10):
-                h = _host(r["url"])
-                if host not in h:
+                h = _host(r["url"]).rstrip(".")
+                if not h:
                     continue
-                # blog./help./support. subdomains are editorial or support, not
-                # booking. A "Book on Resy" link pointed at blog.resy.com.
-                sub = h.split(".")[0]
-                if h.count(".") > 1 and sub not in ("www", host.rstrip(".")):
-                    continue
-                if sub in ("blog", "help", "support", "news", "press", "about"):
+                # EXACT platform domain or an allowed subdomain of it. A
+                # substring test accepted `fake-resy.com/rich-table`, which
+                # passes both the host and venue-path checks and would be saved
+                # as a Resy link. `www` is the only subdomain worth keeping;
+                # blog/help/support are editorial or support pages, not booking.
+                sub = ""
+                if h == host:
+                    pass
+                elif h.endswith("." + host):
+                    sub = h[:-len(host) - 1]
+                    if sub != "www":
+                        continue
+                else:
                     continue
                 parts = urllib.parse.urlsplit(r["url"])
                 path = urllib.parse.unquote(parts.path).lower()
@@ -300,16 +333,23 @@ def find_booking_links(venue):
                     continue
                 if parts.query and "query=" in parts.query.lower():
                     continue
-                # the venue must appear in the PATH, not the query string
+                # The venue must appear in the PATH, not the query string, and
+                # must land on a SLUG BOUNDARY. A plain substring test accepted
+                # opentable.com/r/coin-op-san-francisco for "Coi", because `coi`
+                # occurs inside `coinop` — handing Coi another restaurant's
+                # booking page. Slugs are split on non-alphanumerics, so the
+                # name has to be its own run of characters.
+                slug_bits = [b for b in re.split(r"[^a-z0-9]+", path.lower()) if b]
                 full = norm(venue)
-                if full and full in norm(path):
+                # Exact slug fragment only. A prefix test ("coi" matches
+                # "coinop") was still admitting the other restaurant's page.
+                if full and (full in slug_bits or slug_bits == [full]):
                     out[platform] = r["url"]
                     break
-                # short names (Coi, A16) have no 4+ char token, so the token
-                # check is skipped for them and the full-name path match above
-                # is the only evidence — which is why it is exact.
+                # multi-word names: every distinctive token must be its own
+                # slug fragment, not merely present inside a longer word
                 words = [w for w in re.split(r"[^a-z0-9]+", venue.lower()) if len(w) >= 4]
-                if words and all(w in norm(path) for w in words):
+                if words and all(w in slug_bits for w in words):
                     out[platform] = r["url"]
                     break
         except Exception:
@@ -362,6 +402,10 @@ def _og_image(html, base_url=""):
     for p in pats:
         for m in re.finditer(p, html, re.S | re.I):
             u = m.group(1).strip()
+            # Attribute values arrive entity-encoded. `&amp;` in a query string
+            # changes the parameter name, so the download would request a
+            # different image — or 404 on a URL that plainly works in a browser.
+            u = html_module.unescape(u)
             if not u:
                 continue
             # Relative and protocol-relative paths are real image declarations.
@@ -390,26 +434,40 @@ def _page_names_venue(html, venue):
     Searches the TEXT, not the raw markup: normalizing the whole HTML made tag
     names, class names and script payloads count as a match, so a page could
     "name" a venue it never mentions.
+
+    Entities are decoded first. Without that, `<h1>Sons &amp; Daughters</h1>`
+    normalizes to `sonsampdaughters`, which never matches — so the venue's real
+    site failed verification and could be cached as absent.
     """
     n = norm(venue)
     if not n:
         return False
     text = re.sub(r"<(script|style)\b[^>]*>.*?</\1>", " ", html, flags=re.S | re.I)
     text = re.sub(r"<[^>]+>", " ", text)
+    text = html_module.unescape(text)
+    # Short names need a TOKEN match, not a substring. norm() only strips
+    # punctuation, so "Coi" would match inside "coin-op", "coincidence", or
+    # "Coin-Op Restaurant" — and the venue would be given a stranger's page.
+    # A 4+ character name keeps the lenient test, where accidental substrings
+    # are vanishingly rare and markup-heavy pages would otherwise fail.
+    if len(n) < 4:
+        toks = re.split(r"[^a-z0-9]+", text.lower())
+        return n in toks
     return n in norm(text)
 
 
-def tier_website(venue, known_website=None, timeout=15, broken_chain=False):
+def tier_website(venue, known_website=None, timeout=15, broken_host=None):
     """The venue's own page, fetched only from a public address, redirects
     checked hop by hop. Returns None unless the page both names the venue and
     declares an image.
 
-    `broken_chain` retries once with verification relaxed, for a site recorded
-    in venue_sites.json as serving an incomplete TLS chain. It is never
-    inferred from the response — a caller has to say so.
+    `broken_host` names the single host whose incomplete TLS chain we accept,
+    for a site recorded in venue_sites.json. It is never inferred from the
+    response — a caller has to say so — and it does not travel to redirect
+    targets or image hosts.
     """
     for url in _candidate_sites(venue, known_website)[0]:
-        r = safe_get(url, timeout=timeout, allow_broken_chain=broken_chain)
+        r = safe_get(url, timeout=timeout, allow_broken_chain_for=broken_host)
         if r is None or r.status_code != 200:
             continue
         if not _page_names_venue(r.text, venue):
@@ -422,19 +480,20 @@ def tier_website(venue, known_website=None, timeout=15, broken_chain=False):
     return None
 
 
-def download_image(url, venue_key, timeout=25, broken_chain=False):
+def download_image(url, venue_key, timeout=25, broken_host=None):
     """Fetch an image once and store it locally. Returns a relative path or None.
 
     This is the half that makes "lookup only" true: a remote URL in the cache
     would still be a hotlink, which is the exact thing this module exists to
     remove. Nothing is served from a third-party CDN at render time.
 
-    `broken_chain` mirrors safe_get's: a host that omits its TLS intermediate
-    fails on the image request too, not just the page.
+    `broken_host` mirrors safe_get's: a host that omits its TLS intermediate
+    fails on the image request too. It applies only to that host, so an image
+    served from a different CDN keeps full certificate checks.
     """
     if not url or not _url_is_public(url):
         return None
-    r = safe_get(url, timeout=timeout, allow_broken_chain=broken_chain)
+    r = safe_get(url, timeout=timeout, allow_broken_chain_for=broken_host)
     if r is None or r.status_code != 200:
         return None
     ctype = (r.headers.get("content-type") or "").lower()
@@ -487,7 +546,7 @@ def tier_mapbox(venue, token, timeout=15):
 
 # ── tier 2: Instagram / Facebook profile image ───────────────────────────────
 
-def tier_social(venue, known_website=None, timeout=15):
+def tier_social(venue, known_website=None, timeout=15, broken_host=None):
     """The venue's own social profile image.
 
     Reads the CONFIRMED website (never a guessed domain — that produced requests
@@ -500,23 +559,30 @@ def tier_social(venue, known_website=None, timeout=15):
     """
     if not known_website:
         return None                       # nothing confirmed to read a handle from
-    r = safe_get(known_website, timeout=timeout)
+    r = safe_get(known_website, timeout=timeout, allow_broken_chain_for=broken_host)
     if r is None or r.status_code != 200:
         return None
-    m = re.search(r'(?:instagram|facebook)\.com/([A-Za-z0-9_.]+)', r.text)
+    m = re.search(r'(instagram|facebook)\.com/([A-Za-z0-9_.]+)', r.text)
     if not m:
         return None                       # no handle: do not guess one
-    handle = m.group(1).rstrip(".")
+    platform, handle = m.group(1), m.group(2).rstrip(".")
     if handle in ("p", "reel", "explore", "accounts", "share", "login"):
         return None                       # a link path, not a profile
-    profile = f"https://www.instagram.com/{handle}/"
+    # Fetch the profile on the platform we actually saw. Opening the handle on
+    # Instagram because the link said Facebook proved nothing: @handle on
+    # Instagram can easily be somebody else, and its photo would then be
+    # attached to this restaurant with no name check.
+    profile = f"https://www.{platform}.com/{handle}/"
     pr = safe_get(profile, timeout=timeout)
     if pr is None or pr.status_code != 200:
+        return None
+    # The profile has to name the venue before its picture is the venue's.
+    if not _page_names_venue(pr.text, venue):
         return None
     img = _og_image(pr.text, base_url=pr.url or profile)
     if not img:
         return None
-    return {"url": img, "source": "venue-social", "site": "instagram.com",
+    return {"url": img, "source": "venue-social", "site": f"{platform}.com",
             "confidence": "low", "handle": handle,
             "evidence": "profile image from a handle linked by the venue's own site"}
 
@@ -524,12 +590,18 @@ def tier_social(venue, known_website=None, timeout=15):
 # ── driver ──────────────────────────────────────────────────────────────────
 
 def resolve_venue(venue, token=None, known_website=None, use_serp=True,
-                  broken_chain=False):
+                  broken_host=None):
     """Run the tiers in order. Returns (record, status).
 
     status is "found", "absent" or "failed". Only "absent" may be cached as a
     negative result; "failed" must stay eligible so an outage does not become a
     permanent hole in the cache.
+
+    A tier only COUNTED once its bytes were downloaded. Previously the website
+    tier returned a record as soon as it found a declared image URL, so a 403,
+    a timeout, or a non-image response skipped the social and Mapbox tiers and
+    then cleared `url` at the end — finishing with no photo even though another
+    tier could have supplied one.
     """
     site = known_website
     status = "absent"
@@ -538,32 +610,40 @@ def resolve_venue(venue, token=None, known_website=None, use_serp=True,
         site, status = find_official_site(venue)
         if status == "failed":
             return None, "failed"
-    if use_serp and site:
+    # Booking discovery needs only the venue name, so it must not be gated on
+    # finding a website. A venue whose only web presence is its reservation
+    # page has no official site by definition (those platforms are excluded
+    # from _is_official), and was therefore never checked for a booking link.
+    if use_serp:
         booking = find_booking_links(venue)
+
+    def own(img):
+        """Download the tier's image. None unless we hold the bytes."""
+        if not img or not img.get("url"):
+            return None
+        url = str(img["url"])
+        if not url.startswith(("http://", "https://")):
+            return img                    # already a local path
+        local = download_image(url, venue, broken_host=broken_host)
+        if not local:
+            return None                   # could not own it: try the next tier
+        out = dict(img)
+        out["remote"] = url
+        out["url"] = local
+        return out
 
     img = None
     if site:
-        img = tier_website(venue, site, broken_chain=broken_chain)
+        img = own(tier_website(venue, site, broken_host=broken_host))
     if not img:
-        img = tier_social(venue, site)      # reads only the CONFIRMED site
+        img = own(tier_social(venue, site, broken_host=broken_host))
     if not img and token:
-        img = tier_mapbox(venue, token)
+        img = own(tier_mapbox(venue, token))
 
     if not img and not site and not booking:
         return None, "absent"
 
     out = dict(img or {"url": None, "source": None})
-    # Every tier must end with bytes we own. A remote URL left in the cache is
-    # still a hotlink, which is the exact thing this module removes — so tier 1
-    # and tier 2 download here too, not just Mapbox.
-    if out.get("url") and str(out["url"]).startswith(("http://", "https://")):
-        local = download_image(out["url"], venue, broken_chain=broken_chain)
-        if local:
-            out["remote"] = out["url"]
-            out["url"] = local
-        else:
-            out["url"] = None            # could not own the bytes: not resolved
-            out["source"] = None
     out["site"] = site
     if booking:
         out["booking"] = booking
@@ -606,7 +686,26 @@ def main(argv):
     from src.es import make_client
     es = make_client()
 
-    raw = ui._distinct_values(es, "to_venue.keyword") | ui._distinct_values(es, "from_venue.keyword")
+    # to_venue / from_venue have TWO shapes in the wild and neither read works
+    # on both:
+    #   - an index built by ensure_index: a plain keyword field, so `.keyword`
+    #     does not exist and aggregating it returns nothing;
+    #   - the legacy live index: a text field WITH a `.keyword` subfield, where
+    #     aggregating the bare field raises "Fielddata is disabled".
+    # Try the mapped field, and fall back to the subfield on either an
+    # exception or an empty result. Getting this wrong is silent in one
+    # direction (zero venues, "resolved successfully") and fatal in the other.
+    def distinct(field):
+        for name in (field, field + ".keyword"):
+            try:
+                vals = ui._distinct_values(es, name)
+            except Exception:
+                continue                  # field absent or not aggregatable
+            if vals:
+                return vals
+        return set()
+
+    raw = distinct("to_venue") | distinct("from_venue")
     venues = sorted({v for v in raw if v and not ui._is_junk_venue(v)})
 
     # curated websites, where we have them
@@ -629,11 +728,27 @@ def main(argv):
         broken = set(verdicts.get("broken_tls_chain") or {})
 
     cache = load_cache()
+
+    def superseded(k, entry):
+        """Does the cache disagree with the current human verdict?
+
+        A cached answer normally wins, so a *new or corrected* verdict had no
+        way in: adding coirestaurant.com for a venue cached as absent left the
+        absence in place on every later run. A changed verdict reopens the
+        venue.
+        """
+        want = decided_site.get(k)
+        if want and (entry.get("site") or "") != want:
+            return True
+        return False
+
     # A "failed" entry is retried on the next run; only a real answer is final.
     # A human verdict is final too: closed venues are never re-probed.
     todo = [v for v in venues
             if norm(v) not in closed
-            and (norm(v) not in cache or cache[norm(v)].get("status") == "failed")]
+            and (norm(v) not in cache
+                 or cache[norm(v)].get("status") == "failed"
+                 or superseded(norm(v), cache[norm(v)]))]
     if limit:
         todo = todo[:limit]
 
@@ -643,8 +758,12 @@ def main(argv):
     for i, v in enumerate(todo, 1):
         k = norm(v)
         site = decided_site.get(k) or sites.get(v.lower())
+        # Pass the HOST to relax, not a boolean: safe_get compares it against
+        # the host actually being fetched, so redirect targets and image CDNs
+        # keep full certificate verification.
+        broken_host = _host(site) if (k in broken and site) else None
         r, status = resolve_venue(v, token=token, known_website=site,
-                                  broken_chain=k in broken)
+                                  broken_host=broken_host)
         if status == "failed":
             # do NOT cache: an outage must not look like "this venue has no site"
             cache[k] = {"url": None, "source": None, "status": "failed"}

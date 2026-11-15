@@ -51,11 +51,33 @@ def test_private_addresses_are_refused():
               "192.168.1.1", "[::1]", "0.0.0.0"):
         assert not _is_public_host(h), f"{h} must not be fetchable"
     assert _is_public_host("8.8.8.8")
+
+
+def _fixed_dns(monkeypatch, mapping):
+    """Answer getaddrinfo from a fixed table so these tests never need DNS.
+
+    They used real lookups for example.com, which made them fail on a machine
+    with no resolver even though the code under test was fine.
+    """
+    import socket as _socket
+
+    def fake(host, port, *a, **kw):
+        addr = mapping.get(host)
+        if addr is None:
+            raise _socket.gaierror("no such host (test table)")
+        return [(2, 1, 6, "", (addr, 0))]
+    monkeypatch.setattr(_socket, "getaddrinfo", fake)
+
+
+def test_public_host_is_accepted(monkeypatch):
+    from src.venue_images import _is_public_host
+    _fixed_dns(monkeypatch, {"example.com": "93.184.216.34"})
     assert _is_public_host("example.com")
 
 
-def test_non_http_schemes_are_refused():
+def test_non_http_schemes_are_refused(monkeypatch):
     from src.venue_images import _url_is_public
+    _fixed_dns(monkeypatch, {"example.com": "93.184.216.34"})
     assert not _url_is_public("file:///etc/passwd")
     assert not _url_is_public("http://127.0.0.1/x")
     assert not _url_is_public("http://169.254.169.254/latest/meta-data")
@@ -66,6 +88,7 @@ def test_safe_get_does_not_follow_redirect_into_private_space(monkeypatch):
     """A controlled domain redirecting to a private service must be stopped
     before the second request is made."""
     import src.venue_images as v
+    _fixed_dns(monkeypatch, {"example.com": "93.184.216.34"})
 
     class Resp:
         status_code = 302
@@ -77,8 +100,8 @@ def test_safe_get_does_not_follow_redirect_into_private_space(monkeypatch):
         calls.append(url)
         return Resp()
     monkeypatch.setattr("requests.get", fake_get)
-    # a real, resolvable public host so the FIRST hop is allowed through and the
-    # redirect itself is what gets blocked
+    # the FIRST hop is allowed through, so the redirect itself is what gets
+    # blocked — that is the behaviour under test
     assert v.safe_get("https://example.com/x") is None
     assert calls == ["https://example.com/x"], (
         "the redirect destination must never be requested")
@@ -87,11 +110,20 @@ def test_safe_get_does_not_follow_redirect_into_private_space(monkeypatch):
 # ── verification and caching semantics ──────────────────────────────────────
 
 def test_short_venue_names_never_pass_on_domain_alone():
-    """`24` was assigned theindependentsf.com because a 2-char name skipped the
-    token check. Short names must fail _is_official and be admitted only by the
-    page-names-venue check."""
+    """A 2-char name skipped the token check entirely, so `24` was assigned
+    theindependentsf.com. A short name is admitted on the domain only when it
+    LEADS the registered domain (coirestaurant.com for Coi); anything else has
+    to be proven by the page-names-the-venue check.
+
+    Rejecting every short-name hit outright — the previous behaviour — meant
+    coirestaurant.com was never even tried and got cached as absent forever.
+    """
     assert not _is_official("https://theindependentsf.com/", "24")
-    assert not _is_official("https://coirestaurant.com/", "Coi")
+    assert not _is_official("https://coinoprestaurant.com/", "Coi")
+    assert not _is_official("https://www.youtube.com/watch?v=coi", "Coi")
+    # name-led domains are candidates; the page check still decides
+    assert _is_official("https://coirestaurant.com/", "Coi")
+    assert _is_official("https://www.a16pizza.com/", "A16")
 
 
 def test_page_check_reads_text_not_markup():
@@ -143,31 +175,249 @@ def test_download_refuses_a_private_url():
     assert download_image("http://169.254.169.254/x.jpg", "x") is None
 
 
-def test_blog_and_search_urls_are_not_booking_pages():
+def test_blog_and_search_urls_are_not_booking_pages(monkeypatch):
     """A "Book on Resy" link pointed at blog.resy.com and at resy search pages.
 
-    Neither is where a diner books; offering them is a broken promise.
+    Neither is where a diner books; offering them is a broken promise. This
+    drives the REAL find_booking_links with a stubbed SERP — the previous
+    version re-implemented the filters beside it, so it still passed if the
+    production function accepted every bad URL.
     """
+    import src.brightdata as bd
     import src.venue_images as v
-    cases = [
+
+    bad = [
         "https://blog.resy.com/2024/04/rich-table-perfect-san-francisco-restaurant/",
         "https://resy.com/city/san-francisco?query=Rich%20Table",
         "https://www.opentable.com/s?term=rich%20table",
         "https://www.exploretock.com/search?q=rich+table",
         "https://resy.com/stories/something",
     ]
-    real = v.find_booking_links
-    def fake(venue):
-        return {}
-    # assert via the filter logic directly
-    import urllib.parse
-    for url in cases:
-        h = v._host(url)
-        path = urllib.parse.unquote(urllib.parse.urlsplit(url).path).lower()
-        sub = h.split(".")[0]
-        bad_path = any(s in path for s in ("/city/", "/search", "/discover", "/blog/",
-                                          "/stories/", "/article/")) \
-            or path.rstrip("/") in ("/s", "/searches", "")
-        bad_sub = sub in ("blog", "help", "support", "news", "press", "about")
-        bad_query = "query=" in (urllib.parse.urlsplit(url).query or "").lower()
-        assert bad_path or bad_sub or bad_query, f"{url} would pass as a booking page"
+    monkeypatch.setattr(bd, "serp", lambda q, num=10: [{"url": u, "title": ""} for u in bad])
+    assert v.find_booking_links("Rich Table") == {}
+
+
+def test_lookalike_platform_domains_are_not_booking_links(monkeypatch):
+    """`fake-resy.com/rich-table` passed a substring host test and was saved as
+    the Resy link for Rich Table."""
+    import src.brightdata as bd
+    import src.venue_images as v
+
+    bad = [
+        "https://fake-resy.com/rich-table",
+        "https://notopentable.com/r/rich-table-san-francisco",
+        "https://resy.com.evil.example/rich-table",
+    ]
+    monkeypatch.setattr(bd, "serp", lambda q, num=10: [{"url": u, "title": ""} for u in bad])
+    assert v.find_booking_links("Rich Table") == {}
+
+
+def test_booking_link_must_match_a_slug_boundary(monkeypatch):
+    """`coi` sits inside `coin-op`, so Coi was handed Coin-Op's booking page."""
+    import src.brightdata as bd
+    import src.venue_images as v
+
+    monkeypatch.setattr(bd, "serp",
+                        lambda q, num=10: [{"url": "https://www.opentable.com/r/coin-op-san-francisco",
+                                            "title": ""}])
+    assert v.find_booking_links("Coi") == {}
+
+    # the real page still resolves
+    monkeypatch.setattr(bd, "serp",
+                        lambda q, num=10: [{"url": "https://www.opentable.com/r/coi-san-francisco",
+                                            "title": ""}])
+    assert v.find_booking_links("Coi").get("opentable") == \
+        "https://www.opentable.com/r/coi-san-francisco"
+
+
+# ── PR #12 findings: security and fallback semantics ─────────────────────────
+
+def test_tls_exception_is_scoped_to_one_host(monkeypatch):
+    """The Commis exception must not relax verification anywhere else.
+
+    safe_get took a boolean, so the disabled check applied to every redirect
+    hop and to any image CDN — an attacker between us and those hosts could
+    have supplied a false venue photo.
+    """
+    import src.venue_images as v
+    monkeypatch.setattr(v, "_url_is_public", lambda u: True)
+
+    seen = []
+    def fake_get(url, **kw):
+        seen.append((url, kw.get("verify", True)))
+        if kw.get("verify") is False:
+            raise AssertionError(f"certificate checks were disabled for {url}")
+        raise RuntimeError("CERTIFICATE_VERIFY_FAILED: unable to verify")
+    monkeypatch.setattr("requests.get", fake_get)
+
+    # a different host must never be relaxed, even with the flag set
+    assert v.safe_get("https://cdn.example.net/img.jpg",
+                      allow_broken_chain_for="commisrestaurant.com") is None
+    assert all(verify is not False for _, verify in seen)
+
+
+def test_tls_exception_applies_to_the_named_host(monkeypatch):
+    import src.venue_images as v
+    monkeypatch.setattr(v, "_url_is_public", lambda u: True)
+
+    class Ok:
+        status_code = 200
+        headers = {}
+        url = "https://commisrestaurant.com/"
+        text = "<h1>Commis</h1>"
+
+    calls = []
+    def fake_get(url, **kw):
+        calls.append(kw.get("verify", True))
+        if kw.get("verify") is False:
+            return Ok()
+        raise RuntimeError("CERTIFICATE_VERIFY_FAILED")
+    monkeypatch.setattr("requests.get", fake_get)
+
+    r = v.safe_get("https://commisrestaurant.com/",
+                   allow_broken_chain_for="commisrestaurant.com")
+    assert r is not None
+    assert False in calls, "the named host was never retried unverified"
+
+
+def test_redirect_target_never_inherits_the_tls_exception(monkeypatch):
+    import src.venue_images as v
+    monkeypatch.setattr(v, "_url_is_public", lambda u: True)
+
+    class Redirect:
+        status_code = 302
+        headers = {"location": "https://cdn.example.net/x.jpg"}
+        url = "https://commisrestaurant.com/"
+        text = ""
+    calls = []
+    def fake_get(url, **kw):
+        calls.append((url, kw.get("verify", True)))
+        if url.startswith("https://commisrestaurant.com"):
+            return Redirect()
+        raise RuntimeError("CERTIFICATE_VERIFY_FAILED")
+    monkeypatch.setattr("requests.get", fake_get)
+    assert v.safe_get("https://commisrestaurant.com/",
+                      allow_broken_chain_for="commisrestaurant.com") is None
+    # the CDN hop must have been attempted WITH verification
+    cdn = [c for c in calls if "cdn.example.net" in c[0]]
+    assert cdn and all(verify is not False for _, verify in cdn)
+
+
+def test_html_entities_are_decoded_before_name_matching():
+    """`Sons &amp; Daughters` normalized to `sonsampdaughters`, so the venue's
+    real page failed verification and was cached as absent."""
+    from src.venue_images import _page_names_venue
+    assert _page_names_venue("<h1>Sons &amp; Daughters</h1>", "Sons & Daughters")
+
+
+def test_og_image_decodes_entities_in_query_strings():
+    from src.venue_images import _og_image
+    html = '<meta property="og:image" content="https://x.com/p.jpg?w=1&amp;h=2">'
+    assert _og_image(html) == "https://x.com/p.jpg?w=1&h=2"
+
+
+def test_short_name_page_check_needs_a_whole_token():
+    """`Coi` matched inside `Coin-Op`, handing the venue a stranger's page."""
+    from src.venue_images import _page_names_venue
+    assert not _page_names_venue("<h1>Coin-Op</h1>", "Coi")
+    assert _page_names_venue("<h1>Coi</h1>", "Coi")
+
+
+def test_tier_counts_only_after_the_image_downloads(monkeypatch):
+    """A declared image that 403s must not skip the later tiers.
+
+    The website tier returned success on finding an og:image URL, so social and
+    Mapbox were never tried; the final download then cleared `url`, leaving no
+    photo even though another tier could have supplied one.
+    """
+    import src.venue_images as v
+
+    monkeypatch.setattr(v, "find_official_site", lambda venue, attempts=3:
+                        ("https://venue.example/", "found"))
+    monkeypatch.setattr(v, "find_booking_links", lambda venue: {})
+    monkeypatch.setattr(v, "tier_website", lambda *a, **k:
+                        {"url": "https://venue.example/broken.jpg",
+                         "source": "venue-website", "site": "https://venue.example/"})
+    monkeypatch.setattr(v, "tier_social", lambda *a, **k:
+                        {"url": "https://cdn.example/good.jpg", "source": "venue-social"})
+
+    def fake_download(url, key, **kw):
+        return "venue-images/x.jpg" if url.endswith("good.jpg") else None
+    monkeypatch.setattr(v, "download_image", fake_download)
+
+    rec, status = v.resolve_venue("Test Venue", use_serp=True)
+    assert status == "found"
+    assert rec["url"] == "venue-images/x.jpg", "fallback tier was never reached"
+    assert rec["source"] == "venue-social"
+
+
+def test_booking_discovery_runs_without_a_website(monkeypatch):
+    """A venue whose only web presence is its booking page has no official site
+    by definition, and its booking link was never searched for."""
+    import src.venue_images as v
+
+    monkeypatch.setattr(v, "find_official_site", lambda venue, attempts=3: (None, "absent"))
+    called = []
+    monkeypatch.setattr(v, "find_booking_links",
+                        lambda venue: called.append(venue) or {"resy": "https://resy.com/x"})
+    monkeypatch.setattr(v, "tier_website", lambda *a, **k: None)
+    monkeypatch.setattr(v, "tier_social", lambda *a, **k: None)
+
+    rec, status = v.resolve_venue("Booking Only", use_serp=True)
+    assert called == ["Booking Only"]
+    assert status == "found"
+    assert rec["booking"] == {"resy": "https://resy.com/x"}
+
+
+def test_social_tier_fetches_the_platform_it_saw(monkeypatch):
+    """A facebook.com link was opened as instagram.com/<handle>, which confirms
+    nothing — and the photo was accepted with no name check."""
+    import src.venue_images as v
+
+    fetched = []
+
+    class R:
+        status_code = 200
+        text = ('<a href="https://www.facebook.com/somebistro">fb</a>'
+                '<h1>Some Bistro</h1>'
+                '<meta property="og:image" content="https://cdn.example/p.jpg">')
+        url = "https://www.facebook.com/somebistro/"
+    monkeypatch.setattr(v, "safe_get", lambda u, **k: fetched.append(u) or R())
+    rec = v.tier_social("Some Bistro", "https://somebistro.example/")
+    assert any("facebook.com" in u for u in fetched)
+    assert not any("instagram.com" in u for u in fetched), "wrong platform fetched"
+    assert rec and rec["site"] == "facebook.com"
+
+
+def test_social_photo_is_rejected_when_the_profile_does_not_name_the_venue(monkeypatch):
+    import src.venue_images as v
+
+    class R:
+        status_code = 200
+        text = '<h1>Someone Else Entirely</h1><meta property="og:image" content="https://cdn.example/p.jpg">'
+        url = "https://www.instagram.com/handle/"
+    monkeypatch.setattr(v, "safe_get", lambda u, **k: R())
+    assert v.tier_social("Some Bistro", "https://somebistro.example/") is None
+
+
+def test_venue_read_uses_the_mapped_field_not_a_missing_subfield():
+    """to_venue/from_venue are plain keyword fields, so `.keyword` does not
+    exist on an index ensure_index created. Reading it returned nothing and the
+    resolver finished "successfully" having resolved zero venues."""
+    import inspect
+    import src.venue_images as v
+    src = inspect.getsource(v.main)
+    assert '"to_venue.keyword"' not in src and '"from_venue.keyword"' not in src, \
+        "main still reads a subfield that a fresh index does not have"
+    assert 'distinct("to_venue")' in src
+    assert 'distinct("from_venue")' in src
+
+
+def test_a_changed_verdict_reopens_a_cached_venue():
+    """A cached answer used to win unconditionally, so a corrected website
+    verdict never reached the resolution loop."""
+    import inspect
+    import src.venue_images as v
+    src = inspect.getsource(v.main)
+    assert "superseded(" in src, "no cache invalidation on verdict change"
+    assert 'entry.get("site")' in src, "verdict is not compared to the cache"
