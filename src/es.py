@@ -3,6 +3,7 @@ import os
 
 from src.roles import role_bucket
 from src.eras import era_bucket, _year
+from src.venue_images import canonical_venue
 from src.hoods import load_hood_maps, hood_for
 
 INDEX = "bone-fides-edges"
@@ -77,6 +78,12 @@ def build_edge_doc(edge):
         "person_text": edge["person"],
         "from_venue": edge.get("from_venue"),
         "to_venue": edge.get("to_venue"),
+        # Canonical venue identities, so the same restaurant written two ways
+        # counts as one. The corpus held 1,114 raw names for 442 venues:
+        # "Jardinière" (13 edges) and "Jardiniere" (15) were separate nodes,
+        # which makes every per-venue count wrong and splits a dossier in two.
+        "from_venue_key": canonical_venue(edge.get("from_venue")),
+        "to_venue_key": canonical_venue(edge.get("to_venue")),
         "venue_text": " ".join(venue_bits) if venue_bits else edge.get("role", ""),
         "role": edge.get("role"),
         "role_bucket": role_bucket(edge.get("role")),
@@ -110,6 +117,10 @@ INDEX_SETTINGS = {
             "person_text": {"type": "text"},
             "from_venue": {"type": "keyword"},
             "to_venue": {"type": "keyword"},
+            # Canonical identities: the same restaurant written with or without
+            # an accent must be one node, not two.
+            "from_venue_key": {"type": "keyword"},
+            "to_venue_key": {"type": "keyword"},
             "venue_text": {"type": "text"},
             "role": {"type": "text"},
             "role_bucket": {"type": "keyword"},
@@ -160,7 +171,8 @@ def ensure_index(es, index=INDEX):
         props = INDEX_SETTINGS["mappings"]["properties"]
         es.indices.put_mapping(
             index=index,
-            properties={k: props[k] for k in ("published_at", "year")})
+            properties={k: props[k] for k in ("published_at", "year",
+                                               "from_venue_key", "to_venue_key")})
     except Exception:
         pass  # older clusters or a race with another writer; never block indexing
 

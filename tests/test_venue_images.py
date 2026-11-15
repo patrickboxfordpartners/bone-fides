@@ -809,3 +809,41 @@ def test_a_weekly_schedule_is_not_a_closure():
     assert not _announces_closure("<p>Closed on Thanksgiving Day.</p>")
     assert not _announces_closure("<p>Sundays: CLOSED</p>")
     assert not _announces_closure("<p>We are open Tuesday to Sunday.</p>")
+
+
+# ── one restaurant written two ways is one identity ───────────────────────
+
+def test_formatting_variants_fold_to_one_venue():
+    """The corpus held 1,114 raw names for 442 venues: "Jardinière" (13 edges)
+    and "Jardiniere" (15) were separate nodes, so every per-venue count was
+    wrong and a dossier split in two."""
+    from src.venue_images import canonical_venue as c
+    for a, b in [("Jardinière", "Jardiniere"), ("Tosca Café", "Tosca Cafe"),
+                 ("AL's Deli", "AL’s Deli"), ("À Côté", "A Cote"),
+                 ("Baumé", "Baume"), ("COI", "Coi"),
+                 # parenthetical is formatting when the words are identical
+                 ("Ritz Carlton (San Francisco)", "Ritz-Carlton San Francisco"),
+                 ("Bouchon (Beverly Hills)", "Bouchon Beverly Hills")]:
+        assert c(a) == c(b), f"{a!r} and {b!r} should be one venue"
+
+
+def test_different_locations_stay_separate():
+    """Merging these would put one restaurant's moves on another's dossier."""
+    from src.venue_images import canonical_venue as c
+    for a, b in [("Stars (San Francisco)", "Stars (Seattle)"),
+                 ("A16", "A16 (Oakland location)"),
+                 ("4505 Burgers & BBQ (Divisadero location)",
+                  "4505 Burgers & BBQ (Oakland location)"),
+                 # a rename is not a formatting difference
+                 ("Alfred's", "Alfred's Steakhouse")]:
+        assert c(a) != c(b), f"{a!r} and {b!r} must stay apart"
+
+
+def test_build_edge_doc_stamps_canonical_venue_keys():
+    from src.es import build_edge_doc
+    from src.venue_images import canonical_venue
+    d = build_edge_doc({"person": "X", "source_url": "u",
+                        "from_venue": "Jardinière", "to_venue": "Tosca Café"})
+    assert d["from_venue_key"] == canonical_venue("Jardinière") == "jardiniere"
+    assert d["to_venue_key"] == canonical_venue("Tosca Café") == "toscacafe"
+    assert d["from_venue"] == "Jardinière"       # display form preserved

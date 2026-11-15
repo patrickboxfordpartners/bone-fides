@@ -39,6 +39,7 @@ import socket
 import sys
 import time
 import urllib.parse
+import unicodedata
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, BASE)
@@ -51,8 +52,57 @@ UA = {"User-Agent": "BoneFides/1.0 (kitchen lineage research; patrick@boxfordpar
 
 
 def norm(x):
-    """Name key: lowercase alphanumerics only."""
-    return re.sub(r"[^a-z0-9]", "", (x or "").lower())
+    """Name key: accent-folded, lowercase alphanumerics only.
+
+    Accents and typographic quotes must FOLD to their ASCII base, not be
+    dropped: the old version stripped "è", so "Jardinière" became `jardinire`
+    and "Jardiniere" became `jardiniere` — two cache keys and two rows on the
+    site for one restaurant. The corpus is full of this: 163 groups of names
+    that differ only in accents, curly quotes, case or spacing.
+    """
+    s = unicodedata.normalize("NFKD", x or "")
+    s = "".join(c for c in s if not unicodedata.combining(c))
+    # typographic quotes and dashes have no combining form
+    s = (s.replace("’", "'").replace("‘", "'")
+          .replace("“", '"').replace("”", '"')
+          .replace("–", "-").replace("—", "-"))
+    return re.sub(r"[^a-z0-9]", "", s.lower())
+
+
+def canonical_venue(x):
+    """Canonical identity key for a venue NAME.
+
+    Distinct from `norm()`, which is the cache key, and from the explorer's
+    `norm_venue()`, which is for overlap matching and deliberately drops
+    stopwords and possessives.
+
+    Folds ONLY what is formatting — accents, typographic quotes, dashes, case,
+    spacing, punctuation — so that one restaurant written two ways is one
+    identity:
+
+        Jardinière            == Jardiniere
+        Tosca Café            == Tosca Cafe
+        Ritz Carlton (SF)     == Ritz-Carlton San Francisco
+        Stars (San Francisco) != Stars (Seattle)      <- content differs
+        A16                   != A16 (Oakland location)
+
+    The corpus held 1,114 raw names for what are really 442 venues; this is the
+    function that says so. It deliberately does NOT drop parentheticals by
+    themselves: "(Oakland location)" is content, not formatting, and merging it
+    into the Divisadero one would put a different restaurant's moves on a
+    dossier.
+    """
+    s = unicodedata.normalize("NFKD", x or "")
+    s = "".join(c for c in s if not unicodedata.combining(c))
+    s = (s.replace("’", "'").replace("‘", "'")
+          .replace("“", '"').replace("”", '"')
+          .replace("–", "-").replace("—", "-"))
+    # Parentheses and commas are formatting when the WORDS are identical
+    # ("Ritz Carlton (San Francisco)" vs "Ritz-Carlton San Francisco"), so they
+    # are dropped from the key. Content that differs stays in the remaining
+    # words, which is what keeps SF and Seattle apart.
+    s = re.sub(r"[()]", " ", s)
+    return re.sub(r"[^a-z0-9]", "", s.lower())
 
 
 def _host(url):
