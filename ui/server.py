@@ -826,6 +826,10 @@ def fetch_person_edges(es, names, limit=100):
             # rows by the same facets the ranked window used
             "role_bucket": s.get("role_bucket"),
             "era_bucket": s.get("era_bucket"),
+            # year travels with the facet stamps: a completion row merged next
+            # to a ranked row must partition on the same time key, or the same
+            # move splits into an e2010s row and a y2013 row.
+            "year": s.get("year"),
             "venue_hoods": s.get("venue_hoods") or [],
             "mentor": s.get("mentor"),
             "published_at": s.get("published_at"),

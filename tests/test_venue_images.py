@@ -644,3 +644,46 @@ def test_limit_zero_resolves_nothing():
     src = inspect.getsource(v.main)
     assert "if limit is not None:" in src
     assert "max(0, int(" in src
+
+
+# ── round 11 findings (Greptile on PR #14) ──────────────────────────────────
+
+def test_decade_phrases_do_not_become_exact_years():
+    """"the 1970s" names a span. Stamping year=1970 displays and sorts an
+    exact year the citation never supported."""
+    from src.eras import _year, era_bucket
+    assert _year("1970s") is None
+    assert _year("mid-1980s") is None
+    assert _year("1990s") is None
+    # the decade stamp survives, which is the honest grain
+    assert era_bucket("1970s") == "pre-1990"
+    assert era_bucket("1990s") == "1990s"
+    # a real year is still a year
+    assert _year("October 2014") == 2014
+    assert _year("fall 2017") == 2017
+
+
+def test_completion_rows_carry_year_in_both_twins():
+    """fetch_person_edges requested year but dropped it, so a completion row
+    merged beside a ranked row partitioned on a different time key and one move
+    split into an e2010s row and a y2013 row."""
+    import inspect
+    import src.venue_images  # noqa: F401  (import path sanity)
+    import importlib.util, os
+    root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    for rel in ("ui/server.py", "vercel-app/api/search.py"):
+        src = open(os.path.join(root, rel), encoding="utf-8").read()
+        # the completion builder must copy year out of _source
+        assert src.count('"year": s.get("year")') >= 2, (
+            f"{rel}: year is missing from one of the two payload paths")
+
+
+def test_resolve_errors_are_reported_not_swallowed():
+    """A disk or code error could fail hundreds of venues while the run printed
+    only progress and exited 0."""
+    import inspect
+    import src.venue_images as v
+    src = inspect.getsource(v.main)
+    assert "failed.append" in src, "per-venue errors are discarded"
+    assert "venues raised while resolving" in src, "no failure report"
+    assert "return 1" in src, "a failed run must not exit 0"

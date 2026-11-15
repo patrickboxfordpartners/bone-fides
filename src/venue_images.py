@@ -1022,6 +1022,8 @@ def main(argv):
         if flag in argv:
             workers = max(1, int(argv[argv.index(flag) + 1]))
 
+    failed = []
+
     def resolve_one(v):
         k = norm(v)
         site = decided_site.get(k) or sites.get(v.lower())
@@ -1033,16 +1035,21 @@ def main(argv):
             r, status = resolve_venue(v, token=token, known_website=site,
                                       broken_host=broken_host)
         except Exception as e:            # one venue must not kill the run
-            return v, None, "failed", None
-        return v, r, status, broken_host
+            # Recovering is right; swallowing silently is not. A disk error or
+            # a code fault would otherwise fail hundreds of venues while the
+            # run printed only progress and exited 0.
+            return v, None, "failed", (type(e).__name__, str(e)[:160])
+        return v, r, status, None
 
     hits, done = 0, 0
     from concurrent.futures import ThreadPoolExecutor, as_completed
     with ThreadPoolExecutor(max_workers=workers) as ex:
         futures = {ex.submit(resolve_one, v): v for v in todo}
         for fut in as_completed(futures):
-            v, r, status, _ = fut.result()
+            v, r, status, err = fut.result()
             k = norm(v)
+            if err:
+                failed.append((v, err))
             if status == "failed":
                 # do NOT cache: an outage must not look like "this venue has no site"
                 cache[k] = {"url": None, "source": None, "status": "failed"}
@@ -1063,6 +1070,15 @@ def main(argv):
     found = sum(1 for x in cache.values() if x.get("url"))
     print(f"done: {found}/{len(cache)} venues have an image "
           f"({found/max(len(cache),1)*100:.0f}%) → {CACHE}")
+    if failed:
+        # Loud, and non-zero exit: a run that failed venues silently looked
+        # identical to a clean one.
+        print(f"\n{len(failed)} venues raised while resolving:", flush=True)
+        for v, (kind, msg) in failed[:20]:
+            print(f"  {v[:40]:40} {kind}: {msg}")
+        if len(failed) > 20:
+            print(f"  ... and {len(failed) - 20} more")
+        return 1
     return 0
 
 
