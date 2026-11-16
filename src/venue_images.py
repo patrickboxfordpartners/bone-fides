@@ -924,12 +924,42 @@ def _announces_closure(html):
     # Two different strengths here, and treating them alike is what marked open
     # restaurants shut.
     #
-    # STRONG: "it is with great sadness" / "we are sad to announce" are
-    # first-person farewell lines an operating restaurant does not publish.
-    # They stand alone.
+    # Farewell phrases are never sufficient ALONE. "It is with great sadness"
+    # is published by open restaurants announcing a founder's death, a chef
+    # leaving, or a cancelled service:
+    #
+    #   "It is with great sadness that we announce the passing of our founder."
+    #   "We are sad to announce that our head chef is leaving."
+    #   "We regret to announce that tonight's service is cancelled."
+    #
+    # Treating those as closure closed every one of those venues permanently.
+    # The phrase must be FOLLOWED, in the same breath, by an actual closure
+    # object — doors, a final service, a last day.
+    _CLOSURE_OBJECT = (
+        r"(?:clos\w*|shut\w*|doors?|our\s+doors|service|services|"
+        r"operations?|business|kitchen|restaurant|venue|last\s+day|"
+        r"final\s+day|farewell)"
+    )
     for phrase in ("it is with great sadness", "we are sad to announce",
-                   "we regret to announce", "it is with a heavy heart"):
-        if phrase in low:
+                   "we regret to announce", "it is with a heavy heart",
+                   "it is with sadness"):
+        for m in re.finditer(re.escape(phrase), low):
+            # look at the next ~90 chars: the closure has to be what the
+            # sentence is ABOUT, not merely somewhere else on the page
+            tail = low[m.end():m.end() + 90]
+            if not re.search(r"\b" + _CLOSURE_OBJECT + r"\b", tail):
+                continue
+            # The object must be a CLOSURE, not a schedule or a departure.
+            # Three ways a nearby closure word is still routine:
+            #   "tonight's service is cancelled"      — a single service
+            #   "we close our doors each night"       — a recurring close
+            #   "closed for the holidays"             — a temporary shutdown
+            if re.search(r"\b(?:tonight|today|tomorrow|this\s+(?:evening|week|"
+                         r"weekend)|each\s+(?:night|day|evening)|every\s+(?:night|"
+                         r"day|evening)|nightly|daily|for\s+the\s+(?:evening|night|"
+                         r"holidays?|season|winter|summer|spring|fall|private|"
+                         r"maintenance|renovation)|until\s+)\b", tail):
+                continue
             return True
 
     # WEAK: "thank you for all the wonderful reviews" is written by OPEN

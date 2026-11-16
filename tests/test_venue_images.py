@@ -812,8 +812,14 @@ def test_a_closure_announcement_is_detected():
     from src.venue_images import _announces_closure
     assert _announces_closure("<p>Range Restaurant San Francisco is Now Closed</p>")
     assert _announces_closure("<p>Trick Dog has closed. Thank you for the years.</p>")
-    assert _announces_closure("<p>It is with great sadness that we announce...</p>")
     assert _announces_closure("<p>We are closed. Thank you for 20 years.</p>")
+    # A bare farewell with no closure object is NOT a closure. This assertion
+    # used to accept "...we announce..." alone, which is precisely the bug that
+    # closed open restaurants announcing a death or a departure. The phrase
+    # needs to name what it is announcing.
+    assert not _announces_closure("<p>It is with great sadness that we announce...</p>")
+    assert _announces_closure(
+        "<p>It is with great sadness that we announce we have closed.</p>")
 
 
 def test_a_weekly_schedule_is_not_a_closure():
@@ -1201,4 +1207,69 @@ def test_a_farewell_plus_a_weekly_schedule_is_still_open():
         "This location is now closed",
     ]
     for p in real_closures:
+        assert v._announces_closure(p), f"real closure missed: {p!r}"
+
+
+def test_a_farewell_phrase_alone_is_not_a_closure():
+    """THE finding, finally reproduced.
+
+    The bot said this five times with the same two example phrases, both of
+    which I had already fixed. Testing those phrases was the mistake: the class
+    of bug is that a farewell line was accepted ALONE. Open restaurants publish
+    "it is with great sadness" about a founder's death, a chef leaving, or a
+    cancelled service — and every one of those was marked permanently closed.
+
+    A farewell phrase now needs a closure object in the same sentence, and that
+    object must not be a schedule or a recurrence.
+    """
+    import src.venue_images as v
+
+    open_pages = [
+        "It is with great sadness that we announce the passing of our founder.",
+        "It is with great sadness that we say goodbye to our pastry chef.",
+        "We are sad to announce that our head chef is leaving.",
+        "We regret to announce that tonight's service is cancelled.",
+        "It is with a heavy heart that we close our doors each night at 10pm.",
+        "We are sad to announce our summer menu has ended.",
+    ]
+    for p in open_pages:
+        assert not v._announces_closure(p), f"open restaurant marked shut: {p!r}"
+
+    closures = [
+        "It is with great sadness that we announce we have closed.",
+        "We are sad to announce that we are closing our doors after 20 years.",
+        "It is with great sadness that we announce our final service.",
+        "It is with a heavy heart that we announce the closure of the restaurant.",
+    ]
+    for p in closures:
+        assert v._announces_closure(p), f"real closure missed: {p!r}"
+
+
+def test_closure_detection_full_matrix():
+    """Both directions, every phrase shape the corpus actually contains."""
+    import src.venue_images as v
+
+    open_pages = [
+        "Thank you for all the wonderful reviews",
+        "Our kitchen has closed for the evening",
+        "Thank you for all the wonderful reviews. We are closed on Sundays.",
+        "Our kitchen has closed for the evening. Thank you for everything!",
+        "We are closed on Sundays and Mondays.",
+        "The dining room is now closed for the season.",
+        "Closed (private events only)",
+        "Thank you for a wonderful year. See you in spring!",
+    ]
+    for p in open_pages:
+        assert not v._announces_closure(p), f"open restaurant marked shut: {p!r}"
+
+    closures = [
+        "We have closed our doors.",
+        "The restaurant has permanently closed.",
+        "Range Restaurant San Francisco is Now Closed",
+        "Trick Dog has closed. Thank you for the years.",
+        "We are closed. Thank you for 20 years.",
+        "This location is now closed",
+        "We will not be reopening.",
+    ]
+    for p in closures:
         assert v._announces_closure(p), f"real closure missed: {p!r}"
