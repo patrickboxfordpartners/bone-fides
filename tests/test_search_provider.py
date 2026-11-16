@@ -21,6 +21,20 @@ import pytest
 from src import firecrawl, search
 
 
+@pytest.fixture(autouse=True)
+def _isolate_balance_cache():
+    """The balance cache is module-global and lives for the whole process.
+
+    Without this, one test's mocked balance leaks into the next and the failure
+    appears in an unrelated test — which is exactly what happened: a test that
+    cached 5 credits left a later test believing Firecrawl was spent.
+    """
+    import src.search as s
+    s._balance_cache.clear()
+    yield
+    s._balance_cache.clear()
+
+
 # ── provider selection ──────────────────────────────────────────────────────
 
 def test_explicit_override_wins(monkeypatch):
@@ -29,8 +43,17 @@ def test_explicit_override_wins(monkeypatch):
 
 
 def test_firecrawl_is_preferred_when_a_key_exists(monkeypatch):
+    """Mock the BALANCE too, not just availability.
+
+    provider() consults the credit balance to decide whether Firecrawl is still
+    usable, so a test that only mocks available() calls the live endpoint and
+    starts failing once the real account drops below the floor — a test whose
+    result changes as money is spent.
+    """
     monkeypatch.delenv("SEARCH_PROVIDER", raising=False)
     monkeypatch.setattr(firecrawl, "available", lambda: True)
+    monkeypatch.setattr(firecrawl, "credits_remaining", lambda: 5000)
+    monkeypatch.setattr(search, "_balance_cache", {})
     assert search.provider() == "firecrawl"
 
 
@@ -241,6 +264,7 @@ def test_chain_prefers_firecrawl_when_it_has_credits(monkeypatch):
     monkeypatch.setattr(firecrawl, "available", lambda: True)
     monkeypatch.setattr(firecrawl, "credits_remaining", lambda: 5000)
     monkeypatch.setattr(s, "_tavily_available", lambda: True)
+    monkeypatch.setattr(s, "balance", lambda name, force=False: 5000 if name == "firecrawl" else None)
     monkeypatch.setattr(firecrawl, "search",
                         lambda q, num=20: [{"url": "https://fc.example/", "title": "F"}])
     monkeypatch.setattr(s.tavily, "search",
@@ -344,3 +368,68 @@ def test_budget_flag_caps_the_queue_and_says_so(monkeypatch):
     assert "--budget" in src
     assert "queued for the next period" in src, (
         "the run must report what it deferred, not just what it did")
+
+
+# ── the balance cache (finding: a stalled endpoint must not stall search) ───
+
+def test_balance_is_cached_rather_than_fetched_per_search(monkeypatch):
+    """The balance endpoint is a separate round-trip with a 20s timeout.
+
+    Checking it before every search added up to 80 seconds of dead waiting per
+    venue when that endpoint stalled while search itself still worked.
+    """
+    import src.search as s
+    monkeypatch.setattr(s, "firecrawl", firecrawl)
+    monkeypatch.setattr(s, "_balance_cache", {})
+
+    calls = {"n": 0}
+
+    def fake():
+        calls["n"] += 1
+        return 900
+
+    monkeypatch.setattr(firecrawl, "credits_remaining", fake)
+    assert s.balance("firecrawl") == 900
+    assert s.balance("firecrawl") == 900
+    assert s.balance("firecrawl") == 900
+    assert calls["n"] == 1, "the balance must be cached, not re-fetched per search"
+
+
+def test_cached_balance_is_debited_by_local_spend(monkeypatch):
+    """A cached number must not stay stale through a long run, or the chain
+    keeps believing Firecrawl has credits it has already spent."""
+    import src.search as s
+    monkeypatch.setattr(s, "_balance_cache", {"firecrawl": {"at": 1e12, "value": 500}})
+    s._spend("firecrawl")
+    s._spend("firecrawl")
+    assert s._balance_cache["firecrawl"]["value"] == 500 - 2 * s.CREDITS_PER_CALL["firecrawl"]
+
+
+def test_capacity_uses_the_same_provider_list_as_search(monkeypatch):
+    """The finding: with SEARCH_PROVIDER=tavily, capacity() also counted
+    Firecrawl's credits, so --budget queued more venues than the run could pay
+    for and the tail came back `failed`."""
+    import src.search as s
+    monkeypatch.setenv("SEARCH_PROVIDER", "tavily")
+    monkeypatch.setattr(s, "provider_ok", lambda n: n in ("firecrawl", "tavily"))
+    monkeypatch.setattr(s, "budget", lambda force=False: {
+        "firecrawl": {"remaining": 1000}, "tavily": {"remaining": 400},
+        "brightdata": {"remaining": None}})
+    monkeypatch.setattr(s, "_balance_cache", {})
+
+    can, plan = s.capacity()
+    assert can == 100, plan                      # 400 credits / 4 per venue
+    assert all("firecrawl" not in p for p in plan), (
+        "capacity must not count a provider the run cannot call")
+
+
+def test_affordable_refuses_a_run_it_cannot_pay_for(monkeypatch):
+    import src.search as s
+    monkeypatch.delenv("SEARCH_PROVIDER", raising=False)
+    monkeypatch.setattr(s, "provider_ok", lambda n: n == "tavily")
+    monkeypatch.setattr(s, "budget", lambda force=False: {
+        "firecrawl": {"remaining": None}, "tavily": {"remaining": 40},
+        "brightdata": {"remaining": None}})
+    ok, why = s.affordable(100)                  # 100 venues need 400 credits
+    assert not ok
+    assert "uncovered" in why

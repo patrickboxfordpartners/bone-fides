@@ -1355,8 +1355,13 @@ def main(argv):
     # run that insists on finishing never starts. Each month spends what it has
     # and the next picks up the rest — which only works if the queue is STABLE,
     # so it is ordered deterministically and cached answers are skipped above.
+    #
+    # The check runs AFTER the final work list exists (limit applied, refresh
+    # accounted for) and BEFORE the first request. affordable() previously had
+    # no caller outside the tests, so the guarantee it describes was never in
+    # force: a run would spend its last credits and then keep failing venues.
+    from src import search as _search
     if "--budget" in argv:
-        from src import search as _search
         can, plan = _search.capacity()
         print("search capacity: " + ("; ".join(plan) if plan else "none"))
         if can <= 0:
@@ -1369,6 +1374,19 @@ def main(argv):
 
     if limit is not None:
         todo = todo[:limit]
+
+    # Final gate, on the exact list about to be submitted. --budget caps by
+    # preference; this refuses outright when even the capped list cannot be
+    # paid for, which is the case a cap alone cannot catch (a shorter list than
+    # capacity but a provider that flipped to spent since capacity was read).
+    if todo and not os.environ.get("VENUE_IMAGES_NO_BUDGET_CHECK"):
+        ok, why = _search.affordable(len(todo))
+        if not ok:
+            print(f"refusing to start: {why}")
+            print(f"  {len(todo)} venues queued; re-run with --budget to spend "
+                  f"what is available now, or wait for the allowance to reset.")
+            return 1
+        print(f"budget ok: {why}")
 
     print(f"{len(venues)} venue names · {len(cache)} cached · "
           f"{len(closed)} closed by verdict · resolving {len(todo)}")

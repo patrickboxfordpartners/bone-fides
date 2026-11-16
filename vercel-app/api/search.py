@@ -1080,8 +1080,10 @@ def stats(es):
 _JUNK_WORDS = ("tbd", "to be determined", "facebook", "walgreen", "google",
                "salesforce", "amazon", "apple inc", "airbnb", "uber",
                "doordash", "lyft", "bon appetit", "proper food", "mixt",
-               "test ", "unknown", "null", "none",
-               "plumpjack empire", "plumpjack group")
+               "test ", "unknown", "null", "none")
+
+# Whole-name group descriptors (see ui/server.py).
+_GROUP_NAMES = ("plumpjack empire", "plumpjack group")
 _CHAIN_NAMES = ("mcdonald", "starbucks", "burger king", "jack in the box",
                 "kentucky fried", "little caesars", "popeyes", "chipotle",
                 "subway", "jamba juice", "peet", "philz", "phil'z", "taco bell",
@@ -1111,6 +1113,8 @@ def _is_junk_venue(name):
     if not toks:
         return True
     joined = " " + " ".join(toks) + " "
+    if " ".join(toks) in _GROUP_NAMES:
+        return True
     for term in _JUNK_WORDS + _CHAIN_NAMES:
         t = _tokens(term)
         if t and (" " + " ".join(t) + " ") in joined:

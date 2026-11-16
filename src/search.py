@@ -44,36 +44,93 @@ def _tavily_available():
     return bool(tavily and tavily.available())
 
 
-def provider():
-    """The provider the NEXT call would use, or None."""
+def active_order():
+    """The providers `search()` will actually try, in order.
+
+    ONE definition, used by provider(), capacity(), affordable() and search()
+    itself. When capacity() built its own list it counted providers the run
+    could never call — with SEARCH_PROVIDER=tavily the plan included Firecrawl's
+    credits, so the queue overran Tavily's allowance and the tail of the run
+    came back `failed`.
+    """
     override = os.environ.get("SEARCH_PROVIDER")
     if override:
-        return override.lower()
+        name = override.lower()
+        return [name] if provider_ok(name) else []
+    order = []
     if firecrawl.available():
-        left = budget()["firecrawl"]["remaining"]
-        if left is None or left > FIRE_CRAWL_FLOOR:
-            return "firecrawl"
+        order.append("firecrawl")
     if _tavily_available():
-        return "tavily"
+        order.append("tavily")
     if _brightdata_configured():
-        return "brightdata"
+        order.append("brightdata")
+    return order
+
+
+def provider():
+    """The provider the NEXT call would use, or None."""
+    order = active_order()
+    for name in order:
+        if name == "firecrawl":
+            left = balance("firecrawl")
+            if left is None or left > FIRE_CRAWL_FLOOR:
+                return "firecrawl"
+            continue
+        return name
     return None
 
 
-def budget():
-    """Remaining allowance per provider, as {"remaining": int|None}."""
-    out = {"firecrawl": {"remaining": None}, "tavily": {"remaining": None},
-           "brightdata": {"remaining": None}}
+# Balances move slowly (a search costs 1-2 credits out of hundreds), and the
+# endpoint is a separate round-trip. Checking it before EVERY search added up to
+# four 20-second waits per venue if that endpoint stalled while search still
+# worked. Cached for BALANCE_TTL seconds; the local spend counter keeps the
+# estimate honest in between.
+BALANCE_TTL = 120
+_balance_cache = {}
+
+
+def balance(name, force=False):
+    """Cached remaining allowance for one provider, or None if unknown."""
+    import time
+    now = time.time()
+    hit = _balance_cache.get(name)
+    if not force and hit and now - hit["at"] < BALANCE_TTL:
+        return hit["value"]
+
+    value = None
     try:
-        out["firecrawl"] = {"remaining": firecrawl.credits_remaining()}
+        if name == "firecrawl":
+            value = firecrawl.credits_remaining()
+        elif name == "tavily" and _tavily_available():
+            value = tavily.usage()["remaining"]
     except Exception:
-        pass
-    if _tavily_available():
-        try:
-            out["tavily"] = {"remaining": tavily.usage()["remaining"]}
-        except Exception:
-            pass
+        value = None
+
+    if value is not None:
+        _balance_cache[name] = {"at": now, "value": value}
+    return value
+
+
+def budget(force=False):
+    """Remaining allowance per provider, as {"remaining": int|None}."""
+    out = {}
+    for name in ("firecrawl", "tavily", "brightdata"):
+        out[name] = {"remaining": balance(name, force=force) if provider_ok(name) else None}
     return out
+
+
+def _spend(name):
+    """Debit the CACHED balance for one call.
+
+    The cache is what keeps a stalled balance endpoint from adding 20 seconds to
+    every search. Without this, a cached number would stay stale across a long
+    run and the chain would keep thinking Firecrawl had credits it had spent.
+    """
+    hit = _balance_cache.get(name)
+    if hit and hit.get("value") is not None:
+        cost = CREDITS_PER_CALL.get(name, 0)
+        if cost:
+            hit["value"] = max(0, hit["value"] - cost)
 
 
 def capacity():
@@ -83,9 +140,12 @@ def capacity():
     plan is not "all 4,413 or nothing": each month spends what it has on the
     venues that need it most and the next month continues. A caller that only
     asks "yes/no" would have no way to make progress at all.
+
+    Built from active_order(), the same list search() uses, so the plan can only
+    count credits the run is able to spend.
     """
     b = budget()
-    order = [p for p in ("firecrawl", "tavily", "brightdata") if provider_ok(p)]
+    order = active_order()
     per_venue = {n: max(1, CREDITS_PER_CALL[n] * CALLS_PER_VENUE) for n in order}
 
     total, plan = 0, []
@@ -106,23 +166,14 @@ def capacity():
 def affordable(venues):
     """Can the configured providers cover `venues`, and by whom?
 
-    Returns (ok, message).
-
-    An unknown balance is counted as sufficient ONLY for a provider that bills
-    nothing we can exhaust (Bright Data, whose allowance failure is a hard error
-    rather than a quiet partial). A metered provider with unknown telemetry is
-    NOT assumed able to cover a run: that is the hope this function exists to
-    replace, and it is exactly how the Bright Data run died at venue 3,600.
+    Returns (ok, message). Built from active_order() so it can only promise
+    credits the run is able to spend.
     """
-    need = venues * CALLS_PER_VENUE
     b = budget()
-
-    order = [p for p in ("firecrawl", "tavily", "brightdata") if provider_ok(p)]
+    order = active_order()
     if not order:
         return False, "no search provider configured"
 
-    # GREEDY across providers, in priority order: Firecrawl pays until it hits
-    # its floor, Tavily covers the remainder.
     remaining_venues = venues
     plan = []
     for name in order:
@@ -130,20 +181,18 @@ def affordable(venues):
             break
         left = b[name]["remaining"]
         if left is None:
-            # Bright Data is exhausted and its balance is not queryable, so it
-            # cannot be counted as covering anything. It stays in the runtime
-            # chain as a last resort, but it must not inflate this plan — which
-            # is how the previous run "looked" affordable and died at 3,600.
-            plan.append(f"{name}: balance unknown — not counted toward the run")
+            # A balance we cannot read cannot be promised. Counting it as
+            # sufficient is how the previous corpus run looked affordable and
+            # died at venue 3,600.
+            plan.append(f"{name}: balance unknown — not counted")
             continue
-        can = left // max(1, CREDITS_PER_CALL[name] * CALLS_PER_VENUE)
+        per_venue = max(1, CREDITS_PER_CALL[name] * CALLS_PER_VENUE)
         if name == "firecrawl":
-            can = max(0, (left - FIRE_CRAWL_FLOOR)) // max(
-                1, CREDITS_PER_CALL[name] * CALLS_PER_VENUE)
+            left = max(0, left - FIRE_CRAWL_FLOOR)
+        can = left // per_venue
         take = min(can, remaining_venues)
         if take:
-            plan.append(f"{name}: {take} venues ({take * CREDITS_PER_CALL[name] * CALLS_PER_VENUE}"
-                        f" of {left} credits)")
+            plan.append(f"{name}: {take} venues ({take * per_venue} of {left} credits)")
             remaining_venues -= take
 
     if remaining_venues > 0:
@@ -171,28 +220,22 @@ def search(query, num=20):
     agrees on it.
     """
     errors = []
-    order = []
-    override = os.environ.get("SEARCH_PROVIDER")
-    if override:
-        order = [override.lower()]
-    else:
-        if firecrawl.available():
-            order.append("firecrawl")
-        if _tavily_available():
-            order.append("tavily")
-        if _brightdata_configured():
-            order.append("brightdata")
+    order = active_order()          # the ONE list capacity() also budgets from
 
     for name in order:
         try:
             if name == "firecrawl":
-                left = firecrawl.credits_remaining()
+                left = balance("firecrawl")
                 if left is not None and left <= FIRE_CRAWL_FLOOR:
                     errors.append(f"firecrawl: {left} credits left, below floor")
                     continue
-                return firecrawl.search(query, num=num)
+                out = firecrawl.search(query, num=num)
+                _spend(name)
+                return out
             if name == "tavily":
-                return tavily.search(query, num=num)
+                out = tavily.search(query, num=num)
+                _spend(name)
+                return out
             if name == "brightdata":
                 from src.brightdata import serp
                 return serp(query, num=num)

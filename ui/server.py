@@ -754,15 +754,14 @@ def pedigree(edges):
 _JUNK_WORDS = ("tbd", "to be determined", "facebook", "walgreen", "google",
                "salesforce", "amazon", "apple inc", "airbnb", "uber",
                "doordash", "lyft", "bon appetit", "proper food", "mixt",
-               "test ", "unknown", "null", "none",
-               # Operator/collective descriptors that the corpus writes as if
-               # they were venues. "PlumpJack empire" is the group, not a
-               # restaurant (owner's ruling, 2026-11-16); the group's actual
-               # restaurants are PlumpJack Cafe, Balboa Cafe, the Carneros farm
-               # and the Squaw Valley property, each adjudicated separately in
-               # ui/venue_aliases.json.
-               "plumpjack empire",
-               "plumpjack group")
+               "test ", "unknown", "null", "none")
+
+# Operator/collective descriptors the corpus writes as if they were venues.
+# These match the WHOLE name, not a phrase inside it: "PlumpJack empire" is the
+# group, but "PlumpJack Group's Farm" is a real restaurant (owner's ruling,
+# 2026-11-16) and _tokens() folds its apostrophe to a space, so a phrase match
+# would swallow the farm too.
+_GROUP_NAMES = ("plumpjack empire", "plumpjack group")
 _CHAIN_NAMES = ("mcdonald", "starbucks", "burger king", "jack in the box",
                 "kentucky fried", "little caesars", "popeyes", "chipotle",
                 "subway", "jamba juice", "peet", "philz", "phil'z", "taco bell",
@@ -792,6 +791,9 @@ def _is_junk_venue(name):
     if not toks:
         return True
     joined = " " + " ".join(toks) + " "
+    # A group descriptor matches only when it IS the whole name.
+    if " ".join(toks) in _GROUP_NAMES:
+        return True
     for term in _JUNK_WORDS + _CHAIN_NAMES:
         t = _tokens(term)
         if t and (" " + " ".join(t) + " ") in joined:
