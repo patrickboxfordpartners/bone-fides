@@ -1118,3 +1118,51 @@ def test_word_boundaries_survive_for_matching():
     assert identity_words("El Farolito") == "el farolito"
     assert not identity_words("El Farolito").startswith(
         identity_words("El Faro") + " ")
+
+
+# ── the operator-vs-restaurant case (owner's ruling, 2026-11-16) ────────────
+
+def test_plumpjack_operator_prefix_does_not_merge_two_restaurants():
+    """PlumpJack is Balboa Cafe's OPERATOR, and also its own restaurant.
+
+    The corpus writes "PlumpJack Balboa Cafe" for one business, so a naive
+    prefix rule would be tempting — but it would also fold "PlumpJack Cafe"
+    (a different restaurant) into Balboa Cafe, putting one kitchen's chefs on
+    the other's dossier. The grouping is recorded as a ruling, not inferred.
+    """
+    from src.venue_aliases import identity
+
+    # same restaurant, written with its operator in front
+    balboa = {identity(n) for n in (
+        "Balboa Cafe", "PlumpJack Balboa Cafe", "Balboa Café Mill Valley")}
+    assert len(balboa) == 1, f"Balboa spellings split: {balboa}"
+
+    # and a genuinely different restaurant that shares the operator
+    cafe = {identity(n) for n in (
+        "PlumpJack Cafe", "Plumpjack Cafe", "PlumpJack Cafe (San Francisco)",
+        "PlumpJack", "PlumpJack restaurant")}
+    assert len(cafe) == 1, f"PlumpJack Cafe spellings split: {cafe}"
+
+    assert balboa != cafe, (
+        "Balboa Cafe and PlumpJack Cafe are different restaurants; merging "
+        "them attaches one kitchen's chefs to the other")
+
+    # the other two properties stay their own
+    assert identity("PlumpJack Squaw Valley") != identity("PlumpJack Cafe")
+    assert identity("PlumpJack's Farm at the Carneros Inn") != identity("PlumpJack Cafe")
+
+
+def test_plumpjack_empire_is_not_a_venue():
+    """It is the group, not a restaurant. Counting it adds a kitchen that does
+    not exist."""
+    import importlib.util, os
+    here = os.path.dirname(os.path.abspath(__file__))
+    spec = importlib.util.spec_from_file_location(
+        "ui_server_alias", os.path.join(os.path.dirname(here), "ui", "server.py"))
+    ui = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(ui)
+
+    assert ui._is_junk_venue("PlumpJack empire")
+    # the actual restaurants must survive the same filter
+    for name in ("PlumpJack Cafe", "Balboa Cafe", "PlumpJack Balboa Cafe"):
+        assert not ui._is_junk_venue(name), f"{name} wrongly dropped"

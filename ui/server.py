@@ -754,7 +754,15 @@ def pedigree(edges):
 _JUNK_WORDS = ("tbd", "to be determined", "facebook", "walgreen", "google",
                "salesforce", "amazon", "apple inc", "airbnb", "uber",
                "doordash", "lyft", "bon appetit", "proper food", "mixt",
-               "test ", "unknown", "null", "none")
+               "test ", "unknown", "null", "none",
+               # Operator/collective descriptors that the corpus writes as if
+               # they were venues. "PlumpJack empire" is the group, not a
+               # restaurant (owner's ruling, 2026-11-16); the group's actual
+               # restaurants are PlumpJack Cafe, Balboa Cafe, the Carneros farm
+               # and the Squaw Valley property, each adjudicated separately in
+               # ui/venue_aliases.json.
+               "plumpjack empire",
+               "plumpjack group")
 _CHAIN_NAMES = ("mcdonald", "starbucks", "burger king", "jack in the box",
                 "kentucky fried", "little caesars", "popeyes", "chipotle",
                 "subway", "jamba juice", "peet", "philz", "phil'z", "taco bell",

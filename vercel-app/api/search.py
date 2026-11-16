@@ -1080,7 +1080,8 @@ def stats(es):
 _JUNK_WORDS = ("tbd", "to be determined", "facebook", "walgreen", "google",
                "salesforce", "amazon", "apple inc", "airbnb", "uber",
                "doordash", "lyft", "bon appetit", "proper food", "mixt",
-               "test ", "unknown", "null", "none")
+               "test ", "unknown", "null", "none",
+               "plumpjack empire", "plumpjack group")
 _CHAIN_NAMES = ("mcdonald", "starbucks", "burger king", "jack in the box",
                 "kentucky fried", "little caesars", "popeyes", "chipotle",
                 "subway", "jamba juice", "peet", "philz", "phil'z", "taco bell",
