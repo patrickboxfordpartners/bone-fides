@@ -104,6 +104,13 @@ def canonical_venue(x):
     # ("Ritz Carlton (San Francisco)" vs "Ritz-Carlton San Francisco"), so they
     # are dropped from the key. Content that differs stays in the remaining
     # words, which is what keeps SF and Seattle apart.
+    #
+    # A parenthetical STREET ADDRESS is dropped outright. "Saison (2124 Folsom
+    # St.)" is the same restaurant as "Saison"; keeping the address made every
+    # such spelling its own identity (79 corpus venues), which INFLATED the
+    # distinct count instead of collapsing it. An address locates a venue, it
+    # does not name it.
+    s = re.sub(r"\(\s*\d[^)]*\)", " ", s)
     s = re.sub(r"[()]", " ", s)
     return re.sub(r"[^a-z0-9]", "", s.lower())
 
@@ -121,10 +128,18 @@ def venue_identity(x):
     "a"/"an" too, which destroyed real names: "Alamar" became "La Mar" (two
     different restaurants) and "AQ Restaurant & Bar" became "Q Restaurant &
     Bar". Articles other than "the" are not safe to strip from a venue name.
+
+    The article is matched on the RAW name, before punctuation and spaces are
+    removed. Checking the squashed key for a "the" prefix also chopped the
+    first three letters off real names: "Theodore" -> "odore", "Theater Cafe"
+    -> "atercafe". Those are different restaurants, and merging them is the
+    exact failure this module exists to prevent.
     """
     k = canonical_venue(x)
-    if k.startswith("the") and len(k) > 6:
-        return k[3:]
+    # Whole word, at the very start, followed by something. `\b` after "the"
+    # is what makes this a word boundary rather than a prefix test.
+    if re.match(r"^\s*the\b\s*\S", (x or ""), re.I) and len(k) > 6:
+        return canonical_venue(re.sub(r"^\s*the\b\s*", "", x, flags=re.I))
     return k
 
 
@@ -860,20 +875,65 @@ def _announces_closure(html):
     text = re.sub(r"<(script|style)\b[^>]*>.*?</\1>", " ", html, flags=re.S | re.I)
     text = re.sub(r"<[^>]+>", " ", text)
     low = re.sub(r"\s+", " ", html_module.unescape(text).lower())
-    # "We are closed on Sundays" and "closed on Thanksgiving" are SCHEDULES,
-    # not closures — Farallon's own page says the first, and reading it as
-    # closure would mark a working restaurant shut.
+
+    # ── 1. Unambiguous closure statements ────────────────────────────────────
+    # These name the venue's OWN permanent closure and are safe on their own.
+    # Every one of them has an explicit permanence marker: "permanently",
+    # "now", "its doors", "for good", or a first-person "we have closed".
+    for phrase in (
+        "permanently closed", "closed permanently",
+        "has permanently closed", "permanently shut",
+        "has closed its doors", "closed its doors",
+        "is now closed", "has now closed", "we have closed",
+        "has shut down", "is no longer open",
+        "closed for good", "will not be reopening", "will not reopen",
+    ):
+        if phrase in low:
+            return True
+
+    # ── 2. "has closed" / "has shut" ONLY with a venue subject ───────────────
+    # Bare "has closed" also matches "our kitchen has closed for the evening",
+    # which is a nightly service ending, not a closure. Require the subject to
+    # be the venue/restaurant itself and forbid the schedule/temporary tails.
+    for m in re.finditer(r"\b(?:the\s+)?(?:restaurant|venue|kitchen|bar|cafe|café|"
+                         r"business|establishment|it)\s+(has|had|is)\s+"
+                         r"(closed|shut)\b(?!\s+(?:for|on|early|tonight|today|"
+                         r"the (?:evening|night|holiday|winter|summer)))", low):
+        return True
+
+    # ── 3. First-person closure, not a schedule ──────────────────────────────
+    # "We are closed on Sundays" and "closed on Thanksgiving" are SCHEDULES —
+    # Farallon's own page says the first, and reading it as closure would mark
+    # a working restaurant shut.
     for m in re.finditer(r"\bwe are closed\b", low):
         tail = low[m.end():m.end() + 40].lstrip()
         if tail.startswith(("on ", "for ")):
             continue
         return True
-    return any(p in low for p in (
-        "has closed", "is now closed", "has now closed",
-        "we have closed", "permanently closed", "closed permanently",
-        "closed its doors", "has shut", "thank you for the years",
-        "thank you for all the", "it is with great sadness",
-    ))
+
+    # ── 4. Farewell language ─────────────────────────────────────────────────
+    # Two different strengths here, and treating them alike is what marked open
+    # restaurants shut.
+    #
+    # STRONG: "it is with great sadness" / "we are sad to announce" are
+    # first-person farewell lines an operating restaurant does not publish.
+    # They stand alone.
+    for phrase in ("it is with great sadness", "we are sad to announce",
+                   "we regret to announce", "it is with a heavy heart"):
+        if phrase in low:
+            return True
+
+    # WEAK: "thank you for all the wonderful reviews" is written by OPEN
+    # restaurants, every day. These corroborate a closure, never prove one, so
+    # they count only when a closure word appears on the page too.
+    for phrase in ("thank you for the years", "thank you for all the",
+                   "thank you for everything"):
+        if phrase in low and re.search(
+                r"\b(clos|shut|no longer|farewell|final service|last service|"
+                r"goodbye)\w*", low):
+            return True
+
+    return False
 
 
 def tier_website(venue, known_website=None, timeout=15, broken_host=None):
@@ -1049,8 +1109,18 @@ def resolve_venue(venue, token=None, known_website=None, use_serp=True,
         booking = find_booking_links(venue)
 
     def own(img):
-        """Download the tier's image. None unless we hold the bytes."""
-        if not img or not img.get("url"):
+        """Download the tier's image. None unless we hold the bytes.
+
+        A closure verdict has no url by construction, so it must survive this
+        gate: dropping the record because `url` is empty threw away the one
+        thing the page settled. The caller needs the verdict even when there is
+        no photo to show.
+        """
+        if not img:
+            return None
+        if img.get("closed"):
+            return img                    # a verdict, not a photo
+        if not img.get("url"):
             return None
         url = str(img["url"])
         if not url.startswith(("http://", "https://")):
@@ -1079,9 +1149,12 @@ def resolve_venue(venue, token=None, known_website=None, use_serp=True,
     if booking:
         out["booking"] = booking
     # A closure the venue's own site announces is a verdict, not a gap: it
-    # means "do not go looking for a website for this one".
+    # means "do not go looking for a website for this one". The STATUS is the
+    # load-bearing half — main() caches status, so returning "found" here let a
+    # venue's closure be overwritten by "found" and re-probed forever.
     if out.get("closed"):
         out["status"] = "closed"
+        return out, "closed"
     return out, "found"
 
 

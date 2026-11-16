@@ -937,3 +937,46 @@ def test_alias_file_is_well_formed():
     loc_all = {v for vs in (d.get("locations") or {}).values() for v in vs}
     overlap = set(d["merge"]) & loc_all
     assert not overlap, f"contradictory rulings: {sorted(overlap)}"
+
+
+# ── the identity rule exists twice; the copies must not drift ───────────────
+
+def test_base_identity_matches_the_module_rule():
+    """venue_aliases.base_identity is a deliberate copy of venue_identity.
+
+    It has to be a copy: venue_aliases ships into the Vercel function bundle,
+    which contains no src/ package, so an import there would 500 the stats
+    endpoint. A copy can drift, so this pins the two together on the cases that
+    the rule is actually FOR — the leading article and the names that must NOT
+    lose their first three letters.
+    """
+    from src.venue_aliases import base_identity
+    from src.venue_images import venue_identity
+
+    cases = [
+        "The French Laundry", "French Laundry", "The Slanted Door",
+        "Slanted Door", "Fifth Floor", "Restaurant Michael Mina",
+        "Stars (Seattle)", "Stars San Francisco", "Jardinière", "A16",
+        "the Mandarin", "Ritz Carlton (SF)",
+        # the regression this exists to catch: "the" is a PREFIX of these
+        "Theodore", "Theater Cafe", "Thea", "Theo",
+    ]
+    for c in cases:
+        assert base_identity(c) == venue_identity(c), (
+            f"{c!r}: the bundled identity copy drifted from venue_images")
+
+
+def test_article_fold_needs_a_whole_word():
+    """A leading-article rule that runs on the squashed key eats first letters.
+
+    "Theodore".startswith("the") was true, so it became "odore" — a different
+    restaurant. The article is only folded when it is a whole word.
+    """
+    from src.venue_images import venue_identity
+
+    assert venue_identity("The French Laundry") == venue_identity("French Laundry")
+    assert venue_identity("Theodore") == "theodore"
+    assert venue_identity("Theater Cafe") == "theatercafe"
+    assert venue_identity("Thea") == "thea"
+    # and a bare "The" is not a venue to strip down to nothing
+    assert venue_identity("The") != ""

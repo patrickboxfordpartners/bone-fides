@@ -170,7 +170,10 @@ def norm_venue(v):
     drop parenthetical annotations (Saison (2124 Folsom St.) == Saison),
     trailing possessives (Chez TJ's == Chez TJ), unicode-fold accents
     (Jardinière == Jardiniere), straighten apostrophes, strip punctuation,
-    drop stop words (The Commissary == Commissary)."""
+    drop stop words (The Commissary == Commissary).
+
+    Kept for the legacy overlap-matching path. COUNTING uses venue_key().
+    """
     import unicodedata as _ud
     v = re.sub(r'\([^)]*\)', ' ', v)                      # (Folsom St. location)
     v = _ud.normalize("NFD", v)
@@ -181,36 +184,64 @@ def norm_venue(v):
     toks = [t for t in v.split() if t not in ("the", "a", "an", "of", "at", "in", "on")]
     return ' '.join(toks)
 
+
+def venue_key(v):
+    """The identity a venue is COUNTED and DOSSIER-MATCHED under.
+
+    index-time from_venue_key/to_venue_key were written by src.venue_aliases,
+    but nothing read them: stats() kept counting raw names through norm_venue,
+    so "Michael Mina" and "Restaurant Michael Mina" still counted as two
+    restaurants despite the owner's ruling that they are one. A stamp no reader
+    consumes is not a fix.
+
+    This is the same function the indexer used, so stored keys and computed
+    keys cannot drift. norm_venue stays for legacy overlap matching.
+    """
+    from src.venue_aliases import identity
+    return identity(v)
+
 # One-token names that are not a restaurant. "bar" must not glue "bar tartine".
-_GENERIC_VENUE = {"bar", "cafe", "kitchen", "grill", "house", "restaurant", "room", "club", "san", "sf", "food", "wine", "bakery"}
+_GENERIC_VENUE = {"bar", "cafe", "kitchen", "grill", "house", "restaurant",
+                  "room", "club", "san", "sf", "food", "wine", "bakery",
+                  "café", "bakery", "taqueria", "pizzeria"}
 
 def _venue_touch(va, vb):
-    """Exact match, or the shorter name is a leading-token prefix of the longer
-    (Betelnut ⊂ Betelnut Pejiu Wu). A single generic token does not match."""
+    """Exact identity match, or the shorter is a leading-token prefix of the
+    longer (Betelnut ⊂ Betelnut Pejiu Wu). A single generic token does not
+    match.
+
+    Both sides are venue_key() output, so they are squashed and carry no
+    spaces. That makes the prefix test a character test — which is why the
+    generic guard is on the squashed token: without it "cafe" would match every
+    "cafeflore", "cafemason". Exact identity is checked first, so the alias
+    case ("Michael Mina" == "Restaurant Michael Mina") never needs the prefix
+    rule at all.
+    """
     if va == vb:
         return True
-    ta, tb = va.split(), vb.split()
-    if not ta or not tb:
+    a, b = (va, vb) if len(va) <= len(vb) else (vb, va)
+    if not a or not b:
         return False
-    if len(ta) > len(tb):
-        ta, tb = tb, ta
-    if tb[:len(ta)] != ta:
+    if a in _GENERIC_VENUE or len(a) < 5:
         return False
-    if len(ta) == 1 and (ta[0] in _GENERIC_VENUE or len(ta[0]) < 4):
-        return False
-    return True
+    return b.startswith(a)
 
 def _venues_touch(sa, sb):
     """Any pair of venue keys across two sets touches."""
     return any(_venue_touch(a, b) for a in sa for b in sb)
 
 def venue_history(edges):
-    """Set of normalized venue keys an edge set touches (from_venue + to_venue)."""
+    """Set of venue IDENTITIES an edge set touches (from_venue + to_venue).
+
+    Uses venue_key, the same identity the index stamps into
+    from_venue_key/to_venue_key — so "Michael Mina" and "Restaurant Michael
+    Mina" reach the same dossier instead of splitting into two.
+    """
     v = set()
     for e in edges:
         for k in ("from_venue", "to_venue"):
             if e.get(k):
-                v.add(norm_venue(e[k]))
+                v.add(venue_key(e[k]))
     return v
 
 def edge_urls(edges):
@@ -871,17 +902,17 @@ _STATS_CACHE = {"at": 0.0, "value": None}
 def stats(es):
     """Top-line corpus stats for the masthead counter.
 
-    venues counts distinct NORMALIZED venue names: each name is filtered by
-    the same junk/chain rule the map uses, then folded with norm_venue, which
-    removes case, punctuation, accents, possessives, and stop words. It does
-    NOT resolve aliases — "Tartine" and "Tartine Bakery" normalize to
-    different strings and count as two. Alias resolution needs a venue
-    identity table the corpus does not have yet, so the number is best read
-    as "distinct kitchen names", not "distinct restaurants".
+    venues counts distinct venue IDENTITIES, not distinct spellings. Each name
+    is filtered by the same junk/chain rule the map uses, then resolved with
+    venue_key() — the shared identity path that folds formatting (accents,
+    parens, a leading "The") and applies the owner's rulings from
+    ui/venue_aliases.json. So "Michael Mina" and "Restaurant Michael Mina" are
+    one kitchen, as are "The French Laundry" and "French Laundry".
 
-    Still the right number to show: it is far closer to reality than the raw
-    name count (which counts every typo variant) and than the old
-    truncated-terms count of 799.
+    Before this, the count used norm_venue, which resolved aliases only by
+    accident of string similarity; the index already stored from_venue_key /
+    to_venue_key but no reader consumed them, so the ruling changed nothing
+    that was displayed.
 
     Result is memoized for _STATS_TTL: the count is identical on every call
     until the next scrape run, and visitors were otherwise paying for the same
@@ -894,8 +925,8 @@ def stats(es):
 
     venues_raw = _distinct_values(es, "from_venue.keyword") \
         | _distinct_values(es, "to_venue.keyword")
-    venues = {norm_venue(v) for v in venues_raw
-              if v and not _is_junk_venue(v) and norm_venue(v)}
+    venues = {venue_key(v) for v in venues_raw
+              if v and not _is_junk_venue(v) and venue_key(v)}
     agg = es.search(index=INDEX, body={"size": 0, "aggs": {
         "people": {"cardinality": {"field": "person.keyword",
                                    "precision_threshold": 40000}},

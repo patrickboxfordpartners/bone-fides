@@ -39,6 +39,13 @@ ALLOWED = {
     # _score_sample reads score_sample.json from the runtime's own directory
     # (ui/ locally, api/ on Vercel) — the only difference is the root path.
     "_score_sample",
+    # venue_key resolves the SAME rule from different places: locally it is
+    # src.venue_aliases, on Vercel the stdlib-only copy that build.sh ships
+    # beside the function (the bundle has no src/ package). The identity
+    # RESULT is identical; only the import differs, and that difference is the
+    # whole reason the copy exists. Pinned by
+    # test_base_identity_matches_the_module_rule.
+    "venue_key",
 }
 
 
@@ -258,13 +265,20 @@ def test_junk_filter_does_not_eat_real_restaurants():
         assert mod._is_junk_venue(name), f"{name!r} wrongly kept as a kitchen"
 
 
-def test_stats_does_not_claim_alias_resolution():
-    """stats() folds normalized names; it does not resolve aliases.
+def test_stats_resolves_aliases_through_the_shared_identity():
+    """stats() must count venue IDENTITIES, not spellings.
 
-    The docstring once promised "Tartine" / "Tartine Bakery" count as one
-    kitchen, which norm_venue does not do. Either implement alias folding or
-    describe it honestly — this locks the honest description until a venue
-    identity table exists.
+    This test used to lock the OPPOSITE: a docstring admitting that aliases
+    were not resolved, because no identity table existed. One does now
+    (ui/venue_aliases.json, applied by src.venue_aliases), and the index
+    already stamps from_venue_key/to_venue_key — but nothing read them, so
+    "Michael Mina" and "Restaurant Michael Mina" still counted as two
+    restaurants despite the owner's ruling. A stamp no reader consumes is not
+    a fix.
+
+    Both traits are asserted together so the two halves cannot drift apart
+    again: the docstring must say aliases ARE resolved, and the code must go
+    through venue_key() rather than the legacy norm_venue().
     """
     for path in (_UI_PATH, _VERCEL_PATH):
         # parse fresh: _functions() strips docstrings for AST comparison
@@ -273,11 +287,14 @@ def test_stats_does_not_claim_alias_resolution():
                   if isinstance(n, ast.FunctionDef) and n.name == "stats")
         doc = (ast.get_docstring(fn) or "").lower()
         assert "alias" in doc, (
-            f"{path}: stats() docstring no longer discloses that aliases are "
-            f"not resolved — that was the exact inaccuracy a reviewer caught")
-        assert "not resolve" in doc or "does not resolve" in doc, (
-            f"{path}: stats() docstring should state plainly that it does not "
-            f"resolve aliases")
+            f"{path}: stats() docstring no longer says anything about aliases")
+        assert "not resolve" not in doc, (
+            f"{path}: stats() docstring still disclaims alias resolution, but "
+            f"the corpus has an identity table and the count uses it now")
+        src = ast.unparse(fn)
+        assert "venue_key" in src, (
+            f"{path}: stats() must count through venue_key(), the shared "
+            f"identity the indexer stamped, not raw or lightly-normalized names")
 
 
 def test_stats_result_is_cached_in_both_twins():
@@ -304,8 +321,10 @@ def test_stats_defines_venues_as_kitchens_not_raw_names():
             f"{path}: stats() reintroduced the truncated terms aggregation")
         assert "_is_junk_venue" in src, (
             f"{path}: stats() stopped filtering junk/chain venue names")
-        assert "norm_venue" in src, (
-            f"{path}: stats() stopped folding venue name variants")
+        assert "venue_key" in src, (
+            f"{path}: stats() stopped folding venue identities; norm_venue "
+            f"alone leaves 'Michael Mina' and 'Restaurant Michael Mina' as "
+            f"two kitchens")
 
 
 def test_landing_static_numbers_are_placeholders_only():
