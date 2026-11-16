@@ -333,8 +333,11 @@ def test_capacity_reports_what_the_allowances_cover(monkeypatch):
     """The corpus costs ~44,000 credits and the allowances are in the hundreds,
     so the run is monthly. capacity() is what a batch planner asks."""
     import src.search as s
-    monkeypatch.setattr(s, "provider_ok", lambda n: n in ("firecrawl", "tavily"))
-    monkeypatch.setattr(s, "budget", lambda: {
+    # Mock the ORDER, not provider_ok: capacity() reads active_order(), which
+    # consults the availability functions directly. Mocking only provider_ok
+    # made this test pass on a machine with credentials and fail on one without.
+    monkeypatch.setattr(s, "active_order", lambda: ["firecrawl", "tavily"])
+    monkeypatch.setattr(s, "budget", lambda force=False: {
         "firecrawl": {"remaining": 1000}, "tavily": {"remaining": 8700},
         "brightdata": {"remaining": None}})
 
@@ -348,8 +351,8 @@ def test_capacity_reports_what_the_allowances_cover(monkeypatch):
 
 def test_capacity_is_zero_when_nothing_is_affordable(monkeypatch):
     import src.search as s
-    monkeypatch.setattr(s, "provider_ok", lambda n: n == "firecrawl")
-    monkeypatch.setattr(s, "budget", lambda: {"firecrawl": {"remaining": 150},
+    monkeypatch.setattr(s, "active_order", lambda: ["firecrawl"])
+    monkeypatch.setattr(s, "budget", lambda force=False: {"firecrawl": {"remaining": 150},
                                              "tavily": {"remaining": None},
                                              "brightdata": {"remaining": None}})
     can, plan = s.capacity()
@@ -411,7 +414,12 @@ def test_capacity_uses_the_same_provider_list_as_search(monkeypatch):
     for and the tail came back `failed`."""
     import src.search as s
     monkeypatch.setenv("SEARCH_PROVIDER", "tavily")
-    monkeypatch.setattr(s, "provider_ok", lambda n: n in ("firecrawl", "tavily"))
+    # Mock AVAILABILITY and let active_order() apply the override — the point of
+    # this test is that the env var narrows the list, so stubbing the list
+    # itself would test nothing.
+    monkeypatch.setattr(s.firecrawl, "available", lambda: True)
+    monkeypatch.setattr(firecrawl, "_load_key", lambda: "fc-test")
+    monkeypatch.setattr(s, "_tavily_available", lambda: True)
     monkeypatch.setattr(s, "budget", lambda force=False: {
         "firecrawl": {"remaining": 1000}, "tavily": {"remaining": 400},
         "brightdata": {"remaining": None}})
@@ -426,7 +434,7 @@ def test_capacity_uses_the_same_provider_list_as_search(monkeypatch):
 def test_affordable_refuses_a_run_it_cannot_pay_for(monkeypatch):
     import src.search as s
     monkeypatch.delenv("SEARCH_PROVIDER", raising=False)
-    monkeypatch.setattr(s, "provider_ok", lambda n: n == "tavily")
+    monkeypatch.setattr(s, "active_order", lambda: ["tavily"])
     monkeypatch.setattr(s, "budget", lambda force=False: {
         "firecrawl": {"remaining": None}, "tavily": {"remaining": 40},
         "brightdata": {"remaining": None}})
