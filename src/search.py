@@ -76,6 +76,33 @@ def budget():
     return out
 
 
+def capacity():
+    """How many venues the current allowances can cover, and by whom.
+
+    Returns (venues, plan_lines). Separate from affordable() because the monthly
+    plan is not "all 4,413 or nothing": each month spends what it has on the
+    venues that need it most and the next month continues. A caller that only
+    asks "yes/no" would have no way to make progress at all.
+    """
+    b = budget()
+    order = [p for p in ("firecrawl", "tavily", "brightdata") if provider_ok(p)]
+    per_venue = {n: max(1, CREDITS_PER_CALL[n] * CALLS_PER_VENUE) for n in order}
+
+    total, plan = 0, []
+    for name in order:
+        left = b[name]["remaining"]
+        if left is None:
+            plan.append(f"{name}: balance unknown — not counted")
+            continue
+        if name == "firecrawl":
+            left = max(0, left - FIRE_CRAWL_FLOOR)
+        can = left // per_venue[name]
+        if can:
+            total += can
+            plan.append(f"{name}: {can} venues ({can * per_venue[name]} credits)")
+    return total, plan
+
+
 def affordable(venues):
     """Can the configured providers cover `venues`, and by whom?
 

@@ -301,3 +301,46 @@ def test_the_plan_covers_exactly_what_the_balances_allow(monkeypatch):
     # Tavily covers the other 300 at 4 credits each.
     assert "firecrawl: 100 venues" in msg
     assert "tavily: 300 venues" in msg
+
+
+# ── monthly batching ────────────────────────────────────────────────────────
+
+def test_capacity_reports_what_the_allowances_cover(monkeypatch):
+    """The corpus costs ~44,000 credits and the allowances are in the hundreds,
+    so the run is monthly. capacity() is what a batch planner asks."""
+    import src.search as s
+    monkeypatch.setattr(s, "provider_ok", lambda n: n in ("firecrawl", "tavily"))
+    monkeypatch.setattr(s, "budget", lambda: {
+        "firecrawl": {"remaining": 1000}, "tavily": {"remaining": 8700},
+        "brightdata": {"remaining": None}})
+
+    can, plan = s.capacity()
+    # firecrawl pays down to its 200 floor: 800/8 = 100 venues
+    # tavily: 8700/4 = 2175 venues
+    assert can == 2275, plan
+    assert any("firecrawl: 100 venues" in p for p in plan)
+    assert any("tavily: 2175 venues" in p for p in plan)
+
+
+def test_capacity_is_zero_when_nothing_is_affordable(monkeypatch):
+    import src.search as s
+    monkeypatch.setattr(s, "provider_ok", lambda n: n == "firecrawl")
+    monkeypatch.setattr(s, "budget", lambda: {"firecrawl": {"remaining": 150},
+                                             "tavily": {"remaining": None},
+                                             "brightdata": {"remaining": None}})
+    can, plan = s.capacity()
+    assert can == 0, "150 credits is below the 200 floor; nothing is affordable"
+
+
+def test_budget_flag_caps_the_queue_and_says_so(monkeypatch):
+    """A monthly run must stop cleanly rather than dying at venue N.
+
+    It also must say how many are deferred, so the next period's operator knows
+    the corpus is not finished.
+    """
+    import inspect
+    import src.venue_images as v
+    src = inspect.getsource(v.main)
+    assert "--budget" in src
+    assert "queued for the next period" in src, (
+        "the run must report what it deferred, not just what it did")

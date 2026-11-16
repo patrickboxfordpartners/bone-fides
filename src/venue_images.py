@@ -1348,6 +1348,25 @@ def main(argv):
                  or norm(v) not in cache
                  or cache[norm(v)].get("status") == "failed"
                  or superseded(norm(v), cache[norm(v)]))]
+
+    # --budget caps the run at what the current search allowances can pay for.
+    # The photo work is a monthly crawl rather than one pass: 4,413 venues cost
+    # ~44,000 credits at 10/venue, against allowances in the high hundreds, so a
+    # run that insists on finishing never starts. Each month spends what it has
+    # and the next picks up the rest — which only works if the queue is STABLE,
+    # so it is ordered deterministically and cached answers are skipped above.
+    if "--budget" in argv:
+        from src import search as _search
+        can, plan = _search.capacity()
+        print("search capacity: " + ("; ".join(plan) if plan else "none"))
+        if can <= 0:
+            print("no venue can be afforded this period; nothing to do")
+            return 1
+        if len(todo) > can:
+            print(f"budget stops this run at {can} of {len(todo)} venues "
+                  f"({len(todo) - can} queued for the next period)")
+            todo = todo[:can]
+
     if limit is not None:
         todo = todo[:limit]
 
