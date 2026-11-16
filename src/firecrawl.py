@@ -27,11 +27,16 @@ import time
 import urllib.request
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-ENDPOINT = "https://api.firecrawl.dev/v1/search"
+# v2 is the current API (docs.firecrawl.dev/api-reference/v2-introduction).
+# The response shape changed with it: v1 returned `data: [...]`, v2 returns
+# `data: {web: [...]}` and adds `creditsUsed`, which is what makes a
+# 4,400-venue run budgetable instead of a guess.
+ENDPOINT = "https://api.firecrawl.dev/v2/search"
 
-# Where the key may already live. The repo's own .env wins; the other is an
-# existing project that already pays for Firecrawl, so a venue run does not
-# require copying a secret around.
+# The project's own .env is the source of truth (Firecrawl's onboarding calls
+# this Path B: a key in project config, not borrowed across repos). The second
+# entry is a migration fallback for the one run that predates the key being
+# copied here; it can be deleted once .env has the value.
 _KEY_FILES = (
     os.path.join(BASE, ".env"),
     os.path.expanduser("~/aggressive-sdr/fire-enrich/.env.local"),
@@ -55,6 +60,35 @@ def _load_key():
 def available():
     """True when a key is configured. Callers use this to choose a provider."""
     return bool(_load_key())
+
+
+def credits_remaining():
+    """Credits left this billing period, or None when unknown.
+
+    The chain uses this to decide when to fall through to Tavily. Returning
+    None on any failure is deliberate: a telemetry outage must not read as
+    "no credits" and silently downgrade every call to the weaker provider.
+    """
+    key = _load_key()
+    if not key:
+        return None
+    try:
+        req = urllib.request.Request(
+            "https://api.firecrawl.dev/v2/team/credit-usage",
+            headers={"Authorization": "Bearer " + key})
+        with urllib.request.urlopen(req, timeout=20) as r:
+            d = json.loads(r.read().decode("utf-8", "replace"))
+        v = (d.get("data") or {}).get("remainingCredits")
+        return int(v) if v is not None else None
+    except Exception:
+        return None
+
+
+# Credits billed since process start. v2 reports `creditsUsed` per call, and a
+# full corpus run is the one place the number matters — a resolver asks four
+# queries per venue, so "how much will 4,400 venues cost" is answerable only if
+# something is counting.
+CREDITS_USED = 0
 
 
 def search(query, num=20, attempts=3, timeout=45):
@@ -104,8 +138,18 @@ def search(query, num=20, attempts=3, timeout=45):
             time.sleep(2.0 * (i + 1))
             continue
 
+        global CREDITS_USED
+        try:
+            CREDITS_USED += int(data.get("creditsUsed") or 0)
+        except (TypeError, ValueError):
+            pass
+
         out = []
-        for item in (data.get("data") or []):
+        # v2 nests results under data.web; v1 had them bare in data. Accept
+        # both so a base-URL revert does not silently return zero results.
+        payload = data.get("data")
+        items = (payload.get("web") if isinstance(payload, dict) else payload) or []
+        for item in items:
             url = (item.get("url") or "").strip()
             if not url.startswith(("http://", "https://")):
                 continue
