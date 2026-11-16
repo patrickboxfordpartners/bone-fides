@@ -200,31 +200,47 @@ def venue_key(v):
     from src.venue_aliases import identity
     return identity(v)
 
+
+def venue_key_words(v):
+    """venue_key with word boundaries kept — the form DOSSIER MATCHING uses.
+
+    Same folding and rulings; only the separator differs. Matching needs
+    boundaries because a character-prefix test on the squashed key joins
+    "elfaro" to "elfarolito" (El Faro and El Farolito are different
+    restaurants), hiding the warning that two same-named people may be
+    different people.
+    """
+    from src.venue_aliases import identity_words
+    return identity_words(v)
+
 # One-token names that are not a restaurant. "bar" must not glue "bar tartine".
 _GENERIC_VENUE = {"bar", "cafe", "kitchen", "grill", "house", "restaurant",
                   "room", "club", "san", "sf", "food", "wine", "bakery",
-                  "café", "bakery", "taqueria", "pizzeria"}
+                  "café", "taqueria", "pizzeria"}
 
 def _venue_touch(va, vb):
-    """Exact identity match, or the shorter is a leading-token prefix of the
+    """Exact identity match, or the shorter is a whole-token prefix of the
     longer (Betelnut ⊂ Betelnut Pejiu Wu). A single generic token does not
     match.
 
-    Both sides are venue_key() output, so they are squashed and carry no
-    spaces. That makes the prefix test a character test — which is why the
-    generic guard is on the squashed token: without it "cafe" would match every
-    "cafeflore", "cafemason". Exact identity is checked first, so the alias
-    case ("Michael Mina" == "Restaurant Michael Mina") never needs the prefix
-    rule at all.
+    Both sides are venue_key_words() output, so they keep spaces. That is the
+    whole point: the squashed identity makes "elfaro" a character prefix of
+    "elfarolito", which joined El Faro and El Farolito into one career and hid
+    the "these may be different people" warning. Comparing TOKENS requires the
+    boundary to be a real one.
     """
     if va == vb:
         return True
-    a, b = (va, vb) if len(va) <= len(vb) else (vb, va)
-    if not a or not b:
+    ta, tb = va.split(), vb.split()
+    if not ta or not tb:
         return False
-    if a in _GENERIC_VENUE or len(a) < 5:
+    if len(ta) > len(tb):
+        ta, tb = tb, ta
+    if tb[:len(ta)] != ta:
         return False
-    return b.startswith(a)
+    if len(ta) == 1 and (ta[0] in _GENERIC_VENUE or len(ta[0]) < 4):
+        return False
+    return True
 
 def _venues_touch(sa, sb):
     """Any pair of venue keys across two sets touches."""
@@ -233,15 +249,16 @@ def _venues_touch(sa, sb):
 def venue_history(edges):
     """Set of venue IDENTITIES an edge set touches (from_venue + to_venue).
 
-    Uses venue_key, the same identity the index stamps into
-    from_venue_key/to_venue_key — so "Michael Mina" and "Restaurant Michael
-    Mina" reach the same dossier instead of splitting into two.
+    Word-preserving form, because matching needs boundaries. Exact-identity
+    collapsing (the owner's rulings, accents, a leading "The") still happens
+    first, so "Michael Mina" and "Restaurant Michael Mina" land on one token
+    string and reach the same dossier.
     """
     v = set()
     for e in edges:
         for k in ("from_venue", "to_venue"):
             if e.get(k):
-                v.add(venue_key(e[k]))
+                v.add(venue_key_words(e[k]))
     return v
 
 def edge_urls(edges):

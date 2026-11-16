@@ -42,16 +42,20 @@ def _load():
     if _cache is None:
         with open(ALIASES, encoding="utf-8") as f:
             data = json.load(f)
-        table = {}
+        table, table_words = {}, {}
         for canonical, variants in (data.get("merge") or {}).items():
-            # Every spelling collapses to the title the owner chose, and so
-            # does the TITLE itself — otherwise "Fifth Floor" (the ruling's own
-            # key) would miss the table while "Fifth Floor Restaurant" hit it,
-            # and the two would land on different keys.
-            table[_key(canonical)] = canonical
-            for v in variants:
-                table[_key(v)] = canonical
-        _cache = {"alias": table, "data": data}
+            # Table keys go through the SAME fold as lookups — including the
+            # leading-article rule. Keying them raw meant a ruling written for
+            # "The Mandarin restaurant" was stored under "themandarinrestaurant"
+            # while the lookup asked for "mandarinrestaurant", so the ruling
+            # silently stopped applying and the venue split again.
+            title = base_identity(canonical)
+            words = _fold_words(canonical)
+            for v in list(variants) + [canonical]:
+                k = base_identity(v)
+                table[k] = title
+                table_words[k] = words
+        _cache = {"alias": table, "alias_words": table_words, "data": data}
     return _cache
 
 
@@ -72,6 +76,27 @@ def _fold(name):
           .replace("–", "-").replace("—", "-"))
     s = re.sub(r"\(\s*\d[^)]*\)", " ", s)
     return re.sub(r"[^a-z0-9]", "", re.sub(r"[()]", " ", s).lower())
+
+
+def _fold_words(name):
+    """Same fold as _fold, but KEEPS spaces between words.
+
+    The squashed form is the storage key. It is lossy in exactly one way that
+    matters: word boundaries disappear, so "elfaro" is a character prefix of
+    "elfarolito" and two different restaurants look like one. Dossier matching
+    needs the boundaries, so it uses this form.
+    """
+    import re
+    import unicodedata
+
+    s = unicodedata.normalize("NFKD", name or "")
+    s = "".join(c for c in s if not unicodedata.combining(c))
+    s = (s.replace("’", "'").replace("‘", "'")
+          .replace("“", '"').replace("”", '"')
+          .replace("–", "-").replace("—", "-"))
+    s = re.sub(r"\(\s*\d[^)]*\)", " ", s)
+    s = re.sub(r"[()]", " ", s).lower()
+    return " ".join(re.sub(r"[^a-z0-9\s]", " ", s).split())
 
 
 def base_identity(name):
@@ -112,8 +137,12 @@ def _key(s):
 
 
 def preferred_title(name):
-    """The owner's chosen title for this spelling, or the name unchanged."""
-    return _load()["alias"].get(_key(name), name)
+    """The owner's chosen title for this spelling, or the name unchanged.
+
+    Lookup uses base_identity, the same fold the table was keyed with, so the
+    article form and the plain form of a name find the SAME ruling.
+    """
+    return _load()["alias"].get(base_identity(name), name)
 
 
 def is_location_variant(name):
@@ -150,5 +179,24 @@ def identity(name):
     if is_location_variant(name):
         # keep the city: fold only the brand-level wrapper
         return _key(name)
-    # Formatting and article first, then the owner's ruling on the result.
-    return _key(preferred_title(base_identity(name)))
+    # base_identity of the resolved title, so every spelling of one ruling
+    # lands on exactly one key. The table stores base_identity(canonical) as
+    # its value, so this is a no-op on the title and the whole path is stable.
+    return base_identity(preferred_title(base_identity(name)))
+
+
+def identity_words(name):
+    """identity(), but with spaces kept between words.
+
+    For dossier matching, which needs word boundaries: the squashed identity
+    makes "elfaro" a prefix of "elfarolito", joining El Faro and El Farolito
+    into one career history. Same folding and same rulings as identity() — only
+    the separator differs, so a name that matches here matches there.
+    """
+    if is_location_variant(name):
+        return _fold_words(name)
+    k = base_identity(name)
+    data = _load()
+    if k in data["alias_words"]:
+        return data["alias_words"][k]
+    return _fold_words(name)

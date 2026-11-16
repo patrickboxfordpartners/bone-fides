@@ -46,6 +46,10 @@ ALLOWED = {
     # whole reason the copy exists. Pinned by
     # test_base_identity_matches_the_module_rule.
     "venue_key",
+    # venue_key_words: same divergence and same reason as venue_key. This is
+    # the word-preserving form dossier matching uses, so a character prefix
+    # cannot join El Faro to El Farolito.
+    "venue_key_words",
 }
 
 

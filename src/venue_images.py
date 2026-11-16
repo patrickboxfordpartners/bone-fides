@@ -358,7 +358,7 @@ def find_official_site(venue, attempts=3):
     outage permanent: every later run skipped the venue because the cache said
     it had nothing, even after the service recovered.
     """
-    from src.brightdata import serp
+    from src.search import search as serp
     errored = False
     for i in range(attempts):
         try:
@@ -572,7 +572,7 @@ def find_booking_links(venue):
     homepage: a "Book on Resy" link that lands on resy.com is a broken promise,
     and a link to a similarly-named restaurant is worse.
     """
-    from src.brightdata import serp
+    from src.search import search as serp
     out = {}
     for platform, host in (("resy", "resy.com"), ("opentable", "opentable.com"),
                            ("tock", "exploretock.com")):
@@ -1111,35 +1111,47 @@ def resolve_venue(venue, token=None, known_website=None, use_serp=True,
     def own(img):
         """Download the tier's image. None unless we hold the bytes.
 
-        A closure verdict has no url by construction, so it must survive this
-        gate: dropping the record because `url` is empty threw away the one
-        thing the page settled. The caller needs the verdict even when there is
-        no photo to show.
+        A closure verdict must survive the download gate: dropping the record
+        for having no url threw away the one thing the page settled.
+
+        A closed record CAN also carry a photo — a venue that shut may still
+        serve its last hero image. That url is downloaded like any other. It
+        must never be saved as-is: the cache would then claim to hold a photo
+        while holding a hotlink, which is exactly what this module exists to
+        prevent.
         """
         if not img:
             return None
-        if img.get("closed"):
-            return img                    # a verdict, not a photo
         if not img.get("url"):
-            return None
+            # no photo to fetch; keep the verdict if there is one
+            return img if img.get("closed") else None
         url = str(img["url"])
         if not url.startswith(("http://", "https://")):
             return img                    # already a local path
         local = download_image(url, venue, broken_host=broken_host)
-        if not local:
-            return None                   # could not own it: try the next tier
         out = dict(img)
-        out["remote"] = url
-        out["url"] = local
+        if local:
+            out["remote"] = url
+            out["url"] = local
+        elif img.get("closed"):
+            # keep the closure, but do NOT keep an unverified remote URL
+            out["url"] = None
+            out.pop("remote", None)
+        else:
+            return None                   # could not own it: try the next tier
         return out
 
     img = None
     if site:
         img = own(tier_website(venue, site, broken_host=broken_host))
-    if not img:
-        img = own(tier_social(venue, site, broken_host=broken_host))
-    if not img and token:
-        img = own(tier_mapbox(venue, token))
+    # A closure verdict ends the search. The venue is shut; spending the social
+    # and Mapbox calls to find it a photo would be work for a page that says
+    # "closed". Its photo, if the page still serves one, came from tier_website.
+    if not img or not img.get("closed"):
+        if not img:
+            img = own(tier_social(venue, site, broken_host=broken_host))
+        if not img and token:
+            img = own(tier_mapbox(venue, token))
 
     if not img and not site and not booking:
         return None, "absent"

@@ -381,21 +381,37 @@ def venue_key(v):
     import venue_aliases
     return venue_aliases.identity(v)
 
+def venue_key_words(v):
+    """venue_key with word boundaries kept — the form DOSSIER MATCHING uses.
+
+    Matching needs boundaries because a character-prefix test on the squashed
+    key joins "elfaro" to "elfarolito" (different restaurants) and hides the
+    warning that two same-named people may be different people.
+    """
+    if _HERE not in sys.path:
+        sys.path.insert(0, _HERE)
+    import venue_aliases
+    return venue_aliases.identity_words(v)
+
 _GENERIC_VENUE = {"bar", "cafe", "kitchen", "grill", "house", "restaurant",
                   "room", "club", "san", "sf", "food", "wine", "bakery",
-                  "café", "bakery", "taqueria", "pizzeria"}
+                  "café", "taqueria", "pizzeria"}
 
 def _venue_touch(va, vb):
-    """Exact identity match, or the shorter is a leading-token prefix. A single
-    generic token does not match. Keys are squashed venue_key() output."""
+    """Exact identity match, or the shorter is a whole-token prefix. A single
+    generic token does not match."""
     if va == vb:
         return True
-    a, b = (va, vb) if len(va) <= len(vb) else (vb, va)
-    if not a or not b:
+    ta, tb = va.split(), vb.split()
+    if not ta or not tb:
         return False
-    if a in _GENERIC_VENUE or len(a) < 5:
+    if len(ta) > len(tb):
+        ta, tb = tb, ta
+    if tb[:len(ta)] != ta:
         return False
-    return b.startswith(a)
+    if len(ta) == 1 and (ta[0] in _GENERIC_VENUE or len(ta[0]) < 4):
+        return False
+    return True
 
 def _venues_touch(sa, sb):
     return any(_venue_touch(a, b) for a in sa for b in sb)
@@ -405,7 +421,7 @@ def venue_history(edges):
     for e in edges:
         for k in ("from_venue", "to_venue"):
             if e.get(k):
-                v.add(venue_key(e[k]))
+                v.add(venue_key_words(e[k]))
     return v
 
 def edge_urls(edges):

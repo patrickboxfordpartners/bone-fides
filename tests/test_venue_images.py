@@ -199,7 +199,7 @@ def test_blog_and_search_urls_are_not_booking_pages(monkeypatch):
     version re-implemented the filters beside it, so it still passed if the
     production function accepted every bad URL.
     """
-    import src.brightdata as bd
+    import src.search as bd
     import src.venue_images as v
 
     bad = [
@@ -209,14 +209,14 @@ def test_blog_and_search_urls_are_not_booking_pages(monkeypatch):
         "https://www.exploretock.com/search?q=rich+table",
         "https://resy.com/stories/something",
     ]
-    monkeypatch.setattr(bd, "serp", lambda q, num=10: [{"url": u, "title": ""} for u in bad])
+    monkeypatch.setattr(bd, "search", lambda q, num=10: [{"url": u, "title": ""} for u in bad])
     assert v.find_booking_links("Rich Table") == {}
 
 
 def test_lookalike_platform_domains_are_not_booking_links(monkeypatch):
     """`fake-resy.com/rich-table` passed a substring host test and was saved as
     the Resy link for Rich Table."""
-    import src.brightdata as bd
+    import src.search as bd
     import src.venue_images as v
 
     bad = [
@@ -224,22 +224,22 @@ def test_lookalike_platform_domains_are_not_booking_links(monkeypatch):
         "https://notopentable.com/r/rich-table-san-francisco",
         "https://resy.com.evil.example/rich-table",
     ]
-    monkeypatch.setattr(bd, "serp", lambda q, num=10: [{"url": u, "title": ""} for u in bad])
+    monkeypatch.setattr(bd, "search", lambda q, num=10: [{"url": u, "title": ""} for u in bad])
     assert v.find_booking_links("Rich Table") == {}
 
 
 def test_booking_link_must_match_a_slug_boundary(monkeypatch):
     """`coi` sits inside `coin-op`, so Coi was handed Coin-Op's booking page."""
-    import src.brightdata as bd
+    import src.search as bd
     import src.venue_images as v
 
-    monkeypatch.setattr(bd, "serp",
+    monkeypatch.setattr(bd, "search",
                         lambda q, num=10: [{"url": "https://www.opentable.com/r/coin-op-san-francisco",
                                             "title": ""}])
     assert v.find_booking_links("Coi") == {}
 
     # the real page still resolves
-    monkeypatch.setattr(bd, "serp",
+    monkeypatch.setattr(bd, "search",
                         lambda q, num=10: [{"url": "https://www.opentable.com/r/coi-san-francisco",
                                             "title": ""}])
     assert v.find_booking_links("Coi").get("opentable") == \
@@ -478,12 +478,12 @@ def test_booking_slug_handles_connectives_and_possessives():
 
 def test_booking_link_search_pages_still_rejected(monkeypatch):
     """Search/editorial pages must not come back when the matcher changed."""
-    import src.brightdata as bd
+    import src.search as bd
     import src.venue_images as v
     bad = ["https://resy.com/city/san-francisco?query=Per%20Se",
            "https://www.opentable.com/s?term=per%20se",
            "https://blog.resy.com/2024/04/per-se"]
-    monkeypatch.setattr(bd, "serp", lambda q, num=10: [{"url": u, "title": ""} for u in bad])
+    monkeypatch.setattr(bd, "search", lambda q, num=10: [{"url": u, "title": ""} for u in bad])
     assert v.find_booking_links("Per Se") == {}
 
 
@@ -749,9 +749,9 @@ def test_plugin_and_tracker_assets_are_not_venue_photos():
 def test_proximity_and_landmark_pages_are_not_bookings(monkeypatch):
     """OpenTable emits /landmark/restaurants-near-<place> constantly — 79
     reached the cache. They list what is NEAR a place; a diner cannot book."""
-    import src.brightdata as bd
+    import src.search as bd
     import src.venue_images as v
-    monkeypatch.setattr(bd, "serp", lambda q, num=10: [
+    monkeypatch.setattr(bd, "search", lambda q, num=10: [
         {"url": "https://www.opentable.com/landmark/restaurants-near-benu", "title": ""},
         {"url": "https://www.opentable.com/nearby/restaurants-near-me-benu", "title": ""},
     ])
@@ -762,7 +762,7 @@ def test_opentable_directory_and_editorial_pages_are_not_bookings(monkeypatch):
     """Also directory shapes, also name-matched: /food-near-me/campbell passed
     for venue "Campbell", /metro/... for "San Francisco", and the editorial
     /features/ pages for whoever they list."""
-    import src.brightdata as bd
+    import src.search as bd
     import src.venue_images as v
     cases = [
         ("Campbell", "https://www.opentable.com/food-near-me/campbell"),
@@ -771,7 +771,7 @@ def test_opentable_directory_and_editorial_pages_are_not_bookings(monkeypatch):
         ("Mother", "https://www.opentable.com/events/mothers-day/metro/san-francisco"),
     ]
     for venue, url in cases:
-        monkeypatch.setattr(bd, "serp", lambda q, num=10, u=url: [{"url": u, "title": ""}])
+        monkeypatch.setattr(bd, "search", lambda q, num=10, u=url: [{"url": u, "title": ""}])
         assert v.find_booking_links(venue) == {}, f"{url} accepted for {venue}"
 
 
@@ -780,9 +780,9 @@ def test_a_resy_city_list_is_rejected_for_a_venue_named_in_it(monkeypatch):
     `arcadia`, so _slug_names_venue rejected it on NAME and the test passed
     even with the Resy list filter removed. Ask for the venue the URL actually
     names, so only the list check can reject it."""
-    import src.brightdata as bd
+    import src.search as bd
     import src.venue_images as v
-    monkeypatch.setattr(bd, "serp", lambda q, num=10: [
+    monkeypatch.setattr(bd, "search", lambda q, num=10: [
         {"url": "https://resy.com/cities/arcadia-ca/list/book-tonight", "title": ""}])
     assert v.find_booking_links("Arcadia") == {}
 
@@ -790,9 +790,9 @@ def test_a_resy_city_list_is_rejected_for_a_venue_named_in_it(monkeypatch):
 def test_a_resy_city_venue_page_is_still_a_booking(monkeypatch):
     """The normal Resy shape has the city in the path. Rejecting every
     /cities/ URL would drop 150 real links."""
-    import src.brightdata as bd
+    import src.search as bd
     import src.venue_images as v
-    monkeypatch.setattr(bd, "serp", lambda q, num=10: [
+    monkeypatch.setattr(bd, "search", lambda q, num=10: [
         {"url": "https://resy.com/cities/san-francisco-ca/venues/7-adams", "title": ""}])
     assert v.find_booking_links("7 Adams").get("resy") == \
         "https://resy.com/cities/san-francisco-ca/venues/7-adams"
@@ -980,3 +980,100 @@ def test_article_fold_needs_a_whole_word():
     assert venue_identity("Thea") == "thea"
     # and a bare "The" is not a venue to strip down to nothing
     assert venue_identity("The") != ""
+
+
+# ── a closed venue is a verdict even when it has no photo ───────────────────
+
+def test_closure_survives_without_an_image(monkeypatch):
+    """own() used to drop a record whose url was empty. A closure has none.
+
+    tier_website() settles that the venue is shut, then own() discarded the
+    record for having no url and the run cached "absent" — a venue that will be
+    probed forever.
+    """
+    import src.venue_images as v
+
+    monkeypatch.setattr(v, "find_official_site",
+                        lambda *a, **k: ("https://shut.example/", "found"))
+    monkeypatch.setattr(v, "find_booking_links", lambda *a, **k: {})
+    monkeypatch.setattr(v, "tier_website", lambda *a, **k: {
+        "url": None, "source": None, "site": "https://shut.example/",
+        "confidence": "high", "closed": True,
+        "evidence": "the venue's own site announces closure"})
+    monkeypatch.setattr(v, "tier_social", lambda *a, **k: None)
+
+    rec, status = v.resolve_venue("Shut Place")
+    assert status == "closed", "a closure is a status, not a missing photo"
+    assert rec["status"] == "closed"
+    assert rec["url"] is None
+
+
+def test_closed_venue_with_a_downloadable_photo_keeps_both(monkeypatch):
+    """A shut venue can still serve its last hero image. Download it — but
+    never record a remote URL the cache does not actually hold."""
+    import src.venue_images as v
+
+    monkeypatch.setattr(v, "find_official_site",
+                        lambda *a, **k: ("https://shut.example/", "found"))
+    monkeypatch.setattr(v, "find_booking_links", lambda *a, **k: {})
+    monkeypatch.setattr(v, "tier_website", lambda *a, **k: {
+        "url": "https://shut.example/hero.jpg", "source": "venue-website",
+        "site": "https://shut.example/", "confidence": "high", "closed": True})
+    monkeypatch.setattr(v, "download_image", lambda *a, **k: "venue-images/shut.jpg")
+
+    rec, status = v.resolve_venue("Shut Place")
+    assert status == "closed"
+    assert rec["url"] == "venue-images/shut.jpg", "must be the LOCAL path"
+    assert rec["closed"] is True
+
+
+def test_closed_venue_whose_photo_will_not_download_does_not_invent_one(monkeypatch):
+    """The review finding: `own()` returned the closed record before fetching,
+    so the cache claimed a photo while holding a hotlink."""
+    import src.venue_images as v
+
+    monkeypatch.setattr(v, "find_official_site",
+                        lambda *a, **k: ("https://shut.example/", "found"))
+    monkeypatch.setattr(v, "find_booking_links", lambda *a, **k: {})
+    monkeypatch.setattr(v, "tier_website", lambda *a, **k: {
+        "url": "https://shut.example/hero.jpg", "source": "venue-website",
+        "site": "https://shut.example/", "confidence": "high", "closed": True})
+    monkeypatch.setattr(v, "download_image", lambda *a, **k: None)
+
+    rec, status = v.resolve_venue("Shut Place")
+    assert status == "closed"
+    assert rec["url"] is None, "no local photo, so no photo may be claimed"
+
+
+def test_a_closure_does_not_spend_the_social_tier(monkeypatch):
+    """The venue is shut; hunting it a photo is wasted work."""
+    import src.venue_images as v
+
+    calls = {"social": 0}
+    monkeypatch.setattr(v, "find_official_site",
+                        lambda *a, **k: ("https://shut.example/", "found"))
+    monkeypatch.setattr(v, "find_booking_links", lambda *a, **k: {})
+    monkeypatch.setattr(v, "tier_website", lambda *a, **k: {
+        "url": None, "site": "https://shut.example/", "closed": True})
+    monkeypatch.setattr(v, "tier_social",
+                        lambda *a, **k: calls.__setitem__("social", calls["social"] + 1))
+
+    v.resolve_venue("Shut Place")
+    assert calls["social"] == 0
+
+
+def test_the_bundled_identity_copy_is_byte_identical():
+    """vercel-app/api/venue_aliases.py is a copy that ships inside the function
+    bundle (which has no src/ package). It went stale once during review and
+    broke /api/stats with AttributeError; a byte comparison is the cheapest way
+    to make that impossible to miss."""
+    import os
+
+    here = os.path.dirname(os.path.abspath(__file__))
+    root = os.path.dirname(here)
+    src = open(os.path.join(root, "src", "venue_aliases.py")).read()
+    bundled = open(os.path.join(root, "vercel-app", "api", "venue_aliases.py")).read()
+    assert src == bundled, (
+        "vercel-app/api/venue_aliases.py drifted from src/venue_aliases.py — "
+        "copy it again (build.sh does this on deploy, but the committed copy "
+        "is what CLI deploys use)")
