@@ -868,3 +868,56 @@ def test_only_the_is_stripped_never_a_or_an():
     assert v("AQ Restaurant & Bar") != v("Q Restaurant & Bar")
     # and identity still respects location, as canonical_venue does
     assert v("Stars (San Francisco)") != v("Stars (Seattle)")
+
+
+# ── the owner's adjudication of name groups (ui/venue_aliases.json) ────────
+
+def test_aliases_collapse_the_spellings_a_human_ruled_on():
+    from src.venue_aliases import identity
+    pairs = [
+        ("Fifth Floor Restaurant", "Fifth Floor"),
+        ("Michael Mina restaurant", "Michael Mina"),
+        ("Restaurant Michael Mina (original)", "Michael Mina"),
+        ("Alfred's", "Alfred's Steakhouse"),
+        ("Scoma’s", "Scoma's restaurant"),
+        ("DOSA", "Dosa"),
+        ("Babu Ji (San Francisco)", "Babu Ji"),
+        ("A16 Oakland", "A16 (Oakland location)"),
+    ]
+    for a, b in pairs:
+        assert identity(a) == identity(b), f"{a!r} and {b!r} should share an identity"
+
+
+def test_location_specific_brands_keep_their_cities_apart():
+    """"Stars (Seattle)" and "Stars (San Francisco)" are different businesses
+    by the owner's ruling — merging would put Seattle moves on the SF dossier."""
+    from src.venue_aliases import identity, is_location_variant
+    assert is_location_variant("Stars (Seattle)")
+    assert is_location_variant("Stars (San Francisco)")
+    assert identity("Stars (Seattle)") != identity("Stars (San Francisco)")
+    # but the two spellings of the SAME city still agree
+    assert identity("Stars (San Francisco)") == identity("Stars San Francisco")
+    # Mission Chinese Food and Tartine Manufactory likewise
+    assert identity("Mission Chinese Food (New York)") != \
+           identity("Mission Chinese Food")
+    assert identity("Tartine Manufactory (Los Angeles)") != \
+           identity("Tartine Manufactory (San Francisco)")
+
+
+def test_aliases_never_apply_without_a_recorded_ruling():
+    """The file is authoritative: an unrecorded venue keeps its own name."""
+    from src.venue_aliases import identity
+    assert identity("Something Nobody Ruled On") == \
+           identity("Something Nobody Ruled On")
+    assert identity("Something Nobody Ruled On") != identity("Fifth Floor")
+
+
+def test_alias_file_is_well_formed():
+    import json, os
+    root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    d = json.load(open(os.path.join(root, "ui", "venue_aliases.json")))
+    assert d["merge"], "no merge rulings"
+    # a canonical title must not also appear as a location-specific variant
+    loc_all = {v for vs in (d.get("locations") or {}).values() for v in vs}
+    overlap = set(d["merge"]) & loc_all
+    assert not overlap, f"contradictory rulings: {sorted(overlap)}"

@@ -3,7 +3,7 @@ import os
 
 from src.roles import role_bucket
 from src.eras import era_bucket, _year
-from src.venue_images import venue_identity
+from src.venue_aliases import identity as venue_identity
 from src.hoods import load_hood_maps, hood_for
 
 INDEX = "bone-fides-edges"
