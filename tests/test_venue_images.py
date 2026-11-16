@@ -75,6 +75,22 @@ def test_public_host_is_accepted(monkeypatch):
     assert _is_public_host("example.com")
 
 
+def test_overlong_dns_label_is_refused_not_raised(monkeypatch):
+    """A DNS label over 63 chars makes the idna codec raise UnicodeEncodeError,
+    not gaierror. The host cannot resolve, so it must be refused — not crash
+    the venue's whole resolution run (Boka did exactly that on the live corpus).
+    """
+    import socket as _socket
+    import src.venue_images as v
+
+    def boom(host, *a, **kw):
+        raise UnicodeEncodeError("idna", host, 0, 70, "label too long")
+    monkeypatch.setattr(_socket, "getaddrinfo", boom)
+
+    assert not v._is_public_host("a" * 70 + ".com")
+    assert not v._url_is_public("https://" + "a" * 70 + ".com/x.jpg")
+
+
 def test_non_http_schemes_are_refused(monkeypatch):
     from src.venue_images import _url_is_public
     _fixed_dns(monkeypatch, {"example.com": "93.184.216.34"})

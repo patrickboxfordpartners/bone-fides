@@ -165,6 +165,12 @@ def _is_public_host(host):
         infos = socket.getaddrinfo(h, None)
     except socket.gaierror:
         return False
+    except UnicodeError:
+        # A DNS label over 63 chars (or an undecodable IDN) raises
+        # UnicodeEncodeError from the idna codec, not gaierror. Such a host can
+        # never resolve, so it is unreachable-by-definition: reject it like any
+        # other unresolvable name instead of letting it crash the venue's run.
+        return False
     for info in infos:
         addr = info[4][0]
         try:
