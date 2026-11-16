@@ -1077,3 +1077,44 @@ def test_the_bundled_identity_copy_is_byte_identical():
         "vercel-app/api/venue_aliases.py drifted from src/venue_aliases.py — "
         "copy it again (build.sh does this on deploy, but the committed copy "
         "is what CLI deploys use)")
+
+
+def test_matching_form_strips_the_article_too():
+    """identity_words kept a leading "The"; identity did not.
+
+    So "The Progress" and "Progress" were ONE venue for counting and TWO for
+    dossier matching, and the whole-word comparison failed to join them — one
+    career split across two cards. Both forms must apply the same rule.
+    """
+    from src.venue_aliases import identity, identity_words
+
+    for bare, articled in (("Progress", "The Progress"),
+                           ("Commissary", "The Commissary"),
+                           ("French Laundry", "The French Laundry")):
+        assert identity(bare) == identity(articled), (
+            f"{bare}/{articled}: the counting identity does not collapse")
+        assert identity_words(bare) == identity_words(articled), (
+            f"{bare}/{articled}: the MATCHING identity does not collapse, so "
+            f"one career splits across two dossier cards")
+
+
+def test_article_fold_does_not_eat_real_word_starts():
+    """The matching form strips "the" as a WORD, not a character prefix."""
+    from src.venue_aliases import identity_words
+
+    assert identity_words("Theodore") == "theodore"
+    assert identity_words("Theater Cafe") == "theater cafe"
+    assert identity_words("Thea") == "thea"
+    # a bare "The" is not a venue to reduce to nothing
+    assert identity_words("The") == "the"
+
+
+def test_word_boundaries_survive_for_matching():
+    """Matching must compare TOKENS: a character prefix joined El Faro to
+    El Farolito, which are different restaurants."""
+    from src.venue_aliases import identity_words
+
+    assert identity_words("El Faro") == "el faro"
+    assert identity_words("El Farolito") == "el farolito"
+    assert not identity_words("El Farolito").startswith(
+        identity_words("El Faro") + " ")

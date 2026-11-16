@@ -79,12 +79,18 @@ def _fold(name):
 
 
 def _fold_words(name):
-    """Same fold as _fold, but KEEPS spaces between words.
+    """Same fold as _fold — INCLUDING the leading-article rule — but keeps
+    spaces between words.
 
     The squashed form is the storage key. It is lossy in exactly one way that
     matters: word boundaries disappear, so "elfaro" is a character prefix of
     "elfarolito" and two different restaurants look like one. Dossier matching
     needs the boundaries, so it uses this form.
+
+    The article must be stripped here too. It was not, so `identity('The
+    Progress')` and `identity('Progress')` returned one key while the matching
+    form returned "the progress" and "progress" — which fail the whole-word
+    comparison, splitting one career across two dossier cards.
     """
     import re
     import unicodedata
@@ -96,7 +102,11 @@ def _fold_words(name):
           .replace("–", "-").replace("—", "-"))
     s = re.sub(r"\(\s*\d[^)]*\)", " ", s)
     s = re.sub(r"[()]", " ", s).lower()
-    return " ".join(re.sub(r"[^a-z0-9\s]", " ", s).split())
+    words = re.sub(r"[^a-z0-9\s]", " ", s).split()
+    # leading whole word "the", only when something follows it
+    if len(words) > 1 and words[0] == "the":
+        words = words[1:]
+    return " ".join(words)
 
 
 def base_identity(name):
