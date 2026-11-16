@@ -1166,3 +1166,39 @@ def test_plumpjack_empire_is_not_a_venue():
     # the actual restaurants must survive the same filter
     for name in ("PlumpJack Cafe", "Balboa Cafe", "PlumpJack Balboa Cafe"):
         assert not ui._is_junk_venue(name), f"{name} wrongly dropped"
+
+
+def test_a_farewell_plus_a_weekly_schedule_is_still_open():
+    """Reported three times because the single phrases passed and the
+    COMBINATION did not.
+
+    "Thank you for all the wonderful reviews" alone was already false. But a
+    page carrying BOTH a thank-you and its opening hours was marked permanently
+    shut, because the corroboration search matched the bare word "closed" inside
+    "We are closed on Sundays" — a schedule. A working restaurant's own page
+    would have been recorded as a closure.
+    """
+    import src.venue_images as v
+
+    open_pages = [
+        "Thank you for all the wonderful reviews. We are closed on Sundays.",
+        "Thank you for the years! We are closed on Mondays and Tuesdays.",
+        "Our kitchen has closed for the evening. Thank you for everything!",
+        "Thank you for all the wonderful reviews! Closed on Thanksgiving.",
+        "The dining room is now closed for the season.",
+        "Thank you for a wonderful year. See you in spring!",
+    ]
+    for p in open_pages:
+        assert not v._announces_closure(p), f"open restaurant marked shut: {p!r}"
+
+    real_closures = [
+        "It is with great sadness that we announce we have closed.",
+        "The restaurant has permanently closed.",
+        "Range Restaurant San Francisco is Now Closed",
+        "Trick Dog has closed. Thank you for the years.",
+        "We are closed. Thank you for 20 years.",
+        "We have closed our doors.",
+        "This location is now closed",
+    ]
+    for p in real_closures:
+        assert v._announces_closure(p), f"real closure missed: {p!r}"

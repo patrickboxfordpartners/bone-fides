@@ -884,12 +884,21 @@ def _announces_closure(html):
         "permanently closed", "closed permanently",
         "has permanently closed", "permanently shut",
         "has closed its doors", "closed its doors",
-        "is now closed", "has now closed", "we have closed",
+        "we have closed",
         "has shut down", "is no longer open",
         "closed for good", "will not be reopening", "will not reopen",
     ):
         if phrase in low:
             return True
+
+    # "is now closed" / "has now closed" carry a real permanence marker ("now"),
+    # but they also complete schedules — "the dining room is now closed for the
+    # season". Same tail rule as everywhere else.
+    for m in re.finditer(r"\b(?:is|has)\s+now\s+closed\b", low):
+        tail = low[m.end():m.end() + 40].lstrip()
+        if tail.startswith(("on ", "for ", "until ", "during ")):
+            continue
+        return True
 
     # ── 2. "has closed" / "has shut" ONLY with a venue subject ───────────────
     # Bare "has closed" also matches "our kitchen has closed for the evening",
@@ -924,13 +933,29 @@ def _announces_closure(html):
             return True
 
     # WEAK: "thank you for all the wonderful reviews" is written by OPEN
-    # restaurants, every day. These corroborate a closure, never prove one, so
-    # they count only when a closure word appears on the page too.
+    # restaurants, every day. These only corroborate, so they need a closure
+    # signal that is not itself a schedule.
+    #
+    # The corroboration search previously matched the bare word "closed", which
+    # fires on "We are closed on Sundays" — so a page saying thank-you AND
+    # listing its hours was marked permanently shut. Section 3 already knows a
+    # schedule when it sees one; this has to apply the same rule.
     for phrase in ("thank you for the years", "thank you for all the",
                    "thank you for everything"):
-        if phrase in low and re.search(
-                r"\b(clos|shut|no longer|farewell|final service|last service|"
-                r"goodbye)\w*", low):
+        if phrase not in low:
+            continue
+        if re.search(r"\b(permanent\w*|shut\s+down|no longer open|farewell|"
+                     r"final service|last service|goodbye|"
+                     r"closed\s+(permanently|for good|its doors))\b", low):
+            return True
+        # A closure verb counts only when it is NOT a schedule. Section 2
+        # applies the same tail rule; "our kitchen has closed for the evening.
+        # Thank you for everything!" is an open restaurant closing for the
+        # night, and the bare word "closed" must not turn that into a closure.
+        for m in re.finditer(r"\b(?:has|had|is|are|we)\s+(?:now\s+)?closed\b", low):
+            tail = low[m.end():m.end() + 40].lstrip()
+            if tail.startswith(("on ", "for ", "early", "until ", "during ")):
+                continue
             return True
 
     return False
