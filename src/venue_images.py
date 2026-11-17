@@ -940,6 +940,18 @@ def _announces_closure(html):
         r"operations?|business|kitchen|restaurant|venue|last\s+day|"
         r"final\s+day|farewell)"
     )
+    # An EXPLICIT permanent-closure noun decides on its own, even when it is
+    # dated. "our final service took place today" and "we announce our closure
+    # today" name a closure that happened; the date is part of the notice, not
+    # a reason to doubt it. Checked before the time-word veto below, because a
+    # blanket "reject if 'today' appears" swallowed these.
+    _EXPLICIT_CLOSURE = (
+        r"(?:final\s+(?:service|day|night|supper|dinner|meal)|"
+        r"last\s+(?:service|day|night|supper|dinner|meal)|"
+        r"(?:permanent\s+)?closure|closing\s+(?:permanently|for\s+good)|"
+        r"closed\s+(?:permanently|for\s+good)|"
+        r"shutting\s+(?:our\s+)?doors|closing\s+our\s+doors)"
+    )
     for phrase in ("it is with great sadness", "we are sad to announce",
                    "we regret to announce", "it is with a heavy heart",
                    "it is with sadness"):
@@ -947,10 +959,12 @@ def _announces_closure(html):
             # look at the next ~90 chars: the closure has to be what the
             # sentence is ABOUT, not merely somewhere else on the page
             tail = low[m.end():m.end() + 90]
+            if re.search(r"\b" + _EXPLICIT_CLOSURE + r"\b", tail):
+                return True
             if not re.search(r"\b" + _CLOSURE_OBJECT + r"\b", tail):
                 continue
-            # The object must be a CLOSURE, not a schedule or a departure.
-            # Three ways a nearby closure word is still routine:
+            # A GENERIC closure word is not enough on its own. Three ways a
+            # nearby "service"/"doors" is still routine:
             #   "tonight's service is cancelled"      — a single service
             #   "we close our doors each night"       — a recurring close
             #   "closed for the holidays"             — a temporary shutdown

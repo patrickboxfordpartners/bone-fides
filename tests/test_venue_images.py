@@ -1273,3 +1273,38 @@ def test_closure_detection_full_matrix():
     ]
     for p in closures:
         assert v._announces_closure(p), f"real closure missed: {p!r}"
+
+
+def test_a_dated_permanent_closure_is_still_a_closure():
+    """The regression my previous fix introduced.
+
+    To stop "it is with great sadness" firing on a chef's departure, I rejected
+    any farewell whose next 90 characters mentioned "today"/"tomorrow"/"this
+    week". That also swallowed real closures, because a permanent closure is
+    routinely DATED:
+
+      "our final service took place today"
+      "we announce our closure today"
+
+    A time word is evidence against a closure only for a GENERIC closure word
+    ("tonight's service is cancelled"). An explicit closure noun — final
+    service, last day, closure, closing our doors — decides on its own.
+    """
+    import src.venue_images as v
+
+    dated_closures = [
+        "It is with great sadness that we announce our final service took place today",
+        "It is with great sadness that we announce our final service was yesterday",
+        "We are sad to announce our last day of service was this week",
+        "It is with great sadness that we announce our closure today",
+    ]
+    for p in dated_closures:
+        assert v._announces_closure(p), f"dated closure missed: {p!r}"
+
+    routine = [
+        "We regret to announce that tonight's service is cancelled",
+        "It is with a heavy heart that we close our doors each night at 10pm.",
+        "We are sad to announce our summer menu has ended.",
+    ]
+    for p in routine:
+        assert not v._announces_closure(p), f"routine notice marked shut: {p!r}"
