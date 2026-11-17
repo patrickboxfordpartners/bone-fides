@@ -882,6 +882,38 @@ def _names_the_venue(subject):
     return bool(re.search(_VENUE_WIDE, subject))
 
 
+# A full stop that does NOT end a sentence. "St. Helena", "Mt. Tam", "No. 5",
+# "U.S.", "Inc." — the period belongs to the abbreviation, and treating it as a
+# sentence break cut the window mid-statement: "we are ceasing our St. Helena
+# operations" lost `operations` and a shuttered venue was cached `found`.
+_ABBREVIATIONS = (
+    r"(?:st|mt|ft|no|dr|mr|mrs|ms|jr|sr|inc|ltd|co|corp|ave|blvd|rd|ste|apt|"
+    r"vs|etc|approx|dept|est|fig|al|e\.g|i\.e)"
+)
+
+
+def _sentence_break(text):
+    """First real sentence-end in `text`, or None. Ignores abbreviations."""
+    for m in re.finditer(r"[.!?;\n]", text):
+        if m.group(0) == ".":
+            upto = text[:m.start()]
+            # "U.S.", "S.P.Q.R." — single letters each closed by a period. The
+            # period we are looking at is the LAST one, so it is not part of
+            # `upto`; match the run immediately before it instead.
+            if re.search(r"(?:^|[^a-z])(?:[a-z]\.)+[a-z]$", upto, re.I):
+                continue
+            # A lone initial: "J. Kenji", "A. Smith". It must STAND ALONE —
+            # the previous check let any word ending in one letter plus a
+            # period count, so "operations." read as the initial "s." and the
+            # sentence break after it was ignored.
+            if re.search(r"(?:^|\s)[a-z]$", upto, re.I):
+                continue
+            if re.search(r"\b" + _ABBREVIATIONS + r"$", upto, re.I):
+                continue
+        return m
+    return None
+
+
 def _reads_as_sf(text):
     """Locality gate: does the page situate the venue in the Bay Area?
 
@@ -1208,13 +1240,15 @@ def _announces_closure(html):
                     lo = max(0, cw.start() - 40)
                     hi = min(len(tail), cw.end() + 40)
                     left = tail[lo:cw.start()]
-                    cut = list(re.finditer(r"[.!?;\n]", left))
-                    if cut:
-                        lo = lo + cut[-1].end()
+                    rb = _sentence_break(left)
+                    while rb:
+                        lo = lo + rb.end()
+                        left = tail[lo:cw.start()]
+                        rb = _sentence_break(left)
                     right = tail[cw.end():hi]
-                    cut = re.search(r"[.!?;\n]", right)
-                    if cut:
-                        hi = cw.end() + cut.start()
+                    rb = _sentence_break(right)
+                    if rb:
+                        hi = cw.end() + rb.start()
                     if not _names_the_venue(tail[lo:hi]):
                         continue
                 return True

@@ -1626,3 +1626,35 @@ def test_delayed_reopening_is_not_a_permanent_closure():
     assert v._announces_closure("We will not be reopening.")
     assert not v._announces_closure("We will not reopen until spring")
     assert not v._announces_closure("We will not be reopening until next week")
+
+
+def test_abbreviations_do_not_cut_a_closure_statement_short():
+    """The clause check reads sentence boundaries, and a period inside a name
+    is not one.
+
+    "We regret to announce we are ceasing our St. Helena operations." lost
+    `operations` when "St." was taken for a sentence end, so the venue-wide
+    object vanished and a closed restaurant was cached `found`.
+
+    The fix must not swing the other way either: "operations." ends a sentence,
+    because a lone "s" is only an initial when it STANDS ALONE ("J. Kenji").
+    """
+    import src.venue_images as v
+
+    closed = [
+        "We regret to announce we are ceasing our St. Helena operations.",
+        "We regret to announce we are ceasing operations at our St. Helena location.",
+        "We regret to announce we are ceasing U.S. operations.",
+        "We regret to announce we are ceasing operations. Gift cards will be refunded.",
+    ]
+    for p in closed:
+        assert v._announces_closure(p), f"abbreviation hid a closure: {p!r}"
+
+    # A real sentence break after the verb still separates a service line.
+    still_open = [
+        "We regret to announce that we are discontinuing our delivery service. "
+        "Gift cards will be refunded.",
+        "We are discontinuing our delivery service in St. Helena.",
+    ]
+    for p in still_open:
+        assert not v._announces_closure(p), f"service line read as closure: {p!r}"
