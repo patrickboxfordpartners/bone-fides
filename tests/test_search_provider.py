@@ -38,6 +38,10 @@ def _isolate_balance_cache():
 # ── provider selection ──────────────────────────────────────────────────────
 
 def test_explicit_override_wins(monkeypatch):
+    # provider_ok("brightdata") reports whether the key is CONFIGURED, so
+    # without this the assertion depended on the private .env and failed in a
+    # clean checkout while passing on a machine that had one.
+    monkeypatch.setattr(search, "provider_ok", lambda name: name == "brightdata")
     monkeypatch.setenv("SEARCH_PROVIDER", "brightdata")
     assert search.provider() == "brightdata"
 

@@ -106,6 +106,34 @@ def _fold_words(name):
     # leading whole word "the", only when something follows it
     if len(words) > 1 and words[0] == "the":
         words = words[1:]
+    # Rejoin single-letter runs that punctuation split apart. "S.P.Q.R." folds
+    # to ["s","p","q","r"] while "SPQR" folds to ["spqr"]; identity() squashes
+    # both to "spqr", but the spaced form differed, so _venue_touch()'s
+    # whole-word comparison kept the two spellings apart and split one chef's
+    # career across two dossier cards.
+    #
+    # Only runs of SINGLE letters rejoin, so this cannot become the
+    # character-prefix matching the space was introduced to prevent: "el faro"
+    # and "el farolito" keep their boundaries and stay different venues.
+    if len(words) > 1 and all(len(w) == 1 for w in words):
+        words = ["".join(words)]
+    else:
+        joined, run = [], []
+        for w in words:
+            if len(w) == 1:
+                run.append(w)
+                continue
+            if len(run) > 1:
+                joined.append("".join(run))
+            elif run:
+                joined.extend(run)
+            run = []
+            joined.append(w)
+        if len(run) > 1:
+            joined.append("".join(run))
+        elif run:
+            joined.extend(run)
+        words = joined
     return " ".join(words)
 
 

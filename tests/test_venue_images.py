@@ -1511,3 +1511,75 @@ def test_no_temporary_notice_is_ever_permanent():
     assert not leaked, (
         "temporary notices cached as permanently closed:\n  "
         + "\n  ".join(repr(x) for x in leaked[:10]))
+
+
+def test_explicit_permanence_is_not_erased_by_another_clause():
+    """The regression from routing every verdict through the gate.
+
+    "We are permanently closed, but our online shop remains temporarily
+    available" states two different things: the restaurant is shut for good,
+    the shop is briefly open. The gate's 60-character trailing window crossed
+    the "but" and read `temporarily` as though it qualified the closure, so a
+    venue whose own page says "permanently closed" was cached as `found`.
+
+    Two fixes: the window now stops at a clause break, and phrases that state
+    permanence in their own words ("permanently", "for good") are decisive
+    rather than advisory.
+    """
+    import src.venue_images as v
+
+    closed = [
+        "We are permanently closed, but our online shop remains temporarily available",
+        "We are permanently closed, though our gift cards are briefly available",
+        "The restaurant has permanently closed, but our sister cafe is temporarily "
+        "closed for renovations",
+        "We have closed our doors for good, while our cookbook stays temporarily available",
+    ]
+    for p in closed:
+        assert v._announces_closure(p), f"explicit permanence erased: {p!r}"
+
+
+def test_closures_that_do_not_use_the_word_closed():
+    """Requiring a clos/shut/door word dropped real closures.
+
+    "_CLOSURE_WORD" exists to exclude NEUTRAL venue nouns ("restaurant",
+    "business") that say nothing about closure — not to require one particular
+    verb. "we are ceasing operations after 20 years" names a closure and has no
+    clos/shut/door word, so narrowing the list too far lost it.
+    """
+    import src.venue_images as v
+
+    closed = [
+        "We regret to announce that we are ceasing operations after 20 years",
+        "It is with great sadness that we announce we are ceasing operations",
+        "We regret to announce the restaurant is halting service permanently",
+        "We are sad to announce we are discontinuing service",
+    ]
+    for p in closed:
+        assert v._announces_closure(p), f"closure without a clos/shut word missed: {p!r}"
+
+    # ...while a neutral venue noun ALONE is still not a closure.
+    not_closed = [
+        "Our restaurant has a new menu",
+        "The business is thriving",
+        "It is with great sadness that we announce our head chef is leaving",
+    ]
+    for p in not_closed:
+        assert not v._announces_closure(p), f"neutral mention marked closed: {p!r}"
+
+
+def test_accented_and_plain_spellings_agree_on_official_sites():
+    """Accents were treated as word separators, so an accented spelling
+    produced NO matching words at all and lost a domain its plain twin won.
+
+    `_preferred()` then picks one spelling before discovery runs, so "A Cote"
+    kept acoterestaurant.com while "À Côté" recorded `absent` without ever
+    fetching the candidate.
+    """
+    import src.venue_images as v
+
+    assert v._is_official("https://acoterestaurant.com", "A Cote") is True
+    assert v._is_official("https://acoterestaurant.com", "À Côté") is True
+    # Folding must not admit lookalikes or join different venues.
+    assert v._is_official("https://richtablesf.nevertrustadame.com", "Rich Table") is False
+    assert v._is_official("https://elfarolito.com", "El Faro") is True  # short-name path

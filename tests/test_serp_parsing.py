@@ -58,6 +58,11 @@ def test_empty_organic_list_raises_and_is_retried(monkeypatch):
 
     monkeypatch.setattr(bd, "_post", fake_post)
     monkeypatch.setattr(bd.time, "sleep", lambda *_: None)
+    # The retry tests must not depend on the private .env. Without
+    # BRIGHTDATA_SERP_ZONE, serp() raises KeyError while BUILDING the request —
+    # before either fake response is read — so both tests failed in a clean
+    # checkout while passing on a developer machine that happens to have .env.
+    monkeypatch.setitem(bd.CREDS, "BRIGHTDATA_SERP_ZONE", "test_zone")
 
     with pytest.raises(ValueError):
         bd.serp("Absinthe San Francisco official website", attempts=3)
@@ -78,6 +83,8 @@ def test_empty_then_real_results_returns_results(monkeypatch):
 
     monkeypatch.setattr(bd, "_post", fake_post)
     monkeypatch.setattr(bd.time, "sleep", lambda *_: None)
+    # Same reason as the test above: no dependency on the private .env.
+    monkeypatch.setitem(bd.CREDS, "BRIGHTDATA_SERP_ZONE", "test_zone")
 
     out = bd.serp("Absinthe San Francisco official website", attempts=3)
     assert out and out[0]["url"] == "https://absinthe.com/"

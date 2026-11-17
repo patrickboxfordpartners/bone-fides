@@ -306,7 +306,16 @@ def _is_official(url, venue):
     # the venue's distinctive word must appear in the REGISTERED DOMAIN.
     # 4 characters, not 5: "Zuni Cafe" -> zunicafe.com is legitimate and was
     # rejected by a 5-char floor.
-    words = [w for w in re.split(r"[^a-z0-9]+", venue.lower()) if len(w) >= 4]
+    #
+    # Accents are folded BEFORE the split. "À Côté" lowercased still holds
+    # non-ASCII characters, which `[^a-z0-9]+` treats as separators, so the name
+    # yielded NO words at all — the short-name fallback then matched it against
+    # the domain and failed, so acoterestaurant.com was rejected for "À Côté"
+    # while it passed for "A Cote". Two spellings of one venue, two answers, and
+    # `_preferred()` picks one of them before discovery even runs.
+    folded = "".join(c for c in unicodedata.normalize("NFKD", venue or "")
+                     if not unicodedata.combining(c)).lower()
+    words = [w for w in re.split(r"[^a-z0-9]+", folded) if len(w) >= 4]
     if not words:
         # Short names ("Coi", "A16") cannot be matched on the domain safely —
         # "coi" appears in countless hosts — so they are never accepted on the
@@ -316,7 +325,7 @@ def _is_official(url, venue):
         # only if the name is the WHOLE registered domain or its leading label
         # ("coirestaurant.com", "a16pizza.com"), and rely on the page-names-the-
         # venue check downstream to admit or reject it.
-        short = [w for w in re.split(r"[^a-z0-9]+", venue.lower()) if w]
+        short = [w for w in re.split(r"[^a-z0-9]+", folded) if w]
         if not short:
             return False
         squash = "".join(short)
@@ -940,10 +949,13 @@ def _announces_closure(html):
             return True
         # Trailing adverb: "we have closed our doors temporarily" qualifies the
         # verb from BEHIND the object, so it can be a couple of words away.
-        # Bounded to this sentence, so a later "we were briefly closed in 2020"
-        # in the next sentence cannot retroactively make this notice temporary.
+        # Bounded to this CLAUSE, not just this sentence: "we have closed our
+        # doors for good, while our cookbook stays temporarily available" is a
+        # permanent closure followed by a separate statement about the cookbook,
+        # and reading "temporarily" across the "while" erased the closure.
         after = low[end:end + 60]
-        stop = re.search(r"[.!?;\n]", after)
+        stop = re.search(r"[.!?;\n]|\b(?:but|though|although|while|whereas|however)\b",
+                         after)
         if stop:
             after = after[:stop.start()]
         if re.search(r"\b(?:temporarily|briefly)\b", after):
@@ -965,8 +977,19 @@ def _announces_closure(html):
     def _permanent_verdict(start, end):
         if _temporarily_qualified(start, end):
             return False
+        # Bound the trailing window at a CLAUSE break, not just a sentence. The
+        # 60-char window crossed "but" and read a temporary word from the next
+        # clause as though it qualified this closure:
+        #
+        #   "We are permanently closed, but our online shop remains temporarily
+        #    available"
+        #
+        # The shop's availability is a different statement from the restaurant's
+        # closure. Previously `permanently closed` was decisive; routing it
+        # through the gate let an unrelated clause erase it.
         after = low[end:end + 60]
-        stop = re.search(r"[.!?;\n]", after)
+        stop = re.search(r"(?:[.!?;\n]|,\s*(?:but|and|though|although|while|"
+                         r"however|except)\b)", after)
         if stop:
             after = after[:stop.start()]
         # "our final service IS POSTPONED" inverts a closure noun that would
@@ -990,6 +1013,12 @@ def _announces_closure(html):
     # These name the venue's OWN permanent closure and are safe on their own.
     # Every one of them has an explicit permanence marker: "permanently",
     # "now", "its doors", "for good", or a first-person "we have closed".
+    #
+    # A phrase that states permanence in its OWN words ("permanently closed",
+    # "closed for good") is decisive: no nearby temporary wording can unsay it.
+    # "Permanently closed, though our shop is temporarily available" is still a
+    # closed restaurant. Only the phrases that admit a temporary reading
+    # ("we have closed", "has shut down") go through the gate.
     for phrase in (
         "permanently closed", "closed permanently",
         "has permanently closed", "permanently shut",
@@ -998,8 +1027,10 @@ def _announces_closure(html):
         "has shut down", "is no longer open",
         "closed for good", "will not be reopening", "will not reopen",
     ):
+        decisive = ("permanent" in phrase or "for good" in phrase
+                    or "no longer open" in phrase or "not reopen" in phrase)
         for m in re.finditer(re.escape(phrase), low):
-            if _permanent_verdict(m.start(), m.end()):
+            if decisive or _permanent_verdict(m.start(), m.end()):
                 return True
 
     # "is now closed" / "has now closed" carry a real permanence marker ("now"),
@@ -1056,7 +1087,15 @@ def _announces_closure(html):
     )
     # The words that actually ASSERT a closure, as opposed to _CLOSURE_OBJECT's
     # neutral venue nouns. A verdict is taken at these, and only these.
-    _CLOSURE_WORD = r"(?:clos\w*|shut\w*|doors?)"
+    #
+    # "ceas\w*", "halt\w*" and "suspend\w*" are here because narrowing this to
+    # clos/shut/door dropped notices that close a venue without those words:
+    # "we are ceasing operations after 20 years" matched `operations` before and
+    # stopped matching. The point of the narrow list is to EXCLUDE the neutral
+    # venue nouns (restaurant, business, kitchen) that say nothing about
+    # closure — not to exclude genuine closure verbs.
+    _CLOSURE_WORD = (r"(?:clos\w*|shut\w*|doors?|ceas\w*|halt\w*|"
+                     r"suspend\w*|discontinu\w*)")
     # An EXPLICIT permanent-closure noun decides on its own, even when it is
     # dated. "our final service took place today" and "we announce our closure
     # today" name a closure that happened; the date is part of the notice, not
