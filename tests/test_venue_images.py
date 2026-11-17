@@ -1721,3 +1721,36 @@ def test_the_subject_may_come_before_the_verb():
     ]
     for p in still_open:
         assert not v._announces_closure(p), f"service line read as closure: {p!r}"
+
+
+def test_a_service_line_must_be_the_verbs_object():
+    """"the restaurant is discontinuing delivery service" is one offering ending.
+
+    "the restaurant" is the grammatical SUBJECT, not the thing being stopped, so
+    proximity alone read it as a venue closure. What separates the two is
+    whether the service line directly follows the verb — its OBJECT — or sits in
+    a later sentence.
+
+      "discontinuing delivery service"        object  -> one offering ends
+      "ceasing operations. Gift cards…"       later   -> venue closed
+      "all operations have ceased."           subject -> venue closed
+    """
+    import src.venue_images as v
+
+    still_open = [
+        "We regret to announce the restaurant is discontinuing delivery service.",
+        "We regret to announce the restaurant is discontinuing our delivery service.",
+        "We are discontinuing takeout service",
+        "Our delivery service has been discontinued.",
+    ]
+    for p in still_open:
+        assert not v._announces_closure(p), f"service line read as closure: {p!r}"
+
+    closed = [
+        "We regret to announce all operations have ceased.",
+        "We regret to announce all operations have ceased. Gift cards will be refunded.",
+        "We regret to announce we are ceasing operations. Gift cards will be refunded.",
+        "We are sad to announce we are discontinuing service",
+    ]
+    for p in closed:
+        assert v._announces_closure(p), f"venue closure missed: {p!r}"

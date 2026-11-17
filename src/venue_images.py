@@ -875,26 +875,30 @@ _SERVICE_LINE = (
 )
 
 
-def _names_the_venue(subject):
+def _names_the_venue(subject, verb_at):
     """Does this stretch of text close the VENUE rather than one service line?
 
-    The verb can take its subject on either side — "ceasing operations" and
-    "all operations have ceased" both close a venue — so both are examined.
+    `verb_at` is where the closure verb sits inside `subject`.
 
-    Which one decides: the object CLOSEST to the verb's position. A subject
-    before the verb is closer than a line mentioned after it, so "all operations
-    have ceased. Gift cards will be refunded." still reads venue-wide, while
-    "discontinuing our delivery service" reads as one offering. Ordering by
-    distance needs no sentence boundary, which two attempts at locating one
-    failed to get right.
+    A service line closes only ONE offering when it is the verb's OBJECT — that
+    is, when it directly follows the verb: "discontinuing delivery service",
+    "discontinuing our delivery service". A service line anywhere else is a
+    different statement ("ceasing operations. Gift cards will be refunded"), and
+    a venue noun before the verb cannot rescue it, because in "the restaurant is
+    discontinuing delivery service" that noun is the grammatical SUBJECT, not
+    the thing being stopped.
+
+    Nothing here needs to locate a sentence in general; the only question is
+    whether one sits between the verb and the service line, which is a gap of a
+    handful of characters rather than a property of the whole page.
     """
-    venue = re.search(_VENUE_WIDE, subject)
     line = re.search(_SERVICE_LINE, subject)
-    if not venue:
-        return False
-    if not line:
-        return True
-    return venue.start() < line.start()
+    if line and line.start() > verb_at:
+        between = subject[verb_at:line.start()]
+        if not re.search(r"[.!?;\n]", between):
+            # The service line is the verb's object: one offering ends.
+            return False
+    return bool(re.search(_VENUE_WIDE, subject))
 
 
 def _reads_as_sf(text):
@@ -1221,7 +1225,8 @@ def _announces_closure(html):
                     # and _names_the_venue() compares positions, so a later
                     # sentence still cannot win.
                     lo = max(0, cw.start() - 40)
-                    if not _names_the_venue(tail[lo:cw.end() + 60]):
+                    window = tail[lo:cw.end() + 60]
+                    if not _names_the_venue(window, cw.start() - lo):
                         continue
                 return True
 
