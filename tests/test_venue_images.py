@@ -1754,3 +1754,78 @@ def test_a_service_line_must_be_the_verbs_object():
     ]
     for p in closed:
         assert v._announces_closure(p), f"venue closure missed: {p!r}"
+
+
+def test_a_refund_clause_does_not_undo_a_closure():
+    """The finding: "…ceasing operations, but gift cards will be refunded."
+
+    Only a full stop counted as separating the verb from a later service line,
+    so the gap " operations, but " read as continuous and `gift cards` was taken
+    for the verb's object — while `operations` was in fact the object and the
+    refund was a separate statement. A clause conjunction separates too.
+
+    Bare "while" also had to come out of the postponing-tail list: it vetoed
+    "ceased operations while gift cards will be refunded", where it introduces
+    an unrelated clause rather than a reason for closing.
+    """
+    import itertools
+
+    import src.venue_images as v
+
+    closed = [
+        "We regret to announce we are ceasing operations, but gift cards will be refunded.",
+        "We regret to announce we are ceasing operations and gift cards will be refunded.",
+        "We regret to announce we are ceasing operations. Gift cards will be refunded.",
+        "We regret to announce all operations have ceased, but gift cards will be refunded.",
+        "We regret to announce all operations have ceased while gift cards will be refunded.",
+    ]
+    for p in closed:
+        assert v._announces_closure(p), f"refund clause hid a closure: {p!r}"
+
+    # The whole class, not just the quoted sentence: every closure statement
+    # with a refund clause attached by every common conjunction.
+    statements = [
+        "we are ceasing operations", "all operations have ceased",
+        "we are discontinuing service", "we have closed our doors",
+        "the restaurant has closed permanently",
+    ]
+    conjunctions = ["but", "and", ", but", ", and", "while", "though",
+                    "although", "however", "yet", "whereas", ", while", ", though"]
+    followups = [
+        "gift cards will be refunded", "gift cards remain available",
+        "our online shop stays open", "delivery will continue",
+        "catering is still available", "takeout remains available",
+    ]
+    missed = []
+    for statement, conjunction, followup in itertools.product(
+            statements, conjunctions, followups):
+        notice = (f"We regret to announce {statement} "
+                  f"{conjunction} {followup}.")
+        notice = notice.replace(" , ", ", ")
+        if not v._announces_closure(notice):
+            missed.append(notice)
+    assert not missed, (
+        "closure lost behind a refund clause:\n  "
+        + "\n  ".join(repr(x) for x in missed[:8]))
+
+
+def test_a_service_line_remains_the_object_when_nothing_separates_it():
+    """"the restaurant is discontinuing delivery service" is one offering.
+
+    The venue noun before the verb is the grammatical SUBJECT — the thing doing
+    the discontinuing — so it cannot be what the discontinuing closes. Only a
+    venue object between the verb and the service line settles it, or a
+    separator that makes the service line a new statement.
+    """
+    import src.venue_images as v
+
+    still_open = [
+        "We regret to announce the restaurant is discontinuing delivery service.",
+        "We regret to announce the restaurant is discontinuing our delivery service.",
+        "We are discontinuing our delivery service",
+        "We are discontinuing takeout service",
+        "We are halting our catering service",
+        "Our delivery service has been discontinued.",
+    ]
+    for p in still_open:
+        assert not v._announces_closure(p), f"service line read as closure: {p!r}"

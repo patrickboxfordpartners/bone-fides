@@ -880,24 +880,38 @@ def _names_the_venue(subject, verb_at):
 
     `verb_at` is where the closure verb sits inside `subject`.
 
-    A service line closes only ONE offering when it is the verb's OBJECT — that
-    is, when it directly follows the verb: "discontinuing delivery service",
-    "discontinuing our delivery service". A service line anywhere else is a
-    different statement ("ceasing operations. Gift cards will be refunded"), and
-    a venue noun before the verb cannot rescue it, because in "the restaurant is
-    discontinuing delivery service" that noun is the grammatical SUBJECT, not
-    the thing being stopped.
+    A service line ends only ONE offering when it is the verb's OBJECT — when it
+    directly follows the verb: "discontinuing delivery service". It is NOT the
+    object when something intervenes:
 
-    Nothing here needs to locate a sentence in general; the only question is
-    whether one sits between the verb and the service line, which is a gap of a
-    handful of characters rather than a property of the whole page.
+      "ceasing operations. Gift cards will be refunded."   a sentence
+      "ceasing operations, but gift cards will be refunded" a clause
+
+    The second is the one that kept failing. A full stop was the only boundary
+    recognised, so the gap " operations, but " read as continuous and `gift
+    cards` was taken for the object — while `operations` was in fact the object
+    and the refund was a separate statement.
+
+    Two independent signals settle it, either sufficient:
+      - the verb already took a venue-wide object before the service line
+        ("ceasing operations, but gift cards…"), so the service line is new;
+      - a sentence or clause break sits in the gap.
     """
     line = re.search(_SERVICE_LINE, subject)
     if line and line.start() > verb_at:
         between = subject[verb_at:line.start()]
-        if not re.search(r"[.!?;\n]", between):
-            # The service line is the verb's object: one offering ends.
-            return False
+        separated = re.search(
+            r"[.!?;\n]|\b(?:but|and|while|though|although|however|yet|"
+            r"whereas|except|instead)\b", between)
+        if separated or re.search(_VENUE_WIDE, between):
+            return bool(re.search(_VENUE_WIDE, subject))
+        # No separator, no object in between: the service line IS the object,
+        # so one offering ends. This holds for the passive too — in
+        # "operations have ceased while gift cards…" the "while" is a
+        # separator, and in "the restaurant is discontinuing delivery service"
+        # the venue noun before the verb is the grammatical SUBJECT, the thing
+        # doing the discontinuing, not the thing being closed.
+        return False
     return bool(re.search(_VENUE_WIDE, subject))
 
 
@@ -931,8 +945,19 @@ _QUALIFIER_FILLER = (
 
 # A tail that postpones reopening, which makes a closure word mean "closed for
 # now" rather than "closed". Shared by the verdict gate so every path gets it.
+#
+# "while" is NOT unconditional. As a postponement it introduces a REASON or a
+# duration — "closed while we renovate", "closed while the kitchen is rebuilt".
+# It also introduces an unrelated clause — "ceased operations while gift cards
+# will be refunded" — where it says nothing about reopening. Bare "while" here
+# vetoed that closure, so it now needs a continuation that reads as a cause.
 _TEMPORARY_TAIL = (
-    r"(?:until\b|while\b|pending\b|"
+    r"(?:until\b|pending\b|"
+    r"while\s+(?:we\s+(?:renovat|repair|remodel|construct|rebuild|"
+    r"refresh|update|restore)|"
+    r"the\s+(?:kitchen|space|dining\s+room|building)\s+(?:is|are|gets)|"
+    r"our\s+(?:kitchen|space|dining\s+room|building)\s+(?:is|are|gets)|"
+    r"renovat|repair|remodel|construct|maintenance)\b|"
     r"for\s+(?:a\s+)?(?:the\s+)?(?:renovat\w*|remodel\w*|repairs?|"
     r"maintenance|construction|restructuring|season|holidays?|"
     r"winter|summer|spring|fall)\b)"
