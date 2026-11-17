@@ -862,8 +862,18 @@ def _reads_as_sf(text):
 # Words that make a nearby closure word mean "we are still trading". Kept to
 # qualifiers that cannot be an ordinary preposition: an earlier `in\w*` matched
 # the bare word "in", which vetoed "we have closed our doors in March".
+# Longest first, so "temporarily" is not eaten by "temporary" plus a failed \b.
 _TEMPORARY_QUALIFIER = (
-    r"(?:temporary|temporarily|brief|briefly|short(?:-| )term)"
+    r"(?:temporarily|temporary|briefly|brief|short(?:-| )term)"
+)
+
+# Function words that may sit between a qualifier and the closure noun it
+# qualifies: "our temporary closure", "a brief closure". A NOUN in that gap
+# means the qualifier is attached to something else — "after a brief farewell,
+# we have closed our doors" is a permanent closure behind a short goodbye, and
+# reading the sentence for the bare word "brief" marked it open.
+_QUALIFIER_FILLER = (
+    r"(?:(?:a|an|the|our|its|their|his|her|of|for|and|this|that|is|was)\s+)*"
 )
 
 
@@ -894,24 +904,42 @@ def _announces_closure(html):
     # and a cached closure is never re-probed — so the venue stayed wrong for
     # good. Checked ahead of every closure statement, not just the dated ones.
     #
-    # Scoped to the SENTENCE, so a qualifier has to belong to the same notice
-    # whether it leads it or trails it ("we have closed our doors temporarily"),
-    # while "Temporary staffing changes are coming. We have closed its doors
-    # for good." stays a closure — that is a different sentence, and a real one.
-    # A runaway sentence is capped so one stray "temporary" cannot veto a page.
+    # The qualifier must ATTACH to the closure noun. Scanning the sentence for
+    # the bare word "brief"/"temporary" was itself a bug: "After a brief
+    # farewell, we have closed our doors." is a permanent closure behind a short
+    # goodbye, and the sentence scan called it temporary. Only function words
+    # may sit between qualifier and noun ("our temporary closure"); an
+    # intervening NOUN means the qualifier belongs to something else.
     def _temporarily_qualified(start, end):
+        # Bound the search to the sentence so a stray qualifier across a full
+        # stop cannot veto this notice, then require attachment.
         left = max(0, start - 160)
         m = None
         for m in re.finditer(r"[.!?;\n]", low[left:start]):
             pass
         if m:
             left = left + m.end()
-        right = min(len(low), end + 160)
-        m = re.search(r"[.!?;\n]", low[end:right])
-        if m:
-            right = end + m.start()
-        sentence = low[left:right]
-        return bool(re.search(r"\b" + _TEMPORARY_QUALIFIER + r"\b", sentence))
+        before = low[left:start]
+        # "temporarily closed", "briefly closed" — an adverb qualifies the verb.
+        if re.search(r"(?:temporarily|briefly)\s+(?:\w+\s+){0,2}$", before):
+            return True
+        # "our temporary closure", "a brief closure", "temporary closing" — an
+        # adjective qualifies the noun, with only function words in between.
+        if re.search(r"\b" + _TEMPORARY_QUALIFIER + r"\s+" + _QUALIFIER_FILLER + r"$",
+                     before):
+            return True
+        # Trailing adverb: "we have closed our doors temporarily" qualifies the
+        # verb from BEHIND the object, so it can be a couple of words away.
+        # Bounded to this sentence, so a later "we were briefly closed in 2020"
+        # in the next sentence cannot retroactively make this notice temporary.
+        after = low[end:end + 60]
+        stop = re.search(r"[.!?;\n]", after)
+        if stop:
+            after = after[:stop.start()]
+        if re.search(r"\b(?:temporarily|briefly)\b", after):
+            return True
+        return bool(re.search(r"\bfor\s+a\s+(?:brief|short|temporary)\s+"
+                              r"(?:period|time|while)\b", after))
 
     # ── 1. Unambiguous closure statements ────────────────────────────────────
     # These name the venue's OWN permanent closure and are safe on their own.

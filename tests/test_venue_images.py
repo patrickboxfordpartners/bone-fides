@@ -1357,3 +1357,43 @@ def test_a_temporary_closure_is_not_a_permanent_one():
     ]
     for p in still_closed:
         assert v._announces_closure(p), f"real closure missed: {p!r}"
+
+
+def test_a_temporary_qualifier_must_attach_to_the_closure():
+    """The P1 that blocked the merge after the previous fix.
+
+    The first version of the temporary guard scanned the whole SENTENCE for
+    "brief"/"temporary". That is the same class of mistake as matching a bare
+    "closed": the word was treated as proof regardless of what it described.
+
+      "After a brief farewell, we have closed our doors."
+
+    is a permanent closure behind a short goodbye, and the sentence scan called
+    it temporary — so the verified page lost its closure flag and was cached
+    `found`, which is never re-probed.
+
+    The qualifier now has to ATTACH: only function words may sit between it and
+    the closure noun ("our temporary closure"), and an intervening noun means the
+    qualifier belongs to something else.
+    """
+    import src.venue_images as v
+
+    # "brief"/"temporary" describes something other than the closure.
+    permanently_closed = [
+        "After a brief farewell, we have closed our doors.",
+        "After a brief farewell, the restaurant has closed its doors.",
+        "After a short farewell message, we have closed our doors.",
+        "Following a temporary farewell, the restaurant has closed its doors.",
+    ]
+    for p in permanently_closed:
+        assert v._announces_closure(p), f"closure misread as temporary: {p!r}"
+
+    # The qualifier does attach, so these stay open. Leading and trailing.
+    temporary = [
+        "We have closed our doors for a brief period.",
+        "We are temporarily closed for renovations.",
+        "We are briefly closed for maintenance.",
+        "We will be briefly closed for inventory.",
+    ]
+    for p in temporary:
+        assert not v._announces_closure(p), f"temporary closure marked permanent: {p!r}"
