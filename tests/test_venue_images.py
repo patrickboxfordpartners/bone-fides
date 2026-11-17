@@ -1583,3 +1583,46 @@ def test_accented_and_plain_spellings_agree_on_official_sites():
     # Folding must not admit lookalikes or join different venues.
     assert v._is_official("https://richtablesf.nevertrustadame.com", "Rich Table") is False
     assert v._is_official("https://elfarolito.com", "El Faro") is True  # short-name path
+
+
+def test_service_line_verbs_must_name_the_venue_not_one_offering():
+    """Two ways a service-line verb goes wrong, in opposite directions.
+
+    Too LENIENT: "we are discontinuing our delivery service" ends one offering
+    of a restaurant that is still trading, but `discontinuing` supplies the
+    closure word and `service` supplies the object, so both checks passed.
+
+    Too STRICT: the venue-wide check read a fixed 40-character window that
+    crossed the full stop, so "Gift cards will be refunded" in the NEXT sentence
+    became the thing being closed, and a genuinely shuttered venue lost its flag.
+    """
+    import src.venue_images as v
+
+    closed = [
+        "We regret to announce we are ceasing operations. Gift cards will be refunded.",
+        "We regret to announce that we are ceasing operations after 20 years",
+        "We are sad to announce we are discontinuing service",
+        "We are sad to announce we are ceasing all service",
+    ]
+    for p in closed:
+        assert v._announces_closure(p), f"venue-wide closure missed: {p!r}"
+
+    still_open = [
+        "We regret to announce that we are discontinuing our delivery service",
+        "We regret to announce that we are discontinuing our delivery service. "
+        "Gift cards will be refunded.",
+        "We are discontinuing takeout service",
+        "We are halting our catering service",
+    ]
+    for p in still_open:
+        assert not v._announces_closure(p), f"service line marked as venue closure: {p!r}"
+
+
+def test_delayed_reopening_is_not_a_permanent_closure():
+    """"will not reopen" reads permanent but takes a delay."""
+    import src.venue_images as v
+
+    assert v._announces_closure("We will not reopen.")
+    assert v._announces_closure("We will not be reopening.")
+    assert not v._announces_closure("We will not reopen until spring")
+    assert not v._announces_closure("We will not be reopening until next week")

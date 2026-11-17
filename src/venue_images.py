@@ -1199,8 +1199,23 @@ def _announces_closure(html):
                 # while the venue is open.
                 if re.fullmatch(r"(?:ceas\w*|halt\w*|suspend\w*|discontinu\w*)",
                                 cw.group(0)):
-                    if not _names_the_venue(
-                            tail[max(0, cw.start() - 40):cw.end() + 40]):
+                    # Scoped to the CLAUSE the verb sits in. A fixed 40-char
+                    # window crossed the full stop and read "Gift cards will be
+                    # refunded" from the NEXT sentence as the thing being
+                    # closed: "we are ceasing operations. Gift cards will be
+                    # refunded." is a closed venue, and the window said the
+                    # opposite. Sentence boundaries belong to the clause.
+                    lo = max(0, cw.start() - 40)
+                    hi = min(len(tail), cw.end() + 40)
+                    left = tail[lo:cw.start()]
+                    cut = list(re.finditer(r"[.!?;\n]", left))
+                    if cut:
+                        lo = lo + cut[-1].end()
+                    right = tail[cw.end():hi]
+                    cut = re.search(r"[.!?;\n]", right)
+                    if cut:
+                        hi = cw.end() + cut.start()
+                    if not _names_the_venue(tail[lo:hi]):
                         continue
                 return True
 
