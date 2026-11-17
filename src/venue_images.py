@@ -864,7 +864,8 @@ def _reads_as_sf(text):
 # the bare word "in", which vetoed "we have closed our doors in March".
 # Longest first, so "temporarily" is not eaten by "temporary" plus a failed \b.
 _TEMPORARY_QUALIFIER = (
-    r"(?:temporarily|temporary|briefly|brief|short(?:-| )term)"
+    r"(?:temporarily|temporary|briefly|brief|seasonally|seasonal|"
+    r"short(?:-| )term)"
 )
 
 # Function words that may sit between a qualifier and the closure noun it
@@ -992,7 +993,7 @@ def _announces_closure(html):
     # a working restaurant shut.
     for m in re.finditer(r"\bwe are closed\b", low):
         tail = low[m.end():m.end() + 40].lstrip()
-        if tail.startswith(("on ", "for ")):
+        if tail.startswith(("on ", "for ", "until ")):
             continue
         if _temporarily_qualified(m.start(), m.end()):
             continue
@@ -1062,19 +1063,38 @@ def _announces_closure(html):
             if explicit:
                 start = m.end() + explicit.start()
                 end = m.end() + explicit.end()
-                after = low[end:end + 40]
+                # "final service IS POSTPONED" inverts an otherwise explicit
+                # closure noun, and the tail can sit a copula away from it.
+                if re.match(r"^\s*(?:,\s*)?(?:(?:is|was|are|were|has\s+been|"
+                            r"have\s+been)\s+)?(?:postponed|delayed|deferred|"
+                            r"cancelled|canceled|on\s+hold|suspended)\b",
+                            low[end:end + 40]):
+                    continue
                 if _temporarily_qualified(start, end):
                     continue
-                if re.match(r"^\s*" + _TEMPORARY_TAIL, after):
+                if re.match(r"^\s*" + _TEMPORARY_TAIL, low[end:end + 40]):
                     continue
                 return True
             if not re.search(r"\b" + _CLOSURE_OBJECT + r"\b", tail):
                 continue
-            # A GENERIC closure word is not enough on its own. Three ways a
+            # A GENERIC closure word is not enough on its own. Four ways a
             # nearby "service"/"doors" is still routine:
             #   "tonight's service is cancelled"      — a single service
             #   "we close our doors each night"       — a recurring close
             #   "closed for the holidays"             — a temporary shutdown
+            #   "we have closed temporarily"          — a temporary shutdown
+            # The qualifier has to attach to the closure object in the tail, or
+            # the sentence is genuinely temporary. Without this the generic path
+            # had no temporary check at all, so "we regret to announce we have
+            # closed temporarily" was written to the cache as a closure.
+            if re.search(r"\b" + _TEMPORARY_QUALIFIER + r"\b", tail) or \
+               re.search(r"\b(?:temporarily|briefly)\b", tail) or \
+               re.search(r"\b(?:temporary|brief|seasonal|short(?:-| )term)\s+"
+                         r"(?:closure|closing|closings|shutdown|suspension|"
+                         r"hiatus|pause)\b", tail) or \
+               re.search(r"\b(?:suspended|postponed|paused|deferred)\b", tail) or \
+               re.search(_TEMPORARY_TAIL, tail):
+                continue
             if re.search(r"\b(?:tonight|today|tomorrow|this\s+(?:evening|week|"
                          r"weekend)|each\s+(?:night|day|evening)|every\s+(?:night|"
                          r"day|evening)|nightly|daily|for\s+the\s+(?:evening|night|"

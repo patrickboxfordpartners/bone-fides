@@ -1397,3 +1397,60 @@ def test_a_temporary_qualifier_must_attach_to_the_closure():
     ]
     for p in temporary:
         assert not v._announces_closure(p), f"temporary closure marked permanent: {p!r}"
+
+
+def test_every_shape_of_temporary_closure_stays_open():
+    """This finding returned three times, so it gets a matrix rather than an
+    example.
+
+    The first two rounds fixed only the string the review quoted — the literal
+    phrase it named passed, while the CLASS it described did not. Eleven of the
+    twenty-six ways a venue announces a temporary shutdown still returned True,
+    because the two paths that adjudicate a generic closure word ("closed",
+    "service", "doors") had no temporary check at all. A venue that shuts for
+    renovations and says so in any of these words was cached status="closed",
+    and a cached closure is never re-probed.
+
+    Every shape here names a closure AND says it is not permanent. All must stay
+    open; the permanent matrix above guards the other direction.
+    """
+    import src.venue_images as v
+
+    temporary = [
+        # adjective attached to the closure noun
+        "We regret to announce our temporary closure for renovations until next week",
+        "We regret to announce a temporary closure for renovations",
+        "We regret to announce our temporary closure",
+        "It is with great sadness that we announce our temporary closure for renovations",
+        "We regret to announce the temporary closure of our restaurant",
+        "We regret to announce a brief closure",
+        "We regret to announce our brief closure for renovations",
+        "We regret to announce a short-term closure",
+        "We regret to announce our seasonal closure",
+        # adverb attached to the verb
+        "We regret to announce that we will be closing temporarily",
+        "We regret to announce we are closing temporarily for renovations",
+        "We regret to announce we have closed temporarily",
+        "We regret to announce the restaurant has closed temporarily",
+        "We regret to announce that service is temporarily suspended",
+        "It is with great sadness that we announce a temporary suspension of service",
+        # a tail that postpones reopening
+        "We regret to announce our closure until further notice",
+        "We regret to announce our closure for the holidays",
+        "We regret to announce we are closed until further notice",
+        "We regret to announce we are closed for renovations",
+        "We regret to announce our final service is postponed",
+    ]
+    for p in temporary:
+        assert not v._announces_closure(p), f"temporary closure marked permanent: {p!r}"
+
+    # The same shapes, made permanent by their own words, must still fire.
+    still_closed = [
+        "We regret to announce our closure for good",
+        "We regret to announce we have closed our doors permanently",
+        "It is with great sadness that we announce our final service took place today",
+        "We are sad to announce our last day of service was this week",
+        "We regret to announce our final service has concluded",
+    ]
+    for p in still_closed:
+        assert v._announces_closure(p), f"real closure missed: {p!r}"
