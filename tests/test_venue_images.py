@@ -1454,3 +1454,60 @@ def test_every_shape_of_temporary_closure_stays_open():
     ]
     for p in still_closed:
         assert v._announces_closure(p), f"real closure missed: {p!r}"
+
+
+def test_no_temporary_notice_is_ever_permanent():
+    """The exhaustive form of a finding that survived fourteen rounds.
+
+    Every previous round fixed the sentence the review quoted and left the CLASS
+    open, because "is this temporary?" was asked at some of the eight places the
+    function says yes and forgotten at the rest. Catching that by reading is how
+    it took fourteen rounds.
+
+    So this does not test sentences. It crosses every preface with every
+    temporary statement and every postponing tail — 1,470 notices, all of which
+    name a closure AND say it is not permanent. Not one may be written to the
+    cache as status="closed", because a cached closure is never re-probed.
+    """
+    import itertools
+
+    import src.venue_images as v
+
+    prefaces = [
+        "",
+        "We regret to announce ",
+        "It is with great sadness that we announce ",
+        "We are sad to announce ",
+        "It is with a heavy heart that we announce ",
+        "Thank you for everything. ",
+        "Thank you for all the wonderful reviews. ",
+    ]
+    temporary_statements = [
+        "our temporary closure", "a temporary closure",
+        "the temporary closure of our restaurant", "our brief closure",
+        "a brief closure", "our seasonal closure", "a short-term closure",
+        "our temporary closing", "a temporary shutdown",
+        "a temporary suspension of service", "we are temporarily closed",
+        "we have closed temporarily", "we are closing temporarily",
+        "the restaurant has closed temporarily",
+        "service is temporarily suspended",
+        "we are closed until further notice", "we are closed for renovations",
+        "the restaurant has closed for renovations",
+        "our closure until further notice", "our closure for the holidays",
+        "our final service is postponed",
+    ]
+    postponing_tails = [
+        "", " for renovations", " until next week", " until further notice",
+        " for the holidays", " for repairs", " pending permits",
+        " for maintenance", " for the season", " temporarily",
+    ]
+
+    leaked = []
+    for preface, statement, tail in itertools.product(
+            prefaces, temporary_statements, postponing_tails):
+        notice = preface + statement + tail
+        if v._announces_closure(notice):
+            leaked.append(notice)
+    assert not leaked, (
+        "temporary notices cached as permanently closed:\n  "
+        + "\n  ".join(repr(x) for x in leaked[:10]))

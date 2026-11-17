@@ -877,6 +877,15 @@ _QUALIFIER_FILLER = (
     r"(?:(?:a|an|the|our|its|their|his|her|of|for|and|this|that|is|was)\s+)*"
 )
 
+# A tail that postpones reopening, which makes a closure word mean "closed for
+# now" rather than "closed". Shared by the verdict gate so every path gets it.
+_TEMPORARY_TAIL = (
+    r"(?:until\b|while\b|pending\b|"
+    r"for\s+(?:a\s+)?(?:the\s+)?(?:renovat\w*|remodel\w*|repairs?|"
+    r"maintenance|construction|restructuring|season|holidays?|"
+    r"winter|summer|spring|fall)\b)"
+)
+
 
 def _announces_closure(html):
     """Does the venue's own page say it has closed?
@@ -942,13 +951,45 @@ def _announces_closure(html):
         return bool(re.search(r"\bfor\s+a\s+(?:brief|short|temporary)\s+"
                               r"(?:period|time|while)\b", after))
 
+    # ── the gate every closure verdict passes through ────────────────────────
+    # Fourteen review rounds found this same hole in one path after another,
+    # because "is this temporary?" was asked at some of the eight places this
+    # function says yes and forgotten at the rest. Each round the fix was to
+    # patch the path the review quoted, and each round the next path was the
+    # one without the check.
+    #
+    # So the question is asked ONCE, here, and every candidate below returns
+    # through it. A section can only decide that a page CONTAINS closure
+    # evidence; it cannot decide that the evidence is permanent. That decision
+    # lives in one place and no path can opt out of it.
+    def _permanent_verdict(start, end):
+        if _temporarily_qualified(start, end):
+            return False
+        after = low[end:end + 60]
+        stop = re.search(r"[.!?;\n]", after)
+        if stop:
+            after = after[:stop.start()]
+        # "our final service IS POSTPONED" inverts a closure noun that would
+        # otherwise be decisive, and the invertor can sit a copula away.
+        if re.match(r"^\s*(?:,\s*)?(?:(?:is|was|are|were|has\s+been|have\s+been|"
+                    r"will\s+be|would\s+be)\s+)?(?:postponed|delayed|deferred|"
+                    r"cancelled|canceled|on\s+hold|suspended|paused)\b", after):
+            return False
+        if re.search(r"\bfor\s+a\s+(?:brief|short|temporary)\s+"
+                     r"(?:period|time|while)\b", after):
+            return False
+        # A tail that postpones reopening: "closure until further notice",
+        # "closed for renovations", "closure for the holidays". Applies to every
+        # path, which is the point of the gate — the explicit-noun path used to
+        # carry this check alone and the generic paths never got it.
+        if re.match(r"^\s*(?:,\s*)?" + _TEMPORARY_TAIL, after):
+            return False
+        return True
+
     # ── 1. Unambiguous closure statements ────────────────────────────────────
     # These name the venue's OWN permanent closure and are safe on their own.
     # Every one of them has an explicit permanence marker: "permanently",
     # "now", "its doors", "for good", or a first-person "we have closed".
-    # "we have closed" / "has shut down" still admit a temporary adverb
-    # ("we have closed temporarily for renovations"), so they defer to the
-    # qualifier check; the phrases carrying their own permanence do not.
     for phrase in (
         "permanently closed", "closed permanently",
         "has permanently closed", "permanently shut",
@@ -957,12 +998,9 @@ def _announces_closure(html):
         "has shut down", "is no longer open",
         "closed for good", "will not be reopening", "will not reopen",
     ):
-        decisive = ("permanent" in phrase or "for good" in phrase
-                    or "no longer open" in phrase or "not reopen" in phrase)
         for m in re.finditer(re.escape(phrase), low):
-            if not decisive and _temporarily_qualified(m.start(), m.end()):
-                continue
-            return True
+            if _permanent_verdict(m.start(), m.end()):
+                return True
 
     # "is now closed" / "has now closed" carry a real permanence marker ("now"),
     # but they also complete schedules — "the dining room is now closed for the
@@ -971,9 +1009,8 @@ def _announces_closure(html):
         tail = low[m.end():m.end() + 40].lstrip()
         if tail.startswith(("on ", "for ", "until ", "during ")):
             continue
-        if _temporarily_qualified(m.start(), m.end()):
-            continue
-        return True
+        if _permanent_verdict(m.start(), m.end()):
+            return True
 
     # ── 2. "has closed" / "has shut" ONLY with a venue subject ───────────────
     # Bare "has closed" also matches "our kitchen has closed for the evening",
@@ -983,9 +1020,8 @@ def _announces_closure(html):
                          r"business|establishment|it)\s+(has|had|is)\s+"
                          r"(closed|shut)\b(?!\s+(?:for|on|early|tonight|today|"
                          r"the (?:evening|night|holiday|winter|summer)))", low):
-        if _temporarily_qualified(m.start(), m.end()):
-            continue
-        return True
+        if _permanent_verdict(m.start(), m.end()):
+            return True
 
     # ── 3. First-person closure, not a schedule ──────────────────────────────
     # "We are closed on Sundays" and "closed on Thanksgiving" are SCHEDULES —
@@ -993,11 +1029,10 @@ def _announces_closure(html):
     # a working restaurant shut.
     for m in re.finditer(r"\bwe are closed\b", low):
         tail = low[m.end():m.end() + 40].lstrip()
-        if tail.startswith(("on ", "for ", "until ")):
+        if tail.startswith(("on ", "for ", "until ", "during ")):
             continue
-        if _temporarily_qualified(m.start(), m.end()):
-            continue
-        return True
+        if _permanent_verdict(m.start(), m.end()):
+            return True
 
     # ── 4. Farewell language ─────────────────────────────────────────────────
     # Two different strengths here, and treating them alike is what marked open
@@ -1019,6 +1054,9 @@ def _announces_closure(html):
         r"operations?|business|kitchen|restaurant|venue|last\s+day|"
         r"final\s+day|farewell)"
     )
+    # The words that actually ASSERT a closure, as opposed to _CLOSURE_OBJECT's
+    # neutral venue nouns. A verdict is taken at these, and only these.
+    _CLOSURE_WORD = r"(?:clos\w*|shut\w*|doors?)"
     # An EXPLICIT permanent-closure noun decides on its own, even when it is
     # dated. "our final service took place today" and "we announce our closure
     # today" name a closure that happened; the date is part of the notice, not
@@ -1043,15 +1081,8 @@ def _announces_closure(html):
     #
     # A DATE is not a temporary marker — "our final service took place today" is
     # a permanent closure that happens to be dated, and section 4's whole reason
-    # for existing is that it stays a closure. Only tails that postpone a reopening
-    # ("until next week", "for renovations") veto, and only immediately after the
-    # phrase.
-    _TEMPORARY_TAIL = (
-        r"(?:until\b|while\b|pending\b|"
-        r"for\s+(?:a\s+)?(?:the\s+)?(?:renovat\w*|remodel\w*|repairs?|"
-        r"maintenance|construction|restructuring|season|holidays?|"
-        r"winter|summer|spring|fall)\b)"
-    )
+    # for existing is that it stays a closure. The postponing-tail rule lives in
+    # _permanent_verdict, shared by every path.
     for phrase in ("it is with great sadness", "we are sad to announce",
                    "we regret to announce", "it is with a heavy heart",
                    "it is with sadness"):
@@ -1061,47 +1092,38 @@ def _announces_closure(html):
             tail = low[m.end():m.end() + 90]
             explicit = re.search(r"\b" + _EXPLICIT_CLOSURE + r"\b", tail)
             if explicit:
-                start = m.end() + explicit.start()
-                end = m.end() + explicit.end()
-                # "final service IS POSTPONED" inverts an otherwise explicit
-                # closure noun, and the tail can sit a copula away from it.
-                if re.match(r"^\s*(?:,\s*)?(?:(?:is|was|are|were|has\s+been|"
-                            r"have\s+been)\s+)?(?:postponed|delayed|deferred|"
-                            r"cancelled|canceled|on\s+hold|suspended)\b",
-                            low[end:end + 40]):
-                    continue
-                if _temporarily_qualified(start, end):
-                    continue
-                if re.match(r"^\s*" + _TEMPORARY_TAIL, low[end:end + 40]):
-                    continue
-                return True
-            if not re.search(r"\b" + _CLOSURE_OBJECT + r"\b", tail):
+                if _permanent_verdict(m.end() + explicit.start(),
+                                      m.end() + explicit.end()):
+                    return True
                 continue
-            # A GENERIC closure word is not enough on its own. Four ways a
+            obj = re.search(r"\b" + _CLOSURE_OBJECT + r"\b", tail)
+            if not obj:
+                continue
+            # A GENERIC closure word is not enough on its own. Three ways a
             # nearby "service"/"doors" is still routine:
             #   "tonight's service is cancelled"      — a single service
             #   "we close our doors each night"       — a recurring close
             #   "closed for the holidays"             — a temporary shutdown
-            #   "we have closed temporarily"          — a temporary shutdown
-            # The qualifier has to attach to the closure object in the tail, or
-            # the sentence is genuinely temporary. Without this the generic path
-            # had no temporary check at all, so "we regret to announce we have
-            # closed temporarily" was written to the cache as a closure.
-            if re.search(r"\b" + _TEMPORARY_QUALIFIER + r"\b", tail) or \
-               re.search(r"\b(?:temporarily|briefly)\b", tail) or \
-               re.search(r"\b(?:temporary|brief|seasonal|short(?:-| )term)\s+"
-                         r"(?:closure|closing|closings|shutdown|suspension|"
-                         r"hiatus|pause)\b", tail) or \
-               re.search(r"\b(?:suspended|postponed|paused|deferred)\b", tail) or \
-               re.search(_TEMPORARY_TAIL, tail):
-                continue
+            # The temporary cases are the gate's job now; what remains here is
+            # the recency rule, which is about SCOPE (one evening) rather than
+            # permanence.
             if re.search(r"\b(?:tonight|today|tomorrow|this\s+(?:evening|week|"
                          r"weekend)|each\s+(?:night|day|evening)|every\s+(?:night|"
                          r"day|evening)|nightly|daily|for\s+the\s+(?:evening|night|"
                          r"holidays?|season|winter|summer|spring|fall|private|"
                          r"maintenance|renovation)|until\s+)\b", tail):
                 continue
-            return True
+            # The gate must be asked at the CLOSURE WORD, not at whichever
+            # _CLOSURE_OBJECT happened to match first. That object list contains
+            # neutral venue nouns ("restaurant", "business") so the tail can be
+            # recognised at all, and asking there let the real closure word pass
+            # unexamined: in "the restaurant has closed for renovations" the gate
+            # was evaluated at "restaurant", saw no temporary tail, and returned
+            # permanent. Every closure word in the tail gets its own verdict.
+            base = m.end()
+            for cw in re.finditer(_CLOSURE_WORD, tail):
+                if _permanent_verdict(base + cw.start(), base + cw.end()):
+                    return True
 
     # WEAK: "thank you for all the wonderful reviews" is written by OPEN
     # restaurants, every day. These only corroborate, so they need a closure
@@ -1115,9 +1137,12 @@ def _announces_closure(html):
                    "thank you for everything"):
         if phrase not in low:
             continue
-        if re.search(r"\b(permanent\w*|shut\s+down|no longer open|farewell|"
-                     r"final service|last service|goodbye|"
-                     r"closed\s+(permanently|for good|its doors))\b", low):
+        strong = re.search(r"\b(permanent\w*|shut\s+down|no longer open|farewell|"
+                           r"final service|last service|goodbye)\b", low)
+        if strong and _permanent_verdict(strong.start(), strong.end()):
+            return True
+        doors = re.search(r"\bclosed\s+(permanently|for good|its doors)\b", low)
+        if doors and _permanent_verdict(doors.start(), doors.end()):
             return True
         # A closure verb counts only when it is NOT a schedule. Section 2
         # applies the same tail rule; "our kitchen has closed for the evening.
@@ -1127,7 +1152,8 @@ def _announces_closure(html):
             tail = low[m.end():m.end() + 40].lstrip()
             if tail.startswith(("on ", "for ", "early", "until ", "during ")):
                 continue
-            return True
+            if _permanent_verdict(m.start(), m.end()):
+                return True
 
     return False
 
