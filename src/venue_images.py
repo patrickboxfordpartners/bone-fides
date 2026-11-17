@@ -878,22 +878,23 @@ _SERVICE_LINE = (
 def _names_the_venue(subject):
     """Does this stretch of text close the VENUE rather than one service line?
 
-    Decided by which object the verb takes FIRST. "ceasing operations" names the
-    venue; "discontinuing our delivery service" names one offering, and the
-    `service` that follows the `delivery` does not make it venue-wide.
+    The verb can take its subject on either side — "ceasing operations" and
+    "all operations have ceased" both close a venue — so both are examined.
 
-    This replaced a window-+-sentence-boundary approach that could not be made
-    correct. Every attempt to decide where a sentence ended broke on a period
-    inside a name: "St. Helena operations" split mid-statement and lost the
-    object, while "…in the U.S. Gift cards…" joined the next sentence. Which
-    object comes first needs no boundary at all — later sentences cannot win a
-    race that has already been decided.
+    Which one decides: the object CLOSEST to the verb's position. A subject
+    before the verb is closer than a line mentioned after it, so "all operations
+    have ceased. Gift cards will be refunded." still reads venue-wide, while
+    "discontinuing our delivery service" reads as one offering. Ordering by
+    distance needs no sentence boundary, which two attempts at locating one
+    failed to get right.
     """
     venue = re.search(_VENUE_WIDE, subject)
     line = re.search(_SERVICE_LINE, subject)
     if not venue:
         return False
-    return not (line and line.start() < venue.start())
+    if not line:
+        return True
+    return venue.start() < line.start()
 
 
 def _reads_as_sf(text):
@@ -1213,9 +1214,14 @@ def _announces_closure(html):
                 # while the venue is open.
                 if re.fullmatch(r"(?:ceas\w*|halt\w*|suspend\w*|discontinu\w*)",
                                 cw.group(0)):
-                    # Which object the verb takes FIRST decides it, so no
-                    # sentence boundary is needed — see _names_the_venue().
-                    if not _names_the_venue(tail[cw.start():cw.end() + 60]):
+                    # The subject can sit on EITHER side of the verb: "ceasing
+                    # our delivery service" (after) and "all operations have
+                    # ceased" (before). A forward-only slice saw only "ceased."
+                    # for the second and lost the venue. Both sides are passed,
+                    # and _names_the_venue() compares positions, so a later
+                    # sentence still cannot win.
+                    lo = max(0, cw.start() - 40)
+                    if not _names_the_venue(tail[lo:cw.end() + 60]):
                         continue
                 return True
 

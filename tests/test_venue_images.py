@@ -1694,3 +1694,30 @@ def test_which_object_comes_first_decides_the_closure():
     ]
     for p in still_open:
         assert not v._announces_closure(p), f"service line read as closure: {p!r}"
+
+
+def test_the_subject_may_come_before_the_verb():
+    """"all operations have ceased" closes a venue; "ceasing operations" does too.
+
+    A forward-only window saw just "ceased." for the first shape and lost the
+    venue, so the slice now covers both sides and the DECIDING object is still
+    the one nearest the verb — which is what keeps "all operations have ceased.
+    Gift cards will be refunded." venue-wide while "discontinuing our delivery
+    service" stays a single offering.
+    """
+    import src.venue_images as v
+
+    closed = [
+        "We regret to announce all operations have ceased.",
+        "We regret to announce all operations have ceased. Gift cards will be refunded.",
+        "We regret to announce the restaurant has ceased trading.",
+    ]
+    for p in closed:
+        assert v._announces_closure(p), f"subject-before-verb closure missed: {p!r}"
+
+    still_open = [
+        "Our delivery service has been discontinued.",
+        "We are discontinuing takeout service",
+    ]
+    for p in still_open:
+        assert not v._announces_closure(p), f"service line read as closure: {p!r}"
