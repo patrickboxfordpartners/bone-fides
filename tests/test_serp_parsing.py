@@ -38,6 +38,58 @@ def test_bare_html_raises():
         _unwrap("<!doctype html><html></html>")
 
 
+def test_empty_organic_list_raises_and_is_retried(monkeypatch):
+    """A parsed document with `organic: []` is a decline, not an answer.
+
+    The zone returns this well-formed empty document under load. `serp()` used
+    to return [] for it, which `find_official_site` read as "SERP answered
+    clearly and nothing qualified" and cached as `absent` — a permanent
+    negative. One concurrent refresh flipped 298 venues with working images to
+    `absent` exactly this way. It must retry, then raise, so the caller records
+    `failed` (retried next run) rather than a false "no photo".
+    """
+    import src.brightdata as bd
+
+    calls = {"n": 0}
+
+    def fake_post(payload, timeout=60):
+        calls["n"] += 1
+        return json.dumps({"general": {}, "organic": []})
+
+    monkeypatch.setattr(bd, "_post", fake_post)
+    monkeypatch.setattr(bd.time, "sleep", lambda *_: None)
+    # The retry tests must not depend on the private .env. Without
+    # BRIGHTDATA_SERP_ZONE, serp() raises KeyError while BUILDING the request —
+    # before either fake response is read — so both tests failed in a clean
+    # checkout while passing on a developer machine that happens to have .env.
+    monkeypatch.setitem(bd.CREDS, "BRIGHTDATA_SERP_ZONE", "test_zone")
+
+    with pytest.raises(ValueError):
+        bd.serp("Absinthe San Francisco official website", attempts=3)
+    assert calls["n"] == 3, "every attempt must be made before giving up"
+
+
+def test_empty_then_real_results_returns_results(monkeypatch):
+    """A retry that succeeds must not be lost to the earlier empty response."""
+    import src.brightdata as bd
+
+    responses = [
+        json.dumps({"general": {}, "organic": []}),
+        json.dumps({"general": {}, "organic": [{"link": "https://absinthe.com/"}]}),
+    ]
+
+    def fake_post(payload, timeout=60):
+        return responses.pop(0)
+
+    monkeypatch.setattr(bd, "_post", fake_post)
+    monkeypatch.setattr(bd.time, "sleep", lambda *_: None)
+    # Same reason as the test above: no dependency on the private .env.
+    monkeypatch.setitem(bd.CREDS, "BRIGHTDATA_SERP_ZONE", "test_zone")
+
+    out = bd.serp("Absinthe San Francisco official website", attempts=3)
+    assert out and out[0]["url"] == "https://absinthe.com/"
+
+
 def test_direct_link_is_preferred():
     assert _real_url({"link": "https://benusf.com/"}) == "https://benusf.com/"
 

@@ -39,6 +39,7 @@ import socket
 import sys
 import time
 import urllib.parse
+import unicodedata
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, BASE)
@@ -51,8 +52,95 @@ UA = {"User-Agent": "BoneFides/1.0 (kitchen lineage research; patrick@boxfordpar
 
 
 def norm(x):
-    """Name key: lowercase alphanumerics only."""
-    return re.sub(r"[^a-z0-9]", "", (x or "").lower())
+    """Name key: accent-folded, lowercase alphanumerics only.
+
+    Accents and typographic quotes must FOLD to their ASCII base, not be
+    dropped: the old version stripped "è", so "Jardinière" became `jardinire`
+    and "Jardiniere" became `jardiniere` — two cache keys and two rows on the
+    site for one restaurant. The corpus is full of this: 163 groups of names
+    that differ only in accents, curly quotes, case or spacing.
+    """
+    s = unicodedata.normalize("NFKD", x or "")
+    s = "".join(c for c in s if not unicodedata.combining(c))
+    # typographic quotes and dashes have no combining form
+    s = (s.replace("’", "'").replace("‘", "'")
+          .replace("“", '"').replace("”", '"')
+          .replace("–", "-").replace("—", "-"))
+    return re.sub(r"[^a-z0-9]", "", s.lower())
+
+
+def canonical_venue(x):
+    """Canonical identity key for a venue NAME.
+
+    Distinct from `norm()`, which is the cache key, and from the explorer's
+    `norm_venue()`, which is for overlap matching and deliberately drops
+    stopwords and possessives.
+
+    Folds ONLY what is formatting — accents, typographic quotes, dashes, case,
+    spacing, punctuation — so that one restaurant written two ways is one
+    identity:
+
+        Jardinière            == Jardiniere
+        Tosca Café            == Tosca Cafe
+        Ritz Carlton (SF)     == Ritz-Carlton San Francisco
+        Stars (San Francisco) != Stars (Seattle)      <- content differs
+        A16                   != A16 (Oakland location)
+
+    The corpus held 1,114 raw names for what are really 442 venues; this is the
+    function that says so. It deliberately does NOT drop parentheticals by
+    themselves: "(Oakland location)" is content, not formatting, and merging it
+    into the Divisadero one would put a different restaurant's moves on a
+    dossier.
+
+    A leading "The" is folded by `venue_identity()`, not here: it is a separate,
+    visible rule rather than something buried in the general normalizer.
+    """
+    s = unicodedata.normalize("NFKD", x or "")
+    s = "".join(c for c in s if not unicodedata.combining(c))
+    s = (s.replace("’", "'").replace("‘", "'")
+          .replace("“", '"').replace("”", '"')
+          .replace("–", "-").replace("—", "-"))
+    # Parentheses and commas are formatting when the WORDS are identical
+    # ("Ritz Carlton (San Francisco)" vs "Ritz-Carlton San Francisco"), so they
+    # are dropped from the key. Content that differs stays in the remaining
+    # words, which is what keeps SF and Seattle apart.
+    #
+    # A parenthetical STREET ADDRESS is dropped outright. "Saison (2124 Folsom
+    # St.)" is the same restaurant as "Saison"; keeping the address made every
+    # such spelling its own identity (79 corpus venues), which INFLATED the
+    # distinct count instead of collapsing it. An address locates a venue, it
+    # does not name it.
+    s = re.sub(r"\(\s*\d[^)]*\)", " ", s)
+    s = re.sub(r"[()]", " ", s)
+    return re.sub(r"[^a-z0-9]", "", s.lower())
+
+
+def venue_identity(x):
+    """The identity used for counting and grouping: canonical_venue, minus a
+    leading "the".
+
+    "The French Laundry" and "French Laundry" are one restaurant; so are "The
+    Slanted Door" and "Slanted Door". Kept as a SECOND rule rather than folded
+    into canonical_venue so its effect is visible and reviewable — it merged 34
+    venues and none of them was wrong.
+
+    ONLY "the", and only as a leading whole word. An earlier draft folded
+    "a"/"an" too, which destroyed real names: "Alamar" became "La Mar" (two
+    different restaurants) and "AQ Restaurant & Bar" became "Q Restaurant &
+    Bar". Articles other than "the" are not safe to strip from a venue name.
+
+    The article is matched on the RAW name, before punctuation and spaces are
+    removed. Checking the squashed key for a "the" prefix also chopped the
+    first three letters off real names: "Theodore" -> "odore", "Theater Cafe"
+    -> "atercafe". Those are different restaurants, and merging them is the
+    exact failure this module exists to prevent.
+    """
+    k = canonical_venue(x)
+    # Whole word, at the very start, followed by something. `\b` after "the"
+    # is what makes this a word boundary rather than a prefix test.
+    if re.match(r"^\s*the\b\s*\S", (x or ""), re.I) and len(k) > 6:
+        return canonical_venue(re.sub(r"^\s*the\b\s*", "", x, flags=re.I))
+    return k
 
 
 def _host(url):
@@ -91,6 +179,12 @@ def _is_public_host(host):
     try:
         infos = socket.getaddrinfo(h, None)
     except socket.gaierror:
+        return False
+    except UnicodeError:
+        # A DNS label over 63 chars (or an undecodable IDN) raises
+        # UnicodeEncodeError from the idna codec, not gaierror. Such a host can
+        # never resolve, so it is unreachable-by-definition: reject it like any
+        # other unresolvable name instead of letting it crash the venue's run.
         return False
     for info in infos:
         addr = info[4][0]
@@ -212,7 +306,16 @@ def _is_official(url, venue):
     # the venue's distinctive word must appear in the REGISTERED DOMAIN.
     # 4 characters, not 5: "Zuni Cafe" -> zunicafe.com is legitimate and was
     # rejected by a 5-char floor.
-    words = [w for w in re.split(r"[^a-z0-9]+", venue.lower()) if len(w) >= 4]
+    #
+    # Accents are folded BEFORE the split. "À Côté" lowercased still holds
+    # non-ASCII characters, which `[^a-z0-9]+` treats as separators, so the name
+    # yielded NO words at all — the short-name fallback then matched it against
+    # the domain and failed, so acoterestaurant.com was rejected for "À Côté"
+    # while it passed for "A Cote". Two spellings of one venue, two answers, and
+    # `_preferred()` picks one of them before discovery even runs.
+    folded = "".join(c for c in unicodedata.normalize("NFKD", venue or "")
+                     if not unicodedata.combining(c)).lower()
+    words = [w for w in re.split(r"[^a-z0-9]+", folded) if len(w) >= 4]
     if not words:
         # Short names ("Coi", "A16") cannot be matched on the domain safely —
         # "coi" appears in countless hosts — so they are never accepted on the
@@ -222,7 +325,7 @@ def _is_official(url, venue):
         # only if the name is the WHOLE registered domain or its leading label
         # ("coirestaurant.com", "a16pizza.com"), and rely on the page-names-the-
         # venue check downstream to admit or reject it.
-        short = [w for w in re.split(r"[^a-z0-9]+", venue.lower()) if w]
+        short = [w for w in re.split(r"[^a-z0-9]+", folded) if w]
         if not short:
             return False
         squash = "".join(short)
@@ -264,7 +367,7 @@ def find_official_site(venue, attempts=3):
     outage permanent: every later run skipped the venue because the cache said
     it had nothing, even after the service recovered.
     """
-    from src.brightdata import serp
+    from src.search import search as serp
     errored = False
     for i in range(attempts):
         try:
@@ -478,7 +581,7 @@ def find_booking_links(venue):
     homepage: a "Book on Resy" link that lands on resy.com is a broken promise,
     and a link to a similarly-named restaurant is worse.
     """
-    from src.brightdata import serp
+    from src.search import search as serp
     out = {}
     for platform, host in (("resy", "resy.com"), ("opentable", "opentable.com"),
                            ("tock", "exploretock.com")):
@@ -755,6 +858,63 @@ _SF_TOKENS = ("san francisco", "sanfrancisco", "bay area", "oakland",
               "california", ", ca ", "ca 9")
 
 
+# A venue-wide object, as opposed to one service line. "ceasing operations",
+# "halting service", "suspending the restaurant" close the venue; "discontinuing
+# our delivery service" ends one offering of a restaurant that is still trading.
+# Used only for the service-line verbs, which are otherwise too broad.
+_VENUE_WIDE = (
+    r"\b(?:operations?|business|the\s+restaurant|the\s+venue|the\s+bar|"
+    r"the\s+cafe|café|kitchen|service|services|all\s+service|"
+    r"our\s+doors|the\s+doors|dining\s+room|establishment)\b"
+)
+# Words that scope a closure to ONE offering, so the venue stays open.
+_SERVICE_LINE = (
+    r"\b(?:delivery|takeout|take-out|take\s*out|dine[-\s]?in|catering|"
+    r"brunch|lunch|breakfast|happy\s+hour|patio|bar\s+menu|"
+    r"online\s+(?:shop|store|ordering)|retail|shipping|gift\s+cards?)\b"
+)
+
+
+def _names_the_venue(subject, verb_at):
+    """Does this stretch of text close the VENUE rather than one service line?
+
+    `verb_at` is where the closure verb sits inside `subject`.
+
+    A service line ends only ONE offering when it is the verb's OBJECT — when it
+    directly follows the verb: "discontinuing delivery service". It is NOT the
+    object when something intervenes:
+
+      "ceasing operations. Gift cards will be refunded."   a sentence
+      "ceasing operations, but gift cards will be refunded" a clause
+
+    The second is the one that kept failing. A full stop was the only boundary
+    recognised, so the gap " operations, but " read as continuous and `gift
+    cards` was taken for the object — while `operations` was in fact the object
+    and the refund was a separate statement.
+
+    Two independent signals settle it, either sufficient:
+      - the verb already took a venue-wide object before the service line
+        ("ceasing operations, but gift cards…"), so the service line is new;
+      - a sentence or clause break sits in the gap.
+    """
+    line = re.search(_SERVICE_LINE, subject)
+    if line and line.start() > verb_at:
+        between = subject[verb_at:line.start()]
+        separated = re.search(
+            r"[.!?;\n]|\b(?:but|and|while|though|although|however|yet|"
+            r"whereas|except|instead)\b", between)
+        if separated or re.search(_VENUE_WIDE, between):
+            return bool(re.search(_VENUE_WIDE, subject))
+        # No separator, no object in between: the service line IS the object,
+        # so one offering ends. This holds for the passive too — in
+        # "operations have ceased while gift cards…" the "while" is a
+        # separator, and in "the restaurant is discontinuing delivery service"
+        # the venue noun before the verb is the grammatical SUBJECT, the thing
+        # doing the discontinuing, not the thing being closed.
+        return False
+    return bool(re.search(_VENUE_WIDE, subject))
+
+
 def _reads_as_sf(text):
     """Locality gate: does the page situate the venue in the Bay Area?
 
@@ -763,6 +923,369 @@ def _reads_as_sf(text):
     """
     low = " " + re.sub(r"\s+", " ", text.lower()) + " "
     return any(t in low for t in _SF_TOKENS)
+
+
+# Words that make a nearby closure word mean "we are still trading". Kept to
+# qualifiers that cannot be an ordinary preposition: an earlier `in\w*` matched
+# the bare word "in", which vetoed "we have closed our doors in March".
+# Longest first, so "temporarily" is not eaten by "temporary" plus a failed \b.
+_TEMPORARY_QUALIFIER = (
+    r"(?:temporarily|temporary|briefly|brief|seasonally|seasonal|"
+    r"short(?:-| )term)"
+)
+
+# Function words that may sit between a qualifier and the closure noun it
+# qualifies: "our temporary closure", "a brief closure". A NOUN in that gap
+# means the qualifier is attached to something else — "after a brief farewell,
+# we have closed our doors" is a permanent closure behind a short goodbye, and
+# reading the sentence for the bare word "brief" marked it open.
+_QUALIFIER_FILLER = (
+    r"(?:(?:a|an|the|our|its|their|his|her|of|for|and|this|that|is|was)\s+)*"
+)
+
+# A tail that postpones reopening, which makes a closure word mean "closed for
+# now" rather than "closed". Shared by the verdict gate so every path gets it.
+#
+# "while" is NOT unconditional. As a postponement it introduces a REASON or a
+# duration — "closed while we renovate", "closed while the kitchen is rebuilt".
+# It also introduces an unrelated clause — "ceased operations while gift cards
+# will be refunded" — where it says nothing about reopening. Bare "while" here
+# vetoed that closure, so it now needs a continuation that reads as a cause.
+_TEMPORARY_TAIL = (
+    r"(?:until\b|pending\b|"
+    r"while\s+(?:we\s+(?:renovat|repair|remodel|construct|rebuild|"
+    r"refresh|update|restore)|"
+    r"the\s+(?:kitchen|space|dining\s+room|building)\s+(?:is|are|gets)|"
+    r"our\s+(?:kitchen|space|dining\s+room|building)\s+(?:is|are|gets)|"
+    r"renovat|repair|remodel|construct|maintenance)\b|"
+    r"for\s+(?:a\s+)?(?:the\s+)?(?:renovat\w*|remodel\w*|repairs?|"
+    r"maintenance|construction|restructuring|season|holidays?|"
+    r"winter|summer|spring|fall)\b)"
+)
+
+
+def _announces_closure(html):
+    """Does the venue's own page say it has closed?
+
+    Six high-lineage venues in the corpus resolve to a live site that plainly
+    states closure — Bar Agricole, Tosca Cafe, Farallon, Trick Dog, Le Central,
+    Range. They were being listed as "no link yet", which invites someone to go
+    find a website for a restaurant that no longer exists. Closure is an
+    ANSWER, and the venue's own site is the best source for it.
+
+    Deliberately narrow: needs a closure phrase AND a first-person or venue-page
+    context, so an article about someone ELSE closing ("Chez Panisse mourns the
+    closing of...") does not mark this venue shut.
+    """
+    text = re.sub(r"<(script|style)\b[^>]*>.*?</\1>", " ", html, flags=re.S | re.I)
+    text = re.sub(r"<[^>]+>", " ", text)
+    low = re.sub(r"\s+", " ", html_module.unescape(text).lower())
+
+    # A closure word qualified as TEMPORARY is the opposite of a closure. The
+    # page below names the word "closure" and means the venue is still trading:
+    #
+    #   "We regret to announce our temporary closure for renovations until
+    #    next week"
+    #
+    # Reading that as permanent wrote status="closed" onto a live restaurant,
+    # and a cached closure is never re-probed — so the venue stayed wrong for
+    # good. Checked ahead of every closure statement, not just the dated ones.
+    #
+    # The qualifier must ATTACH to the closure noun. Scanning the sentence for
+    # the bare word "brief"/"temporary" was itself a bug: "After a brief
+    # farewell, we have closed our doors." is a permanent closure behind a short
+    # goodbye, and the sentence scan called it temporary. Only function words
+    # may sit between qualifier and noun ("our temporary closure"); an
+    # intervening NOUN means the qualifier belongs to something else.
+    def _temporarily_qualified(start, end):
+        # Bound the search to the sentence so a stray qualifier across a full
+        # stop cannot veto this notice, then require attachment.
+        left = max(0, start - 160)
+        m = None
+        for m in re.finditer(r"[.!?;\n]", low[left:start]):
+            pass
+        if m:
+            left = left + m.end()
+        before = low[left:start]
+        # "temporarily closed", "briefly closed" — an adverb qualifies the verb.
+        if re.search(r"(?:temporarily|briefly)\s+(?:\w+\s+){0,2}$", before):
+            return True
+        # "our temporary closure", "a brief closure", "temporary closing" — an
+        # adjective qualifies the noun, with only function words in between.
+        if re.search(r"\b" + _TEMPORARY_QUALIFIER + r"\s+" + _QUALIFIER_FILLER + r"$",
+                     before):
+            return True
+        # Trailing adverb: "we have closed our doors temporarily" qualifies the
+        # verb from BEHIND the object, so it can be a couple of words away.
+        # Bounded to this CLAUSE, not just this sentence: "we have closed our
+        # doors for good, while our cookbook stays temporarily available" is a
+        # permanent closure followed by a separate statement about the cookbook,
+        # and reading "temporarily" across the "while" erased the closure.
+        after = low[end:end + 60]
+        stop = re.search(r"[.!?;\n]|\b(?:but|though|although|while|whereas|however)\b",
+                         after)
+        if stop:
+            after = after[:stop.start()]
+        if re.search(r"\b(?:temporarily|briefly)\b", after):
+            return True
+        return bool(re.search(r"\bfor\s+a\s+(?:brief|short|temporary)\s+"
+                              r"(?:period|time|while)\b", after))
+
+    # ── the gate every closure verdict passes through ────────────────────────
+    # Fourteen review rounds found this same hole in one path after another,
+    # because "is this temporary?" was asked at some of the eight places this
+    # function says yes and forgotten at the rest. Each round the fix was to
+    # patch the path the review quoted, and each round the next path was the
+    # one without the check.
+    #
+    # So the question is asked ONCE, here, and every candidate below returns
+    # through it. A section can only decide that a page CONTAINS closure
+    # evidence; it cannot decide that the evidence is permanent. That decision
+    # lives in one place and no path can opt out of it.
+    def _permanent_verdict(start, end):
+        if _temporarily_qualified(start, end):
+            return False
+        # Bound the trailing window at a CLAUSE break, not just a sentence. The
+        # 60-char window crossed "but" and read a temporary word from the next
+        # clause as though it qualified this closure:
+        #
+        #   "We are permanently closed, but our online shop remains temporarily
+        #    available"
+        #
+        # The shop's availability is a different statement from the restaurant's
+        # closure. Previously `permanently closed` was decisive; routing it
+        # through the gate let an unrelated clause erase it.
+        after = low[end:end + 60]
+        stop = re.search(r"(?:[.!?;\n]|,\s*(?:but|and|though|although|while|"
+                         r"however|except)\b)", after)
+        if stop:
+            after = after[:stop.start()]
+        # "our final service IS POSTPONED" inverts a closure noun that would
+        # otherwise be decisive, and the invertor can sit a copula away.
+        if re.match(r"^\s*(?:,\s*)?(?:(?:is|was|are|were|has\s+been|have\s+been|"
+                    r"will\s+be|would\s+be)\s+)?(?:postponed|delayed|deferred|"
+                    r"cancelled|canceled|on\s+hold|suspended|paused)\b", after):
+            return False
+        if re.search(r"\bfor\s+a\s+(?:brief|short|temporary)\s+"
+                     r"(?:period|time|while)\b", after):
+            return False
+        # A tail that postpones reopening: "closure until further notice",
+        # "closed for renovations", "closure for the holidays". Applies to every
+        # path, which is the point of the gate — the explicit-noun path used to
+        # carry this check alone and the generic paths never got it.
+        if re.match(r"^\s*(?:,\s*)?" + _TEMPORARY_TAIL, after):
+            return False
+        return True
+
+    # ── 1. Unambiguous closure statements ────────────────────────────────────
+    # These name the venue's OWN permanent closure and are safe on their own.
+    # Every one of them has an explicit permanence marker: "permanently",
+    # "now", "its doors", "for good", or a first-person "we have closed".
+    #
+    # A phrase that states permanence in its OWN words ("permanently closed",
+    # "closed for good") is decisive: no nearby temporary wording can unsay it.
+    # "Permanently closed, though our shop is temporarily available" is still a
+    # closed restaurant. Only the phrases that admit a temporary reading
+    # ("we have closed", "has shut down") go through the gate.
+    for phrase in (
+        "permanently closed", "closed permanently",
+        "has permanently closed", "permanently shut",
+        "has closed its doors", "closed its doors",
+        "we have closed",
+        "has shut down", "is no longer open",
+        "closed for good", "will not be reopening", "will not reopen",
+    ):
+        decisive = ("permanent" in phrase or "for good" in phrase
+                    or "no longer open" in phrase)
+        for m in re.finditer(re.escape(phrase), low):
+            # "will not reopen" reads permanent on its own, but it also takes a
+            # delay: "we will not reopen until spring" is a seasonal closure of
+            # a venue that is still coming back. Those two go THROUGH the gate,
+            # which knows what a postponing tail means; a phrase that states
+            # permanence in its own words does not.
+            if decisive or _permanent_verdict(m.start(), m.end()):
+                return True
+
+    # "is now closed" / "has now closed" carry a real permanence marker ("now"),
+    # but they also complete schedules — "the dining room is now closed for the
+    # season". Same tail rule as everywhere else.
+    for m in re.finditer(r"\b(?:is|has)\s+now\s+closed\b", low):
+        tail = low[m.end():m.end() + 40].lstrip()
+        if tail.startswith(("on ", "for ", "until ", "during ")):
+            continue
+        if _permanent_verdict(m.start(), m.end()):
+            return True
+
+    # ── 2. "has closed" / "has shut" ONLY with a venue subject ───────────────
+    # Bare "has closed" also matches "our kitchen has closed for the evening",
+    # which is a nightly service ending, not a closure. Require the subject to
+    # be the venue/restaurant itself and forbid the schedule/temporary tails.
+    for m in re.finditer(r"\b(?:the\s+)?(?:restaurant|venue|kitchen|bar|cafe|café|"
+                         r"business|establishment|it)\s+(has|had|is)\s+"
+                         r"(closed|shut)\b(?!\s+(?:for|on|early|tonight|today|"
+                         r"the (?:evening|night|holiday|winter|summer)))", low):
+        if _permanent_verdict(m.start(), m.end()):
+            return True
+
+    # ── 3. First-person closure, not a schedule ──────────────────────────────
+    # "We are closed on Sundays" and "closed on Thanksgiving" are SCHEDULES —
+    # Farallon's own page says the first, and reading it as closure would mark
+    # a working restaurant shut.
+    for m in re.finditer(r"\bwe are closed\b", low):
+        tail = low[m.end():m.end() + 40].lstrip()
+        if tail.startswith(("on ", "for ", "until ", "during ")):
+            continue
+        if _permanent_verdict(m.start(), m.end()):
+            return True
+
+    # ── 4. Farewell language ─────────────────────────────────────────────────
+    # Two different strengths here, and treating them alike is what marked open
+    # restaurants shut.
+    #
+    # Farewell phrases are never sufficient ALONE. "It is with great sadness"
+    # is published by open restaurants announcing a founder's death, a chef
+    # leaving, or a cancelled service:
+    #
+    #   "It is with great sadness that we announce the passing of our founder."
+    #   "We are sad to announce that our head chef is leaving."
+    #   "We regret to announce that tonight's service is cancelled."
+    #
+    # Treating those as closure closed every one of those venues permanently.
+    # The phrase must be FOLLOWED, in the same breath, by an actual closure
+    # object — doors, a final service, a last day.
+    _CLOSURE_OBJECT = (
+        r"(?:clos\w*|shut\w*|doors?|our\s+doors|service|services|"
+        r"operations?|business|kitchen|restaurant|venue|last\s+day|"
+        r"final\s+day|farewell)"
+    )
+    # The words that actually ASSERT a closure, as opposed to _CLOSURE_OBJECT's
+    # neutral venue nouns. A verdict is taken at these, and only these.
+    #
+    # "ceas\w*", "halt\w*" and "suspend\w*" are here because narrowing this to
+    # clos/shut/door dropped notices that close a venue without those words:
+    # "we are ceasing operations after 20 years" matched `operations` before and
+    # stopped matching. The point of the narrow list is to EXCLUDE the neutral
+    # venue nouns (restaurant, business, kitchen) that say nothing about
+    # closure — not to exclude genuine closure verbs.
+    _CLOSURE_WORD = (r"(?:clos\w*|shut\w*|doors?|ceas\w*|halt\w*|"
+                     r"suspend\w*|discontinu\w*)")
+    # An EXPLICIT permanent-closure noun decides on its own, even when it is
+    # dated. "our final service took place today" and "we announce our closure
+    # today" name a closure that happened; the date is part of the notice, not
+    # a reason to doubt it. Checked before the time-word veto below, because a
+    # blanket "reject if 'today' appears" swallowed these.
+    _EXPLICIT_CLOSURE = (
+        r"(?:final\s+(?:service|day|night|supper|dinner|meal)|"
+        r"last\s+(?:service|day|night|supper|dinner|meal)|"
+        r"(?:permanent\s+)?closure|closing\s+(?:permanently|for\s+good)|"
+        r"closed\s+(?:permanently|for\s+good)|"
+        r"shutting\s+(?:our\s+)?doors|closing\s+our\s+doors)"
+    )
+    # A closure noun EXPLICIT in what it names can still be explicitly TEMPORARY.
+    # This is the finding that blocked the merge: "closure" was accepted on sight,
+    # so
+    #
+    #   "We regret to announce our temporary closure for renovations until
+    #    next week"
+    #
+    # came back closed. The venue is trading; it is shutting for a week. Written
+    # to the cache as status="closed", it would never be re-probed.
+    #
+    # A DATE is not a temporary marker — "our final service took place today" is
+    # a permanent closure that happens to be dated, and section 4's whole reason
+    # for existing is that it stays a closure. The postponing-tail rule lives in
+    # _permanent_verdict, shared by every path.
+    for phrase in ("it is with great sadness", "we are sad to announce",
+                   "we regret to announce", "it is with a heavy heart",
+                   "it is with sadness"):
+        for m in re.finditer(re.escape(phrase), low):
+            # look at the next ~90 chars: the closure has to be what the
+            # sentence is ABOUT, not merely somewhere else on the page
+            tail = low[m.end():m.end() + 90]
+            explicit = re.search(r"\b" + _EXPLICIT_CLOSURE + r"\b", tail)
+            if explicit:
+                if _permanent_verdict(m.end() + explicit.start(),
+                                      m.end() + explicit.end()):
+                    return True
+                continue
+            obj = re.search(r"\b" + _CLOSURE_OBJECT + r"\b", tail)
+            if not obj:
+                continue
+            # A GENERIC closure word is not enough on its own. Three ways a
+            # nearby "service"/"doors" is still routine:
+            #   "tonight's service is cancelled"      — a single service
+            #   "we close our doors each night"       — a recurring close
+            #   "closed for the holidays"             — a temporary shutdown
+            # The temporary cases are the gate's job now; what remains here is
+            # the recency rule, which is about SCOPE (one evening) rather than
+            # permanence.
+            if re.search(r"\b(?:tonight|today|tomorrow|this\s+(?:evening|week|"
+                         r"weekend)|each\s+(?:night|day|evening)|every\s+(?:night|"
+                         r"day|evening)|nightly|daily|for\s+the\s+(?:evening|night|"
+                         r"holidays?|season|winter|summer|spring|fall|private|"
+                         r"maintenance|renovation)|until\s+)\b", tail):
+                continue
+            # The gate must be asked at the CLOSURE WORD, not at whichever
+            # _CLOSURE_OBJECT happened to match first. That object list contains
+            # neutral venue nouns ("restaurant", "business") so the tail can be
+            # recognised at all, and asking there let the real closure word pass
+            # unexamined: in "the restaurant has closed for renovations" the gate
+            # was evaluated at "restaurant", saw no temporary tail, and returned
+            # permanent. Every closure word in the tail gets its own verdict.
+            base = m.end()
+            for cw in re.finditer(_CLOSURE_WORD, tail):
+                if not _permanent_verdict(base + cw.start(), base + cw.end()):
+                    continue
+                # A SERVICE-LINE verb must name the venue's whole operation.
+                # "we are discontinuing our delivery service" ends one offering
+                # of a trading restaurant: `discontinuing` supplies the closure
+                # word and `service` supplies the object, so both checks pass
+                # while the venue is open.
+                if re.fullmatch(r"(?:ceas\w*|halt\w*|suspend\w*|discontinu\w*)",
+                                cw.group(0)):
+                    # The subject can sit on EITHER side of the verb: "ceasing
+                    # our delivery service" (after) and "all operations have
+                    # ceased" (before). A forward-only slice saw only "ceased."
+                    # for the second and lost the venue. Both sides are passed,
+                    # and _names_the_venue() compares positions, so a later
+                    # sentence still cannot win.
+                    lo = max(0, cw.start() - 40)
+                    window = tail[lo:cw.end() + 60]
+                    if not _names_the_venue(window, cw.start() - lo):
+                        continue
+                return True
+
+    # WEAK: "thank you for all the wonderful reviews" is written by OPEN
+    # restaurants, every day. These only corroborate, so they need a closure
+    # signal that is not itself a schedule.
+    #
+    # The corroboration search previously matched the bare word "closed", which
+    # fires on "We are closed on Sundays" — so a page saying thank-you AND
+    # listing its hours was marked permanently shut. Section 3 already knows a
+    # schedule when it sees one; this has to apply the same rule.
+    for phrase in ("thank you for the years", "thank you for all the",
+                   "thank you for everything"):
+        if phrase not in low:
+            continue
+        strong = re.search(r"\b(permanent\w*|shut\s+down|no longer open|farewell|"
+                           r"final service|last service|goodbye)\b", low)
+        if strong and _permanent_verdict(strong.start(), strong.end()):
+            return True
+        doors = re.search(r"\bclosed\s+(permanently|for good|its doors)\b", low)
+        if doors and _permanent_verdict(doors.start(), doors.end()):
+            return True
+        # A closure verb counts only when it is NOT a schedule. Section 2
+        # applies the same tail rule; "our kitchen has closed for the evening.
+        # Thank you for everything!" is an open restaurant closing for the
+        # night, and the bare word "closed" must not turn that into a closure.
+        for m in re.finditer(r"\b(?:has|had|is|are|we)\s+(?:now\s+)?closed\b", low):
+            tail = low[m.end():m.end() + 40].lstrip()
+            if tail.startswith(("on ", "for ", "early", "until ", "during ")):
+                continue
+            if _permanent_verdict(m.start(), m.end()):
+                return True
+
+    return False
 
 
 def tier_website(venue, known_website=None, timeout=15, broken_host=None):
@@ -783,9 +1306,17 @@ def tier_website(venue, known_website=None, timeout=15, broken_host=None):
             continue                          # someone else's site
         img = _og_image(r.text, base_url=r.url or url)
         if img:
-            return {"url": img, "source": "venue-website", "site": r.url or url,
-                    "confidence": "high",
-                    "evidence": "declared image on the venue's own site"}
+            out = {"url": img, "source": "venue-website", "site": r.url or url,
+                   "confidence": "high",
+                   "evidence": "declared image on the venue's own site"}
+            if _announces_closure(r.text):
+                out["closed"] = True
+            return out
+        if _announces_closure(r.text):
+            # no usable photo, but the page settles that the venue is shut
+            return {"url": None, "source": None, "site": r.url or url,
+                    "confidence": "high", "closed": True,
+                    "evidence": "the venue's own site announces closure"}
     return None
 
 
@@ -930,27 +1461,49 @@ def resolve_venue(venue, token=None, known_website=None, use_serp=True,
         booking = find_booking_links(venue)
 
     def own(img):
-        """Download the tier's image. None unless we hold the bytes."""
-        if not img or not img.get("url"):
+        """Download the tier's image. None unless we hold the bytes.
+
+        A closure verdict must survive the download gate: dropping the record
+        for having no url threw away the one thing the page settled.
+
+        A closed record CAN also carry a photo — a venue that shut may still
+        serve its last hero image. That url is downloaded like any other. It
+        must never be saved as-is: the cache would then claim to hold a photo
+        while holding a hotlink, which is exactly what this module exists to
+        prevent.
+        """
+        if not img:
             return None
+        if not img.get("url"):
+            # no photo to fetch; keep the verdict if there is one
+            return img if img.get("closed") else None
         url = str(img["url"])
         if not url.startswith(("http://", "https://")):
             return img                    # already a local path
         local = download_image(url, venue, broken_host=broken_host)
-        if not local:
-            return None                   # could not own it: try the next tier
         out = dict(img)
-        out["remote"] = url
-        out["url"] = local
+        if local:
+            out["remote"] = url
+            out["url"] = local
+        elif img.get("closed"):
+            # keep the closure, but do NOT keep an unverified remote URL
+            out["url"] = None
+            out.pop("remote", None)
+        else:
+            return None                   # could not own it: try the next tier
         return out
 
     img = None
     if site:
         img = own(tier_website(venue, site, broken_host=broken_host))
-    if not img:
-        img = own(tier_social(venue, site, broken_host=broken_host))
-    if not img and token:
-        img = own(tier_mapbox(venue, token))
+    # A closure verdict ends the search. The venue is shut; spending the social
+    # and Mapbox calls to find it a photo would be work for a page that says
+    # "closed". Its photo, if the page still serves one, came from tier_website.
+    if not img or not img.get("closed"):
+        if not img:
+            img = own(tier_social(venue, site, broken_host=broken_host))
+        if not img and token:
+            img = own(tier_mapbox(venue, token))
 
     if not img and not site and not booking:
         return None, "absent"
@@ -959,6 +1512,13 @@ def resolve_venue(venue, token=None, known_website=None, use_serp=True,
     out["site"] = site
     if booking:
         out["booking"] = booking
+    # A closure the venue's own site announces is a verdict, not a gap: it
+    # means "do not go looking for a website for this one". The STATUS is the
+    # load-bearing half — main() caches status, so returning "found" here let a
+    # venue's closure be overwritten by "found" and re-probed forever.
+    if out.get("closed"):
+        out["status"] = "closed"
+        return out, "closed"
     return out, "found"
 
 
@@ -1072,7 +1632,25 @@ def main(argv):
     # exception or an empty result. Getting this wrong is silent in one
     # direction (zero venues, "resolved successfully") and fatal in the other.
     raw = distinct_venues(es, ui._distinct_values)
-    venues = sorted({v for v in raw if v and not ui._is_junk_venue(v)})
+    # Collapse spelling variants BEFORE resolving. The corpus holds 1,114 raw
+    # names for 442 venues; resolving every raw name would fetch the same
+    # restaurant's site twice and write both answers to one cache key, so
+    # whichever finished last would win arbitrarily. Resolve ONE display form
+    # per canonical identity: prefer the accented/complete spelling (how the
+    # restaurant writes itself), tie-broken alphabetically so a run is
+    # reproducible.
+    _by_key = {}
+    for name in raw:
+        if not name or ui._is_junk_venue(name):
+            continue
+        _by_key.setdefault(venue_identity(name), []).append(name)
+
+    def _preferred(variants):
+        return min(variants, key=lambda n: (
+            -sum(1 for c in n if ord(c) > 127),     # keep accents
+            -len(n),                                 # then the fuller name
+            n.lower()))                              # then deterministic
+    venues = sorted(_preferred(v) for v in _by_key.values())
 
     # curated websites, where we have them
     sites = {}
@@ -1110,13 +1688,57 @@ def main(argv):
 
     # A "failed" entry is retried on the next run; only a real answer is final.
     # A human verdict is final too: closed venues are never re-probed.
+    # --refresh re-resolves venues that are already cached. The cache normally
+    # wins — that is what makes a run hours shorter than a cold start — but it
+    # also freezes a stale answer: Michael Mina sat as "absent" while its site
+    # resolved live, and a venue whose own page announces closure kept the
+    # photo and status written before closure detection existed.
+    refresh = "--refresh" in argv
     todo = [v for v in venues
             if norm(v) not in closed
-            and (norm(v) not in cache
+            and (refresh
+                 or norm(v) not in cache
                  or cache[norm(v)].get("status") == "failed"
                  or superseded(norm(v), cache[norm(v)]))]
+
+    # --budget caps the run at what the current search allowances can pay for.
+    # The photo work is a monthly crawl rather than one pass: 4,413 venues cost
+    # ~44,000 credits at 10/venue, against allowances in the high hundreds, so a
+    # run that insists on finishing never starts. Each month spends what it has
+    # and the next picks up the rest — which only works if the queue is STABLE,
+    # so it is ordered deterministically and cached answers are skipped above.
+    #
+    # The check runs AFTER the final work list exists (limit applied, refresh
+    # accounted for) and BEFORE the first request. affordable() previously had
+    # no caller outside the tests, so the guarantee it describes was never in
+    # force: a run would spend its last credits and then keep failing venues.
+    from src import search as _search
+    if "--budget" in argv:
+        can, plan = _search.capacity()
+        print("search capacity: " + ("; ".join(plan) if plan else "none"))
+        if can <= 0:
+            print("no venue can be afforded this period; nothing to do")
+            return 1
+        if len(todo) > can:
+            print(f"budget stops this run at {can} of {len(todo)} venues "
+                  f"({len(todo) - can} queued for the next period)")
+            todo = todo[:can]
+
     if limit is not None:
         todo = todo[:limit]
+
+    # Final gate, on the exact list about to be submitted. --budget caps by
+    # preference; this refuses outright when even the capped list cannot be
+    # paid for, which is the case a cap alone cannot catch (a shorter list than
+    # capacity but a provider that flipped to spent since capacity was read).
+    if todo and not os.environ.get("VENUE_IMAGES_NO_BUDGET_CHECK"):
+        ok, why = _search.affordable(len(todo))
+        if not ok:
+            print(f"refusing to start: {why}")
+            print(f"  {len(todo)} venues queued; re-run with --budget to spend "
+                  f"what is available now, or wait for the allowance to reset.")
+            return 1
+        print(f"budget ok: {why}")
 
     print(f"{len(venues)} venue names · {len(cache)} cached · "
           f"{len(closed)} closed by verdict · resolving {len(todo)}")

@@ -1,0 +1,404 @@
+{
+ "_comment": "Human adjudication of venue name groups, 2026-11-15. Each entry lists the spellings found in the corpus and the single title the owner chose. 'locations' entries keep their city qualifier as part of identity, so branches stay separate; every other entry collapses to one establishment. Applied by venue_aliases.py, which reads this file rather than guessing.",
+ "_locations_comment": "Kept separate: genuinely different businesses per city, even though they share a name. Each city keeps its own identity.",
+ "locations": {
+  "Mission Chinese Food": [
+   "Mission Chinese Food",
+   "Mission Chinese Food (New York)"
+  ],
+  "Stars": [
+   "Stars",
+   "Stars (San Francisco)",
+   "Stars (Seattle)",
+   "Stars Palo Alto",
+   "Stars San Francisco",
+   "Stars Seattle"
+  ],
+  "Tartine Manufactory": [
+   "Tartine Manufactory",
+   "Tartine Manufactory (Los Angeles)",
+   "Tartine Manufactory (San Francisco)"
+  ]
+ },
+ "merge": {
+  "231 Ellsworth": [
+   "231 Ellsworth",
+   "231 Ellsworth (San Mateo)",
+   "231 Ellsworth Restaurant"
+  ],
+  "A16": [
+   "A16",
+   "A16 Oakland",
+   "A16 (Oakland location)"
+  ],
+  "Alfred's Steakhouse": [
+   "Alfred's",
+   "Alfred's Steakhouse"
+  ],
+  "Asian Box": [
+   "Asian Box",
+   "Asian Box (Palo Alto)"
+  ],
+  "Avery": [
+   "Avery",
+   "Avery (San Francisco)"
+  ],
+  "Babu Ji": [
+   "Babu Ji",
+   "Babu Ji (New York)",
+   "Babu Ji (San Francisco)"
+  ],
+  "Balboa Cafe": [
+   "Balboa Cafe",
+   "PlumpJack Balboa Cafe",
+   "Balboa Café Mill Valley"
+  ],
+  "Bamboo Restaurant": [
+   "Bamboo",
+   "Bamboo Restaurant"
+  ],
+  "Beit Rima": [
+   "Beit Rima",
+   "Beit Rima (Church Street)",
+   "Beit Rima (Cole Valley)",
+   "Beit Rima (Daly City)",
+   "Beit Rima (Daly City location)",
+   "Beit Rima (Cole Valley location)",
+   "Beit Rima (Church Street location)"
+  ],
+  "Bestia": [
+   "Bestia",
+   "Bestia (Los Angeles)"
+  ],
+  "Betelnut": [
+   "Betelnut Pejiu Wu",
+   "Betelnut Pejiu Wu (San Francisco)"
+  ],
+  "Blue Door Restaurant": [
+   "Blue Door",
+   "Blue Door Restaurant"
+  ],
+  "Bouchon": [
+   "Bouchon",
+   "Bouchon (Yountville)"
+  ],
+  "Bourbon Steak": [
+   "Bourbon Steak",
+   "Bourbon Steak Miami"
+  ],
+  "Brava Terrace": [
+   "Brava Terrace",
+   "Brava Terrace (St. Helena)"
+  ],
+  "Burgermeister": [
+   "Burgermeister",
+   "Burgermeister (Church Street)",
+   "Burgermeister (Cole Valley)",
+   "Burgermeister (Daly City)",
+   "Burgermeister (Cole Valley location)",
+   "Burgermeister (Church Street location)"
+  ],
+  "Campton Place": [
+   "Campton Place",
+   "Campton Place Restaurant"
+  ],
+  "Campton Place Hotel": [
+   "Campton Place Hotel",
+   "Campton Place Hotel restaurant"
+  ],
+  "Catahoula Restaurant & Saloon": [
+   "Catahoula Restaurant & Saloon",
+   "Catahoula Restaurant & Saloon (Calistoga)"
+  ],
+  "Charlie Trotter's": [
+   "Charlie Trotter's",
+   "Charlie Trotter's (Chicago)",
+   "Charlie Trotter’s"
+  ],
+  "Che Fico": [
+   "Che Fico",
+   "Che Fico (San Francisco)"
+  ],
+  "Cockscomb": [
+   "Cockscomb",
+   "Cockscomb Restaurant"
+  ],
+  "Commander's Palace": [
+   "Commander's Palace",
+   "Commander's Palace (Las Vegas)",
+   "Commander’s Palace"
+  ],
+  "Copita": [
+   "Copita",
+   "Copita (Sausalito)"
+  ],
+  "Craft": [
+   "Craft",
+   "Craft (Los Angeles)",
+   "Craft (New York)"
+  ],
+  "DOSA": [
+   "Dosa",
+   "DOSA"
+  ],
+  "Desco": [
+   "Desco",
+   "Desco (Oakland)"
+  ],
+  "Echo Restaurant": [
+   "Echo",
+   "Echo Restaurant"
+  ],
+  "Fairmont San Francisco": [
+   "Fairmont",
+   "Fairmont San Francisco"
+  ],
+  "Farina": [
+   "Farina",
+   "Farina (San Francisco)"
+  ],
+  "Ferry Building Farmers' Market": [
+   "Ferry Building farmers market stand",
+   "Ferry Building farmers’ market stand (San Francisco)"
+  ],
+  "Fifth Floor": [
+   "Fifth Floor",
+   "Fifth Floor Restaurant"
+  ],
+  "French Laundry": [
+   "French Laundry",
+   "French Laundry (Yountville)"
+  ],
+  "Gary Danko": [
+   "Gary Danko",
+   "Gary Danko (restaurant)",
+   "Gary Danko restaurant"
+  ],
+  "Hakkasan": [
+   "Hakkasan",
+   "Hakkasan New York",
+   "Hakkasan San Francisco"
+  ],
+  "Hawker Fare": [
+   "Hawker Fare",
+   "Hawker Fare Oakland",
+   "Hawker Fare SF"
+  ],
+  "Homestead": [
+   "Homestead",
+   "Homestead (Oakland)"
+  ],
+  "Insieme": [
+   "Insieme",
+   "Insieme (New York)"
+  ],
+  "International Smoke": [
+   "International Smoke",
+   "International Smoke (San Francisco)"
+  ],
+  "La Condesa": [
+   "La Condesa",
+   "La Condesa (Austin)"
+  ],
+  "La Mar": [
+   "La Mar",
+   "La Mar (San Francisco)"
+  ],
+  "La Mar Cebichería Peruana": [
+   "La Mar Cebicheria Peruana (San Francisco)",
+   "La Mar Cebichería Peruana"
+  ],
+  "Le Colonial": [
+   "Le Colonial",
+   "Le Colonial (Los Angeles)",
+   "Le Colonial (San Francisco)"
+  ],
+  "Le Dix-Sept Patisserie": [
+   "Le Dix-Sept Patisserie",
+   "Le Dix-Sept Patisserie (Mission)",
+   "Le Dix-Sept Pâtisserie"
+  ],
+  "Liholiho Yacht Club": [
+   "Liholiho Yacht Club",
+   "Liholiho Yacht Club (San Francisco)"
+  ],
+  "Marla Bakery": [
+   "Marla Bakery",
+   "Marla Bakery (San Francisco)"
+  ],
+  "Masters Restaurant": [
+   "Masters",
+   "Masters Restaurant"
+  ],
+  "Meadowood Resort": [
+   "Meadowood Resort",
+   "Meadowood resort restaurant"
+  ],
+  "Michael Mina": [
+   "Michael Mina",
+   "Michael Mina (San Francisco)",
+   "Michael Mina Restaurant",
+   "Michael Mina restaurant",
+   "Michael Mina restaurants",
+   "Restaurant Michael Mina",
+   "Restaurant Michael Mina (original)"
+  ],
+  "Michael Warring": [
+   "Michael Warring",
+   "Michael Warring (restaurant)",
+   "Michael Warring restaurant"
+  ],
+  "Morimoto": [
+   "Morimoto",
+   "Morimoto Napa"
+  ],
+  "Oenotri": [
+   "Oenotri",
+   "Oenotri (Napa)"
+  ],
+  "Oliveto": [
+   "Oliveto",
+   "Oliveto (Oakland)"
+  ],
+  "Omakase": [
+   "Omakase",
+   "Omakase (San Francisco)"
+  ],
+  "One Market": [
+   "One Market",
+   "One Market Restaurant"
+  ],
+  "Osha Thai Noodle": [
+   "Osha Thai",
+   "Osha Thai Noodle Cafe"
+  ],
+  "Perbacco": [
+   "Perbacco",
+   "Perbacco (San Francisco)"
+  ],
+  "Pizza Antica": [
+   "Pizza Antica",
+   "Pizza Antica (San Francisco)"
+  ],
+  "Pizzanostra": [
+   "Pizza Nostra",
+   "Pizzanostra SF",
+   "Pizzanostra"
+  ],
+  "Pizzeria Delfina": [
+   "Pizzeria Delfina",
+   "Pizzeria Delfina (San Francisco)"
+  ],
+  "PlumpJack Cafe": [
+   "PlumpJack Cafe",
+   "Plumpjack Cafe",
+   "PlumpJack Cafe (San Francisco)",
+   "PlumpJack",
+   "PlumpJack restaurant"
+  ],
+  "PlumpJack Squaw Valley": [
+   "PlumpJack Squaw Valley",
+   "PlumpJack (Squaw Valley)"
+  ],
+  "PlumpJack's Farm at the Carneros Inn": [
+   "PlumpJack's Farm at the Carneros Inn",
+   "PlumpJack Group's Farm"
+  ],
+  "Rabbit Hole": [
+   "Rabbit Hole",
+   "Rabbit Hole (restaurant)"
+  ],
+  "Reem's": [
+   "Reem's Mission",
+   "Reem’s",
+   "Reem’s (Mission)"
+  ],
+  "Roka Akor": [
+   "Roka Akor",
+   "Roka Akor (San Francisco)"
+  ],
+  "Saison": [
+   "Saison",
+   "Saison (San Francisco)"
+  ],
+  "Scoma's": [
+   "Scoma’s",
+   "Scoma's restaurant"
+  ],
+  "Seaglass Restaurant": [
+   "Seaglass",
+   "Seaglass Restaurant"
+  ],
+  "Shawarmaji": [
+   "Shawarmaji",
+   "Shawarmaji (Oakland)"
+  ],
+  "Slanted Door": [
+   "Slanted Door",
+   "Slanted Door (Napa)",
+   "Slanted Door (San Francisco)",
+   "Slanted Door Napa",
+   "Slanted Door (Napa outpost)"
+  ],
+  "Spotted Pig": [
+   "Spotted Pig",
+   "Spotted Pig (NYC)"
+  ],
+  "Straits Cafe": [
+   "Straits Cafe",
+   "Straits Cafe (Palo Alto)",
+   "Straits Cafe (San Francisco)"
+  ],
+  "Sushi Ran": [
+   "Sushi Ran",
+   "Sushi Ran (San Francisco)"
+  ],
+  "Tacolicious": [
+   "Tacolicious",
+   "Tacolicious (Palo Alto)",
+   "Tacolicious (San Francisco)"
+  ],
+  "Tanglewood": [
+   "Tanglewood",
+   "Tanglewood (San Jose)"
+  ],
+  "The Mandarin": [
+   "The Mandarin restaurant",
+   "the Mandarin"
+  ],
+  "Three Seasons": [
+   "Three Seasons",
+   "Three Seasons (Walnut Creek)"
+  ],
+  "Una Pizza Napoletana": [
+   "Una Pizza Napoletana (East Village)",
+   "Una Pizza Napoletana (East Village, New York)"
+  ],
+  "Venga Paella": [
+   "Venga Paella",
+   "Venga Paella (restaurant)"
+  ],
+  "Waterfront Restaurant": [
+   "Waterfront",
+   "Waterfront Restaurant"
+  ],
+  "Wursthall": [
+   "Wursthall",
+   "Wursthall (San Jose)",
+   "Wursthall (San Mateo)"
+  ],
+  "Xanadu": [
+   "Xanadu",
+   "Xanadu (Berkeley)"
+  ],
+  "Yoshi's": [
+   "Yoshi's",
+   "Yoshi’s",
+   "Yoshi’s (San Francisco)"
+  ],
+  "unknown": [
+   "unknown",
+   "unknown (Los Angeles)"
+  ]
+ }
+}

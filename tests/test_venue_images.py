@@ -75,6 +75,22 @@ def test_public_host_is_accepted(monkeypatch):
     assert _is_public_host("example.com")
 
 
+def test_overlong_dns_label_is_refused_not_raised(monkeypatch):
+    """A DNS label over 63 chars makes the idna codec raise UnicodeEncodeError,
+    not gaierror. The host cannot resolve, so it must be refused — not crash
+    the venue's whole resolution run (Boka did exactly that on the live corpus).
+    """
+    import socket as _socket
+    import src.venue_images as v
+
+    def boom(host, *a, **kw):
+        raise UnicodeEncodeError("idna", host, 0, 70, "label too long")
+    monkeypatch.setattr(_socket, "getaddrinfo", boom)
+
+    assert not v._is_public_host("a" * 70 + ".com")
+    assert not v._url_is_public("https://" + "a" * 70 + ".com/x.jpg")
+
+
 def test_non_http_schemes_are_refused(monkeypatch):
     from src.venue_images import _url_is_public
     _fixed_dns(monkeypatch, {"example.com": "93.184.216.34"})
@@ -183,7 +199,7 @@ def test_blog_and_search_urls_are_not_booking_pages(monkeypatch):
     version re-implemented the filters beside it, so it still passed if the
     production function accepted every bad URL.
     """
-    import src.brightdata as bd
+    import src.search as bd
     import src.venue_images as v
 
     bad = [
@@ -193,14 +209,14 @@ def test_blog_and_search_urls_are_not_booking_pages(monkeypatch):
         "https://www.exploretock.com/search?q=rich+table",
         "https://resy.com/stories/something",
     ]
-    monkeypatch.setattr(bd, "serp", lambda q, num=10: [{"url": u, "title": ""} for u in bad])
+    monkeypatch.setattr(bd, "search", lambda q, num=10: [{"url": u, "title": ""} for u in bad])
     assert v.find_booking_links("Rich Table") == {}
 
 
 def test_lookalike_platform_domains_are_not_booking_links(monkeypatch):
     """`fake-resy.com/rich-table` passed a substring host test and was saved as
     the Resy link for Rich Table."""
-    import src.brightdata as bd
+    import src.search as bd
     import src.venue_images as v
 
     bad = [
@@ -208,22 +224,22 @@ def test_lookalike_platform_domains_are_not_booking_links(monkeypatch):
         "https://notopentable.com/r/rich-table-san-francisco",
         "https://resy.com.evil.example/rich-table",
     ]
-    monkeypatch.setattr(bd, "serp", lambda q, num=10: [{"url": u, "title": ""} for u in bad])
+    monkeypatch.setattr(bd, "search", lambda q, num=10: [{"url": u, "title": ""} for u in bad])
     assert v.find_booking_links("Rich Table") == {}
 
 
 def test_booking_link_must_match_a_slug_boundary(monkeypatch):
     """`coi` sits inside `coin-op`, so Coi was handed Coin-Op's booking page."""
-    import src.brightdata as bd
+    import src.search as bd
     import src.venue_images as v
 
-    monkeypatch.setattr(bd, "serp",
+    monkeypatch.setattr(bd, "search",
                         lambda q, num=10: [{"url": "https://www.opentable.com/r/coin-op-san-francisco",
                                             "title": ""}])
     assert v.find_booking_links("Coi") == {}
 
     # the real page still resolves
-    monkeypatch.setattr(bd, "serp",
+    monkeypatch.setattr(bd, "search",
                         lambda q, num=10: [{"url": "https://www.opentable.com/r/coi-san-francisco",
                                             "title": ""}])
     assert v.find_booking_links("Coi").get("opentable") == \
@@ -462,12 +478,12 @@ def test_booking_slug_handles_connectives_and_possessives():
 
 def test_booking_link_search_pages_still_rejected(monkeypatch):
     """Search/editorial pages must not come back when the matcher changed."""
-    import src.brightdata as bd
+    import src.search as bd
     import src.venue_images as v
     bad = ["https://resy.com/city/san-francisco?query=Per%20Se",
            "https://www.opentable.com/s?term=per%20se",
            "https://blog.resy.com/2024/04/per-se"]
-    monkeypatch.setattr(bd, "serp", lambda q, num=10: [{"url": u, "title": ""} for u in bad])
+    monkeypatch.setattr(bd, "search", lambda q, num=10: [{"url": u, "title": ""} for u in bad])
     assert v.find_booking_links("Per Se") == {}
 
 
@@ -733,9 +749,9 @@ def test_plugin_and_tracker_assets_are_not_venue_photos():
 def test_proximity_and_landmark_pages_are_not_bookings(monkeypatch):
     """OpenTable emits /landmark/restaurants-near-<place> constantly — 79
     reached the cache. They list what is NEAR a place; a diner cannot book."""
-    import src.brightdata as bd
+    import src.search as bd
     import src.venue_images as v
-    monkeypatch.setattr(bd, "serp", lambda q, num=10: [
+    monkeypatch.setattr(bd, "search", lambda q, num=10: [
         {"url": "https://www.opentable.com/landmark/restaurants-near-benu", "title": ""},
         {"url": "https://www.opentable.com/nearby/restaurants-near-me-benu", "title": ""},
     ])
@@ -746,7 +762,7 @@ def test_opentable_directory_and_editorial_pages_are_not_bookings(monkeypatch):
     """Also directory shapes, also name-matched: /food-near-me/campbell passed
     for venue "Campbell", /metro/... for "San Francisco", and the editorial
     /features/ pages for whoever they list."""
-    import src.brightdata as bd
+    import src.search as bd
     import src.venue_images as v
     cases = [
         ("Campbell", "https://www.opentable.com/food-near-me/campbell"),
@@ -755,7 +771,7 @@ def test_opentable_directory_and_editorial_pages_are_not_bookings(monkeypatch):
         ("Mother", "https://www.opentable.com/events/mothers-day/metro/san-francisco"),
     ]
     for venue, url in cases:
-        monkeypatch.setattr(bd, "serp", lambda q, num=10, u=url: [{"url": u, "title": ""}])
+        monkeypatch.setattr(bd, "search", lambda q, num=10, u=url: [{"url": u, "title": ""}])
         assert v.find_booking_links(venue) == {}, f"{url} accepted for {venue}"
 
 
@@ -764,9 +780,9 @@ def test_a_resy_city_list_is_rejected_for_a_venue_named_in_it(monkeypatch):
     `arcadia`, so _slug_names_venue rejected it on NAME and the test passed
     even with the Resy list filter removed. Ask for the venue the URL actually
     names, so only the list check can reject it."""
-    import src.brightdata as bd
+    import src.search as bd
     import src.venue_images as v
-    monkeypatch.setattr(bd, "serp", lambda q, num=10: [
+    monkeypatch.setattr(bd, "search", lambda q, num=10: [
         {"url": "https://resy.com/cities/arcadia-ca/list/book-tonight", "title": ""}])
     assert v.find_booking_links("Arcadia") == {}
 
@@ -774,9 +790,9 @@ def test_a_resy_city_list_is_rejected_for_a_venue_named_in_it(monkeypatch):
 def test_a_resy_city_venue_page_is_still_a_booking(monkeypatch):
     """The normal Resy shape has the city in the path. Rejecting every
     /cities/ URL would drop 150 real links."""
-    import src.brightdata as bd
+    import src.search as bd
     import src.venue_images as v
-    monkeypatch.setattr(bd, "serp", lambda q, num=10: [
+    monkeypatch.setattr(bd, "search", lambda q, num=10: [
         {"url": "https://resy.com/cities/san-francisco-ca/venues/7-adams", "title": ""}])
     assert v.find_booking_links("7 Adams").get("resy") == \
         "https://resy.com/cities/san-francisco-ca/venues/7-adams"
@@ -788,3 +804,1028 @@ def test_all_three_platforms_are_searched():
     src = inspect.getsource(v.find_booking_links)
     for p in ('"resy"', '"opentable"', '"tock"'):
         assert p in src, f"{p} is not searched"
+
+
+# ── a venue's own site can settle that it closed ───────────────────────────
+
+def test_a_closure_announcement_is_detected():
+    from src.venue_images import _announces_closure
+    assert _announces_closure("<p>Range Restaurant San Francisco is Now Closed</p>")
+    assert _announces_closure("<p>Trick Dog has closed. Thank you for the years.</p>")
+    assert _announces_closure("<p>We are closed. Thank you for 20 years.</p>")
+    # A bare farewell with no closure object is NOT a closure. This assertion
+    # used to accept "...we announce..." alone, which is precisely the bug that
+    # closed open restaurants announcing a death or a departure. The phrase
+    # needs to name what it is announcing.
+    assert not _announces_closure("<p>It is with great sadness that we announce...</p>")
+    assert _announces_closure(
+        "<p>It is with great sadness that we announce we have closed.</p>")
+
+
+def test_a_weekly_schedule_is_not_a_closure():
+    """Farallon's own page says "We are closed on Sundays and Mondays" — a
+    working restaurant. Reading that as closure marks it shut."""
+    from src.venue_images import _announces_closure
+    assert not _announces_closure("<p>We are closed on Sundays and Mondays.</p>")
+    assert not _announces_closure("<p>We are closed for special events.</p>")
+    assert not _announces_closure("<p>Closed on Thanksgiving Day.</p>")
+    assert not _announces_closure("<p>Sundays: CLOSED</p>")
+    assert not _announces_closure("<p>We are open Tuesday to Sunday.</p>")
+
+
+# ── one restaurant written two ways is one identity ───────────────────────
+
+def test_formatting_variants_fold_to_one_venue():
+    """The corpus held 1,114 raw names for 442 venues: "Jardinière" (13 edges)
+    and "Jardiniere" (15) were separate nodes, so every per-venue count was
+    wrong and a dossier split in two."""
+    from src.venue_images import canonical_venue as c
+    for a, b in [("Jardinière", "Jardiniere"), ("Tosca Café", "Tosca Cafe"),
+                 ("AL's Deli", "AL’s Deli"), ("À Côté", "A Cote"),
+                 ("Baumé", "Baume"), ("COI", "Coi"),
+                 # parenthetical is formatting when the words are identical
+                 ("Ritz Carlton (San Francisco)", "Ritz-Carlton San Francisco"),
+                 ("Bouchon (Beverly Hills)", "Bouchon Beverly Hills")]:
+        assert c(a) == c(b), f"{a!r} and {b!r} should be one venue"
+
+
+def test_different_locations_stay_separate():
+    """Merging these would put one restaurant's moves on another's dossier."""
+    from src.venue_images import canonical_venue as c
+    for a, b in [("Stars (San Francisco)", "Stars (Seattle)"),
+                 ("A16", "A16 (Oakland location)"),
+                 ("4505 Burgers & BBQ (Divisadero location)",
+                  "4505 Burgers & BBQ (Oakland location)"),
+                 # a rename is not a formatting difference
+                 ("Alfred's", "Alfred's Steakhouse")]:
+        assert c(a) != c(b), f"{a!r} and {b!r} must stay apart"
+
+
+def test_build_edge_doc_stamps_canonical_venue_keys():
+    from src.es import build_edge_doc
+    from src.venue_images import canonical_venue
+    d = build_edge_doc({"person": "X", "source_url": "u",
+                        "from_venue": "Jardinière", "to_venue": "Tosca Café"})
+    assert d["from_venue_key"] == canonical_venue("Jardinière") == "jardiniere"
+    assert d["to_venue_key"] == canonical_venue("Tosca Café") == "toscacafe"
+    assert d["from_venue"] == "Jardinière"       # display form preserved
+
+
+def test_a_leading_the_is_folded_for_identity():
+    """"The French Laundry" and "French Laundry" are one restaurant — 65 and
+    46 edges were being counted as two venues."""
+    from src.venue_images import venue_identity as v
+    assert v("The French Laundry") == v("French Laundry")
+    assert v("The Slanted Door") == v("Slanted Door")
+    assert v("the Commissary") == v("Commissary")
+    assert v("The Fifth Floor") == v("Fifth Floor")
+
+
+def test_only_the_is_stripped_never_a_or_an():
+    """An earlier draft folded every article, which destroyed real names:
+    Alamar became "La Mar" and "AQ Restaurant & Bar" became "Q Restaurant &
+    Bar" — different restaurants in both cases."""
+    from src.venue_images import venue_identity as v
+    assert v("Alamar") != v("La Mar")
+    assert v("AQ Restaurant & Bar") != v("Q Restaurant & Bar")
+    # and identity still respects location, as canonical_venue does
+    assert v("Stars (San Francisco)") != v("Stars (Seattle)")
+
+
+# ── the owner's adjudication of name groups (ui/venue_aliases.json) ────────
+
+def test_aliases_collapse_the_spellings_a_human_ruled_on():
+    from src.venue_aliases import identity
+    pairs = [
+        ("Fifth Floor Restaurant", "Fifth Floor"),
+        ("Michael Mina restaurant", "Michael Mina"),
+        ("Restaurant Michael Mina (original)", "Michael Mina"),
+        ("Alfred's", "Alfred's Steakhouse"),
+        ("Scoma’s", "Scoma's restaurant"),
+        ("DOSA", "Dosa"),
+        ("Babu Ji (San Francisco)", "Babu Ji"),
+        ("A16 Oakland", "A16 (Oakland location)"),
+    ]
+    for a, b in pairs:
+        assert identity(a) == identity(b), f"{a!r} and {b!r} should share an identity"
+
+
+def test_location_specific_brands_keep_their_cities_apart():
+    """"Stars (Seattle)" and "Stars (San Francisco)" are different businesses
+    by the owner's ruling — merging would put Seattle moves on the SF dossier."""
+    from src.venue_aliases import identity, is_location_variant
+    assert is_location_variant("Stars (Seattle)")
+    assert is_location_variant("Stars (San Francisco)")
+    assert identity("Stars (Seattle)") != identity("Stars (San Francisco)")
+    # but the two spellings of the SAME city still agree
+    assert identity("Stars (San Francisco)") == identity("Stars San Francisco")
+    # Mission Chinese Food and Tartine Manufactory likewise
+    assert identity("Mission Chinese Food (New York)") != \
+           identity("Mission Chinese Food")
+    assert identity("Tartine Manufactory (Los Angeles)") != \
+           identity("Tartine Manufactory (San Francisco)")
+
+
+def test_aliases_never_apply_without_a_recorded_ruling():
+    """The file is authoritative: an unrecorded venue keeps its own name."""
+    from src.venue_aliases import identity
+    assert identity("Something Nobody Ruled On") == \
+           identity("Something Nobody Ruled On")
+    assert identity("Something Nobody Ruled On") != identity("Fifth Floor")
+
+
+def test_alias_file_is_well_formed():
+    import json, os
+    root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    d = json.load(open(os.path.join(root, "ui", "venue_aliases.json")))
+    assert d["merge"], "no merge rulings"
+    # a canonical title must not also appear as a location-specific variant
+    loc_all = {v for vs in (d.get("locations") or {}).values() for v in vs}
+    overlap = set(d["merge"]) & loc_all
+    assert not overlap, f"contradictory rulings: {sorted(overlap)}"
+
+
+# ── the identity rule exists twice; the copies must not drift ───────────────
+
+def test_base_identity_matches_the_module_rule():
+    """venue_aliases.base_identity is a deliberate copy of venue_identity.
+
+    It has to be a copy: venue_aliases ships into the Vercel function bundle,
+    which contains no src/ package, so an import there would 500 the stats
+    endpoint. A copy can drift, so this pins the two together on the cases that
+    the rule is actually FOR — the leading article and the names that must NOT
+    lose their first three letters.
+    """
+    from src.venue_aliases import base_identity
+    from src.venue_images import venue_identity
+
+    cases = [
+        "The French Laundry", "French Laundry", "The Slanted Door",
+        "Slanted Door", "Fifth Floor", "Restaurant Michael Mina",
+        "Stars (Seattle)", "Stars San Francisco", "Jardinière", "A16",
+        "the Mandarin", "Ritz Carlton (SF)",
+        # the regression this exists to catch: "the" is a PREFIX of these
+        "Theodore", "Theater Cafe", "Thea", "Theo",
+    ]
+    for c in cases:
+        assert base_identity(c) == venue_identity(c), (
+            f"{c!r}: the bundled identity copy drifted from venue_images")
+
+
+def test_article_fold_needs_a_whole_word():
+    """A leading-article rule that runs on the squashed key eats first letters.
+
+    "Theodore".startswith("the") was true, so it became "odore" — a different
+    restaurant. The article is only folded when it is a whole word.
+    """
+    from src.venue_images import venue_identity
+
+    assert venue_identity("The French Laundry") == venue_identity("French Laundry")
+    assert venue_identity("Theodore") == "theodore"
+    assert venue_identity("Theater Cafe") == "theatercafe"
+    assert venue_identity("Thea") == "thea"
+    # and a bare "The" is not a venue to strip down to nothing
+    assert venue_identity("The") != ""
+
+
+# ── a closed venue is a verdict even when it has no photo ───────────────────
+
+def test_closure_survives_without_an_image(monkeypatch):
+    """own() used to drop a record whose url was empty. A closure has none.
+
+    tier_website() settles that the venue is shut, then own() discarded the
+    record for having no url and the run cached "absent" — a venue that will be
+    probed forever.
+    """
+    import src.venue_images as v
+
+    monkeypatch.setattr(v, "find_official_site",
+                        lambda *a, **k: ("https://shut.example/", "found"))
+    monkeypatch.setattr(v, "find_booking_links", lambda *a, **k: {})
+    monkeypatch.setattr(v, "tier_website", lambda *a, **k: {
+        "url": None, "source": None, "site": "https://shut.example/",
+        "confidence": "high", "closed": True,
+        "evidence": "the venue's own site announces closure"})
+    monkeypatch.setattr(v, "tier_social", lambda *a, **k: None)
+
+    rec, status = v.resolve_venue("Shut Place")
+    assert status == "closed", "a closure is a status, not a missing photo"
+    assert rec["status"] == "closed"
+    assert rec["url"] is None
+
+
+def test_closed_venue_with_a_downloadable_photo_keeps_both(monkeypatch):
+    """A shut venue can still serve its last hero image. Download it — but
+    never record a remote URL the cache does not actually hold."""
+    import src.venue_images as v
+
+    monkeypatch.setattr(v, "find_official_site",
+                        lambda *a, **k: ("https://shut.example/", "found"))
+    monkeypatch.setattr(v, "find_booking_links", lambda *a, **k: {})
+    monkeypatch.setattr(v, "tier_website", lambda *a, **k: {
+        "url": "https://shut.example/hero.jpg", "source": "venue-website",
+        "site": "https://shut.example/", "confidence": "high", "closed": True})
+    monkeypatch.setattr(v, "download_image", lambda *a, **k: "venue-images/shut.jpg")
+
+    rec, status = v.resolve_venue("Shut Place")
+    assert status == "closed"
+    assert rec["url"] == "venue-images/shut.jpg", "must be the LOCAL path"
+    assert rec["closed"] is True
+
+
+def test_closed_venue_whose_photo_will_not_download_does_not_invent_one(monkeypatch):
+    """The review finding: `own()` returned the closed record before fetching,
+    so the cache claimed a photo while holding a hotlink."""
+    import src.venue_images as v
+
+    monkeypatch.setattr(v, "find_official_site",
+                        lambda *a, **k: ("https://shut.example/", "found"))
+    monkeypatch.setattr(v, "find_booking_links", lambda *a, **k: {})
+    monkeypatch.setattr(v, "tier_website", lambda *a, **k: {
+        "url": "https://shut.example/hero.jpg", "source": "venue-website",
+        "site": "https://shut.example/", "confidence": "high", "closed": True})
+    monkeypatch.setattr(v, "download_image", lambda *a, **k: None)
+
+    rec, status = v.resolve_venue("Shut Place")
+    assert status == "closed"
+    assert rec["url"] is None, "no local photo, so no photo may be claimed"
+
+
+def test_a_closure_does_not_spend_the_social_tier(monkeypatch):
+    """The venue is shut; hunting it a photo is wasted work."""
+    import src.venue_images as v
+
+    calls = {"social": 0}
+    monkeypatch.setattr(v, "find_official_site",
+                        lambda *a, **k: ("https://shut.example/", "found"))
+    monkeypatch.setattr(v, "find_booking_links", lambda *a, **k: {})
+    monkeypatch.setattr(v, "tier_website", lambda *a, **k: {
+        "url": None, "site": "https://shut.example/", "closed": True})
+    monkeypatch.setattr(v, "tier_social",
+                        lambda *a, **k: calls.__setitem__("social", calls["social"] + 1))
+
+    v.resolve_venue("Shut Place")
+    assert calls["social"] == 0
+
+
+def test_the_bundled_identity_copy_is_byte_identical():
+    """vercel-app/api/venue_aliases.py is a copy that ships inside the function
+    bundle (which has no src/ package). It went stale once during review and
+    broke /api/stats with AttributeError; a byte comparison is the cheapest way
+    to make that impossible to miss."""
+    import os
+
+    here = os.path.dirname(os.path.abspath(__file__))
+    root = os.path.dirname(here)
+    src = open(os.path.join(root, "src", "venue_aliases.py")).read()
+    bundled = open(os.path.join(root, "vercel-app", "api", "venue_aliases.py")).read()
+    assert src == bundled, (
+        "vercel-app/api/venue_aliases.py drifted from src/venue_aliases.py — "
+        "copy it again (build.sh does this on deploy, but the committed copy "
+        "is what CLI deploys use)")
+
+
+def test_matching_form_strips_the_article_too():
+    """identity_words kept a leading "The"; identity did not.
+
+    So "The Progress" and "Progress" were ONE venue for counting and TWO for
+    dossier matching, and the whole-word comparison failed to join them — one
+    career split across two cards. Both forms must apply the same rule.
+    """
+    from src.venue_aliases import identity, identity_words
+
+    for bare, articled in (("Progress", "The Progress"),
+                           ("Commissary", "The Commissary"),
+                           ("French Laundry", "The French Laundry")):
+        assert identity(bare) == identity(articled), (
+            f"{bare}/{articled}: the counting identity does not collapse")
+        assert identity_words(bare) == identity_words(articled), (
+            f"{bare}/{articled}: the MATCHING identity does not collapse, so "
+            f"one career splits across two dossier cards")
+
+
+def test_article_fold_does_not_eat_real_word_starts():
+    """The matching form strips "the" as a WORD, not a character prefix."""
+    from src.venue_aliases import identity_words
+
+    assert identity_words("Theodore") == "theodore"
+    assert identity_words("Theater Cafe") == "theater cafe"
+    assert identity_words("Thea") == "thea"
+    # a bare "The" is not a venue to reduce to nothing
+    assert identity_words("The") == "the"
+
+
+def test_word_boundaries_survive_for_matching():
+    """Matching must compare TOKENS: a character prefix joined El Faro to
+    El Farolito, which are different restaurants."""
+    from src.venue_aliases import identity_words
+
+    assert identity_words("El Faro") == "el faro"
+    assert identity_words("El Farolito") == "el farolito"
+    assert not identity_words("El Farolito").startswith(
+        identity_words("El Faro") + " ")
+
+
+# ── the operator-vs-restaurant case (owner's ruling, 2026-11-16) ────────────
+
+def test_plumpjack_operator_prefix_does_not_merge_two_restaurants():
+    """PlumpJack is Balboa Cafe's OPERATOR, and also its own restaurant.
+
+    The corpus writes "PlumpJack Balboa Cafe" for one business, so a naive
+    prefix rule would be tempting — but it would also fold "PlumpJack Cafe"
+    (a different restaurant) into Balboa Cafe, putting one kitchen's chefs on
+    the other's dossier. The grouping is recorded as a ruling, not inferred.
+    """
+    from src.venue_aliases import identity
+
+    # same restaurant, written with its operator in front
+    balboa = {identity(n) for n in (
+        "Balboa Cafe", "PlumpJack Balboa Cafe", "Balboa Café Mill Valley")}
+    assert len(balboa) == 1, f"Balboa spellings split: {balboa}"
+
+    # and a genuinely different restaurant that shares the operator
+    cafe = {identity(n) for n in (
+        "PlumpJack Cafe", "Plumpjack Cafe", "PlumpJack Cafe (San Francisco)",
+        "PlumpJack", "PlumpJack restaurant")}
+    assert len(cafe) == 1, f"PlumpJack Cafe spellings split: {cafe}"
+
+    assert balboa != cafe, (
+        "Balboa Cafe and PlumpJack Cafe are different restaurants; merging "
+        "them attaches one kitchen's chefs to the other")
+
+    # the other two properties stay their own
+    assert identity("PlumpJack Squaw Valley") != identity("PlumpJack Cafe")
+    assert identity("PlumpJack's Farm at the Carneros Inn") != identity("PlumpJack Cafe")
+
+
+def test_plumpjack_empire_is_not_a_venue():
+    """It is the group, not a restaurant. Counting it adds a kitchen that does
+    not exist."""
+    import importlib.util, os
+    here = os.path.dirname(os.path.abspath(__file__))
+    spec = importlib.util.spec_from_file_location(
+        "ui_server_alias", os.path.join(os.path.dirname(here), "ui", "server.py"))
+    ui = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(ui)
+
+    assert ui._is_junk_venue("PlumpJack empire")
+    # the actual restaurants must survive the same filter
+    for name in ("PlumpJack Cafe", "Balboa Cafe", "PlumpJack Balboa Cafe"):
+        assert not ui._is_junk_venue(name), f"{name} wrongly dropped"
+
+
+def test_a_farewell_plus_a_weekly_schedule_is_still_open():
+    """Reported three times because the single phrases passed and the
+    COMBINATION did not.
+
+    "Thank you for all the wonderful reviews" alone was already false. But a
+    page carrying BOTH a thank-you and its opening hours was marked permanently
+    shut, because the corroboration search matched the bare word "closed" inside
+    "We are closed on Sundays" — a schedule. A working restaurant's own page
+    would have been recorded as a closure.
+    """
+    import src.venue_images as v
+
+    open_pages = [
+        "Thank you for all the wonderful reviews. We are closed on Sundays.",
+        "Thank you for the years! We are closed on Mondays and Tuesdays.",
+        "Our kitchen has closed for the evening. Thank you for everything!",
+        "Thank you for all the wonderful reviews! Closed on Thanksgiving.",
+        "The dining room is now closed for the season.",
+        "Thank you for a wonderful year. See you in spring!",
+    ]
+    for p in open_pages:
+        assert not v._announces_closure(p), f"open restaurant marked shut: {p!r}"
+
+    real_closures = [
+        "It is with great sadness that we announce we have closed.",
+        "The restaurant has permanently closed.",
+        "Range Restaurant San Francisco is Now Closed",
+        "Trick Dog has closed. Thank you for the years.",
+        "We are closed. Thank you for 20 years.",
+        "We have closed our doors.",
+        "This location is now closed",
+    ]
+    for p in real_closures:
+        assert v._announces_closure(p), f"real closure missed: {p!r}"
+
+
+def test_a_farewell_phrase_alone_is_not_a_closure():
+    """THE finding, finally reproduced.
+
+    The bot said this five times with the same two example phrases, both of
+    which I had already fixed. Testing those phrases was the mistake: the class
+    of bug is that a farewell line was accepted ALONE. Open restaurants publish
+    "it is with great sadness" about a founder's death, a chef leaving, or a
+    cancelled service — and every one of those was marked permanently closed.
+
+    A farewell phrase now needs a closure object in the same sentence, and that
+    object must not be a schedule or a recurrence.
+    """
+    import src.venue_images as v
+
+    open_pages = [
+        "It is with great sadness that we announce the passing of our founder.",
+        "It is with great sadness that we say goodbye to our pastry chef.",
+        "We are sad to announce that our head chef is leaving.",
+        "We regret to announce that tonight's service is cancelled.",
+        "It is with a heavy heart that we close our doors each night at 10pm.",
+        "We are sad to announce our summer menu has ended.",
+    ]
+    for p in open_pages:
+        assert not v._announces_closure(p), f"open restaurant marked shut: {p!r}"
+
+    closures = [
+        "It is with great sadness that we announce we have closed.",
+        "We are sad to announce that we are closing our doors after 20 years.",
+        "It is with great sadness that we announce our final service.",
+        "It is with a heavy heart that we announce the closure of the restaurant.",
+    ]
+    for p in closures:
+        assert v._announces_closure(p), f"real closure missed: {p!r}"
+
+
+def test_closure_detection_full_matrix():
+    """Both directions, every phrase shape the corpus actually contains."""
+    import src.venue_images as v
+
+    open_pages = [
+        "Thank you for all the wonderful reviews",
+        "Our kitchen has closed for the evening",
+        "Thank you for all the wonderful reviews. We are closed on Sundays.",
+        "Our kitchen has closed for the evening. Thank you for everything!",
+        "We are closed on Sundays and Mondays.",
+        "The dining room is now closed for the season.",
+        "Closed (private events only)",
+        "Thank you for a wonderful year. See you in spring!",
+    ]
+    for p in open_pages:
+        assert not v._announces_closure(p), f"open restaurant marked shut: {p!r}"
+
+    closures = [
+        "We have closed our doors.",
+        "The restaurant has permanently closed.",
+        "Range Restaurant San Francisco is Now Closed",
+        "Trick Dog has closed. Thank you for the years.",
+        "We are closed. Thank you for 20 years.",
+        "This location is now closed",
+        "We will not be reopening.",
+    ]
+    for p in closures:
+        assert v._announces_closure(p), f"real closure missed: {p!r}"
+
+
+def test_a_dated_permanent_closure_is_still_a_closure():
+    """The regression my previous fix introduced.
+
+    To stop "it is with great sadness" firing on a chef's departure, I rejected
+    any farewell whose next 90 characters mentioned "today"/"tomorrow"/"this
+    week". That also swallowed real closures, because a permanent closure is
+    routinely DATED:
+
+      "our final service took place today"
+      "we announce our closure today"
+
+    A time word is evidence against a closure only for a GENERIC closure word
+    ("tonight's service is cancelled"). An explicit closure noun — final
+    service, last day, closure, closing our doors — decides on its own.
+    """
+    import src.venue_images as v
+
+    dated_closures = [
+        "It is with great sadness that we announce our final service took place today",
+        "It is with great sadness that we announce our final service was yesterday",
+        "We are sad to announce our last day of service was this week",
+        "It is with great sadness that we announce our closure today",
+    ]
+    for p in dated_closures:
+        assert v._announces_closure(p), f"dated closure missed: {p!r}"
+
+    routine = [
+        "We regret to announce that tonight's service is cancelled",
+        "It is with a heavy heart that we close our doors each night at 10pm.",
+        "We are sad to announce our summer menu has ended.",
+    ]
+    for p in routine:
+        assert not v._announces_closure(p), f"routine notice marked shut: {p!r}"
+
+
+def test_a_temporary_closure_is_not_a_permanent_one():
+    """The P1 that blocked the merge.
+
+    _EXPLICIT_CLOSURE accepted the word "closure" on sight, ahead of every
+    temporary check. A verified restaurant page saying
+
+      "We regret to announce our temporary closure for renovations until next
+       week"
+
+    was written to the cache as status="closed" — and a cached closure is never
+    re-probed, so the venue stayed shut in the corpus permanently. The word
+    "closure" was doing the work that "permanent" should be doing.
+
+    The qualifier is scoped to the SENTENCE, so a leading "temporary" and a
+    trailing "temporarily" both count, while a separate sentence about temporary
+    staffing cannot veto a genuine closure notice.
+    """
+    import src.venue_images as v
+
+    temporary = [
+        "We regret to announce our temporary closure for renovations until next week",
+        "It is with great sadness that we announce our temporary closure for "
+        "renovations until next week",
+        "We are sad to announce a temporary closure for renovation",
+        "We have closed temporarily for renovations",
+        "We have closed our doors temporarily",
+        "The restaurant has shut down temporarily",
+        "It is with great sadness that we announce our temporary closure until next week",
+        "We regret to announce a brief closure",
+    ]
+    for p in temporary:
+        assert not v._announces_closure(p), f"temporary closure marked permanent: {p!r}"
+
+    # A dated notice is still a closure: the date is part of the announcement,
+    # not a reason to doubt it. "for good" wins over a nearby "temporary".
+    # The last case pins a bug in the first version of this fix, which used a
+    # bare `in\w*` as a temporary marker — it matched the ordinary word "in"
+    # and vetoed every closure dated by month or year.
+    still_closed = [
+        "It is with great sadness that we announce our final service took place today",
+        "It is with great sadness that we announce our closure today",
+        "Temporary staffing changes are coming. We have closed its doors for good.",
+        "We have closed our doors in 2020.",
+        "We have closed its doors in March after 40 years.",
+    ]
+    for p in still_closed:
+        assert v._announces_closure(p), f"real closure missed: {p!r}"
+
+
+def test_a_temporary_qualifier_must_attach_to_the_closure():
+    """The P1 that blocked the merge after the previous fix.
+
+    The first version of the temporary guard scanned the whole SENTENCE for
+    "brief"/"temporary". That is the same class of mistake as matching a bare
+    "closed": the word was treated as proof regardless of what it described.
+
+      "After a brief farewell, we have closed our doors."
+
+    is a permanent closure behind a short goodbye, and the sentence scan called
+    it temporary — so the verified page lost its closure flag and was cached
+    `found`, which is never re-probed.
+
+    The qualifier now has to ATTACH: only function words may sit between it and
+    the closure noun ("our temporary closure"), and an intervening noun means the
+    qualifier belongs to something else.
+    """
+    import src.venue_images as v
+
+    # "brief"/"temporary" describes something other than the closure.
+    permanently_closed = [
+        "After a brief farewell, we have closed our doors.",
+        "After a brief farewell, the restaurant has closed its doors.",
+        "After a short farewell message, we have closed our doors.",
+        "Following a temporary farewell, the restaurant has closed its doors.",
+    ]
+    for p in permanently_closed:
+        assert v._announces_closure(p), f"closure misread as temporary: {p!r}"
+
+    # The qualifier does attach, so these stay open. Leading and trailing.
+    temporary = [
+        "We have closed our doors for a brief period.",
+        "We are temporarily closed for renovations.",
+        "We are briefly closed for maintenance.",
+        "We will be briefly closed for inventory.",
+    ]
+    for p in temporary:
+        assert not v._announces_closure(p), f"temporary closure marked permanent: {p!r}"
+
+
+def test_every_shape_of_temporary_closure_stays_open():
+    """This finding returned three times, so it gets a matrix rather than an
+    example.
+
+    The first two rounds fixed only the string the review quoted — the literal
+    phrase it named passed, while the CLASS it described did not. Eleven of the
+    twenty-six ways a venue announces a temporary shutdown still returned True,
+    because the two paths that adjudicate a generic closure word ("closed",
+    "service", "doors") had no temporary check at all. A venue that shuts for
+    renovations and says so in any of these words was cached status="closed",
+    and a cached closure is never re-probed.
+
+    Every shape here names a closure AND says it is not permanent. All must stay
+    open; the permanent matrix above guards the other direction.
+    """
+    import src.venue_images as v
+
+    temporary = [
+        # adjective attached to the closure noun
+        "We regret to announce our temporary closure for renovations until next week",
+        "We regret to announce a temporary closure for renovations",
+        "We regret to announce our temporary closure",
+        "It is with great sadness that we announce our temporary closure for renovations",
+        "We regret to announce the temporary closure of our restaurant",
+        "We regret to announce a brief closure",
+        "We regret to announce our brief closure for renovations",
+        "We regret to announce a short-term closure",
+        "We regret to announce our seasonal closure",
+        # adverb attached to the verb
+        "We regret to announce that we will be closing temporarily",
+        "We regret to announce we are closing temporarily for renovations",
+        "We regret to announce we have closed temporarily",
+        "We regret to announce the restaurant has closed temporarily",
+        "We regret to announce that service is temporarily suspended",
+        "It is with great sadness that we announce a temporary suspension of service",
+        # a tail that postpones reopening
+        "We regret to announce our closure until further notice",
+        "We regret to announce our closure for the holidays",
+        "We regret to announce we are closed until further notice",
+        "We regret to announce we are closed for renovations",
+        "We regret to announce our final service is postponed",
+    ]
+    for p in temporary:
+        assert not v._announces_closure(p), f"temporary closure marked permanent: {p!r}"
+
+    # The same shapes, made permanent by their own words, must still fire.
+    still_closed = [
+        "We regret to announce our closure for good",
+        "We regret to announce we have closed our doors permanently",
+        "It is with great sadness that we announce our final service took place today",
+        "We are sad to announce our last day of service was this week",
+        "We regret to announce our final service has concluded",
+    ]
+    for p in still_closed:
+        assert v._announces_closure(p), f"real closure missed: {p!r}"
+
+
+def test_no_temporary_notice_is_ever_permanent():
+    """The exhaustive form of a finding that survived fourteen rounds.
+
+    Every previous round fixed the sentence the review quoted and left the CLASS
+    open, because "is this temporary?" was asked at some of the eight places the
+    function says yes and forgotten at the rest. Catching that by reading is how
+    it took fourteen rounds.
+
+    So this does not test sentences. It crosses every preface with every
+    temporary statement and every postponing tail — 1,470 notices, all of which
+    name a closure AND say it is not permanent. Not one may be written to the
+    cache as status="closed", because a cached closure is never re-probed.
+    """
+    import itertools
+
+    import src.venue_images as v
+
+    prefaces = [
+        "",
+        "We regret to announce ",
+        "It is with great sadness that we announce ",
+        "We are sad to announce ",
+        "It is with a heavy heart that we announce ",
+        "Thank you for everything. ",
+        "Thank you for all the wonderful reviews. ",
+    ]
+    temporary_statements = [
+        "our temporary closure", "a temporary closure",
+        "the temporary closure of our restaurant", "our brief closure",
+        "a brief closure", "our seasonal closure", "a short-term closure",
+        "our temporary closing", "a temporary shutdown",
+        "a temporary suspension of service", "we are temporarily closed",
+        "we have closed temporarily", "we are closing temporarily",
+        "the restaurant has closed temporarily",
+        "service is temporarily suspended",
+        "we are closed until further notice", "we are closed for renovations",
+        "the restaurant has closed for renovations",
+        "our closure until further notice", "our closure for the holidays",
+        "our final service is postponed",
+    ]
+    postponing_tails = [
+        "", " for renovations", " until next week", " until further notice",
+        " for the holidays", " for repairs", " pending permits",
+        " for maintenance", " for the season", " temporarily",
+    ]
+
+    leaked = []
+    for preface, statement, tail in itertools.product(
+            prefaces, temporary_statements, postponing_tails):
+        notice = preface + statement + tail
+        if v._announces_closure(notice):
+            leaked.append(notice)
+    assert not leaked, (
+        "temporary notices cached as permanently closed:\n  "
+        + "\n  ".join(repr(x) for x in leaked[:10]))
+
+
+def test_explicit_permanence_is_not_erased_by_another_clause():
+    """The regression from routing every verdict through the gate.
+
+    "We are permanently closed, but our online shop remains temporarily
+    available" states two different things: the restaurant is shut for good,
+    the shop is briefly open. The gate's 60-character trailing window crossed
+    the "but" and read `temporarily` as though it qualified the closure, so a
+    venue whose own page says "permanently closed" was cached as `found`.
+
+    Two fixes: the window now stops at a clause break, and phrases that state
+    permanence in their own words ("permanently", "for good") are decisive
+    rather than advisory.
+    """
+    import src.venue_images as v
+
+    closed = [
+        "We are permanently closed, but our online shop remains temporarily available",
+        "We are permanently closed, though our gift cards are briefly available",
+        "The restaurant has permanently closed, but our sister cafe is temporarily "
+        "closed for renovations",
+        "We have closed our doors for good, while our cookbook stays temporarily available",
+    ]
+    for p in closed:
+        assert v._announces_closure(p), f"explicit permanence erased: {p!r}"
+
+
+def test_closures_that_do_not_use_the_word_closed():
+    """Requiring a clos/shut/door word dropped real closures.
+
+    "_CLOSURE_WORD" exists to exclude NEUTRAL venue nouns ("restaurant",
+    "business") that say nothing about closure — not to require one particular
+    verb. "we are ceasing operations after 20 years" names a closure and has no
+    clos/shut/door word, so narrowing the list too far lost it.
+    """
+    import src.venue_images as v
+
+    closed = [
+        "We regret to announce that we are ceasing operations after 20 years",
+        "It is with great sadness that we announce we are ceasing operations",
+        "We regret to announce the restaurant is halting service permanently",
+        "We are sad to announce we are discontinuing service",
+    ]
+    for p in closed:
+        assert v._announces_closure(p), f"closure without a clos/shut word missed: {p!r}"
+
+    # ...while a neutral venue noun ALONE is still not a closure.
+    not_closed = [
+        "Our restaurant has a new menu",
+        "The business is thriving",
+        "It is with great sadness that we announce our head chef is leaving",
+    ]
+    for p in not_closed:
+        assert not v._announces_closure(p), f"neutral mention marked closed: {p!r}"
+
+
+def test_accented_and_plain_spellings_agree_on_official_sites():
+    """Accents were treated as word separators, so an accented spelling
+    produced NO matching words at all and lost a domain its plain twin won.
+
+    `_preferred()` then picks one spelling before discovery runs, so "A Cote"
+    kept acoterestaurant.com while "À Côté" recorded `absent` without ever
+    fetching the candidate.
+    """
+    import src.venue_images as v
+
+    assert v._is_official("https://acoterestaurant.com", "A Cote") is True
+    assert v._is_official("https://acoterestaurant.com", "À Côté") is True
+    # Folding must not admit lookalikes or join different venues.
+    assert v._is_official("https://richtablesf.nevertrustadame.com", "Rich Table") is False
+    assert v._is_official("https://elfarolito.com", "El Faro") is True  # short-name path
+
+
+def test_service_line_verbs_must_name_the_venue_not_one_offering():
+    """Two ways a service-line verb goes wrong, in opposite directions.
+
+    Too LENIENT: "we are discontinuing our delivery service" ends one offering
+    of a restaurant that is still trading, but `discontinuing` supplies the
+    closure word and `service` supplies the object, so both checks passed.
+
+    Too STRICT: the venue-wide check read a fixed 40-character window that
+    crossed the full stop, so "Gift cards will be refunded" in the NEXT sentence
+    became the thing being closed, and a genuinely shuttered venue lost its flag.
+    """
+    import src.venue_images as v
+
+    closed = [
+        "We regret to announce we are ceasing operations. Gift cards will be refunded.",
+        "We regret to announce that we are ceasing operations after 20 years",
+        "We are sad to announce we are discontinuing service",
+        "We are sad to announce we are ceasing all service",
+    ]
+    for p in closed:
+        assert v._announces_closure(p), f"venue-wide closure missed: {p!r}"
+
+    still_open = [
+        "We regret to announce that we are discontinuing our delivery service",
+        "We regret to announce that we are discontinuing our delivery service. "
+        "Gift cards will be refunded.",
+        "We are discontinuing takeout service",
+        "We are halting our catering service",
+    ]
+    for p in still_open:
+        assert not v._announces_closure(p), f"service line marked as venue closure: {p!r}"
+
+
+def test_delayed_reopening_is_not_a_permanent_closure():
+    """"will not reopen" reads permanent but takes a delay."""
+    import src.venue_images as v
+
+    assert v._announces_closure("We will not reopen.")
+    assert v._announces_closure("We will not be reopening.")
+    assert not v._announces_closure("We will not reopen until spring")
+    assert not v._announces_closure("We will not be reopening until next week")
+
+
+def test_abbreviations_do_not_cut_a_closure_statement_short():
+    """The clause check reads sentence boundaries, and a period inside a name
+    is not one.
+
+    "We regret to announce we are ceasing our St. Helena operations." lost
+    `operations` when "St." was taken for a sentence end, so the venue-wide
+    object vanished and a closed restaurant was cached `found`.
+
+    The fix must not swing the other way either: "operations." ends a sentence,
+    because a lone "s" is only an initial when it STANDS ALONE ("J. Kenji").
+    """
+    import src.venue_images as v
+
+    closed = [
+        "We regret to announce we are ceasing our St. Helena operations.",
+        "We regret to announce we are ceasing operations at our St. Helena location.",
+        "We regret to announce we are ceasing U.S. operations.",
+        "We regret to announce we are ceasing operations. Gift cards will be refunded.",
+    ]
+    for p in closed:
+        assert v._announces_closure(p), f"abbreviation hid a closure: {p!r}"
+
+    # A real sentence break after the verb still separates a service line.
+    still_open = [
+        "We regret to announce that we are discontinuing our delivery service. "
+        "Gift cards will be refunded.",
+        "We are discontinuing our delivery service in St. Helena.",
+    ]
+    for p in still_open:
+        assert not v._announces_closure(p), f"service line read as closure: {p!r}"
+
+
+def test_which_object_comes_first_decides_the_closure():
+    """Two attempts at a sentence boundary both failed, in opposite directions,
+    so the boundary was removed rather than tuned again.
+
+    A window with a period check could not tell a name from a statement end:
+      "ceasing our St. Helena operations."   split at "St." and lost `operations`
+      "ceasing operations in the U.S. Gift…" joined the next sentence
+
+    The question does not need a boundary. It needs to know which object the
+    verb takes FIRST: "ceasing operations" closes the venue even if gift cards
+    are refunded afterwards; "discontinuing our delivery service" does not,
+    because `delivery` is the object and `service` merely follows it.
+    """
+    import src.venue_images as v
+
+    closed = [
+        "We regret to announce we are ceasing our St. Helena operations.",
+        "We regret to announce we are ceasing operations in the U.S. "
+        "Gift cards will be refunded.",
+        "We regret to announce we are ceasing operations. Gift cards will be refunded.",
+        "We are sad to announce we are discontinuing service",
+    ]
+    for p in closed:
+        assert v._announces_closure(p), f"venue closure missed: {p!r}"
+
+    still_open = [
+        "We regret to announce that we are discontinuing our delivery service",
+        "We regret to announce that we are discontinuing our delivery service. "
+        "Gift cards will be refunded.",
+        "We are discontinuing takeout service",
+        "We are halting our catering service",
+    ]
+    for p in still_open:
+        assert not v._announces_closure(p), f"service line read as closure: {p!r}"
+
+
+def test_the_subject_may_come_before_the_verb():
+    """"all operations have ceased" closes a venue; "ceasing operations" does too.
+
+    A forward-only window saw just "ceased." for the first shape and lost the
+    venue, so the slice now covers both sides and the DECIDING object is still
+    the one nearest the verb — which is what keeps "all operations have ceased.
+    Gift cards will be refunded." venue-wide while "discontinuing our delivery
+    service" stays a single offering.
+    """
+    import src.venue_images as v
+
+    closed = [
+        "We regret to announce all operations have ceased.",
+        "We regret to announce all operations have ceased. Gift cards will be refunded.",
+        "We regret to announce the restaurant has ceased trading.",
+    ]
+    for p in closed:
+        assert v._announces_closure(p), f"subject-before-verb closure missed: {p!r}"
+
+    still_open = [
+        "Our delivery service has been discontinued.",
+        "We are discontinuing takeout service",
+    ]
+    for p in still_open:
+        assert not v._announces_closure(p), f"service line read as closure: {p!r}"
+
+
+def test_a_service_line_must_be_the_verbs_object():
+    """"the restaurant is discontinuing delivery service" is one offering ending.
+
+    "the restaurant" is the grammatical SUBJECT, not the thing being stopped, so
+    proximity alone read it as a venue closure. What separates the two is
+    whether the service line directly follows the verb — its OBJECT — or sits in
+    a later sentence.
+
+      "discontinuing delivery service"        object  -> one offering ends
+      "ceasing operations. Gift cards…"       later   -> venue closed
+      "all operations have ceased."           subject -> venue closed
+    """
+    import src.venue_images as v
+
+    still_open = [
+        "We regret to announce the restaurant is discontinuing delivery service.",
+        "We regret to announce the restaurant is discontinuing our delivery service.",
+        "We are discontinuing takeout service",
+        "Our delivery service has been discontinued.",
+    ]
+    for p in still_open:
+        assert not v._announces_closure(p), f"service line read as closure: {p!r}"
+
+    closed = [
+        "We regret to announce all operations have ceased.",
+        "We regret to announce all operations have ceased. Gift cards will be refunded.",
+        "We regret to announce we are ceasing operations. Gift cards will be refunded.",
+        "We are sad to announce we are discontinuing service",
+    ]
+    for p in closed:
+        assert v._announces_closure(p), f"venue closure missed: {p!r}"
+
+
+def test_a_refund_clause_does_not_undo_a_closure():
+    """The finding: "…ceasing operations, but gift cards will be refunded."
+
+    Only a full stop counted as separating the verb from a later service line,
+    so the gap " operations, but " read as continuous and `gift cards` was taken
+    for the verb's object — while `operations` was in fact the object and the
+    refund was a separate statement. A clause conjunction separates too.
+
+    Bare "while" also had to come out of the postponing-tail list: it vetoed
+    "ceased operations while gift cards will be refunded", where it introduces
+    an unrelated clause rather than a reason for closing.
+    """
+    import itertools
+
+    import src.venue_images as v
+
+    closed = [
+        "We regret to announce we are ceasing operations, but gift cards will be refunded.",
+        "We regret to announce we are ceasing operations and gift cards will be refunded.",
+        "We regret to announce we are ceasing operations. Gift cards will be refunded.",
+        "We regret to announce all operations have ceased, but gift cards will be refunded.",
+        "We regret to announce all operations have ceased while gift cards will be refunded.",
+    ]
+    for p in closed:
+        assert v._announces_closure(p), f"refund clause hid a closure: {p!r}"
+
+    # The whole class, not just the quoted sentence: every closure statement
+    # with a refund clause attached by every common conjunction.
+    statements = [
+        "we are ceasing operations", "all operations have ceased",
+        "we are discontinuing service", "we have closed our doors",
+        "the restaurant has closed permanently",
+    ]
+    conjunctions = ["but", "and", ", but", ", and", "while", "though",
+                    "although", "however", "yet", "whereas", ", while", ", though"]
+    followups = [
+        "gift cards will be refunded", "gift cards remain available",
+        "our online shop stays open", "delivery will continue",
+        "catering is still available", "takeout remains available",
+    ]
+    missed = []
+    for statement, conjunction, followup in itertools.product(
+            statements, conjunctions, followups):
+        notice = (f"We regret to announce {statement} "
+                  f"{conjunction} {followup}.")
+        notice = notice.replace(" , ", ", ")
+        if not v._announces_closure(notice):
+            missed.append(notice)
+    assert not missed, (
+        "closure lost behind a refund clause:\n  "
+        + "\n  ".join(repr(x) for x in missed[:8]))
+
+
+def test_a_service_line_remains_the_object_when_nothing_separates_it():
+    """"the restaurant is discontinuing delivery service" is one offering.
+
+    The venue noun before the verb is the grammatical SUBJECT — the thing doing
+    the discontinuing — so it cannot be what the discontinuing closes. Only a
+    venue object between the verb and the service line settles it, or a
+    separator that makes the service line a new statement.
+    """
+    import src.venue_images as v
+
+    still_open = [
+        "We regret to announce the restaurant is discontinuing delivery service.",
+        "We regret to announce the restaurant is discontinuing our delivery service.",
+        "We are discontinuing our delivery service",
+        "We are discontinuing takeout service",
+        "We are halting our catering service",
+        "Our delivery service has been discontinued.",
+    ]
+    for p in still_open:
+        assert not v._announces_closure(p), f"service line read as closure: {p!r}"

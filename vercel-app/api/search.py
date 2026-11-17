@@ -364,10 +364,42 @@ def norm_venue(v):
     toks = [t for t in v.split() if t not in ("the", "a", "an", "of", "at", "in", "on")]
     return ' '.join(toks)
 
-_GENERIC_VENUE = {"bar", "cafe", "kitchen", "grill", "house", "restaurant", "room", "club", "san", "sf", "food", "wine", "bakery"}
+def venue_key(v):
+    """The identity a venue is COUNTED and DOSSIER-MATCHED under.
+
+    Same function the indexer used, so stored from_venue_key/to_venue_key and
+    computed keys cannot drift. norm_venue stays for legacy overlap matching.
+
+    venue_aliases.py is copied next to this file by build.sh (it is stdlib-only
+    so it can ship inside the function bundle); the src/ package is NOT part of
+    that bundle, so this must not import src.*. `_HERE` is added to sys.path
+    explicitly because this module is also loaded by path in tests, where the
+    function directory is not otherwise importable.
+    """
+    if _HERE not in sys.path:
+        sys.path.insert(0, _HERE)
+    import venue_aliases
+    return venue_aliases.identity(v)
+
+def venue_key_words(v):
+    """venue_key with word boundaries kept — the form DOSSIER MATCHING uses.
+
+    Matching needs boundaries because a character-prefix test on the squashed
+    key joins "elfaro" to "elfarolito" (different restaurants) and hides the
+    warning that two same-named people may be different people.
+    """
+    if _HERE not in sys.path:
+        sys.path.insert(0, _HERE)
+    import venue_aliases
+    return venue_aliases.identity_words(v)
+
+_GENERIC_VENUE = {"bar", "cafe", "kitchen", "grill", "house", "restaurant",
+                  "room", "club", "san", "sf", "food", "wine", "bakery",
+                  "café", "taqueria", "pizzeria"}
 
 def _venue_touch(va, vb):
-    """Leading-token prefix. A single generic token ("bar") does not match."""
+    """Exact identity match, or the shorter is a whole-token prefix. A single
+    generic token does not match."""
     if va == vb:
         return True
     ta, tb = va.split(), vb.split()
@@ -389,7 +421,7 @@ def venue_history(edges):
     for e in edges:
         for k in ("from_venue", "to_venue"):
             if e.get(k):
-                v.add(norm_venue(e[k]))
+                v.add(venue_key_words(e[k]))
     return v
 
 def edge_urls(edges):
@@ -1004,13 +1036,17 @@ _STATS_CACHE = {"at": 0.0, "value": None}
 def stats(es):
     """Top-line corpus stats for the masthead counter.
 
-    venues counts distinct NORMALIZED venue names: each name is filtered by
-    the same junk/chain rule the map uses, then folded with norm_venue, which
-    removes case, punctuation, accents, possessives, and stop words. It does
-    NOT resolve aliases — "Tartine" and "Tartine Bakery" normalize to different
-    strings and count as two. Alias resolution needs a venue identity table
-    the corpus does not have yet, so this reads as "distinct kitchen names",
-    not "distinct restaurants".
+    venues counts distinct venue IDENTITIES, not distinct spellings. Each name
+    is filtered by the same junk/chain rule the map uses, then resolved with
+    venue_key() — the shared identity path that folds formatting (accents,
+    parens, a leading "The") and applies the owner's rulings from
+    ui/venue_aliases.json. So "Michael Mina" and "Restaurant Michael Mina" are
+    one kitchen, as are "The French Laundry" and "French Laundry".
+
+    Before this, the count used norm_venue, which resolved aliases only by
+    accident of string similarity; the index already stored from_venue_key /
+    to_venue_key but no reader consumed them, so the ruling changed nothing
+    that was displayed.
 
     Result is memoized per instance for _STATS_TTL: the count is identical on
     every call until the next scrape run, and visitors were otherwise paying
@@ -1023,8 +1059,8 @@ def stats(es):
 
     venues_raw = _distinct_values(es, "from_venue.keyword") \
         | _distinct_values(es, "to_venue.keyword")
-    venues = {norm_venue(v) for v in venues_raw
-              if v and not _is_junk_venue(v) and norm_venue(v)}
+    venues = {venue_key(v) for v in venues_raw
+              if v and not _is_junk_venue(v) and venue_key(v)}
     agg = es.search(index=INDEX, body={"size": 0, "aggs": {
         "people": {"cardinality": {"field": "person.keyword",
                                    "precision_threshold": 40000}},
@@ -1045,6 +1081,9 @@ _JUNK_WORDS = ("tbd", "to be determined", "facebook", "walgreen", "google",
                "salesforce", "amazon", "apple inc", "airbnb", "uber",
                "doordash", "lyft", "bon appetit", "proper food", "mixt",
                "test ", "unknown", "null", "none")
+
+# Whole-name group descriptors (see ui/server.py).
+_GROUP_NAMES = ("plumpjack empire", "plumpjack group")
 _CHAIN_NAMES = ("mcdonald", "starbucks", "burger king", "jack in the box",
                 "kentucky fried", "little caesars", "popeyes", "chipotle",
                 "subway", "jamba juice", "peet", "philz", "phil'z", "taco bell",
@@ -1074,6 +1113,8 @@ def _is_junk_venue(name):
     if not toks:
         return True
     joined = " " + " ".join(toks) + " "
+    if " ".join(toks) in _GROUP_NAMES:
+        return True
     for term in _JUNK_WORDS + _CHAIN_NAMES:
         t = _tokens(term)
         if t and (" " + " ".join(t) + " ") in joined:

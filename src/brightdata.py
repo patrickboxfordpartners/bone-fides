@@ -90,9 +90,17 @@ def _real_url(o):
 def serp(query, num=20, attempts=4):
     """Google SERP via Bright Data; returns list of {url,title} organic results.
 
-    Retries on transport failure and on the HTML-shell response (roughly a
-    fifth of calls at this zone's settings), then raises so the caller can tell
-    "no answer" apart from "the venue has no site".
+    Retries on transport failure, on the HTML-shell response (roughly a fifth of
+    calls at this zone's settings), and on an EMPTY organic list, then raises so
+    the caller can tell "no answer" apart from "the venue has no site".
+
+    The empty list is the subtle one. Under load the zone returns a well-formed
+    parsed document with `organic: []` — no exception, no HTML. The caller read
+    that as "SERP answered clearly and nothing qualified" and cached `absent`,
+    which is a permanent negative: a venue that resolves fine was recorded as
+    having no photo. 298 venues flipped from a working image to `absent` in one
+    concurrent run this way. An empty page-one organic list for a real query
+    does not happen; it means the zone declined, so it is retried like a shell.
     """
     google = ("https://www.google.com/search?q=" + urllib.parse.quote(query)
               + f"&hl=en&gl=us&num={num}&brd_json=1")
@@ -101,8 +109,10 @@ def serp(query, num=20, attempts=4):
         try:
             data = _unwrap(_post({"zone": CREDS["BRIGHTDATA_SERP_ZONE"],
                                   "url": google, "format": "raw"}))
+            if not (data.get("organic") or []):
+                raise ValueError("SERP returned an empty organic list")
             break
-        except Exception as e:          # transport error or HTML shell
+        except Exception as e:          # transport error, HTML shell, or empty
             last = e
             time.sleep(3.0 * (i + 1))     # zone returns empty bodies under load
     else:

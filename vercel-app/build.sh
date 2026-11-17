@@ -23,6 +23,11 @@ if [ -f ../ui/explorer.html ]; then
   cp ../ui/venues_geo.json api/venues_geo.json
   cp ../ui/map.js api/_map.js
   cp ../ui/score_sample.json api/score_sample.json
+  # The shared venue-identity path. stats() and dossier matching must count
+  # the same kitchens locally and on Vercel; this file is stdlib-only
+  # precisely so it can ship here without the src/ package.
+  cp ../src/venue_aliases.py api/venue_aliases.py
+  cp ../ui/venue_aliases.json api/venue_aliases.json
   echo "vercel-app build: UI assets copied from ui/"
 else
   echo "vercel-app build: using committed copies"
