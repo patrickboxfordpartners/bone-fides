@@ -398,6 +398,34 @@ def test_balance_is_cached_rather_than_fetched_per_search(monkeypatch):
     assert calls["n"] == 1, "the balance must be cached, not re-fetched per search"
 
 
+def test_a_stalled_balance_endpoint_is_cached_too(monkeypatch):
+    """The cache only remembered SUCCESSFUL reads, which left the exact stall
+    it was written for unfixed. The hanging endpoint is the one that never
+    wrote a cache entry, so four searches still waited out four 20s timeouts.
+
+    Caching the unknown does not weaken any decision: provider() and search()
+    already treat a None balance as "assume the provider works".
+    """
+    import src.search as s
+    monkeypatch.setattr(s, "firecrawl", firecrawl)
+    monkeypatch.setattr(s, "_balance_cache", {})
+
+    calls = {"n": 0}
+
+    def stalled():
+        calls["n"] += 1
+        raise TimeoutError("balance endpoint stopped responding")
+
+    monkeypatch.setattr(firecrawl, "credits_remaining", stalled)
+    for _ in range(4):
+        assert s.balance("firecrawl") is None
+    assert calls["n"] == 1, "a stalled endpoint must be asked once, not per search"
+
+    # The pre-run budget gate needs the real number, so force still hits the wire.
+    s.balance("firecrawl", force=True)
+    assert calls["n"] == 2, "force=True must bypass the cached failure"
+
+
 def test_cached_balance_is_debited_by_local_spend(monkeypatch):
     """A cached number must not stay stale through a long run, or the chain
     keeps believing Firecrawl has credits it has already spent."""

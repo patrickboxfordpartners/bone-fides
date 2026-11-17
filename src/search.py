@@ -90,7 +90,17 @@ _balance_cache = {}
 
 
 def balance(name, force=False):
-    """Cached remaining allowance for one provider, or None if unknown."""
+    """Cached remaining allowance for one provider, or None if unknown.
+
+    The None case is cached too. Caching only SUCCESSES left the stall this
+    cache exists for completely unfixed: the endpoint that hangs is the one
+    that never writes a cache entry, so a normal venue's four searches still
+    waited out four 20-second timeouts — 80 seconds — while search itself was
+    fine. An unknown balance is already treated as "assume the provider works"
+    by provider() and search(), so remembering the failure changes no decision;
+    it only stops re-asking a black hole. `force=True` still goes to the wire,
+    which is what the pre-run budget gate uses.
+    """
     import time
     now = time.time()
     hit = _balance_cache.get(name)
@@ -106,8 +116,7 @@ def balance(name, force=False):
     except Exception:
         value = None
 
-    if value is not None:
-        _balance_cache[name] = {"at": now, "value": value}
+    _balance_cache[name] = {"at": now, "value": value}
     return value
 
 

@@ -1308,3 +1308,52 @@ def test_a_dated_permanent_closure_is_still_a_closure():
     ]
     for p in routine:
         assert not v._announces_closure(p), f"routine notice marked shut: {p!r}"
+
+
+def test_a_temporary_closure_is_not_a_permanent_one():
+    """The P1 that blocked the merge.
+
+    _EXPLICIT_CLOSURE accepted the word "closure" on sight, ahead of every
+    temporary check. A verified restaurant page saying
+
+      "We regret to announce our temporary closure for renovations until next
+       week"
+
+    was written to the cache as status="closed" — and a cached closure is never
+    re-probed, so the venue stayed shut in the corpus permanently. The word
+    "closure" was doing the work that "permanent" should be doing.
+
+    The qualifier is scoped to the SENTENCE, so a leading "temporary" and a
+    trailing "temporarily" both count, while a separate sentence about temporary
+    staffing cannot veto a genuine closure notice.
+    """
+    import src.venue_images as v
+
+    temporary = [
+        "We regret to announce our temporary closure for renovations until next week",
+        "It is with great sadness that we announce our temporary closure for "
+        "renovations until next week",
+        "We are sad to announce a temporary closure for renovation",
+        "We have closed temporarily for renovations",
+        "We have closed our doors temporarily",
+        "The restaurant has shut down temporarily",
+        "It is with great sadness that we announce our temporary closure until next week",
+        "We regret to announce a brief closure",
+    ]
+    for p in temporary:
+        assert not v._announces_closure(p), f"temporary closure marked permanent: {p!r}"
+
+    # A dated notice is still a closure: the date is part of the announcement,
+    # not a reason to doubt it. "for good" wins over a nearby "temporary".
+    # The last case pins a bug in the first version of this fix, which used a
+    # bare `in\w*` as a temporary marker — it matched the ordinary word "in"
+    # and vetoed every closure dated by month or year.
+    still_closed = [
+        "It is with great sadness that we announce our final service took place today",
+        "It is with great sadness that we announce our closure today",
+        "Temporary staffing changes are coming. We have closed its doors for good.",
+        "We have closed our doors in 2020.",
+        "We have closed its doors in March after 40 years.",
+    ]
+    for p in still_closed:
+        assert v._announces_closure(p), f"real closure missed: {p!r}"

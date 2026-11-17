@@ -859,6 +859,14 @@ def _reads_as_sf(text):
     return any(t in low for t in _SF_TOKENS)
 
 
+# Words that make a nearby closure word mean "we are still trading". Kept to
+# qualifiers that cannot be an ordinary preposition: an earlier `in\w*` matched
+# the bare word "in", which vetoed "we have closed our doors in March".
+_TEMPORARY_QUALIFIER = (
+    r"(?:temporary|temporarily|brief|briefly|short(?:-| )term)"
+)
+
+
 def _announces_closure(html):
     """Does the venue's own page say it has closed?
 
@@ -876,10 +884,42 @@ def _announces_closure(html):
     text = re.sub(r"<[^>]+>", " ", text)
     low = re.sub(r"\s+", " ", html_module.unescape(text).lower())
 
+    # A closure word qualified as TEMPORARY is the opposite of a closure. The
+    # page below names the word "closure" and means the venue is still trading:
+    #
+    #   "We regret to announce our temporary closure for renovations until
+    #    next week"
+    #
+    # Reading that as permanent wrote status="closed" onto a live restaurant,
+    # and a cached closure is never re-probed — so the venue stayed wrong for
+    # good. Checked ahead of every closure statement, not just the dated ones.
+    #
+    # Scoped to the SENTENCE, so a qualifier has to belong to the same notice
+    # whether it leads it or trails it ("we have closed our doors temporarily"),
+    # while "Temporary staffing changes are coming. We have closed its doors
+    # for good." stays a closure — that is a different sentence, and a real one.
+    # A runaway sentence is capped so one stray "temporary" cannot veto a page.
+    def _temporarily_qualified(start, end):
+        left = max(0, start - 160)
+        m = None
+        for m in re.finditer(r"[.!?;\n]", low[left:start]):
+            pass
+        if m:
+            left = left + m.end()
+        right = min(len(low), end + 160)
+        m = re.search(r"[.!?;\n]", low[end:right])
+        if m:
+            right = end + m.start()
+        sentence = low[left:right]
+        return bool(re.search(r"\b" + _TEMPORARY_QUALIFIER + r"\b", sentence))
+
     # ── 1. Unambiguous closure statements ────────────────────────────────────
     # These name the venue's OWN permanent closure and are safe on their own.
     # Every one of them has an explicit permanence marker: "permanently",
     # "now", "its doors", "for good", or a first-person "we have closed".
+    # "we have closed" / "has shut down" still admit a temporary adverb
+    # ("we have closed temporarily for renovations"), so they defer to the
+    # qualifier check; the phrases carrying their own permanence do not.
     for phrase in (
         "permanently closed", "closed permanently",
         "has permanently closed", "permanently shut",
@@ -888,7 +928,11 @@ def _announces_closure(html):
         "has shut down", "is no longer open",
         "closed for good", "will not be reopening", "will not reopen",
     ):
-        if phrase in low:
+        decisive = ("permanent" in phrase or "for good" in phrase
+                    or "no longer open" in phrase or "not reopen" in phrase)
+        for m in re.finditer(re.escape(phrase), low):
+            if not decisive and _temporarily_qualified(m.start(), m.end()):
+                continue
             return True
 
     # "is now closed" / "has now closed" carry a real permanence marker ("now"),
@@ -897,6 +941,8 @@ def _announces_closure(html):
     for m in re.finditer(r"\b(?:is|has)\s+now\s+closed\b", low):
         tail = low[m.end():m.end() + 40].lstrip()
         if tail.startswith(("on ", "for ", "until ", "during ")):
+            continue
+        if _temporarily_qualified(m.start(), m.end()):
             continue
         return True
 
@@ -908,6 +954,8 @@ def _announces_closure(html):
                          r"business|establishment|it)\s+(has|had|is)\s+"
                          r"(closed|shut)\b(?!\s+(?:for|on|early|tonight|today|"
                          r"the (?:evening|night|holiday|winter|summer)))", low):
+        if _temporarily_qualified(m.start(), m.end()):
+            continue
         return True
 
     # ── 3. First-person closure, not a schedule ──────────────────────────────
@@ -917,6 +965,8 @@ def _announces_closure(html):
     for m in re.finditer(r"\bwe are closed\b", low):
         tail = low[m.end():m.end() + 40].lstrip()
         if tail.startswith(("on ", "for ")):
+            continue
+        if _temporarily_qualified(m.start(), m.end()):
             continue
         return True
 
@@ -952,6 +1002,27 @@ def _announces_closure(html):
         r"closed\s+(?:permanently|for\s+good)|"
         r"shutting\s+(?:our\s+)?doors|closing\s+our\s+doors)"
     )
+    # A closure noun EXPLICIT in what it names can still be explicitly TEMPORARY.
+    # This is the finding that blocked the merge: "closure" was accepted on sight,
+    # so
+    #
+    #   "We regret to announce our temporary closure for renovations until
+    #    next week"
+    #
+    # came back closed. The venue is trading; it is shutting for a week. Written
+    # to the cache as status="closed", it would never be re-probed.
+    #
+    # A DATE is not a temporary marker — "our final service took place today" is
+    # a permanent closure that happens to be dated, and section 4's whole reason
+    # for existing is that it stays a closure. Only tails that postpone a reopening
+    # ("until next week", "for renovations") veto, and only immediately after the
+    # phrase.
+    _TEMPORARY_TAIL = (
+        r"(?:until\b|while\b|pending\b|"
+        r"for\s+(?:a\s+)?(?:the\s+)?(?:renovat\w*|remodel\w*|repairs?|"
+        r"maintenance|construction|restructuring|season|holidays?|"
+        r"winter|summer|spring|fall)\b)"
+    )
     for phrase in ("it is with great sadness", "we are sad to announce",
                    "we regret to announce", "it is with a heavy heart",
                    "it is with sadness"):
@@ -959,7 +1030,15 @@ def _announces_closure(html):
             # look at the next ~90 chars: the closure has to be what the
             # sentence is ABOUT, not merely somewhere else on the page
             tail = low[m.end():m.end() + 90]
-            if re.search(r"\b" + _EXPLICIT_CLOSURE + r"\b", tail):
+            explicit = re.search(r"\b" + _EXPLICIT_CLOSURE + r"\b", tail)
+            if explicit:
+                start = m.end() + explicit.start()
+                end = m.end() + explicit.end()
+                after = low[end:end + 40]
+                if _temporarily_qualified(start, end):
+                    continue
+                if re.match(r"^\s*" + _TEMPORARY_TAIL, after):
+                    continue
                 return True
             if not re.search(r"\b" + _CLOSURE_OBJECT + r"\b", tail):
                 continue
