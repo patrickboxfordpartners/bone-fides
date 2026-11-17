@@ -876,42 +876,24 @@ _SERVICE_LINE = (
 
 
 def _names_the_venue(subject):
-    """Does this stretch of text close the VENUE rather than one service line?"""
-    if re.search(_SERVICE_LINE, subject):
+    """Does this stretch of text close the VENUE rather than one service line?
+
+    Decided by which object the verb takes FIRST. "ceasing operations" names the
+    venue; "discontinuing our delivery service" names one offering, and the
+    `service` that follows the `delivery` does not make it venue-wide.
+
+    This replaced a window-+-sentence-boundary approach that could not be made
+    correct. Every attempt to decide where a sentence ended broke on a period
+    inside a name: "St. Helena operations" split mid-statement and lost the
+    object, while "…in the U.S. Gift cards…" joined the next sentence. Which
+    object comes first needs no boundary at all — later sentences cannot win a
+    race that has already been decided.
+    """
+    venue = re.search(_VENUE_WIDE, subject)
+    line = re.search(_SERVICE_LINE, subject)
+    if not venue:
         return False
-    return bool(re.search(_VENUE_WIDE, subject))
-
-
-# A full stop that does NOT end a sentence. "St. Helena", "Mt. Tam", "No. 5",
-# "U.S.", "Inc." — the period belongs to the abbreviation, and treating it as a
-# sentence break cut the window mid-statement: "we are ceasing our St. Helena
-# operations" lost `operations` and a shuttered venue was cached `found`.
-_ABBREVIATIONS = (
-    r"(?:st|mt|ft|no|dr|mr|mrs|ms|jr|sr|inc|ltd|co|corp|ave|blvd|rd|ste|apt|"
-    r"vs|etc|approx|dept|est|fig|al|e\.g|i\.e)"
-)
-
-
-def _sentence_break(text):
-    """First real sentence-end in `text`, or None. Ignores abbreviations."""
-    for m in re.finditer(r"[.!?;\n]", text):
-        if m.group(0) == ".":
-            upto = text[:m.start()]
-            # "U.S.", "S.P.Q.R." — single letters each closed by a period. The
-            # period we are looking at is the LAST one, so it is not part of
-            # `upto`; match the run immediately before it instead.
-            if re.search(r"(?:^|[^a-z])(?:[a-z]\.)+[a-z]$", upto, re.I):
-                continue
-            # A lone initial: "J. Kenji", "A. Smith". It must STAND ALONE —
-            # the previous check let any word ending in one letter plus a
-            # period count, so "operations." read as the initial "s." and the
-            # sentence break after it was ignored.
-            if re.search(r"(?:^|\s)[a-z]$", upto, re.I):
-                continue
-            if re.search(r"\b" + _ABBREVIATIONS + r"$", upto, re.I):
-                continue
-        return m
-    return None
+    return not (line and line.start() < venue.start())
 
 
 def _reads_as_sf(text):
@@ -1231,25 +1213,9 @@ def _announces_closure(html):
                 # while the venue is open.
                 if re.fullmatch(r"(?:ceas\w*|halt\w*|suspend\w*|discontinu\w*)",
                                 cw.group(0)):
-                    # Scoped to the CLAUSE the verb sits in. A fixed 40-char
-                    # window crossed the full stop and read "Gift cards will be
-                    # refunded" from the NEXT sentence as the thing being
-                    # closed: "we are ceasing operations. Gift cards will be
-                    # refunded." is a closed venue, and the window said the
-                    # opposite. Sentence boundaries belong to the clause.
-                    lo = max(0, cw.start() - 40)
-                    hi = min(len(tail), cw.end() + 40)
-                    left = tail[lo:cw.start()]
-                    rb = _sentence_break(left)
-                    while rb:
-                        lo = lo + rb.end()
-                        left = tail[lo:cw.start()]
-                        rb = _sentence_break(left)
-                    right = tail[cw.end():hi]
-                    rb = _sentence_break(right)
-                    if rb:
-                        hi = cw.end() + rb.start()
-                    if not _names_the_venue(tail[lo:hi]):
+                    # Which object the verb takes FIRST decides it, so no
+                    # sentence boundary is needed — see _names_the_venue().
+                    if not _names_the_venue(tail[cw.start():cw.end() + 60]):
                         continue
                 return True
 

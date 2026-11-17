@@ -1658,3 +1658,39 @@ def test_abbreviations_do_not_cut_a_closure_statement_short():
     ]
     for p in still_open:
         assert not v._announces_closure(p), f"service line read as closure: {p!r}"
+
+
+def test_which_object_comes_first_decides_the_closure():
+    """Two attempts at a sentence boundary both failed, in opposite directions,
+    so the boundary was removed rather than tuned again.
+
+    A window with a period check could not tell a name from a statement end:
+      "ceasing our St. Helena operations."   split at "St." and lost `operations`
+      "ceasing operations in the U.S. Gift…" joined the next sentence
+
+    The question does not need a boundary. It needs to know which object the
+    verb takes FIRST: "ceasing operations" closes the venue even if gift cards
+    are refunded afterwards; "discontinuing our delivery service" does not,
+    because `delivery` is the object and `service` merely follows it.
+    """
+    import src.venue_images as v
+
+    closed = [
+        "We regret to announce we are ceasing our St. Helena operations.",
+        "We regret to announce we are ceasing operations in the U.S. "
+        "Gift cards will be refunded.",
+        "We regret to announce we are ceasing operations. Gift cards will be refunded.",
+        "We are sad to announce we are discontinuing service",
+    ]
+    for p in closed:
+        assert v._announces_closure(p), f"venue closure missed: {p!r}"
+
+    still_open = [
+        "We regret to announce that we are discontinuing our delivery service",
+        "We regret to announce that we are discontinuing our delivery service. "
+        "Gift cards will be refunded.",
+        "We are discontinuing takeout service",
+        "We are halting our catering service",
+    ]
+    for p in still_open:
+        assert not v._announces_closure(p), f"service line read as closure: {p!r}"
