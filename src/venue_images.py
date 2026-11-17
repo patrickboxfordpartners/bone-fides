@@ -858,6 +858,30 @@ _SF_TOKENS = ("san francisco", "sanfrancisco", "bay area", "oakland",
               "california", ", ca ", "ca 9")
 
 
+# A venue-wide object, as opposed to one service line. "ceasing operations",
+# "halting service", "suspending the restaurant" close the venue; "discontinuing
+# our delivery service" ends one offering of a restaurant that is still trading.
+# Used only for the service-line verbs, which are otherwise too broad.
+_VENUE_WIDE = (
+    r"\b(?:operations?|business|the\s+restaurant|the\s+venue|the\s+bar|"
+    r"the\s+cafe|café|kitchen|service|services|all\s+service|"
+    r"our\s+doors|the\s+doors|dining\s+room|establishment)\b"
+)
+# Words that scope a closure to ONE offering, so the venue stays open.
+_SERVICE_LINE = (
+    r"\b(?:delivery|takeout|take-out|take\s*out|dine[-\s]?in|catering|"
+    r"brunch|lunch|breakfast|happy\s+hour|patio|bar\s+menu|"
+    r"online\s+(?:shop|store|ordering)|retail|shipping|gift\s+cards?)\b"
+)
+
+
+def _names_the_venue(subject):
+    """Does this stretch of text close the VENUE rather than one service line?"""
+    if re.search(_SERVICE_LINE, subject):
+        return False
+    return bool(re.search(_VENUE_WIDE, subject))
+
+
 def _reads_as_sf(text):
     """Locality gate: does the page situate the venue in the Bay Area?
 
@@ -1028,8 +1052,13 @@ def _announces_closure(html):
         "closed for good", "will not be reopening", "will not reopen",
     ):
         decisive = ("permanent" in phrase or "for good" in phrase
-                    or "no longer open" in phrase or "not reopen" in phrase)
+                    or "no longer open" in phrase)
         for m in re.finditer(re.escape(phrase), low):
+            # "will not reopen" reads permanent on its own, but it also takes a
+            # delay: "we will not reopen until spring" is a seasonal closure of
+            # a venue that is still coming back. Those two go THROUGH the gate,
+            # which knows what a postponing tail means; a phrase that states
+            # permanence in its own words does not.
             if decisive or _permanent_verdict(m.start(), m.end()):
                 return True
 
@@ -1161,8 +1190,19 @@ def _announces_closure(html):
             # permanent. Every closure word in the tail gets its own verdict.
             base = m.end()
             for cw in re.finditer(_CLOSURE_WORD, tail):
-                if _permanent_verdict(base + cw.start(), base + cw.end()):
-                    return True
+                if not _permanent_verdict(base + cw.start(), base + cw.end()):
+                    continue
+                # A SERVICE-LINE verb must name the venue's whole operation.
+                # "we are discontinuing our delivery service" ends one offering
+                # of a trading restaurant: `discontinuing` supplies the closure
+                # word and `service` supplies the object, so both checks pass
+                # while the venue is open.
+                if re.fullmatch(r"(?:ceas\w*|halt\w*|suspend\w*|discontinu\w*)",
+                                cw.group(0)):
+                    if not _names_the_venue(
+                            tail[max(0, cw.start() - 40):cw.end() + 40]):
+                        continue
+                return True
 
     # WEAK: "thank you for all the wonderful reviews" is written by OPEN
     # restaurants, every day. These only corroborate, so they need a closure
