@@ -94,6 +94,20 @@ def test_city_of_reads_the_restaurant_address_not_reviewers():
     assert cbc.city_of("123 51st St, Longmont, CO 80302 ... San Francisco12 reviews") == "Longmont, CO"
     assert cbc.city_of("1 Main St, San Francisco, CA 94124") == "San Francisco"
     assert cbc.city_of("Reviewer from San Francisco3 reviews") is None
+    assert cbc.city_of("200 Linden Ave, South San Francisco, CA 94080") == "South San Francisco, CA"
+    assert cbc.city_of("Best tacos in South San Francisco") is None
+
+
+def test_pending_includes_city_less_urls_the_name_fallback_would_accept(monkeypatch):
+    spec = importlib.util.spec_from_file_location(
+        "check_booking_cities_p", os.path.join(_ROOT, "scripts", "check_booking_cities.py"))
+    cbc = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(cbc)
+    links = {"Black Cat": {"opentable": "https://www.opentable.com/black-cat"},
+             "Tosca Cafe": {"opentable": "https://www.opentable.com/r/tosca-cafe-san-francisco"}}
+    monkeypatch.setattr(cbc.bvb, "build", lambda **kw: (links, []))
+    assert cbc.pending({}) == ["https://www.opentable.com/black-cat"]
+    assert cbc.pending({"https://www.opentable.com/black-cat": "Longmont, CO"}) == []
 
 
 def test_shipped_file_has_no_link_the_page_places_elsewhere():

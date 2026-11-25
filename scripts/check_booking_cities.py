@@ -15,6 +15,7 @@ import json
 import os
 import re
 import sys
+import urllib.parse
 import urllib.request
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,6 +26,7 @@ from src import tavily  # noqa: E402
 import build_venue_booking as bvb  # noqa: E402
 
 EXTRACT = "https://api.tavily.com/extract"
+_SOUTH_SF = re.compile(r"\bSouth San Francisco$")
 _ADDRESS = re.compile(r"([A-Z][A-Za-z .'-]{2,30}),\s*([A-Z]{2})\s+\d{5}")
 
 
@@ -38,21 +40,28 @@ def city_of(text):
     text = re.sub(r"San Francisco\s*\d+\s*reviews?", "", text or "")
     for m in _ADDRESS.finditer(text):
         city, state = m.group(1).strip(), m.group(2)
-        if not (state == "CA" and city.endswith("San Francisco")):
+        # the capture may carry street words ("Ave San Francisco"); South San
+        # Francisco is a separate city and must stay one
+        is_sf = state == "CA" and city.endswith("San Francisco") and not _SOUTH_SF.search(city)
+        if not is_sf:
             return f"{city}, {state}"
-    if re.search(r"San Francisco", text):
+    if re.search(r"(?<!South )San Francisco", text):
         return "San Francisco"
     return None
 
 
 def pending(cities):
-    """City-less URLs that pass every other check and have no city on file."""
+    """City-less URLs that pass every other check and have no city on file.
+
+    Selected by whether the URL path names San Francisco, not by whether the
+    strict build already accepts it: the two-word name fallback would accept
+    an unchecked /black-cat and it would never be read."""
     loose, _ = bvb.build(require_city=False)
-    strict, _ = bvb.build(cities={u: "San Francisco" for u in cities}, require_city=True)
     urls = set()
     for name, links in loose.items():
         for url in links.values():
-            if url not in (strict.get(name) or {}).values() and url not in cities:
+            path = urllib.parse.unquote(urllib.parse.urlsplit(url).path)
+            if url not in cities and not bvb._names_sf(path, bvb.clean_name(name)):
                 urls.add(url)
     return sorted(urls)
 
