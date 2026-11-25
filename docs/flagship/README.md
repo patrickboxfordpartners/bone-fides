@@ -35,4 +35,5 @@ Build in the order of `plan.md` section 18. Step 1 (the gate fix) comes first, b
 - Header labels: the mockups say "Explore" and "Trees"; the plan text says "Explorer" and "Tree". Pick one.
 - The numbers mockup offers "a sample export" in its contact section. No export exists; remove the offer or build it.
 - The green "corroborated" dot on one move rests on two articles from the same outlet. Decide whether corroboration needs two different outlets.
+- `data-brief.json` had one false chain, Manresa to Californios: the quote is a guest takeout series, which today's gate accepts. It is removed and noted in the file. Californios still appears as a starred kitchen within three moves of Manresa and Gary Danko in the ledger rows and mockups; treat that as overstated until the gate work measures it.
 - A per-tree share image is designed (`views-tree-share-card.html`) but deferred in the plan.

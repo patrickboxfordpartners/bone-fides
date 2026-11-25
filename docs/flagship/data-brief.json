@@ -3211,19 +3211,6 @@
     "quote": "she is quick to give credit for Zuni's success over the last couple of difficult years to longtime customer Gilbert Pilgrim (formerly with Chez Panisse), who eventually became her business partner."
    }
   ],
-  "Manresa -> Californios": [
-   {
-    "from": "Manresa",
-    "to": "Californios",
-    "move_direction": "backward",
-    "person": "Val Cantu",
-    "role": "chef",
-    "year": null,
-    "outlet": "eater",
-    "source_url": "https://sf.eater.com/2020/12/7/22159812/tomas-aragon-san-francisco-dominique-crenn",
-    "quote": "Dominique Crenn, Californios chef Val Cantu, and Commis chef James Syhabout are headed to Manresa for a December series of special takeout meals."
-   }
-  ],
   "Boulevard -> Niku Steakhouse": [
    {
     "from": "Boulevard",
@@ -3452,5 +3439,6 @@
     "quote": "State Bird Provisions\u2019 Stuart Brioza and Nicole Krasinski are just about ready to open up their new next-door spot The Progress"
    }
   ]
- }
+ },
+ "KNOWN_FALSE_POSITIVE": "Removed from 'paths': Manresa -> Californios. Its only move (Val Cantu) quotes a December guest takeout series at Manresa, not a career move. Today's gate accepts it. Figures that depend on it are therefore overstated: 'Californios' in starred_within_3_moves for Manresa and Gary Danko. The plan's labelled baseline sample exists to measure rows like this."
 }

@@ -1,6 +1,6 @@
 ## UI brief: views (Tree, Connect, Ledger, shared header)
 
-Data: every name, figure, quote and source URL is read from `/code/.plans/bonefides-data-brief.json` (gated). Booking pills only for exact names in `ui/dossier_booking.json`.
+Data: every name, figure, quote and source URL is read from `docs/flagship/data-brief.json` (gated). Booking pills only for exact names in `ui/dossier_booking.json`.
 
 Component map (element → existing component, or new):
 - Skip link → new: `bf-skip` (44px pill, `--bg2`, 1px `--accent` border, focus ring token)
