@@ -1752,7 +1752,7 @@ def _tip(es, ip, body_bytes):
 # endpoint -> (rate-limit bucket, limit, window seconds)
 _LIMITS = {"search": ("search", 30, 60), "suggest": ("suggest", 90, 60),
            "tip": ("tips", 5, 3600), "tree": ("graph", 60, 60),
-           "connect": ("graph", 60, 60), "ledger": ("graph", 12, 60),
+           "connect": ("graph", 60, 60), "ledger": ("ledger", 12, 60),
            "nodes": ("nodes", 120, 60)}
 
 

@@ -147,21 +147,36 @@
     var hops = data.hops || [];
     var stations = [];
     if (!data.found || !hops.length) return;
-    var first = hops[0];
-    var stint = first.stint && first.kitchen ? first.kitchen : null;
-    if (stint) {
-      stations.push({ kitchen: stint, person: first });
-    } else {
-      stations.push({ kitchen: first.from });
-    }
     hops.forEach(function (h, i) {
       if (h.stint) {
-        if (i === hops.length - 1) stations.push({ kitchen: h.kitchen, person: h });
+        // a stint row joins the chef to one kitchen: it is the first or
+        // the last row of the chain
+        if (i === 0) {
+          stations.push({ kitchen: h.kitchen, person: h });
+        } else {
+          // trailing stint: its kitchen is the end station; attach the
+          // chef to that station instead of duplicating it
+          var last = null;
+          for (var j = stations.length - 1; j >= 0; j--) {
+            if (!stations[j].hop) { last = stations[j]; break; }
+          }
+          if (last) { last.person = h; }
+          else { stations.push({ kitchen: h.kitchen, person: h }); }
+        }
         return;
       }
+      // a station for the from-kitchen, unless the previous station (or
+      // stint) already shows it
+      var prev = stations[stations.length - 1];
+      if (!prev || prev.hop || prev.kitchen.id !== h.from.id) {
+        stations.push({ kitchen: h.from });
+      }
       stations.push({ hop: h });
-      if (i === hops.length - 1) stations.push({ kitchen: h.to });
-      else if (h.to.id !== hops[i + 1].from.id) stations.push({ kitchen: h.to });
+      var next = hops[i + 1];
+      if (!next || next.stint) {
+        // the end station, or the kitchen a trailing stint will attach to
+        stations.push({ kitchen: h.to });
+      }
     });
 
     stations.forEach(function (s) {
@@ -205,12 +220,14 @@
             esc(v0.outlet || 'source') + '</span>';
           li.appendChild(src);
         }
-        if (h.more_via) {
+        var rest = (h.via || []).slice(1);
+        if (rest.length) {
           var more = document.createElement('details');
           more.className = 'morecite';
           var sum = document.createElement('summary');
-          sum.textContent = '+' + h.more_via + ' more citation' +
-            (h.more_via > 1 ? 's' : '');
+          sum.textContent = '+' + rest.length + ' more citation' +
+            (rest.length > 1 ? 's' : '') + (h.more_via ? ' · ' + h.more_via +
+            ' more on the record' : '');
           more.appendChild(sum);
           var body = document.createElement('div');
           body.className = 'citebody';
@@ -324,6 +341,8 @@
         sub.hidden = open;
         more.setAttribute('aria-expanded', String(!open));
         more.textContent = open ? '+' + children.length : '\u25b4';
+        more.setAttribute('aria-label', (open ? 'Show' : 'Hide') +
+          ' the ' + children.length + ' kitchens beyond ' + node.name);
       });
       children.forEach(function (c) {
         sub.appendChild(listNode(c, c.children || [], depth + 1, phone, false));

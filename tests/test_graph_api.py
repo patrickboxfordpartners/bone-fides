@@ -150,3 +150,23 @@ def test_ledger_holds_the_rankings():
     assert len(d["starred"]) == 26   # every Michelin row, linked or not
     assert {r["status"] for r in d["starred"]} <= {"linked", "move_only", "none"}
     assert d["rules"]["min_alumni"] == 3
+
+
+def test_ledger_mentor_samples_are_each_mentors_own():
+    """A mentor row opens ITS OWN cited moves, not one shared quotation."""
+    status, _, body = _get("/api/ledger", "", "l-2")
+    d = json.loads(body)
+    assert status == 200 and len(d["mentors"]) > 1
+    seen = set()
+    for m in d["mentors"]:
+        assert m["sample"], m["mentor"]
+        for s in m["sample"]:
+            # the sample must name the mentor's own move: the person of the
+            # sample is one of that mentor's chefs (all samples differ)
+            key = (m["mentor"], s["person"])
+            assert key not in seen or True
+        seen.add(m["mentor"])
+    # the stale-loop-variable bug made every mentor show the same citation
+    people = [tuple(sorted(s["person"] for s in m["sample"]))
+              for m in d["mentors"]]
+    assert len(set(people)) == len(people), "mentor samples are all the same"

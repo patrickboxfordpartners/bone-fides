@@ -513,9 +513,6 @@ def connect(g, a, b):
             "built_at": g["raw"].get("built_at")}
 
 
-_LEDGER_CACHE = {}
-
-
 def _kitchen_alumni(g, i):
     out = set()
     for tgts in g["out"].get(i, {}).values():
@@ -546,9 +543,8 @@ def _tree_stats(g, i, depth=3):
 
 def ledger(g):
     """The rankings payload (plan section 10). Memoized per graph file."""
-    key = id(g)
-    if key in _LEDGER_CACHE:
-        return _LEDGER_CACHE[key]
+    if g.get("_ledger") is not None:
+        return g["_ledger"]
 
     alumni = {i: len(_kitchen_alumni(g, i)) for i in range(len(g["kitchens"]))}
     rows = []
@@ -573,7 +569,7 @@ def ledger(g):
 
     # mentors: chefs per named mentor, from the moves' mentor credit
     mentors = {}
-    for row in g["moves"]:
+    for i, row in enumerate(g["moves"]):
         m = row[8]
         if not m:
             continue
@@ -630,9 +626,9 @@ def ledger(g):
         best = r["starred_names"][0]
         chain = connect(g, r["kitchen"]["slug"], best)
         if chain.get("found") and 2 <= chain["length"] <= 4:
+            bi = _resolve(g, best)
             pairs.append({"a": r["kitchen"]["slug"],
-                          "b": _resolve(g, best) and
-                          g["kitchens"][_resolve(g, best)][2],
+                          "b": g["kitchens"][bi][2] if bi is not None else None,
                           "length": chain["length"]})
         if len(pairs) >= 4:
             break
@@ -659,5 +655,5 @@ def ledger(g):
         "rules": {"min_alumni": 3, "mentor_min_chefs": 2, "depth": 3,
                   "mentor_moves": g["raw"]["summary"]["mentor_moves"]},
     }
-    _LEDGER_CACHE[key] = out
+    g["_ledger"] = out
     return out
