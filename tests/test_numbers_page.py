@@ -88,7 +88,7 @@ def test_numbers_live_figures_and_freshness():
             "/api/numbers", "", "num-2", client=lambda: None)
         assert json.loads(body)["live"]["edges"] == 9400
         assert {k.lower(): v for k, v in headers.items()}["cache-control"] == \
-            "public, max-age=300"
+            "public, max-age=0, must-revalidate"
     finally:
         dossier.method = real
         _clear_caches()
@@ -155,6 +155,8 @@ def test_the_page_serves_at_its_route():
     assert '"/numbers": "numbers.html"' in routes
     v = open(os.path.join(_ROOT, "vercel-app", "vercel.json"), encoding="utf-8").read()
     assert '"source": "/numbers"' in v
+    assert '"source": "/api/numbers"' in v, \
+        "the page must reach the shared function in production"
     b = open(os.path.join(_ROOT, "vercel-app", "build.sh"), encoding="utf-8").read()
     assert "numbers.html" in b
     lim = open(os.path.join(_ROOT, "src", "dossier.py"), encoding="utf-8").read()

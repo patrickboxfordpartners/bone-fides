@@ -1865,11 +1865,13 @@ def dispatch(path, query_string="", ip="", body_bytes=None, client=make_client):
                                   {"Cache-Control": _GRAPH_CACHE_CONTROL})
         if endpoint == "numbers":
             out = _numbers(client())
-            # the live half of this payload lives for 300 s in process; the
-            # edge must not hold it longer than that, or /numbers and /method
-            # would disagree. A dead index is never cached at all.
-            cache = ("public, max-age=300" if out["live"] is not None
-                     else "no-store")
+            # the live half may already be up to 300 s old in the shared
+            # cache, so a stored reply could outlive its measurement and
+            # disagree with /method. The browser and the edge revalidate
+            # every time; the in-process cache keeps the index safe.
+            # A dead index is never cached at all.
+            cache = ("public, max-age=0, must-revalidate"
+                     if out["live"] is not None else "no-store")
             return _json_response(200, out, {"Cache-Control": cache})
         if endpoint == "nodes":
             q = (q1("q") or "").strip()[:MAX_QUERY_LEN]
