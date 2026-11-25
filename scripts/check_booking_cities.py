@@ -39,7 +39,10 @@ def city_of(text):
     address, or a plain mention of San Francisco, means San Francisco.
     Reviewer locations ("San Francisco12 reviews") are not the restaurant's
     city and are ignored."""
-    text = re.sub(r"San Francisco\s*\d+\s*reviews?", "", text or "")
+    # collapse runs of spaces and newlines first: "South  San Francisco" or a
+    # line break after "South" must not read as San Francisco
+    text = re.sub(r"\s+", " ", text or "")
+    text = re.sub(r"San Francisco\s*\d+\s*reviews?", "", text)
     for m in _ADDRESS.finditer(text):
         city, state = m.group(1).strip(), m.group(2)
         # the capture may carry street words ("Ave San Francisco"); South San

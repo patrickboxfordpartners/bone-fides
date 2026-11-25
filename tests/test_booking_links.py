@@ -96,6 +96,9 @@ def test_city_of_reads_the_restaurant_address_not_reviewers():
     assert cbc.city_of("Reviewer from San Francisco3 reviews") is None
     assert cbc.city_of("200 Linden Ave, South San Francisco, CA 94080") == "South San Francisco, CA"
     assert cbc.city_of("Best tacos in South San Francisco") is None
+    assert cbc.city_of("200 Linden Ave, South  San Francisco, CA 94080") == "South San Francisco, CA"
+    assert cbc.city_of("200 Linden Ave, South\nSan Francisco, CA 94080") == "South San Francisco, CA"
+    assert cbc.city_of("Best tacos in South \n San Francisco") is None
 
 
 def test_pending_includes_city_less_urls_the_name_fallback_would_accept(monkeypatch):
