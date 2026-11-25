@@ -4,6 +4,9 @@ src/venue_images.py downloads photos into ui/venue-images/ (gitignored) and
 records each as a relative "venue-images/<file>" url in crawl/venue_images.json.
 This script uploads every referenced file once per distinct content (exact
 duplicates share one blob) and rewrites those urls to the public Blob URLs.
+Blobs are named by content hash, so a published URL always keeps its bytes:
+a venue whose photo changes gets a new blob, never an overwrite of one that
+other records may share.
 Files no record references are skipped and listed.
 
 Needs VENUE_IMAGES_READ_WRITE_TOKEN (the bone-fides-venue-images Blob store,
@@ -41,6 +44,7 @@ def upload(token, pathname, path):
             "x-api-version": "7",
             "x-content-type": mimetypes.guess_type(path)[0] or "application/octet-stream",
             "x-add-random-suffix": "0",
+            # content-addressed names: a re-upload carries identical bytes
             "x-allow-overwrite": "1",
             "x-cache-control-max-age": "31536000",
         })
@@ -78,18 +82,23 @@ def main(argv=None):
         print("VENUE_IMAGES_READ_WRITE_TOKEN is not set", file=sys.stderr)
         return 1
 
-    def publish(group):
-        return group, upload(token, LOCAL_PREFIX + os.path.basename(group["path"]), group["path"])
+    def publish(item):
+        digest, group = item
+        ext = os.path.splitext(group["path"])[1].lower()
+        return group, upload(token, f"{LOCAL_PREFIX}{digest[:24]}{ext}", group["path"])
 
     with ThreadPoolExecutor(max_workers=8) as pool:
-        for n, (group, url) in enumerate(pool.map(publish, by_hash.values()), 1):
+        for n, (group, url) in enumerate(pool.map(publish, by_hash.items()), 1):
             for key in group["keys"]:
                 cache[key]["url"] = url
             if n % 100 == 0:
                 print(f"  {n}/{len(by_hash)} uploaded")
 
-    with open(CACHE, "w") as f:
+    # write-then-rename: an interrupted save must not leave a truncated cache
+    tmp = CACHE + ".tmp"
+    with open(tmp, "w") as f:
         json.dump(cache, f, indent=1, sort_keys=True)  # same format src/venue_images.py writes
+    os.replace(tmp, CACHE)
     print(f"published {len(by_hash)} files; missing: {missing}")
     return 0
 

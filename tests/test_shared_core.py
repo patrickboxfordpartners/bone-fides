@@ -301,3 +301,33 @@ def test_geocoder_writes_where_the_api_reads():
     text = open(os.path.join(_ROOT, "scripts", "geocode.py")).read()
     assert 'os.path.join(BASE, "ui", "venues_geo.json")' in text
     assert dossier.data_path("venues_geo.json") == os.path.join(_ROOT, "ui", "venues_geo.json")
+
+
+def test_publisher_names_blobs_by_content_and_saves_atomically(monkeypatch, tmp_path):
+    mod = _load("publish_venue_images_entry", os.path.join(_ROOT, "scripts", "publish_venue_images.py"))
+    img = tmp_path / "imgs"
+    img.mkdir()
+    (img / "a.jpg").write_bytes(b"same")
+    (img / "b.jpg").write_bytes(b"same")
+    (img / "c.png").write_bytes(b"other")
+    cache = tmp_path / "venue_images.json"
+    cache.write_text('{"a": {"url": "venue-images/a.jpg"}, "b": {"url": "venue-images/b.jpg"},'
+                     ' "c": {"url": "venue-images/c.png"}, "d": {"url": null}}')
+    uploads = []
+
+    def fake_upload(token, pathname, path):
+        uploads.append(pathname)
+        return "https://blob.example/" + pathname
+
+    monkeypatch.setattr(mod, "upload", fake_upload)
+    monkeypatch.setattr(mod, "CACHE", str(cache))
+    monkeypatch.setattr(mod, "IMG_DIR", str(img))
+    monkeypatch.setenv("VENUE_IMAGES_READ_WRITE_TOKEN", "t")
+    assert mod.main([]) == 0
+    import hashlib
+    import json
+    same = "venue-images/" + hashlib.sha256(b"same").hexdigest()[:24] + ".jpg"
+    assert sorted(uploads) == sorted([same, "venue-images/" + hashlib.sha256(b"other").hexdigest()[:24] + ".png"])
+    out = json.loads(cache.read_text())
+    assert out["a"]["url"] == out["b"]["url"] == "https://blob.example/" + same
+    assert not os.path.exists(str(cache) + ".tmp")
