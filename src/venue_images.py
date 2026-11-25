@@ -1615,11 +1615,7 @@ def main(argv):
         limit = max(0, int(argv[argv.index("--limit") + 1]))
 
     # Venues worth resolving: those the lineage graph actually names.
-    import importlib.util
-    spec = importlib.util.spec_from_file_location(
-        "ui_server_img", os.path.join(BASE, "ui", "server.py"))
-    ui = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(ui)
+    from src import dossier
     from src.es import make_client
     es = make_client()
 
@@ -1632,7 +1628,7 @@ def main(argv):
     # Try the mapped field, and fall back to the subfield on either an
     # exception or an empty result. Getting this wrong is silent in one
     # direction (zero venues, "resolved successfully") and fatal in the other.
-    raw = distinct_venues(es, ui._distinct_values)
+    raw = distinct_venues(es, dossier._distinct_values)
     # Collapse spelling variants BEFORE resolving. The corpus holds 1,114 raw
     # names for 442 venues; resolving every raw name would fetch the same
     # restaurant's site twice and write both answers to one cache key, so
@@ -1642,7 +1638,7 @@ def main(argv):
     # reproducible.
     _by_key = {}
     for name in raw:
-        if not name or ui._is_junk_venue(name):
+        if not name or dossier._is_junk_venue(name):
             continue
         _by_key.setdefault(venue_identity(name), []).append(name)
 

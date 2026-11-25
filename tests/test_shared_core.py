@@ -268,3 +268,36 @@ def test_landing_static_numbers_are_placeholders_only():
             f"landing no longer rewrites #{id_} from /api/stats — "
             "the hardcoded value would be shown as fact")
 
+
+
+def test_no_library_or_script_loads_the_local_server_for_its_logic():
+    """ui/server.py is an adapter now. Offline tools that loaded it to reach
+    dossier functions (venue_images, stamp_score_sample) broke silently when
+    the logic moved; they must import src.dossier."""
+    offenders = []
+    for folder in ("src", "scripts"):
+        for name in sorted(os.listdir(os.path.join(_ROOT, folder))):
+            if name.endswith(".py"):
+                text = open(os.path.join(_ROOT, folder, name)).read()
+                if re.search(r'"ui",\s*"server\.py"|ui\.server\b|ui/server\.py"', text):
+                    offenders.append(f"{folder}/{name}")
+    assert not offenders, f"{offenders} load ui/server.py; import src.dossier instead"
+
+
+def test_stamp_score_sample_entry_point(monkeypatch, tmp_path):
+    mod = _load("stamp_score_sample_entry", os.path.join(_ROOT, "scripts", "stamp_score_sample.py"))
+    import src.es
+    monkeypatch.setattr(src.es, "make_client", lambda: object())
+    monkeypatch.setattr(dossier, "measure_score_sample", lambda es: {"n": 1, "min": 5, "median": 5, "max": 5})
+    out = tmp_path / "score_sample.json"
+    monkeypatch.setattr(mod, "OUT", str(out))
+    assert mod.main() == 0
+    assert '"median": 5' in out.read_text()
+
+
+def test_geocoder_writes_where_the_api_reads():
+    """scripts/geocode.py moved out of ui/; its output must still land in the
+    ui/venues_geo.json that dossier.venues_geo() and build.sh read."""
+    text = open(os.path.join(_ROOT, "scripts", "geocode.py")).read()
+    assert 'os.path.join(BASE, "ui", "venues_geo.json")' in text
+    assert dossier.data_path("venues_geo.json") == os.path.join(_ROOT, "ui", "venues_geo.json")

@@ -29,19 +29,13 @@ OUT = os.path.join(BASE, "ui", "score_sample.json")
 
 
 def main():
-    # Imported inside main so load_env runs first (the server module reads
-    # ELASTIC_* at import time).
-    import importlib.util
-    spec = importlib.util.spec_from_file_location(
-        "ui_server_sample", os.path.join(BASE, "ui", "server.py"))
-    ui = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(ui)
+    from src import dossier
     from src.es import make_client
 
     es = make_client()
     # measure_score_sample() computes; _score_sample() only reads the file.
     # Calling the reader here passed an ES client into open() — TypeError.
-    sample = ui.measure_score_sample(es)
+    sample = dossier.measure_score_sample(es)
     if not sample:
         print("no scores computed — corpus unreachable or sample empty")
         return 1

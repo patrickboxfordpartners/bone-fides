@@ -53,7 +53,7 @@ def main():
         if g:
             out.append({"name": name, **g})
         time.sleep(1.1)  # Nominatim usage policy
-    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "venues_geo.json")
+    path = os.path.join(BASE, "ui", "venues_geo.json")
     with open(path, "w") as f:
         json.dump({"venues": out}, f, indent=1)
     print("geocoded %d venues -> %s" % (len(out), path))
