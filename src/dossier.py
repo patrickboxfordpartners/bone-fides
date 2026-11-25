@@ -20,6 +20,7 @@ from urllib.parse import parse_qs
 from .es_query import INDEX, TIPS_INDEX, ensure_tips_index, find_edges, make_client  # noqa: F401
 from .roles import role_bucket
 from .venue_aliases import identity as _venue_identity, identity_words as _venue_identity_words
+from . import graph as _graph_mod
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
 _REPO_UI = os.path.join(os.path.dirname(_HERE), "ui")
@@ -33,6 +34,22 @@ def data_path(name):
 
 def venue_key(v):
     return _venue_identity(v)
+
+
+_GRAPH_FILE = {"path": None, "g": None}
+
+_GRAPH_CACHE_CONTROL = ("public, max-age=300, s-maxage=86400, "
+                        "stale-while-revalidate=604800")
+
+
+def _graph():
+    """The committed graph file (ui/graph.json), parsed once per warm
+    instance. The graph endpoints never touch Elasticsearch."""
+    path = data_path("graph.json")
+    if _GRAPH_FILE["path"] != path:
+        _GRAPH_FILE["g"] = _graph_mod.load(path)
+        _GRAPH_FILE["path"] = path
+    return _GRAPH_FILE["g"]
 
 
 def venue_key_words(v):
@@ -716,12 +733,20 @@ def _words_name_venue(words, venues):
         # a shorter run of the venue's words anchors when it is a whole-token
         # prefix of the venue ("Alfred's" names "Alfred's Steakhouse",
         # "Betelnut" names "Betelnut Pejiu Wu") — the run cannot cross a token
-        # boundary ("El Faro" does not name "El Farolito")
+        # boundary ("El Faro" does not name "El Farolito"), and a single
+        # COMMON word never anchors alone ("French" does not name
+        # "French Laundry"; "Stars" does not name "Stars (San Francisco)")
         for i in range(len(words)):
             for L in range(1, len(vw) + 1):
                 window = words[i:i + L]
                 if len(window) < L:
                     break
+                if L < len(vw):
+                    if window != vw[:L]:
+                        continue
+                    if L == 1 and (window[0] in _COMMON_HEAD
+                                   or window[0] in _GENERIC_VENUE):
+                        continue
                 if _venue_touch(" ".join(window), " ".join(vw)):
                     return True
     return False
@@ -787,7 +812,8 @@ def is_named_kitchen(name):
         return False
     if _VENUE_DESCRIPTOR.search(n):
         return False
-    if not re.search(r"[A-Z0-9]", n):
+    folded = unicodedata.normalize("NFKD", n)
+    if not re.search(r"[A-Z0-9]", folded):
         return False
     if n.count(",") >= 2:  # "Town Hall, Salt House, Anchor & Hope"
         return False
@@ -797,6 +823,26 @@ def is_named_kitchen(name):
 
 
 _PERSON_PRONOUNS = {"he", "she", "his", "her", "him", "they", "their", "them"}
+
+# Words that begin many kitchen names or are plain English adjectives and
+# nouns ("French chef", "a state of..."). A single such word is NOT a
+# kitchen mention: "French" does not name "French Laundry" and "Stars"
+# does not name "Stars (San Francisco)". A full match, or a run of two or
+# more of the venue's own words, still anchors.
+_COMMON_HEAD = frozenset((
+    "french", "italian", "chinese", "japanese", "korean", "thai",
+    "vietnamese", "mexican", "indian", "peruvian", "spanish", "american",
+    "state", "bird", "house", "home", "bar", "kitchen", "cafe", "coffee",
+    "beach", "park", "market", "city", "pier", "club", "inn", "hotel",
+    "room", "table", "common", "cheese", "wine", "water", "salt", "fire",
+    "gold", "silver", "star", "stars", "blue", "red", "green", "black",
+    "white", "new", "old", "san", "francisco", "sea", "fish", "oyster",
+    "pig", "cow", "king", "queen", "social", "the", "foreign", "cinema",
+    "sweet", "spice", "tail", "bone", "pork", "lamb", "duck", "chicken",
+    "little", "big", "grand", "noble", "farm", "garden", "corner", "half",
+    "full", "first", "last", "original", "current", "noe", "mission",
+    "sunset", "marina", "castro",
+))
 
 # a definite reference by role: "the former Mister Jiu's pastry chef",
 # "a former opening sous chef at Gather", "the current owner of
@@ -922,6 +968,7 @@ def _cue_hash():
             _STREET_ADDRESS.pattern]
     src.append(repr(sorted(_GENERIC_VENUE)))
     src.append(repr(sorted(_PERSON_PRONOUNS)))
+    src.append(repr(sorted(_COMMON_HEAD)))
     return hashlib.sha256("\n\n".join(src).encode()).hexdigest()
 
 def outlet_tier(source, url):
@@ -1683,7 +1730,9 @@ def _tip(es, ip, body_bytes):
 
 
 # endpoint -> (rate-limit bucket, limit, window seconds)
-_LIMITS = {"search": ("search", 30, 60), "suggest": ("suggest", 90, 60), "tip": ("tips", 5, 3600)}
+_LIMITS = {"search": ("search", 30, 60), "suggest": ("suggest", 90, 60),
+           "tip": ("tips", 5, 3600), "tree": ("graph", 60, 60),
+           "nodes": ("nodes", 120, 60)}
 
 
 def dispatch(path, query_string="", ip="", body_bytes=None, client=make_client):
@@ -1708,6 +1757,40 @@ def dispatch(path, query_string="", ip="", body_bytes=None, client=make_client):
     try:
         if endpoint == "venues":
             return _json_response(200, {"venues": venues_geo()})
+        if endpoint == "tree":
+            k = (q1("k") or "").strip()[:MAX_QUERY_LEN]
+            if not k:
+                return _json_response(200, {"resolved": False, "query": "",
+                                            "suggestions": []},
+                                       {"Cache-Control": _GRAPH_CACHE_CONTROL})
+            try:
+                depth = int(q1("depth") or 3)
+            except (TypeError, ValueError):
+                depth = 3
+            depth = min(3, max(1, depth))
+            direction = "up" if (q1("dir") or "").strip() == "up" else "down"
+            g = _graph()
+            t = _graph_mod.tree(g, k, depth=depth, direction=direction,
+                                booking=dossier_booking)
+            if t is None:
+                return _json_response(200, {"resolved": False, "query": k,
+                                            "suggestions": _graph_mod.unresolved(g, k)},
+                                       {"Cache-Control": _GRAPH_CACHE_CONTROL})
+            return _json_response(200, t, {"Cache-Control": _GRAPH_CACHE_CONTROL})
+        if endpoint == "nodes":
+            q = (q1("q") or "").strip()[:MAX_QUERY_LEN]
+            kind = (q1("kind") or "any").strip()
+            kind = kind if kind in ("kitchen", "chef", "any") else "any"
+            try:
+                limit = int(q1("limit") or 8)
+            except (TypeError, ValueError):
+                limit = 8
+            near = (q1("near") or "").strip()[:MAX_QUERY_LEN]
+            g = _graph()
+            near_id = _graph_mod._resolve(g, near) if near else None
+            out = _graph_mod.nodes(g, q, kind=kind, limit=limit, near=near_id)
+            return _json_response(200, {"query": q, "nodes": out},
+                                   {"Cache-Control": _GRAPH_CACHE_CONTROL})
         es = client()
         if endpoint == "search":
             body = _search(es, q1)

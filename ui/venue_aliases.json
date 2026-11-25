@@ -18,6 +18,456 @@
    "Tartine Manufactory",
    "Tartine Manufactory (Los Angeles)",
    "Tartine Manufactory (San Francisco)"
+  ],
+  "41 Degrees": [
+   "41 Degrees",
+   "41 Degrees (Barcelona)"
+  ],
+  "4505 Burgers & BBQ": [
+   "4505 Burgers & BBQ",
+   "4505 Burgers & BBQ (Divisadero location)",
+   "4505 Burgers & BBQ (Oakland location)"
+  ],
+  "Acadia": [
+   "Acadia",
+   "Acadia (Chicago)"
+  ],
+  "Alborz": [
+   "Alborz",
+   "Alborz (Fremont)",
+   "Alborz (San Francisco)"
+  ],
+  "Alborz Restaurant": [
+   "Alborz Restaurant",
+   "Alborz Restaurant (San Rafael)"
+  ],
+  "Alexander’s Steakhouse": [
+   "Alexander's Steakhouse (Cupertino)",
+   "Alexander’s Steakhouse"
+  ],
+  "Arinell Pizza": [
+   "Arinell Pizza",
+   "Arinell Pizza (Berkeley)",
+   "Arinell Pizza (Valencia St.)"
+  ],
+  "Aureole": [
+   "Aureole",
+   "Aureole (New York City)",
+   "Aureole (New York and Las Vegas)"
+  ],
+  "Barons Meat & Poultry": [
+   "Barons Meat & Poultry",
+   "Barons Meat & Poultry (Brooklyn)"
+  ],
+  "Barons Meats": [
+   "Barons Meats",
+   "Barons Meats (Alameda)",
+   "Barons Meats (Noe Valley)"
+  ],
+  "Benchmark Pizzeria": [
+   "Benchmark Pizzeria",
+   "Benchmark Pizzeria (Kensington)"
+  ],
+  "Bittersweet Cafe": [
+   "Bittersweet Cafe",
+   "Bittersweet Cafe (Fillmore Street)",
+   "Bittersweet Cafe (Oakland)"
+  ],
+  "B. Patisserie": [
+   "B. Patisserie",
+   "B. Patisserie (Honolulu outpost)"
+  ],
+  "Breakwater Barbecue": [
+   "Breakwater Barbecue",
+   "Breakwater Barbecue (10151 Cabrillo Highway, El Granada)",
+   "Breakwater Barbecue (30 Avenue Portola, El Granada)"
+  ],
+  "Brenda’s": [
+   "Brenda’s",
+   "Brenda’s (Oakland)"
+  ],
+  "Brown Sugar Kitchen Counter": [
+   "Brown Sugar Kitchen Counter",
+   "Brown Sugar Kitchen Counter (San Francisco Ferry Building)",
+   "Brown Sugar Kitchen Counter (Uptown Oakland)",
+   "Brown Sugar Kitchen Counter (Warriors’ Chase Center Arena)"
+  ],
+  "the Bungalow Kitchen": [
+   "the Bungalow Kitchen",
+   "the Bungalow Kitchen (Tiburon)"
+  ],
+  "Burger Bar": [
+   "Burger Bar",
+   "Burger Bar (Macy's Union Square, 6th Floor)",
+   "Burger Bar (St. Louis location)"
+  ],
+  "Caesar's Palace": [
+   "Caesar's Palace",
+   "Caesar's Palace (Las Vegas)"
+  ],
+  "Cafe 150": [
+   "Cafe 150",
+   "Cafe 150 (Google's Mountain View campus)"
+  ],
+  "Cafe Barcelona": [
+   "Cafe Barcelona",
+   "Cafe Barcelona (Miami)"
+  ],
+  "Casa Borinqueña": [
+   "Casa Borinqueña",
+   "Casa Borinqueña (6211 Shattuck Avenue, Oakland)",
+   "Casa Borinqueña (catering business)"
+  ],
+  "Chaya Brasseries": [
+   "Chaya Brasseries",
+   "Chaya Brasseries (Venice and Los Angeles)"
+  ],
+  "Chef Smelly’s": [
+   "Chef Smelly’s",
+   "Chef Smelly’s (pop-up at a downtown Oakland nightclub)"
+  ],
+  "Chef Smelly’s pop-up": [
+   "Chef Smelly’s pop-up",
+   "Chef Smelly’s pop-up (at a downtown Oakland nightclub)"
+  ],
+  "Choy": [
+   "Choy",
+   "Choy (Nashville)"
+  ],
+  "Citronelle": [
+   "Citronelle",
+   "Citronelle (Carmel Valley Ranch)",
+   "Citronelle (Washington, D.C.)"
+  ],
+  "Cucina Paradiso": [
+   "Cucina Paradiso",
+   "Cucina Paradiso (Petaluma)",
+   "Cucina Paradiso (Santa Rosa)"
+  ],
+  "Cupcakin’ Bakeshop": [
+   "Cupcakin’ Bakeshop",
+   "Cupcakin’ Bakeshop (Berkeley)"
+  ],
+  "Daniel": [
+   "Daniel",
+   "Daniel (Manhattan)"
+  ],
+  "D'Asaro": [
+   "D'Asaro",
+   "D'Asaro (Redwood City)"
+  ],
+  "Draeger's": [
+   "Draeger's",
+   "Draeger's (Culinary Centers in San Mateo and Menlo Park)"
+  ],
+  "Eleven Madison Park": [
+   "Eleven Madison Park",
+   "Eleven Madison Park (New York City)"
+  ],
+  "Fairmont Plaza": [
+   "Fairmont Plaza",
+   "Fairmont Plaza (Manhattan)"
+  ],
+  "The Farmer’s Wife": [
+   "The Farmer’s Wife",
+   "The Farmer’s Wife (Sebastopol)"
+  ],
+  "Farmshop": [
+   "Farmshop",
+   "Farmshop (Larkspur)"
+  ],
+  "Flores": [
+   "Flores",
+   "Flores (Corte Madera)",
+   "Flores (Cow Hollow)"
+  ],
+  "Fogo de Chão": [
+   "Fogo de Chão",
+   "Fogo de Chão (Las Vegas location)",
+   "Fogo de Chão (San Francisco location)"
+  ],
+  "Fork": [
+   "Fork",
+   "Fork (San Anselmo)"
+  ],
+  "Fred Segal": [
+   "Fred Segal",
+   "Fred Segal (Santa Monica)"
+  ],
+  "Fredy Girardet's restaurant": [
+   "Fredy Girardet's restaurant",
+   "Fredy Girardet's restaurant (Switzerland)"
+  ],
+  "French Laundry and Grill 23": [
+   "French Laundry and Grill 23",
+   "French Laundry and Grill 23 (Boston)"
+  ],
+  "Gordon Biersch": [
+   "Gordon Biersch",
+   "Gordon Biersch (San Jose)"
+  ],
+  "Ivan Ramen": [
+   "Ivan Ramen",
+   "Ivan Ramen (New York)"
+  ],
+  "Joël Robuchon": [
+   "Joel Robuchon (Las Vegas)",
+   "Joël Robuchon",
+   "Joël Robuchon (Las Vegas)"
+  ],
+  "Jon's Street Eats": [
+   "Jon's Street Eats",
+   "Jon's Street Eats (Emeryville and Alameda locations)"
+  ],
+  "Kanda": [
+   "Kanda",
+   "Kanda (eponymous restaurant in Japan)"
+  ],
+  "Kozy Kar": [
+   "Kozy Kar",
+   "Kozy Kar (Santa Rosa offshoot)"
+  ],
+  "La Boucane": [
+   "La Boucane",
+   "La Boucane (Napa)",
+   "La Boucane (San Francisco)"
+  ],
+  "La Guerrera’s Kitchen": [
+   "La Guerrera’s Kitchen",
+   "La Guerrera’s Kitchen (Fruitvale)",
+   "La Guerrera’s Kitchen (Old Oakland)",
+   "La Guerrera’s Kitchen (pop-ups)"
+  ],
+  "La Santa Torta restaurant": [
+   "La Santa Torta restaurant",
+   "La Santa Torta restaurant (95 Linden St, Oakland)"
+  ],
+  "La Venganza": [
+   "La Venganza",
+   "La Venganza (North Oakland)"
+  ],
+  "LiveFire": [
+   "LiveFire",
+   "LiveFire (San Francisco)",
+   "LiveFire (Yountville)",
+   "Livefire (San Francisco)",
+   "Livefire (Yountville)"
+  ],
+  "Locol": [
+   "Loco'l (Tenderloin)",
+   "Locol",
+   "Locol (Watts)"
+  ],
+  "LongLife": [
+   "LongLife",
+   "LongLife (Berkeley)",
+   "LongLife (Metreon)"
+  ],
+  "Magpie": [
+   "Magpie",
+   "Magpie (Sacramento)"
+  ],
+  "Manresa Bread": [
+   "Manresa Bread",
+   "Manresa Bread (Campbell location)",
+   "Manresa Bread (Los Gatos and Los Altos locations)"
+  ],
+  "March": [
+   "March",
+   "March (Manhattan)"
+  ],
+  "Maya Restaurant": [
+   "Maya Restaurant",
+   "Maya Restaurant (Manhattan)",
+   "Maya Restaurant (San Francisco)"
+  ],
+  "McCrady’s": [
+   "McCrady's (Charleston)",
+   "McCrady’s"
+  ],
+  "Monster Pho": [
+   "Monster Pho",
+   "Monster Pho (Oakland)"
+  ],
+  "M.Y. China": [
+   "M.Y. China",
+   "M.Y. China (Graton Resort & Casino)",
+   "M.Y. China (Westfield San Francisco Centre)"
+  ],
+  "Napaly": [
+   "Napaly",
+   "Napaly (Walnut Creek)"
+  ],
+  "Napa Valley Grille": [
+   "Napa Valley Grille",
+   "Napa Valley Grille (Yountville space)"
+  ],
+  "Nepalese restaurant": [
+   "Nepalese restaurant",
+   "Nepalese restaurant (Petaluma)"
+  ],
+  "Nobu": [
+   "Nobu",
+   "Nobu (Palo Alto and Las Vegas locations)",
+   "Nobu (Palo Alto)"
+  ],
+  "No Code": [
+   "No Code",
+   "No Code (Tokyo and Taipei)"
+  ],
+  "Nusara and Le Du": [
+   "Nusara and Le Du",
+   "Nusara and Le Du (Bangkok)"
+  ],
+  "Nyum Bai": [
+   "Nyum Bai",
+   "Nyum Bai (Fruitvale Public Market space)",
+   "Nyum Bai (kiosk at Emeryville Public Market)",
+   "Nyum Bai (restaurant near Fruitvale Bart station)"
+  ],
+  "Padovani's Restaurant and Wine Bar": [
+   "Padovani's Restaurant and Wine Bar",
+   "Padovani's Restaurant and Wine Bar (Honolulu)",
+   "Padovani's Restaurant and Wine Bar (San Francisco)"
+  ],
+  "P.F. Chang's China Bistro": [
+   "P.F. Chang's China Bistro",
+   "P.F. Chang's China Bistro (Walnut Creek)"
+  ],
+  "Picasso at the Bellagio Hotel and Resort": [
+   "Picasso at the Bellagio Hotel and Resort",
+   "Picasso at the Bellagio Hotel and Resort (Las Vegas)"
+  ],
+  "Pierre Gagnaire group": [
+   "Pierre Gagnaire group",
+   "Pierre Gagnaire group (Seoul, Hong Kong, Paris, and London)"
+  ],
+  "Pietro’s": [
+   "Pietro’s",
+   "Pietro’s (282 Rocky Lane, Reynolds Ranch, Lodi)",
+   "Pietro’s (Kettleman Lane, Lodi)",
+   "Pietro’s (Lodi)",
+   "Pietro’s (Vacaville)"
+  ],
+  "Pig in a Pickle": [
+   "Pig in a Pickle",
+   "Pig in a Pickle (Corte Madera)",
+   "Pig in a Pickle (Emeryville)"
+  ],
+  "Plumed Horse": [
+   "Plumed Horse",
+   "Plumed Horse (Saratoga)"
+  ],
+  "Ravintola Demo": [
+   "Ravintola Demo",
+   "Ravintola Demo (Helsinki)"
+  ],
+  "Ritz Carlton": [
+   "Ritz Carlton",
+   "Ritz Carlton (Phoenix)",
+   "Ritz Carlton (San Francisco)",
+   "Ritz-Carlton (San Francisco)",
+   "Ritz-Carlton (director of catering and conference services)"
+  ],
+  "Ritz Carlton Buckhead": [
+   "Ritz Carlton Buckhead",
+   "Ritz Carlton Buckhead (Atlanta)"
+  ],
+  "Riva Cucina": [
+   "Riva Cucina",
+   "Riva Cucina (West Berkeley)",
+   "Riva Cucina (catering business in Napa Valley)"
+  ],
+  "Roastshop": [
+   "Roastshop",
+   "Roastshop (Palo Alto)"
+  ],
+  "Saha": [
+   "Saha",
+   "Saha (Hotel Carlton location)",
+   "Saha (Hotel Carlton, Lower Nob Hill)",
+   "Saha (downtown Berkeley)"
+  ],
+  "Salt & Straw": [
+   "Salt & Straw",
+   "Salt & Straw (Burlingame)",
+   "Salt & Straw (Hayes Valley, San Francisco)",
+   "Salt & Straw (Pac Heights, San Francisco)",
+   "Salt & Straw (original Portland location)"
+  ],
+  "Sana’a Cafe": [
+   "Sana’a Cafe",
+   "Sana’a Cafe (San Rafael location)"
+  ],
+  "Schat's Bakkerij": [
+   "Schat's Bakkerij",
+   "Schat's Bakkerij (formerly Napa Valley Ovens)"
+  ],
+  "Servino Ristorante": [
+   "Servino Ristorante",
+   "Servino Ristorante (Tiburon)"
+  ],
+  "Spago": [
+   "Spago",
+   "Spago (Palo Alto)"
+  ],
+  "St. Regis": [
+   "St. Regis",
+   "St. Regis (Los Angeles)"
+  ],
+  "Sushi by Scratch": [
+   "Sushi by Scratch",
+   "Sushi by Scratch (Healdsburg)",
+   "Sushi by Scratch (Santa Barbara County)"
+  ],
+  "Syrah": [
+   "Syrah",
+   "Syrah (Santa Rosa)"
+  ],
+  "Tara’s Organic Ice Cream": [
+   "Tara’s Organic Ice Cream",
+   "Tara’s Organic Ice Cream (Oakland location)",
+   "Tara’s Organic Ice Cream (Temescal, Oakland location)"
+  ],
+  "Tastings": [
+   "Tastings",
+   "Tastings (Healdsburg)",
+   "Tastings (Lahaina on Maui)"
+  ],
+  "Tomatina": [
+   "Tomatina",
+   "Tomatina (St. Helena)"
+  ],
+  "Tru": [
+   "Tru",
+   "Tru (Chicago)"
+  ],
+  "Tsuta": [
+   "Tsuta",
+   "Tsuta (San Francisco)",
+   "Tsuta (Tokyo)"
+  ],
+  "Viognier": [
+   "Viognier",
+   "Viognier (Draeger's in San Mateo)"
+  ],
+  "Whole Foods": [
+   "Whole Foods",
+   "Whole Foods (Berkeley)",
+   "Whole Foods (Berkeley, meat department)",
+   "Whole Foods (San Francisco, deli department)"
+  ],
+  "Wild Hare": [
+   "Wild Hare",
+   "Wild Hare (Menlo Park)"
+  ],
+  "Willie's Cafe": [
+   "Willie's Cafe",
+   "Willie's Cafe (Kentfield)"
+  ],
+  "Wine Spectator Restaurant at CIA's Greystone campus": [
+   "Wine Spectator Restaurant at CIA's Greystone campus",
+   "Wine Spectator Restaurant at CIA's Greystone campus (St. Helena)"
   ]
  },
  "merge": {
@@ -399,6 +849,452 @@
   "unknown": [
    "unknown",
    "unknown (Los Angeles)"
+  ],
+  "1300 on Fillmore": [
+   "1300 on Fillmore",
+   "1300 on Fillmore (SFO outpost)"
+  ],
+  "4505 Meats": [
+   "4505 Meats",
+   "4505 Meats (Ferry Building Marketplace)"
+  ],
+  "Anomaly": [
+   "Anomaly",
+   "Anomaly (permanent at 2600 Sutter Street)",
+   "Anomaly (pop-up at Mansion on Sutter)",
+   "Anomaly (pop-up at Serpentine)",
+   "Anomaly (pop-up at Stable Cafe)",
+   "Anomaly (pop-up)"
+  ],
+  "Aziza": [
+   "Aziza",
+   "Aziza (5800 Geary Blvd.)"
+  ],
+  "Bar Agricole": [
+   "Bar Agricole",
+   "Bar Agricole (1540 Mission St.)",
+   "Bar Agricole (355 11th St.)"
+  ],
+  "Bear Vs Bull": [
+   "Bear Vs Bull",
+   "Bear Vs Bull (New Mission Alamo Drafthouse)"
+  ],
+  "Blue Barn Gourmet": [
+   "Blue Barn Gourmet",
+   "Blue Barn Gourmet (2105 Chestnut St.)"
+  ],
+  "Blue Bottle": [
+   "Blue Bottle",
+   "Blue Bottle (Ferry Building Marketplace)"
+  ],
+  "Bob’s Donuts": [
+   "Bob’s Donuts",
+   "Bob’s Donuts (601 Baker Street)"
+  ],
+  "Bonita Taqueria y Rotisserie": [
+   "Bonita Taqueria y Rotisserie",
+   "Bonita Taqueria y Rotisserie (Castro location)"
+  ],
+  "Bushi-Tei": [
+   "Bushi-Tei",
+   "Bushi-tei (Japantown)"
+  ],
+  "Cafe Andre": [
+   "Cafe Andre",
+   "Cafe Andre (Hotel Rex)"
+  ],
+  "Californios": [
+   "Californios",
+   "Californios (Mission District and SoMa locations)",
+   "Californios (Mission District location)",
+   "Californios (SoMa location)"
+  ],
+  "Che Fico Pizzeria": [
+   "Che Fico Pizzeria",
+   "Che Fico Pizzeria (Thrive City)"
+  ],
+  "Chez Papa": [
+   "Chez Papa",
+   "Chez Papa (Potrero Hill)"
+  ],
+  "Chubby Noodle Marina": [
+   "Chubby Noodle Marina",
+   "Chubby Noodle Marina (original location)"
+  ],
+  "Chuck’s Takeaway": [
+   "Chuck’s Takeaway",
+   "Chuck’s Takeaway (Valencia Street, San Francisco)"
+  ],
+  "Citizen Cake": [
+   "Citizen Cake",
+   "Citizen Cake (82 14th St.)"
+  ],
+  "Cod Damn": [
+   "Cod Damn",
+   "Cod Damn (pop-up)"
+  ],
+  "Custom Burger": [
+   "Custom Burger",
+   "Custom Burger (Seventh and Mission streets)"
+  ],
+  "Cyrus": [
+   "Cyrus",
+   "Cyrus (reopening)"
+  ],
+  "Dabba": [
+   "Dabba",
+   "Dabba (R.T.B. Fillmore Pop Up)"
+  ],
+  "Daffodil": [
+   "Daffodil",
+   "Daffodil (formerly Vignette at the Orchard Hotel)"
+  ],
+  "Deli Board": [
+   "Deli Board",
+   "Deli Board (1058 Folsom St.)",
+   "Deli Board (original location)"
+  ],
+  "Del Popolo": [
+   "Del Popolo",
+   "Del Popolo (brick-and-mortar)",
+   "Del Popolo (truck)"
+  ],
+  "DragonEye": [
+   "DragonEye",
+   "DragonEye (101 California St.)"
+  ],
+  "El Huarache Loco": [
+   "El Huarache Loco",
+   "El Huarache Loco (food truck and farmers markets)"
+  ],
+  "Eliza's": [
+   "Eliza's",
+   "Eliza's (18th Street, Potrero Hill location)",
+   "Eliza's (Oak Street location)",
+   "Eliza's (Oak Street location, remodeled)",
+   "Eliza's (Potrero Hill location)"
+  ],
+  "El Pípila": [
+   "El Pípila",
+   "El Pípila (permanent restaurant)",
+   "El Pípila (pop-up)"
+  ],
+  "Emporio Rulli": [
+   "Emporio Rulli",
+   "Emporio Rulli (Marina district)"
+  ],
+  "Farmerbrown": [
+   "Farmerbrown",
+   "Farmerbrown (SFO outpost)",
+   "Farmerbrown (San Francisco International Airport)",
+   "Farmerbrown (Tenderloin)"
+  ],
+  "Fiorella": [
+   "Fiorella",
+   "Fiorella (Clement and Polk Streets locations)",
+   "Fiorella (Inner Sunset location)"
+  ],
+  "FIVE": [
+   "FIVE",
+   "Five (Hotel Shattuck Plaza)"
+  ],
+  "Flora": [
+   "Flora",
+   "Flora (reopening under new concept)"
+  ],
+  "The Frog and the Peach": [
+   "The Frog and the Peach",
+   "The Frog and the Peach (space)"
+  ],
+  "Gaetano’s": [
+   "Gaetano’s",
+   "Gaetano’s (at 1257 Taylor Street)"
+  ],
+  "Hadeem": [
+   "Hadeem",
+   "Hadeem (pop-up)"
+  ],
+  "Here Before": [
+   "Here Before",
+   "Here Before (pop-up)"
+  ],
+  "Home": [
+   "Home",
+   "Home (2100 Market St.)",
+   "Home (2100 Market St., at Church)"
+  ],
+  "Ike's Love & Sandwiches": [
+   "Ike's Love & Sandwiches",
+   "Ike's Love & Sandwiches (Castro location)",
+   "Ike's Love & Sandwiches (Mission Rock location)"
+  ],
+  "Inn Marin": [
+   "Inn Marin",
+   "Inn Marin (formerly Alvarado Garden Inn)"
+  ],
+  "Italian Homemade Company": [
+   "Italian Homemade Company",
+   "Italian Homemade Company (North Beach)"
+  ],
+  "Jules": [
+   "Jules",
+   "Jules (pop-up)",
+   "Jules (restaurant)"
+  ],
+  "Kin Khao": [
+   "Kin Khao",
+   "Kin Khao (Dogpatch location)",
+   "Kin Khao (Parc 55 Hotel location)"
+  ],
+  "Kopê House": [
+   "Kopê House",
+   "Kopê House (pop-up)"
+  ],
+  "Le Central": [
+   "Le Central",
+   "Le Central (Cappelle-owned restaurant on Bush Street)"
+  ],
+  "Le Dix-Sept": [
+   "Le Dix-Sept",
+   "Le Dix-Sept (Potrero Hill)",
+   "Le Dix-Sept (commercial kitchen in the Dogpatch)",
+   "Le Dix-Sept (pop-up and farmers' market stand)"
+  ],
+  "Le Marais Bakery": [
+   "Le Marais Bakery",
+   "Le Marais Bakery (Ghirardelli Square pop-up)"
+  ],
+  "Levi’s Plaza": [
+   "Levi’s Plaza",
+   "Levi’s Plaza (pop-up)"
+  ],
+  "Little Joe's": [
+   "Little Joe's",
+   "Little Joe's (2550 Van Ness)",
+   "Little Joe's (Eddy Street near Market)"
+  ],
+  "Magnolia": [
+   "Magnolia",
+   "Magnolia (Dogpatch location, Smokestack restaurant)",
+   "Magnolia (Haight Street location)"
+  ],
+  "Manos Nouveau": [
+   "Manos Nouveau",
+   "Manos Nouveau (Castro location, former Pica Pica Maize Kitchen)",
+   "Manos Nouveau (Mission location)"
+  ],
+  "Millennium": [
+   "Millennium",
+   "Millennium (Abigail Hotel)",
+   "Millennium (Hotel Savoy)"
+  ],
+  "My Good Pie": [
+   "My Good Pie",
+   "My Good Pie (300 De Haro, Potrero Hill)"
+  ],
+  "Nabe": [
+   "Nabe",
+   "Nabe (Inner Sunset)",
+   "Nabe (Marina)"
+  ],
+  "Nico": [
+   "Nico",
+   "Nico (Jackson Square)"
+  ],
+  "O’ by Claude Le Tohic": [
+   "O’ by Claude Le Tohic",
+   "O’ by Claude Le Tohic (ONE65)"
+  ],
+  "OK's Deli": [
+   "OK's Deli",
+   "OK's Deli (permanent restaurant)",
+   "OK's Deli (pop-up)"
+  ],
+  "Ono Snax": [
+   "Ono Snax",
+   "Ono Snax (pop-up)"
+  ],
+  "Out the Door": [
+   "Out the Door",
+   "Out the Door (Bush Street)",
+   "Out the Door (Pacific Heights location)",
+   "Out the Door (Westfield San Francisco Centre)"
+  ],
+  "Pabu and Ramen Market": [
+   "Pabu and Ramen Market",
+   "Pabu and Ramen Market (FiDi, San Francisco)"
+  ],
+  "Paragon Restaurant & Bar": [
+   "Paragon Restaurant & Bar",
+   "Paragon Restaurant & Bar (701 Second St.)"
+  ],
+  "Peruvian-style seafood restaurant": [
+   "Peruvian-style seafood restaurant",
+   "Peruvian-style seafood restaurant (737 Irving St.)"
+  ],
+  "Petiscos": [
+   "Petiscos",
+   "Petiscos (Alum Rock Avenue location)",
+   "Petiscos (South First Street location)"
+  ],
+  "Piccino": [
+   "Piccino",
+   "Piccino (Dogpatch)"
+  ],
+  "Pinkie’s": [
+   "Pinkie’s",
+   "Pinkie’s (Bernal Heights)"
+  ],
+  "Pinoy Heritage": [
+   "Pinoy Heritage",
+   "Pinoy Heritage (pop-up)"
+  ],
+  "Pixlcat Coffee": [
+   "Pixlcat Coffee",
+   "Pixlcat Coffee (Clement Street location)",
+   "Pixlcat Coffee (Ninth Street location)"
+  ],
+  "Pizza Hacker": [
+   "Pizza Hacker",
+   "PizzaHacker (brick-and-mortar)",
+   "PizzaHacker (itinerant/pop-up operation)"
+  ],
+  "Pokéworks": [
+   "Pokéworks",
+   "Pokéworks (SoMa location)"
+  ],
+  "Prather Ranch": [
+   "Prather Ranch",
+   "Prather Ranch (Ferry Building)"
+  ],
+  "Prubechu": [
+   "Prubechu",
+   "Prubechu (18th Street location)",
+   "Prubechu (original Mission Street location)"
+  ],
+  "Rasoi": [
+   "Rasoi",
+   "Rasoi (Ferry Building)"
+  ],
+  "Reem’s California": [
+   "Reem's California (former Mission Pie space at 2901 Mission Street)",
+   "Reem’s California",
+   "Reem’s California (Sunday farmers markets outside of the Ferry Building)"
+  ],
+  "Rickey's": [
+   "Rickey's",
+   "Rickey's (Inn Marin)",
+   "Rickey's (at Inn Marin)"
+  ],
+  "Ristorante Il Cartoccio": [
+   "Ristorante Il Cartoccio",
+   "Ristorante Il Cartoccio (835 Hyde St.)",
+   "Ristorante Il Cartoccio (York Hotel)"
+  ],
+  "Ritz-Carlton Hotel": [
+   "Ritz-Carlton Hotel",
+   "Ritz-Carlton Hotel (San Francisco)"
+  ],
+  "RN74": [
+   "RN74",
+   "RN74 (in Millennium Tower)",
+   "RN74 (restaurant and wine bar in Millennium Tower)"
+  ],
+  "Señor Sisig": [
+   "Señor Sisig",
+   "Señor Sisig (Ferry Building outpost)",
+   "Señor Sisig (food truck business)",
+   "Señor Sisig (permanent location at 990 Valencia St)"
+  ],
+  "Seven Hills": [
+   "Seven Hills",
+   "Seven Hills (new location)"
+  ],
+  "Silks": [
+   "Silks",
+   "Silks (Mandarin Oriental Hotel)"
+  ],
+  "Soma Grand": [
+   "Soma Grand",
+   "Soma Grand (restaurant in the Soma Grand complex)"
+  ],
+  "Sons & Daughters": [
+   "Sons & Daughters",
+   "Sons & Daughters (new Mission District space)"
+  ],
+  "Squat & Gobble": [
+   "Squat & Gobble",
+   "Squat & Gobble (Castro location)",
+   "Squat & Gobble (Marina location)"
+  ],
+  "Starter Bakery": [
+   "Starter Bakery",
+   "Starter Bakery (brick-and-mortar)"
+  ],
+  "Steps of Rome": [
+   "Steps of Rome",
+   "Steps of Rome (new venture at 362 Columbus)"
+  ],
+  "Straits": [
+   "Straits",
+   "Straits (San Francisco Centre)"
+  ],
+  "Tacos El Último Baile": [
+   "Tacos El Ultimo Baile (food truck/stand)",
+   "Tacos El Último Baile",
+   "Tacos El Último Baile (Fruitvale Public Market)",
+   "Tacos El Último Baile (permanent space)"
+  ],
+  "Tell Tale Preserve Co.": [
+   "Tell Tale Preserve Co.",
+   "Tell Tale Preserve Co. (pop-up at Big Daddy Antiques shop)"
+  ],
+  "The Terrace": [
+   "The Terrace",
+   "The Terrace (Ritz Carlton San Francisco)"
+  ],
+  "Terrace Restaurant": [
+   "Terrace Restaurant",
+   "Terrace Restaurant (Ritz-Carlton, San Francisco)"
+  ],
+  "Tiya": [
+   "Tiya",
+   "Tiya (San Francisco)"
+  ],
+  "Todo el Dia": [
+   "Todo el Dia",
+   "Todo el Dia (Noe Valley)"
+  ],
+  "Torraku Ramen": [
+   "Torraku Ramen",
+   "Torraku Ramen (1449 Lombard St.)",
+   "Torraku Ramen (300 De Haro, Potrero Hill)",
+   "Torraku Ramen (SoMa StrEat Food Park / District 6, food truck)"
+  ],
+  "Verjus": [
+   "Verjus",
+   "Verjus (reopened)"
+  ],
+  "Via Aurelia": [
+   "Via Aurelia",
+   "Via Aurelia (San Francisco)"
+  ],
+  "Waxman’s and J. Bird": [
+   "Waxman’s and J. Bird",
+   "Waxman’s and J. Bird (Ghirardelli Square)"
+  ],
+  "Yabbies Coastal Kitchen": [
+   "Yabbies Coastal Kitchen",
+   "Yabbies Coastal Kitchen (2237 Polk St.)"
+  ],
+  "Quince": [
+   "Quince",
+   "Quince (Octavia Street)",
+   "Quince (current location)",
+   "Quince (original location)",
+   "Quince (original location, now occupied by Baker and Banker)",
+   "Quince (post-renovation)",
+   "Quince (pre-renovation)"
   ]
  }
 }

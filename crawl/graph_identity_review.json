@@ -1,0 +1,5240 @@
+[
+ {
+  "base": "1300 on Fillmore",
+  "key": "1300onfillmore",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "1300 on Fillmore (SFO outpost)"
+  ],
+  "notes": [
+   "sfo outpost"
+  ],
+  "moves": {
+   "1300 on Fillmore (SFO outpost)": 1
+  },
+  "bare_moves": 3
+ },
+ {
+  "base": "24",
+  "key": "24",
+  "kind": "not ruled",
+  "why": "the note describes a successor or placeholder",
+  "spellings": [
+   "24 (now Acme Chop House)"
+  ],
+  "notes": [
+   "now acme chop house"
+  ],
+  "moves": {
+   "24 (now Acme Chop House)": 0
+  },
+  "bare_moves": 1
+ },
+ {
+  "base": "41 Degrees",
+  "key": "41degrees",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "41 Degrees (Barcelona)"
+  ],
+  "notes": [
+   "barcelona"
+  ],
+  "moves": {
+   "41 Degrees (Barcelona)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "4505 Burgers & BBQ",
+  "key": "4505burgersbbq",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "4505 Burgers & BBQ (Divisadero location)",
+   "4505 Burgers & BBQ (Oakland location)"
+  ],
+  "notes": [
+   "divisadero location",
+   "oakland location"
+  ],
+  "moves": {
+   "4505 Burgers & BBQ (Divisadero location)": 1,
+   "4505 Burgers & BBQ (Oakland location)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "4505 Meats",
+  "key": "4505meats",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "4505 Meats (Ferry Building Marketplace)"
+  ],
+  "notes": [
+   "ferry building marketplace"
+  ],
+  "moves": {
+   "4505 Meats (Ferry Building Marketplace)": 0
+  },
+  "bare_moves": 1
+ },
+ {
+  "base": "Abaca",
+  "key": "abaca",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Abacá (Fisherman’s Wharf)",
+   "Abacá (as pastry chef)"
+  ],
+  "notes": [
+   "fisherman’s wharf",
+   "as pastry chef"
+  ],
+  "moves": {
+   "Abacá (Fisherman’s Wharf)": 1,
+   "Abacá (as pastry chef)": 1
+  },
+  "bare_moves": 2
+ },
+ {
+  "base": "ABV",
+  "key": "abv",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "ABV (Over Proof)"
+  ],
+  "notes": [
+   "over proof"
+  ],
+  "moves": {
+   "ABV (Over Proof)": 0
+  },
+  "bare_moves": 7
+ },
+ {
+  "base": "Acadia",
+  "key": "acadia",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Acadia (Chicago)"
+  ],
+  "notes": [
+   "chicago"
+  ],
+  "moves": {
+   "Acadia (Chicago)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "ADC",
+  "key": "adc",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "ADC (Aqua Development Corp.)"
+  ],
+  "notes": [
+   "aqua development corp."
+  ],
+  "moves": {
+   "ADC (Aqua Development Corp.)": 2
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "‘Aina",
+  "key": "aina",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "‘Aina (brunch/dinner service)",
+   "‘Aina (tasting menu)"
+  ],
+  "notes": [
+   "brunch/dinner service",
+   "tasting menu"
+  ],
+  "moves": {
+   "‘Aina (brunch/dinner service)": 0,
+   "‘Aina (tasting menu)": 0
+  },
+  "bare_moves": 1
+ },
+ {
+  "base": "Alborz",
+  "key": "alborz",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Alborz (Fremont)",
+   "Alborz (San Francisco)"
+  ],
+  "notes": [
+   "fremont",
+   "san francisco"
+  ],
+  "moves": {
+   "Alborz (Fremont)": 1,
+   "Alborz (San Francisco)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Alborz Restaurant",
+  "key": "alborzrestaurant",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Alborz Restaurant (San Rafael)"
+  ],
+  "notes": [
+   "san rafael"
+  ],
+  "moves": {
+   "Alborz Restaurant (San Rafael)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Alexander’s Steakhouse",
+  "key": "alexanderssteakhouse",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Alexander's Steakhouse (Cupertino)"
+  ],
+  "notes": [
+   "cupertino"
+  ],
+  "moves": {
+   "Alexander's Steakhouse (Cupertino)": 0
+  },
+  "bare_moves": 2
+ },
+ {
+  "base": "Amante’s",
+  "key": "amantes",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Amante’s (as a pop-up)"
+  ],
+  "notes": [
+   "as a pop-up"
+  ],
+  "moves": {
+   "Amante’s (as a pop-up)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Andina",
+  "key": "andina",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Andina (201 Franklin Street)",
+   "Andina (home-based)"
+  ],
+  "notes": [
+   "201 franklin street",
+   "home-based"
+  ],
+  "moves": {
+   "Andina (201 Franklin Street)": 1,
+   "Andina (home-based)": 0
+  },
+  "bare_moves": 1
+ },
+ {
+  "base": "Anomaly",
+  "key": "anomaly",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Anomaly (permanent at 2600 Sutter Street)",
+   "Anomaly (pop-up at Mansion on Sutter)",
+   "Anomaly (pop-up at Serpentine)",
+   "Anomaly (pop-up at Stable Cafe)",
+   "Anomaly (pop-up)"
+  ],
+  "notes": [
+   "permanent at 2600 sutter street",
+   "pop-up at mansion on sutter",
+   "pop-up at serpentine",
+   "pop-up at stable cafe",
+   "pop-up"
+  ],
+  "moves": {
+   "Anomaly (permanent at 2600 Sutter Street)": 0,
+   "Anomaly (pop-up at Mansion on Sutter)": 0,
+   "Anomaly (pop-up at Serpentine)": 0,
+   "Anomaly (pop-up at Stable Cafe)": 0,
+   "Anomaly (pop-up)": 0
+  },
+  "bare_moves": 5
+ },
+ {
+  "base": "Argentina",
+  "key": "argentina",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Argentina (Francis Mallmann's restaurants)"
+  ],
+  "notes": [
+   "francis mallmann's restaurants"
+  ],
+  "moves": {
+   "Argentina (Francis Mallmann's restaurants)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Arinell Pizza",
+  "key": "arinellpizza",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Arinell Pizza (Berkeley)",
+   "Arinell Pizza (Valencia St.)"
+  ],
+  "notes": [
+   "berkeley",
+   "valencia st."
+  ],
+  "moves": {
+   "Arinell Pizza (Berkeley)": 1,
+   "Arinell Pizza (Valencia St.)": 0
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Arizona",
+  "key": "arizona",
+  "kind": "not ruled",
+  "why": "the note describes a successor or placeholder",
+  "spellings": [
+   "Arizona (unspecified venue)"
+  ],
+  "notes": [
+   "unspecified venue"
+  ],
+  "moves": {
+   "Arizona (unspecified venue)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Aureole",
+  "key": "aureole",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Aureole (New York City)",
+   "Aureole (New York and Las Vegas)"
+  ],
+  "notes": [
+   "new york city",
+   "new york and las vegas"
+  ],
+  "moves": {
+   "Aureole (New York City)": 0,
+   "Aureole (New York and Las Vegas)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Aziza",
+  "key": "aziza",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Aziza (5800 Geary Blvd.)"
+  ],
+  "notes": [
+   "5800 geary blvd."
+  ],
+  "moves": {
+   "Aziza (5800 Geary Blvd.)": 0
+  },
+  "bare_moves": 23
+ },
+ {
+  "base": "Bacchus Management Group",
+  "key": "bacchusmanagementgroup",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Bacchus Management Group (including Spruce, The Saratoga, The Village Pub, Mayfield Bakery and Cafe, The Village Bakery)"
+  ],
+  "notes": [
+   "including spruce, the saratoga, the village pub, mayfield bakery and cafe, the village bakery"
+  ],
+  "moves": {
+   "Bacchus Management Group (including Spruce, The Saratoga, The Village Pub, Mayfield Bakery and Cafe, The Village Bakery)": 0
+  },
+  "bare_moves": 1
+ },
+ {
+  "base": "Bacon Bacon",
+  "key": "baconbacon",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Bacon Bacon (Frederick Street cafe)",
+   "Bacon Bacon (semi-permanent home within Brick & Mortar)"
+  ],
+  "notes": [
+   "frederick street cafe",
+   "semi-permanent home within brick & mortar"
+  ],
+  "moves": {
+   "Bacon Bacon (Frederick Street cafe)": 0,
+   "Bacon Bacon (semi-permanent home within Brick & Mortar)": 0
+  },
+  "bare_moves": 2
+ },
+ {
+  "base": "Bali's",
+  "key": "balis",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Bali's (Pacific and Battery)",
+   "Bali's (Sansome Street)"
+  ],
+  "notes": [
+   "pacific and battery",
+   "sansome street"
+  ],
+  "moves": {
+   "Bali's (Pacific and Battery)": 2,
+   "Bali's (Sansome Street)": 2
+  },
+  "bare_moves": 2
+ },
+ {
+  "base": "Banh Mi Joint",
+  "key": "banhmijoint",
+  "kind": "not ruled",
+  "why": "the note describes a successor or placeholder",
+  "spellings": [
+   "Banh Mi Joint (later renamed Monster Pho 2)"
+  ],
+  "notes": [
+   "later renamed monster pho 2"
+  ],
+  "moves": {
+   "Banh Mi Joint (later renamed Monster Pho 2)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Bar Agricole",
+  "key": "baragricole",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Bar Agricole (1540 Mission St.)",
+   "Bar Agricole (355 11th St.)"
+  ],
+  "notes": [
+   "1540 mission st.",
+   "355 11th st."
+  ],
+  "moves": {
+   "Bar Agricole (1540 Mission St.)": 1,
+   "Bar Agricole (355 11th St.)": 1
+  },
+  "bare_moves": 17
+ },
+ {
+  "base": "Barons Meat & Poultry",
+  "key": "baronsmeatpoultry",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Barons Meat & Poultry (Brooklyn)"
+  ],
+  "notes": [
+   "brooklyn"
+  ],
+  "moves": {
+   "Barons Meat & Poultry (Brooklyn)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Barons Meats",
+  "key": "baronsmeats",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Barons Meats (Alameda)",
+   "Barons Meats (Noe Valley)"
+  ],
+  "notes": [
+   "alameda",
+   "noe valley"
+  ],
+  "moves": {
+   "Barons Meats (Alameda)": 2,
+   "Barons Meats (Noe Valley)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "The Battery",
+  "key": "battery",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "The Battery (717B)"
+  ],
+  "notes": [
+   "717b"
+  ],
+  "moves": {
+   "The Battery (717B)": 1
+  },
+  "bare_moves": 1
+ },
+ {
+  "base": "Bayview production kitchen",
+  "key": "bayviewproductionkitchen",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Bayview production kitchen (shared with Nosh)"
+  ],
+  "notes": [
+   "shared with nosh"
+  ],
+  "moves": {
+   "Bayview production kitchen (shared with Nosh)": 0
+  },
+  "bare_moves": 1
+ },
+ {
+  "base": "Bay Wolf space",
+  "key": "baywolfspace",
+  "kind": "not ruled",
+  "why": "the note describes a successor or placeholder",
+  "spellings": [
+   "Bay Wolf space (unnamed)"
+  ],
+  "notes": [
+   "unnamed"
+  ],
+  "moves": {
+   "Bay Wolf space (unnamed)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Bear Vs Bull",
+  "key": "bearvsbull",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Bear Vs Bull (New Mission Alamo Drafthouse)"
+  ],
+  "notes": [
+   "new mission alamo drafthouse"
+  ],
+  "moves": {
+   "Bear Vs Bull (New Mission Alamo Drafthouse)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Benchmark Pizzeria",
+  "key": "benchmarkpizzeria",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Benchmark Pizzeria (Kensington)"
+  ],
+  "notes": [
+   "kensington"
+  ],
+  "moves": {
+   "Benchmark Pizzeria (Kensington)": 2
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Bishop",
+  "key": "bishop",
+  "kind": "not ruled",
+  "why": "the note describes a successor or placeholder",
+  "spellings": [
+   "Bishop (planned venue)"
+  ],
+  "notes": [
+   "planned venue"
+  ],
+  "moves": {
+   "Bishop (planned venue)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Bittersweet Cafe",
+  "key": "bittersweetcafe",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Bittersweet Cafe (Fillmore Street)",
+   "Bittersweet Cafe (Oakland)"
+  ],
+  "notes": [
+   "fillmore street",
+   "oakland"
+  ],
+  "moves": {
+   "Bittersweet Cafe (Fillmore Street)": 0,
+   "Bittersweet Cafe (Oakland)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Blue Barn Gourmet",
+  "key": "bluebarngourmet",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Blue Barn Gourmet (2105 Chestnut St.)"
+  ],
+  "notes": [
+   "2105 chestnut st."
+  ],
+  "moves": {
+   "Blue Barn Gourmet (2105 Chestnut St.)": 3
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Blue Bottle",
+  "key": "bluebottle",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Blue Bottle (Ferry Building Marketplace)"
+  ],
+  "notes": [
+   "ferry building marketplace"
+  ],
+  "moves": {
+   "Blue Bottle (Ferry Building Marketplace)": 0
+  },
+  "bare_moves": 1
+ },
+ {
+  "base": "Bob’s Donuts",
+  "key": "bobsdonuts",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Bob’s Donuts (601 Baker Street)"
+  ],
+  "notes": [
+   "601 baker street"
+  ],
+  "moves": {
+   "Bob’s Donuts (601 Baker Street)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Bonita Taqueria y Rotisserie",
+  "key": "bonitataqueriayrotisserie",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Bonita Taqueria y Rotisserie (Castro location)"
+  ],
+  "notes": [
+   "castro location"
+  ],
+  "moves": {
+   "Bonita Taqueria y Rotisserie (Castro location)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "B. Patisserie",
+  "key": "bpatisserie",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "B. Patisserie (Honolulu outpost)"
+  ],
+  "notes": [
+   "honolulu outpost"
+  ],
+  "moves": {
+   "B. Patisserie (Honolulu outpost)": 0
+  },
+  "bare_moves": 6
+ },
+ {
+  "base": "Breakwater Barbecue",
+  "key": "breakwaterbarbecue",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Breakwater Barbecue (10151 Cabrillo Highway, El Granada)",
+   "Breakwater Barbecue (30 Avenue Portola, El Granada)"
+  ],
+  "notes": [
+   "10151 cabrillo highway, el granada",
+   "30 avenue portola, el granada"
+  ],
+  "moves": {
+   "Breakwater Barbecue (10151 Cabrillo Highway, El Granada)": 0,
+   "Breakwater Barbecue (30 Avenue Portola, El Granada)": 0
+  },
+  "bare_moves": 1
+ },
+ {
+  "base": "Brenda’s",
+  "key": "brendas",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Brenda’s (Oakland)"
+  ],
+  "notes": [
+   "oakland"
+  ],
+  "moves": {
+   "Brenda’s (Oakland)": 4
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Brown Sugar Kitchen Counter",
+  "key": "brownsugarkitchencounter",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Brown Sugar Kitchen Counter (San Francisco Ferry Building)",
+   "Brown Sugar Kitchen Counter (Uptown Oakland)",
+   "Brown Sugar Kitchen Counter (Warriors’ Chase Center Arena)"
+  ],
+  "notes": [
+   "san francisco ferry building",
+   "uptown oakland",
+   "warriors’ chase center arena"
+  ],
+  "moves": {
+   "Brown Sugar Kitchen Counter (San Francisco Ferry Building)": 0,
+   "Brown Sugar Kitchen Counter (Uptown Oakland)": 1,
+   "Brown Sugar Kitchen Counter (Warriors’ Chase Center Arena)": 0
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "the Bungalow Kitchen",
+  "key": "bungalowkitchen",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "the Bungalow Kitchen (Tiburon)"
+  ],
+  "notes": [
+   "tiburon"
+  ],
+  "moves": {
+   "the Bungalow Kitchen (Tiburon)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Burger Bar",
+  "key": "burgerbar",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Burger Bar (Macy's Union Square, 6th Floor)",
+   "Burger Bar (St. Louis location)"
+  ],
+  "notes": [
+   "macy's union square, 6th floor",
+   "st. louis location"
+  ],
+  "moves": {
+   "Burger Bar (Macy's Union Square, 6th Floor)": 1,
+   "Burger Bar (St. Louis location)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Bushi-Tei",
+  "key": "bushitei",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Bushi-tei (Japantown)"
+  ],
+  "notes": [
+   "japantown"
+  ],
+  "moves": {
+   "Bushi-tei (Japantown)": 0
+  },
+  "bare_moves": 4
+ },
+ {
+  "base": "Caesar's Palace",
+  "key": "caesarspalace",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Caesar's Palace (Las Vegas)"
+  ],
+  "notes": [
+   "las vegas"
+  ],
+  "moves": {
+   "Caesar's Palace (Las Vegas)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Cafe 150",
+  "key": "cafe150",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Cafe 150 (Google's Mountain View campus)"
+  ],
+  "notes": [
+   "google's mountain view campus"
+  ],
+  "moves": {
+   "Cafe 150 (Google's Mountain View campus)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Cafe Andre",
+  "key": "cafeandre",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Cafe Andre (Hotel Rex)"
+  ],
+  "notes": [
+   "hotel rex"
+  ],
+  "moves": {
+   "Cafe Andre (Hotel Rex)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Cafe Barcelona",
+  "key": "cafebarcelona",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Cafe Barcelona (Miami)"
+  ],
+  "notes": [
+   "miami"
+  ],
+  "moves": {
+   "Cafe Barcelona (Miami)": 2
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Cafe Ohlone",
+  "key": "cafeohlone",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Cafe Ohlone (Phoebe A. Hearst Museum of Anthropology courtyard)",
+   "Cafe Ohlone (Phoebe A. Hearst Museum of Anthropology)"
+  ],
+  "notes": [
+   "phoebe a. hearst museum of anthropology courtyard",
+   "phoebe a. hearst museum of anthropology"
+  ],
+  "moves": {
+   "Cafe Ohlone (Phoebe A. Hearst Museum of Anthropology courtyard)": 2,
+   "Cafe Ohlone (Phoebe A. Hearst Museum of Anthropology)": 3
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Californios",
+  "key": "californios",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Californios (Mission District and SoMa locations)",
+   "Californios (Mission District location)",
+   "Californios (SoMa location)"
+  ],
+  "notes": [
+   "mission district and soma locations",
+   "mission district location",
+   "soma location"
+  ],
+  "moves": {
+   "Californios (Mission District and SoMa locations)": 1,
+   "Californios (Mission District location)": 0,
+   "Californios (SoMa location)": 0
+  },
+  "bare_moves": 5
+ },
+ {
+  "base": "Casa Borinqueña",
+  "key": "casaborinquena",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Casa Borinqueña (6211 Shattuck Avenue, Oakland)",
+   "Casa Borinqueña (catering business)"
+  ],
+  "notes": [
+   "6211 shattuck avenue, oakland",
+   "catering business"
+  ],
+  "moves": {
+   "Casa Borinqueña (6211 Shattuck Avenue, Oakland)": 2,
+   "Casa Borinqueña (catering business)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Cavallo Point",
+  "key": "cavallopoint",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Cavallo Point (Farley, Sula, Sula Lounge)"
+  ],
+  "notes": [
+   "farley, sula, sula lounge"
+  ],
+  "moves": {
+   "Cavallo Point (Farley, Sula, Sula Lounge)": 0
+  },
+  "bare_moves": 3
+ },
+ {
+  "base": "Cellar Door Cafe",
+  "key": "cellardoorcafe",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Cellar Door Cafe (Bonny Doon Vineyard)"
+  ],
+  "notes": [
+   "bonny doon vineyard"
+  ],
+  "moves": {
+   "Cellar Door Cafe (Bonny Doon Vineyard)": 0
+  },
+  "bare_moves": 2
+ },
+ {
+  "base": "Chaya Brasseries",
+  "key": "chayabrasseries",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Chaya Brasseries (Venice and Los Angeles)"
+  ],
+  "notes": [
+   "venice and los angeles"
+  ],
+  "moves": {
+   "Chaya Brasseries (Venice and Los Angeles)": 2
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Cheesecake Factory",
+  "key": "cheesecakefactory",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Cheesecake Factory (Bay Area locations)"
+  ],
+  "notes": [
+   "bay area locations"
+  ],
+  "moves": {
+   "Cheesecake Factory (Bay Area locations)": 0
+  },
+  "bare_moves": 2
+ },
+ {
+  "base": "Che Fico Pizzeria",
+  "key": "cheficopizzeria",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Che Fico Pizzeria (Thrive City)"
+  ],
+  "notes": [
+   "thrive city"
+  ],
+  "moves": {
+   "Che Fico Pizzeria (Thrive City)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Chef Smelly’s",
+  "key": "chefsmellys",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Chef Smelly’s (pop-up at a downtown Oakland nightclub)"
+  ],
+  "notes": [
+   "pop-up at a downtown oakland nightclub"
+  ],
+  "moves": {
+   "Chef Smelly’s (pop-up at a downtown Oakland nightclub)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Chef Smelly’s pop-up",
+  "key": "chefsmellyspopup",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Chef Smelly’s pop-up (at a downtown Oakland nightclub)"
+  ],
+  "notes": [
+   "at a downtown oakland nightclub"
+  ],
+  "moves": {
+   "Chef Smelly’s pop-up (at a downtown Oakland nightclub)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Chez Panisse",
+  "key": "chezpanisse",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Chez Panisse (upstairs cafe)"
+  ],
+  "notes": [
+   "upstairs cafe"
+  ],
+  "moves": {
+   "Chez Panisse (upstairs cafe)": 0
+  },
+  "bare_moves": 71
+ },
+ {
+  "base": "Chez Papa",
+  "key": "chezpapa",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Chez Papa (Potrero Hill)"
+  ],
+  "notes": [
+   "potrero hill"
+  ],
+  "moves": {
+   "Chez Papa (Potrero Hill)": 2
+  },
+  "bare_moves": 5
+ },
+ {
+  "base": "Chicago",
+  "key": "chicago",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Chicago (Lettuce Entertain You restaurant empire)"
+  ],
+  "notes": [
+   "lettuce entertain you restaurant empire"
+  ],
+  "moves": {
+   "Chicago (Lettuce Entertain You restaurant empire)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Chico",
+  "key": "chico",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Chico (formerly Chicomecóatl)"
+  ],
+  "notes": [
+   "formerly chicomecóatl"
+  ],
+  "moves": {
+   "Chico (formerly Chicomecóatl)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Choy",
+  "key": "choy",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Choy (Nashville)"
+  ],
+  "notes": [
+   "nashville"
+  ],
+  "moves": {
+   "Choy (Nashville)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Chubby Noodle Marina",
+  "key": "chubbynoodlemarina",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Chubby Noodle Marina (original location)"
+  ],
+  "notes": [
+   "original location"
+  ],
+  "moves": {
+   "Chubby Noodle Marina (original location)": 0
+  },
+  "bare_moves": 1
+ },
+ {
+  "base": "Chuck’s Takeaway",
+  "key": "chuckstakeaway",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Chuck’s Takeaway (Valencia Street, San Francisco)"
+  ],
+  "notes": [
+   "valencia street, san francisco"
+  ],
+  "moves": {
+   "Chuck’s Takeaway (Valencia Street, San Francisco)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Citizen Cake",
+  "key": "citizencake",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Citizen Cake (82 14th St.)"
+  ],
+  "notes": [
+   "82 14th st."
+  ],
+  "moves": {
+   "Citizen Cake (82 14th St.)": 0
+  },
+  "bare_moves": 11
+ },
+ {
+  "base": "Citronelle",
+  "key": "citronelle",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Citronelle (Carmel Valley Ranch)",
+   "Citronelle (Washington, D.C.)"
+  ],
+  "notes": [
+   "carmel valley ranch",
+   "washington, d.c."
+  ],
+  "moves": {
+   "Citronelle (Carmel Valley Ranch)": 0,
+   "Citronelle (Washington, D.C.)": 0
+  },
+  "bare_moves": 4
+ },
+ {
+  "base": "Cod Damn",
+  "key": "coddamn",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Cod Damn (pop-up)"
+  ],
+  "notes": [
+   "pop-up"
+  ],
+  "moves": {
+   "Cod Damn (pop-up)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Craftsman and Wolves",
+  "key": "craftsmanandwolves",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Craftsman and Wolves (Bayview, the Den)",
+   "Craftsman and Wolves (Pacific Avenue, Russian Hill)",
+   "Craftsman and Wolves (Valencia Street, Mission)"
+  ],
+  "notes": [
+   "bayview, the den",
+   "pacific avenue, russian hill",
+   "valencia street, mission"
+  ],
+  "moves": {
+   "Craftsman and Wolves (Bayview, the Den)": 0,
+   "Craftsman and Wolves (Pacific Avenue, Russian Hill)": 1,
+   "Craftsman and Wolves (Valencia Street, Mission)": 0
+  },
+  "bare_moves": 3
+ },
+ {
+  "base": "Cucina Paradiso",
+  "key": "cucinaparadiso",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Cucina Paradiso (Petaluma)",
+   "Cucina Paradiso (Santa Rosa)"
+  ],
+  "notes": [
+   "petaluma",
+   "santa rosa"
+  ],
+  "moves": {
+   "Cucina Paradiso (Petaluma)": 1,
+   "Cucina Paradiso (Santa Rosa)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "The Culinary Institute of America",
+  "key": "culinaryinstituteofamerica",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "The Culinary Institute of America (CIA)"
+  ],
+  "notes": [
+   "cia"
+  ],
+  "moves": {
+   "The Culinary Institute of America (CIA)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Cupcakin’ Bakeshop",
+  "key": "cupcakinbakeshop",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Cupcakin’ Bakeshop (Berkeley)"
+  ],
+  "notes": [
+   "berkeley"
+  ],
+  "moves": {
+   "Cupcakin’ Bakeshop (Berkeley)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Custom Burger",
+  "key": "customburger",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Custom Burger (Seventh and Mission streets)"
+  ],
+  "notes": [
+   "seventh and mission streets"
+  ],
+  "moves": {
+   "Custom Burger (Seventh and Mission streets)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Cyrus",
+  "key": "cyrus",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Cyrus (reopening)"
+  ],
+  "notes": [
+   "reopening"
+  ],
+  "moves": {
+   "Cyrus (reopening)": 0
+  },
+  "bare_moves": 12
+ },
+ {
+  "base": "Dabba",
+  "key": "dabba",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Dabba (R.T.B. Fillmore Pop Up)"
+  ],
+  "notes": [
+   "r.t.b. fillmore pop up"
+  ],
+  "moves": {
+   "Dabba (R.T.B. Fillmore Pop Up)": 2
+  },
+  "bare_moves": 1
+ },
+ {
+  "base": "Daffodil",
+  "key": "daffodil",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Daffodil (formerly Vignette at the Orchard Hotel)"
+  ],
+  "notes": [
+   "formerly vignette at the orchard hotel"
+  ],
+  "moves": {
+   "Daffodil (formerly Vignette at the Orchard Hotel)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Daniel",
+  "key": "daniel",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Daniel (Manhattan)"
+  ],
+  "notes": [
+   "manhattan"
+  ],
+  "moves": {
+   "Daniel (Manhattan)": 2
+  },
+  "bare_moves": 7
+ },
+ {
+  "base": "Daniel Pattersonville",
+  "key": "danielpattersonville",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Daniel Pattersonville (Haven, Plum)"
+  ],
+  "notes": [
+   "haven, plum"
+  ],
+  "moves": {
+   "Daniel Pattersonville (Haven, Plum)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "D'Asaro",
+  "key": "dasaro",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "D'Asaro (Redwood City)"
+  ],
+  "notes": [
+   "redwood city"
+  ],
+  "moves": {
+   "D'Asaro (Redwood City)": 2
+  },
+  "bare_moves": 2
+ },
+ {
+  "base": "Delfina Pizzeria",
+  "key": "delfinapizzeria",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Delfina Pizzeria (18th Street and California Street)",
+   "Delfina Pizzeria (adjacent pizzeria)"
+  ],
+  "notes": [
+   "18th street and california street",
+   "adjacent pizzeria"
+  ],
+  "moves": {
+   "Delfina Pizzeria (18th Street and California Street)": 1,
+   "Delfina Pizzeria (adjacent pizzeria)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Deli Board",
+  "key": "deliboard",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Deli Board (1058 Folsom St.)",
+   "Deli Board (original location)"
+  ],
+  "notes": [
+   "1058 folsom st.",
+   "original location"
+  ],
+  "moves": {
+   "Deli Board (1058 Folsom St.)": 1,
+   "Deli Board (original location)": 1
+  },
+  "bare_moves": 1
+ },
+ {
+  "base": "Del Popolo",
+  "key": "delpopolo",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Del Popolo (brick-and-mortar)",
+   "Del Popolo (truck)"
+  ],
+  "notes": [
+   "brick-and-mortar",
+   "truck"
+  ],
+  "moves": {
+   "Del Popolo (brick-and-mortar)": 1,
+   "Del Popolo (truck)": 1
+  },
+  "bare_moves": 3
+ },
+ {
+  "base": "District",
+  "key": "district",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "District (formerly Pasta Opera)"
+  ],
+  "notes": [
+   "formerly pasta opera"
+  ],
+  "moves": {
+   "District (formerly Pasta Opera)": 1
+  },
+  "bare_moves": 2
+ },
+ {
+  "base": "Draeger's",
+  "key": "draegers",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Draeger's (Culinary Centers in San Mateo and Menlo Park)"
+  ],
+  "notes": [
+   "culinary centers in san mateo and menlo park"
+  ],
+  "moves": {
+   "Draeger's (Culinary Centers in San Mateo and Menlo Park)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "DragonEye",
+  "key": "dragoneye",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "DragonEye (101 California St.)"
+  ],
+  "notes": [
+   "101 california st."
+  ],
+  "moves": {
+   "DragonEye (101 California St.)": 2
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Early to Rise",
+  "key": "earlytorise",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Early to Rise (NoPa neighborhood)",
+   "Early to Rise (brunch pop-up in Nob Hill)",
+   "Early to Rise (pop-up)"
+  ],
+  "notes": [
+   "nopa neighborhood",
+   "brunch pop-up in nob hill",
+   "pop-up"
+  ],
+  "moves": {
+   "Early to Rise (NoPa neighborhood)": 0,
+   "Early to Rise (brunch pop-up in Nob Hill)": 0,
+   "Early to Rise (pop-up)": 0
+  },
+  "bare_moves": 1
+ },
+ {
+  "base": "Eight Tables by George Chen",
+  "key": "eighttablesbygeorgechen",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Eight Tables by George Chen (at China Live)"
+  ],
+  "notes": [
+   "at china live"
+  ],
+  "moves": {
+   "Eight Tables by George Chen (at China Live)": 0
+  },
+  "bare_moves": 1
+ },
+ {
+  "base": "Eleven Madison Park",
+  "key": "elevenmadisonpark",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Eleven Madison Park (New York City)"
+  ],
+  "notes": [
+   "new york city"
+  ],
+  "moves": {
+   "Eleven Madison Park (New York City)": 2
+  },
+  "bare_moves": 11
+ },
+ {
+  "base": "El Huarache Loco",
+  "key": "elhuaracheloco",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "El Huarache Loco (food truck and farmers markets)"
+  ],
+  "notes": [
+   "food truck and farmers markets"
+  ],
+  "moves": {
+   "El Huarache Loco (food truck and farmers markets)": 2
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Eliza's",
+  "key": "elizas",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Eliza's (18th Street, Potrero Hill location)",
+   "Eliza's (Oak Street location)",
+   "Eliza's (Oak Street location, remodeled)",
+   "Eliza's (Potrero Hill location)"
+  ],
+  "notes": [
+   "18th street, potrero hill location",
+   "oak street location",
+   "oak street location, remodeled",
+   "potrero hill location"
+  ],
+  "moves": {
+   "Eliza's (18th Street, Potrero Hill location)": 1,
+   "Eliza's (Oak Street location)": 4,
+   "Eliza's (Oak Street location, remodeled)": 0,
+   "Eliza's (Potrero Hill location)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "El Pípila",
+  "key": "elpipila",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "El Pípila (permanent restaurant)",
+   "El Pípila (pop-up)"
+  ],
+  "notes": [
+   "permanent restaurant",
+   "pop-up"
+  ],
+  "moves": {
+   "El Pípila (permanent restaurant)": 0,
+   "El Pípila (pop-up)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Emporio Rulli",
+  "key": "emporiorulli",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Emporio Rulli (Marina district)"
+  ],
+  "notes": [
+   "marina district"
+  ],
+  "moves": {
+   "Emporio Rulli (Marina district)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Fairmont Plaza",
+  "key": "fairmontplaza",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Fairmont Plaza (Manhattan)"
+  ],
+  "notes": [
+   "manhattan"
+  ],
+  "moves": {
+   "Fairmont Plaza (Manhattan)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Farallon",
+  "key": "farallon",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Farallon (cold line)",
+   "Farallon (hot line)"
+  ],
+  "notes": [
+   "cold line",
+   "hot line"
+  ],
+  "moves": {
+   "Farallon (cold line)": 0,
+   "Farallon (hot line)": 0
+  },
+  "bare_moves": 9
+ },
+ {
+  "base": "Farmerbrown",
+  "key": "farmerbrown",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Farmerbrown (SFO outpost)",
+   "Farmerbrown (San Francisco International Airport)",
+   "Farmerbrown (Tenderloin)"
+  ],
+  "notes": [
+   "sfo outpost",
+   "san francisco international airport",
+   "tenderloin"
+  ],
+  "moves": {
+   "Farmerbrown (SFO outpost)": 1,
+   "Farmerbrown (San Francisco International Airport)": 1,
+   "Farmerbrown (Tenderloin)": 1
+  },
+  "bare_moves": 7
+ },
+ {
+  "base": "The Farmer’s Wife",
+  "key": "farmerswife",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "The Farmer’s Wife (Sebastopol)"
+  ],
+  "notes": [
+   "sebastopol"
+  ],
+  "moves": {
+   "The Farmer’s Wife (Sebastopol)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Farmhouse",
+  "key": "farmhouse",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Farmhouse (formerly Brava Terrace)"
+  ],
+  "notes": [
+   "formerly brava terrace"
+  ],
+  "moves": {
+   "Farmhouse (formerly Brava Terrace)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Farmshop",
+  "key": "farmshop",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Farmshop (Larkspur)"
+  ],
+  "notes": [
+   "larkspur"
+  ],
+  "moves": {
+   "Farmshop (Larkspur)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Ferry Building",
+  "key": "ferrybuilding",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Ferry Building (Mastrelli's Delicatessen)",
+   "Ferry Building (Slanted Door)"
+  ],
+  "notes": [
+   "mastrelli's delicatessen",
+   "slanted door"
+  ],
+  "moves": {
+   "Ferry Building (Mastrelli's Delicatessen)": 1,
+   "Ferry Building (Slanted Door)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Fiorella",
+  "key": "fiorella",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Fiorella (Clement and Polk Streets locations)",
+   "Fiorella (Inner Sunset location)"
+  ],
+  "notes": [
+   "clement and polk streets locations",
+   "inner sunset location"
+  ],
+  "moves": {
+   "Fiorella (Clement and Polk Streets locations)": 1,
+   "Fiorella (Inner Sunset location)": 1
+  },
+  "bare_moves": 2
+ },
+ {
+  "base": "FIVE",
+  "key": "five",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Five (Hotel Shattuck Plaza)"
+  ],
+  "notes": [
+   "hotel shattuck plaza"
+  ],
+  "moves": {
+   "Five (Hotel Shattuck Plaza)": 2
+  },
+  "bare_moves": 5
+ },
+ {
+  "base": "Flora",
+  "key": "flora",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Flora (reopening under new concept)"
+  ],
+  "notes": [
+   "reopening under new concept"
+  ],
+  "moves": {
+   "Flora (reopening under new concept)": 1
+  },
+  "bare_moves": 8
+ },
+ {
+  "base": "Flores",
+  "key": "flores",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Flores (Corte Madera)",
+   "Flores (Cow Hollow)"
+  ],
+  "notes": [
+   "corte madera",
+   "cow hollow"
+  ],
+  "moves": {
+   "Flores (Corte Madera)": 1,
+   "Flores (Cow Hollow)": 0
+  },
+  "bare_moves": 3
+ },
+ {
+  "base": "Fogo de Chão",
+  "key": "fogodechao",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Fogo de Chão (Las Vegas location)",
+   "Fogo de Chão (San Francisco location)"
+  ],
+  "notes": [
+   "las vegas location",
+   "san francisco location"
+  ],
+  "moves": {
+   "Fogo de Chão (Las Vegas location)": 1,
+   "Fogo de Chão (San Francisco location)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Fork",
+  "key": "fork",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Fork (San Anselmo)"
+  ],
+  "notes": [
+   "san anselmo"
+  ],
+  "moves": {
+   "Fork (San Anselmo)": 0
+  },
+  "bare_moves": 2
+ },
+ {
+  "base": "Fred Segal",
+  "key": "fredsegal",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Fred Segal (Santa Monica)"
+  ],
+  "notes": [
+   "santa monica"
+  ],
+  "moves": {
+   "Fred Segal (Santa Monica)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Fredy Girardet's restaurant",
+  "key": "fredygirardetsrestaurant",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Fredy Girardet's restaurant (Switzerland)"
+  ],
+  "notes": [
+   "switzerland"
+  ],
+  "moves": {
+   "Fredy Girardet's restaurant (Switzerland)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "French Laundry and Grill 23",
+  "key": "frenchlaundryandgrill23",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "French Laundry and Grill 23 (Boston)"
+  ],
+  "notes": [
+   "boston"
+  ],
+  "moves": {
+   "French Laundry and Grill 23 (Boston)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "The Frog and the Peach",
+  "key": "frogandthepeach",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "The Frog and the Peach (space)"
+  ],
+  "notes": [
+   "space"
+  ],
+  "moves": {
+   "The Frog and the Peach (space)": 1
+  },
+  "bare_moves": 6
+ },
+ {
+  "base": "Future Bars group",
+  "key": "futurebarsgroup",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Future Bars group (Bourbon and Branch, Zombie Village)"
+  ],
+  "notes": [
+   "bourbon and branch, zombie village"
+  ],
+  "moves": {
+   "Future Bars group (Bourbon and Branch, Zombie Village)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Gaetano’s",
+  "key": "gaetanos",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Gaetano’s (at 1257 Taylor Street)"
+  ],
+  "notes": [
+   "at 1257 taylor street"
+  ],
+  "moves": {
+   "Gaetano’s (at 1257 Taylor Street)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Ginger Island",
+  "key": "gingerisland",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Ginger Island (Eccolo)"
+  ],
+  "notes": [
+   "eccolo"
+  ],
+  "moves": {
+   "Ginger Island (Eccolo)": 1
+  },
+  "bare_moves": 4
+ },
+ {
+  "base": "Gordon Biersch",
+  "key": "gordonbiersch",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Gordon Biersch (San Jose)"
+  ],
+  "notes": [
+   "san jose"
+  ],
+  "moves": {
+   "Gordon Biersch (San Jose)": 2
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Guerilla Cafe",
+  "key": "guerillacafe",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Guerilla Cafe (after Kontes sold their portion)"
+  ],
+  "notes": [
+   "after kontes sold their portion"
+  ],
+  "moves": {
+   "Guerilla Cafe (after Kontes sold their portion)": 1
+  },
+  "bare_moves": 3
+ },
+ {
+  "base": "Hadeem",
+  "key": "hadeem",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Hadeem (pop-up)"
+  ],
+  "notes": [
+   "pop-up"
+  ],
+  "moves": {
+   "Hadeem (pop-up)": 4
+  },
+  "bare_moves": 2
+ },
+ {
+  "base": "Henry’s Hunan",
+  "key": "henryshunan",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Henry’s Hunan (Sansome Street location)",
+   "Henry’s Hunan (chain)"
+  ],
+  "notes": [
+   "sansome street location",
+   "chain"
+  ],
+  "moves": {
+   "Henry’s Hunan (Sansome Street location)": 1,
+   "Henry’s Hunan (chain)": 0
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Here Before",
+  "key": "herebefore",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Here Before (pop-up)"
+  ],
+  "notes": [
+   "pop-up"
+  ],
+  "moves": {
+   "Here Before (pop-up)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Homage",
+  "key": "homage",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Homage (214 California Street)",
+   "Homage (88 Hardie Place)"
+  ],
+  "notes": [
+   "214 california street",
+   "88 hardie place"
+  ],
+  "moves": {
+   "Homage (214 California Street)": 0,
+   "Homage (88 Hardie Place)": 0
+  },
+  "bare_moves": 1
+ },
+ {
+  "base": "Home",
+  "key": "home",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Home (2100 Market St.)",
+   "Home (2100 Market St., at Church)"
+  ],
+  "notes": [
+   "2100 market st.",
+   "2100 market st., at church"
+  ],
+  "moves": {
+   "Home (2100 Market St.)": 1,
+   "Home (2100 Market St., at Church)": 1
+  },
+  "bare_moves": 2
+ },
+ {
+  "base": "Ike's Love & Sandwiches",
+  "key": "ikeslovesandwiches",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Ike's Love & Sandwiches (Castro location)",
+   "Ike's Love & Sandwiches (Mission Rock location)"
+  ],
+  "notes": [
+   "castro location",
+   "mission rock location"
+  ],
+  "moves": {
+   "Ike's Love & Sandwiches (Castro location)": 1,
+   "Ike's Love & Sandwiches (Mission Rock location)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Iluna Basque space",
+  "key": "ilunabasquespace",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Iluna Basque space (Campaluna Kitchen & Bar)"
+  ],
+  "notes": [
+   "campaluna kitchen & bar"
+  ],
+  "moves": {
+   "Iluna Basque space (Campaluna Kitchen & Bar)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Incontro",
+  "key": "incontro",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Incontro (or Pensiero)"
+  ],
+  "notes": [
+   "or pensiero"
+  ],
+  "moves": {
+   "Incontro (or Pensiero)": 2
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Inn Marin",
+  "key": "innmarin",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Inn Marin (formerly Alvarado Garden Inn)"
+  ],
+  "notes": [
+   "formerly alvarado garden inn"
+  ],
+  "moves": {
+   "Inn Marin (formerly Alvarado Garden Inn)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Italian Homemade Company",
+  "key": "italianhomemadecompany",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Italian Homemade Company (North Beach)"
+  ],
+  "notes": [
+   "north beach"
+  ],
+  "moves": {
+   "Italian Homemade Company (North Beach)": 0
+  },
+  "bare_moves": 3
+ },
+ {
+  "base": "Ivan Ramen",
+  "key": "ivanramen",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Ivan Ramen (New York)"
+  ],
+  "notes": [
+   "new york"
+  ],
+  "moves": {
+   "Ivan Ramen (New York)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Jackson Family Wines",
+  "key": "jacksonfamilywines",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Jackson Family Wines (Kendall-Jackson Wine Estate and Gardens)"
+  ],
+  "notes": [
+   "kendall-jackson wine estate and gardens"
+  ],
+  "moves": {
+   "Jackson Family Wines (Kendall-Jackson Wine Estate and Gardens)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Jade Chocolates",
+  "key": "jadechocolates",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Jade Chocolates (Geary and 6th location)"
+  ],
+  "notes": [
+   "geary and 6th location"
+  ],
+  "moves": {
+   "Jade Chocolates (Geary and 6th location)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Joël Robuchon",
+  "key": "joelrobuchon",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Joel Robuchon (Las Vegas)",
+   "Joël Robuchon (Las Vegas)"
+  ],
+  "notes": [
+   "las vegas",
+   "las vegas"
+  ],
+  "moves": {
+   "Joel Robuchon (Las Vegas)": 1,
+   "Joël Robuchon (Las Vegas)": 2
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Johnny Love's",
+  "key": "johnnyloves",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Johnny Love's (all locations)"
+  ],
+  "notes": [
+   "all locations"
+  ],
+  "moves": {
+   "Johnny Love's (all locations)": 2
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Jon's Street Eats",
+  "key": "jonsstreeteats",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Jon's Street Eats (Emeryville and Alameda locations)"
+  ],
+  "notes": [
+   "emeryville and alameda locations"
+  ],
+  "moves": {
+   "Jon's Street Eats (Emeryville and Alameda locations)": 1
+  },
+  "bare_moves": 1
+ },
+ {
+  "base": "Jules",
+  "key": "jules",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Jules (pop-up)",
+   "Jules (restaurant)"
+  ],
+  "notes": [
+   "pop-up",
+   "restaurant"
+  ],
+  "moves": {
+   "Jules (pop-up)": 1,
+   "Jules (restaurant)": 1
+  },
+  "bare_moves": 1
+ },
+ {
+  "base": "Kanda",
+  "key": "kanda",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Kanda (eponymous restaurant in Japan)"
+  ],
+  "notes": [
+   "eponymous restaurant in japan"
+  ],
+  "moves": {
+   "Kanda (eponymous restaurant in Japan)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Ken Ken Ramen",
+  "key": "kenkenramen",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Ken Ken Ramen (at The Corner)"
+  ],
+  "notes": [
+   "at the corner"
+  ],
+  "moves": {
+   "Ken Ken Ramen (at The Corner)": 0
+  },
+  "bare_moves": 1
+ },
+ {
+  "base": "Kimpton Group's Hotel Californian",
+  "key": "kimptongroupshotelcalifornian",
+  "kind": "not ruled",
+  "why": "the note describes a successor or placeholder",
+  "spellings": [
+   "Kimpton Group's Hotel Californian (unnamed Asian-focused restaurant)"
+  ],
+  "notes": [
+   "unnamed asian-focused restaurant"
+  ],
+  "moves": {
+   "Kimpton Group's Hotel Californian (unnamed Asian-focused restaurant)": 2
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Kin Khao",
+  "key": "kinkhao",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Kin Khao (Dogpatch location)",
+   "Kin Khao (Parc 55 Hotel location)"
+  ],
+  "notes": [
+   "dogpatch location",
+   "parc 55 hotel location"
+  ],
+  "moves": {
+   "Kin Khao (Dogpatch location)": 1,
+   "Kin Khao (Parc 55 Hotel location)": 0
+  },
+  "bare_moves": 9
+ },
+ {
+  "base": "Kopê House",
+  "key": "kopehouse",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Kopê House (pop-up)"
+  ],
+  "notes": [
+   "pop-up"
+  ],
+  "moves": {
+   "Kopê House (pop-up)": 0
+  },
+  "bare_moves": 5
+ },
+ {
+  "base": "Kozy Kar",
+  "key": "kozykar",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Kozy Kar (Santa Rosa offshoot)"
+  ],
+  "notes": [
+   "santa rosa offshoot"
+  ],
+  "moves": {
+   "Kozy Kar (Santa Rosa offshoot)": 1
+  },
+  "bare_moves": 2
+ },
+ {
+  "base": "La Boucane",
+  "key": "laboucane",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "La Boucane (Napa)",
+   "La Boucane (San Francisco)"
+  ],
+  "notes": [
+   "napa",
+   "san francisco"
+  ],
+  "moves": {
+   "La Boucane (Napa)": 0,
+   "La Boucane (San Francisco)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "La Cocina",
+  "key": "lacocina",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "La Cocina (as a vendor)"
+  ],
+  "notes": [
+   "as a vendor"
+  ],
+  "moves": {
+   "La Cocina (as a vendor)": 0
+  },
+  "bare_moves": 4
+ },
+ {
+  "base": "La Cote d'Or",
+  "key": "lacotedor",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "La Côte d'Or (Relais Bernard Loiseau)"
+  ],
+  "notes": [
+   "relais bernard loiseau"
+  ],
+  "moves": {
+   "La Côte d'Or (Relais Bernard Loiseau)": 1
+  },
+  "bare_moves": 6
+ },
+ {
+  "base": "La Guerrera’s Kitchen",
+  "key": "laguerreraskitchen",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "La Guerrera’s Kitchen (Fruitvale)",
+   "La Guerrera’s Kitchen (Old Oakland)",
+   "La Guerrera’s Kitchen (pop-ups)"
+  ],
+  "notes": [
+   "fruitvale",
+   "old oakland",
+   "pop-ups"
+  ],
+  "moves": {
+   "La Guerrera’s Kitchen (Fruitvale)": 1,
+   "La Guerrera’s Kitchen (Old Oakland)": 1,
+   "La Guerrera’s Kitchen (pop-ups)": 0
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Lark Creek Inn",
+  "key": "larkcreekinn",
+  "kind": "not ruled",
+  "why": "the note describes a successor or placeholder",
+  "spellings": [
+   "The Lark Creek Inn (now the Tavern at Lark Creek)"
+  ],
+  "notes": [
+   "now the tavern at lark creek"
+  ],
+  "moves": {
+   "The Lark Creek Inn (now the Tavern at Lark Creek)": 1
+  },
+  "bare_moves": 11
+ },
+ {
+  "base": "Larkspur",
+  "key": "larkspur",
+  "kind": "not ruled",
+  "why": "the note describes a successor or placeholder",
+  "spellings": [
+   "Larkspur (unnamed restaurant, former Roxanne's)"
+  ],
+  "notes": [
+   "unnamed restaurant, former roxanne's"
+  ],
+  "moves": {
+   "Larkspur (unnamed restaurant, former Roxanne's)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "La Santa Torta restaurant",
+  "key": "lasantatortarestaurant",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "La Santa Torta restaurant (95 Linden St, Oakland)"
+  ],
+  "notes": [
+   "95 linden st, oakland"
+  ],
+  "moves": {
+   "La Santa Torta restaurant (95 Linden St, Oakland)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "La Venganza",
+  "key": "lavenganza",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "La Venganza (North Oakland)"
+  ],
+  "notes": [
+   "north oakland"
+  ],
+  "moves": {
+   "La Venganza (North Oakland)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "La Victoria Mexican Bakery & Cafe",
+  "key": "lavictoriamexicanbakerycafe",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "La Victoria Mexican Bakery & Cafe (subleased space)"
+  ],
+  "notes": [
+   "subleased space"
+  ],
+  "moves": {
+   "La Victoria Mexican Bakery & Cafe (subleased space)": 0
+  },
+  "bare_moves": 6
+ },
+ {
+  "base": "Lazy Bear",
+  "key": "lazybear",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Lazy Bear (3416 19th Street in the Mission)",
+   "Lazy Bear (underground dinner parties at his apartment)",
+   "Lazy Bear (warehouse)"
+  ],
+  "notes": [
+   "3416 19th street in the mission",
+   "underground dinner parties at his apartment",
+   "warehouse"
+  ],
+  "moves": {
+   "Lazy Bear (3416 19th Street in the Mission)": 0,
+   "Lazy Bear (underground dinner parties at his apartment)": 0,
+   "Lazy Bear (warehouse)": 0
+  },
+  "bare_moves": 12
+ },
+ {
+  "base": "Le Central",
+  "key": "lecentral",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Le Central (Cappelle-owned restaurant on Bush Street)"
+  ],
+  "notes": [
+   "cappelle-owned restaurant on bush street"
+  ],
+  "moves": {
+   "Le Central (Cappelle-owned restaurant on Bush Street)": 0
+  },
+  "bare_moves": 2
+ },
+ {
+  "base": "Le Dix-Sept",
+  "key": "ledixsept",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Le Dix-Sept (Potrero Hill)",
+   "Le Dix-Sept (commercial kitchen in the Dogpatch)",
+   "Le Dix-Sept (pop-up and farmers' market stand)"
+  ],
+  "notes": [
+   "potrero hill",
+   "commercial kitchen in the dogpatch",
+   "pop-up and farmers' market stand"
+  ],
+  "moves": {
+   "Le Dix-Sept (Potrero Hill)": 1,
+   "Le Dix-Sept (commercial kitchen in the Dogpatch)": 1,
+   "Le Dix-Sept (pop-up and farmers' market stand)": 0
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Le Marais Bakery",
+  "key": "lemaraisbakery",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Le Marais Bakery (Ghirardelli Square pop-up)"
+  ],
+  "notes": [
+   "ghirardelli square pop-up"
+  ],
+  "moves": {
+   "Le Marais Bakery (Ghirardelli Square pop-up)": 2
+  },
+  "bare_moves": 1
+ },
+ {
+  "base": "Levi’s Plaza",
+  "key": "levisplaza",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Levi’s Plaza (pop-up)"
+  ],
+  "notes": [
+   "pop-up"
+  ],
+  "moves": {
+   "Levi’s Plaza (pop-up)": 2
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Little Joe's",
+  "key": "littlejoes",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Little Joe's (2550 Van Ness)",
+   "Little Joe's (Eddy Street near Market)"
+  ],
+  "notes": [
+   "2550 van ness",
+   "eddy street near market"
+  ],
+  "moves": {
+   "Little Joe's (2550 Van Ness)": 2,
+   "Little Joe's (Eddy Street near Market)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "LiveFire",
+  "key": "livefire",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "LiveFire (San Francisco)",
+   "LiveFire (Yountville)",
+   "Livefire (San Francisco)",
+   "Livefire (Yountville)"
+  ],
+  "notes": [
+   "san francisco",
+   "yountville",
+   "san francisco",
+   "yountville"
+  ],
+  "moves": {
+   "LiveFire (San Francisco)": 0,
+   "LiveFire (Yountville)": 1,
+   "Livefire (San Francisco)": 0,
+   "Livefire (Yountville)": 0
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Locol",
+  "key": "locol",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Loco'l (Tenderloin)",
+   "Locol (Watts)"
+  ],
+  "notes": [
+   "tenderloin",
+   "watts"
+  ],
+  "moves": {
+   "Loco'l (Tenderloin)": 0,
+   "Locol (Watts)": 1
+  },
+  "bare_moves": 6
+ },
+ {
+  "base": "Long Bar",
+  "key": "longbar",
+  "kind": "not ruled",
+  "why": "the note describes a successor or placeholder",
+  "spellings": [
+   "Long Bar (renamed venue)"
+  ],
+  "notes": [
+   "renamed venue"
+  ],
+  "moves": {
+   "Long Bar (renamed venue)": 0
+  },
+  "bare_moves": 1
+ },
+ {
+  "base": "LongLife",
+  "key": "longlife",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "LongLife (Berkeley)",
+   "LongLife (Metreon)"
+  ],
+  "notes": [
+   "berkeley",
+   "metreon"
+  ],
+  "moves": {
+   "LongLife (Berkeley)": 1,
+   "LongLife (Metreon)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Los Pinos",
+  "key": "lospinos",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Los Pinos (Mexico's White House)"
+  ],
+  "notes": [
+   "mexico's white house"
+  ],
+  "moves": {
+   "Los Pinos (Mexico's White House)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Magnolia",
+  "key": "magnolia",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Magnolia (Dogpatch location, Smokestack restaurant)",
+   "Magnolia (Haight Street location)"
+  ],
+  "notes": [
+   "dogpatch location, smokestack restaurant",
+   "haight street location"
+  ],
+  "moves": {
+   "Magnolia (Dogpatch location, Smokestack restaurant)": 1,
+   "Magnolia (Haight Street location)": 4
+  },
+  "bare_moves": 4
+ },
+ {
+  "base": "Magpie",
+  "key": "magpie",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Magpie (Sacramento)"
+  ],
+  "notes": [
+   "sacramento"
+  ],
+  "moves": {
+   "Magpie (Sacramento)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Manos Nouveau",
+  "key": "manosnouveau",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Manos Nouveau (Castro location, former Pica Pica Maize Kitchen)",
+   "Manos Nouveau (Mission location)"
+  ],
+  "notes": [
+   "castro location, former pica pica maize kitchen",
+   "mission location"
+  ],
+  "moves": {
+   "Manos Nouveau (Castro location, former Pica Pica Maize Kitchen)": 1,
+   "Manos Nouveau (Mission location)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Manresa Bread",
+  "key": "manresabread",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Manresa Bread (Campbell location)",
+   "Manresa Bread (Los Gatos and Los Altos locations)"
+  ],
+  "notes": [
+   "campbell location",
+   "los gatos and los altos locations"
+  ],
+  "moves": {
+   "Manresa Bread (Campbell location)": 2,
+   "Manresa Bread (Los Gatos and Los Altos locations)": 1
+  },
+  "bare_moves": 2
+ },
+ {
+  "base": "March",
+  "key": "march",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "March (Manhattan)"
+  ],
+  "notes": [
+   "manhattan"
+  ],
+  "moves": {
+   "March (Manhattan)": 2
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Marina",
+  "key": "marina",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Marina (Tacolicious)"
+  ],
+  "notes": [
+   "tacolicious"
+  ],
+  "moves": {
+   "Marina (Tacolicious)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Marlowe",
+  "key": "marlowe",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Marlowe (SoMa original)",
+   "Marlowe (expanded location)",
+   "Marlowe (new location on Brannan)",
+   "Marlowe (original location on Townsend)"
+  ],
+  "notes": [
+   "soma original",
+   "expanded location",
+   "new location on brannan",
+   "original location on townsend"
+  ],
+  "moves": {
+   "Marlowe (SoMa original)": 0,
+   "Marlowe (expanded location)": 0,
+   "Marlowe (new location on Brannan)": 3,
+   "Marlowe (original location on Townsend)": 3
+  },
+  "bare_moves": 12
+ },
+ {
+  "base": "Maya Restaurant",
+  "key": "mayarestaurant",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Maya Restaurant (Manhattan)",
+   "Maya Restaurant (San Francisco)"
+  ],
+  "notes": [
+   "manhattan",
+   "san francisco"
+  ],
+  "moves": {
+   "Maya Restaurant (Manhattan)": 1,
+   "Maya Restaurant (San Francisco)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "McCrady’s",
+  "key": "mccradys",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "McCrady's (Charleston)"
+  ],
+  "notes": [
+   "charleston"
+  ],
+  "moves": {
+   "McCrady's (Charleston)": 1
+  },
+  "bare_moves": 1
+ },
+ {
+  "base": "Merchant Roots",
+  "key": "merchantroots",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Merchant Roots (as a fine dining restaurant)",
+   "Merchant Roots (as an artisan food shop)"
+  ],
+  "notes": [
+   "as a fine dining restaurant",
+   "as an artisan food shop"
+  ],
+  "moves": {
+   "Merchant Roots (as a fine dining restaurant)": 1,
+   "Merchant Roots (as an artisan food shop)": 1
+  },
+  "bare_moves": 2
+ },
+ {
+  "base": "Michelin-starred restaurants in Paris",
+  "key": "michelinstarredrestaurantsinparis",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Michelin-starred restaurants in Paris (under Joel Robuchon)"
+  ],
+  "notes": [
+   "under joel robuchon"
+  ],
+  "moves": {
+   "Michelin-starred restaurants in Paris (under Joel Robuchon)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Middle Eastern restaurant",
+  "key": "middleeasternrestaurant",
+  "kind": "not ruled",
+  "why": "the note describes a successor or placeholder",
+  "spellings": [
+   "Middle Eastern restaurant (unnamed)"
+  ],
+  "notes": [
+   "unnamed"
+  ],
+  "moves": {
+   "Middle Eastern restaurant (unnamed)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Millennium",
+  "key": "millennium",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Millennium (Abigail Hotel)",
+   "Millennium (Hotel Savoy)"
+  ],
+  "notes": [
+   "abigail hotel",
+   "hotel savoy"
+  ],
+  "moves": {
+   "Millennium (Abigail Hotel)": 0,
+   "Millennium (Hotel Savoy)": 0
+  },
+  "bare_moves": 2
+ },
+ {
+  "base": "Mina Test Kitchen",
+  "key": "minatestkitchen",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Mina Test Kitchen (Little Italy concept)",
+   "Mina Test Kitchen (pop-up)"
+  ],
+  "notes": [
+   "little italy concept",
+   "pop-up"
+  ],
+  "moves": {
+   "Mina Test Kitchen (Little Italy concept)": 1,
+   "Mina Test Kitchen (pop-up)": 0
+  },
+  "bare_moves": 1
+ },
+ {
+  "base": "Mission Street Food",
+  "key": "missionstreetfood",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Mission Street Food (pop-up)",
+   "Mission Street Food (within Lung Shan)"
+  ],
+  "notes": [
+   "pop-up",
+   "within lung shan"
+  ],
+  "moves": {
+   "Mission Street Food (pop-up)": 0,
+   "Mission Street Food (within Lung Shan)": 0
+  },
+  "bare_moves": 2
+ },
+ {
+  "base": "Mix",
+  "key": "mix",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Mix (Mandalay Bay Resort & Casino)"
+  ],
+  "notes": [
+   "mandalay bay resort & casino"
+  ],
+  "moves": {
+   "Mix (Mandalay Bay Resort & Casino)": 0
+  },
+  "bare_moves": 2
+ },
+ {
+  "base": "Monster Pho",
+  "key": "monsterpho",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Monster Pho (Oakland)"
+  ],
+  "notes": [
+   "oakland"
+  ],
+  "moves": {
+   "Monster Pho (Oakland)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Monterey Bay Aquarium",
+  "key": "montereybayaquarium",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Monterey Bay Aquarium (Portola)"
+  ],
+  "notes": [
+   "portola"
+  ],
+  "moves": {
+   "Monterey Bay Aquarium (Portola)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Moonlight Brewing Co.",
+  "key": "moonlightbrewingco",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Moonlight Brewing Co. (under Lagunitas ownership)"
+  ],
+  "notes": [
+   "under lagunitas ownership"
+  ],
+  "moves": {
+   "Moonlight Brewing Co. (under Lagunitas ownership)": 0
+  },
+  "bare_moves": 1
+ },
+ {
+  "base": "Museum of the African Diaspora",
+  "key": "museumoftheafricandiaspora",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Museum of the African Diaspora (MoAD)"
+  ],
+  "notes": [
+   "moad"
+  ],
+  "moves": {
+   "Museum of the African Diaspora (MoAD)": 1
+  },
+  "bare_moves": 1
+ },
+ {
+  "base": "M.Y. China",
+  "key": "mychina",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "M.Y. China (Graton Resort & Casino)",
+   "M.Y. China (Westfield San Francisco Centre)"
+  ],
+  "notes": [
+   "graton resort & casino",
+   "westfield san francisco centre"
+  ],
+  "moves": {
+   "M.Y. China (Graton Resort & Casino)": 1,
+   "M.Y. China (Westfield San Francisco Centre)": 3
+  },
+  "bare_moves": 2
+ },
+ {
+  "base": "My Good Pie",
+  "key": "mygoodpie",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "My Good Pie (300 De Haro, Potrero Hill)"
+  ],
+  "notes": [
+   "300 de haro, potrero hill"
+  ],
+  "moves": {
+   "My Good Pie (300 De Haro, Potrero Hill)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Nabe",
+  "key": "nabe",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Nabe (Inner Sunset)",
+   "Nabe (Marina)"
+  ],
+  "notes": [
+   "inner sunset",
+   "marina"
+  ],
+  "moves": {
+   "Nabe (Inner Sunset)": 2,
+   "Nabe (Marina)": 2
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Napaly",
+  "key": "napaly",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Napaly (Walnut Creek)"
+  ],
+  "notes": [
+   "walnut creek"
+  ],
+  "moves": {
+   "Napaly (Walnut Creek)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Napa Valley Grille",
+  "key": "napavalleygrille",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Napa Valley Grille (Yountville space)"
+  ],
+  "notes": [
+   "yountville space"
+  ],
+  "moves": {
+   "Napa Valley Grille (Yountville space)": 1
+  },
+  "bare_moves": 2
+ },
+ {
+  "base": "Nepalese restaurant",
+  "key": "nepaleserestaurant",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Nepalese restaurant (Petaluma)"
+  ],
+  "notes": [
+   "petaluma"
+  ],
+  "moves": {
+   "Nepalese restaurant (Petaluma)": 2
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Ne Timeas Restaurant Group",
+  "key": "netimeasrestaurantgroup",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Ne Timeas Restaurant Group (oversight role)",
+   "Ne Timeas restaurant group (Flour & Water, Central Kitchen, Salumeria)"
+  ],
+  "notes": [
+   "oversight role",
+   "flour & water, central kitchen, salumeria"
+  ],
+  "moves": {
+   "Ne Timeas Restaurant Group (oversight role)": 0,
+   "Ne Timeas restaurant group (Flour & Water, Central Kitchen, Salumeria)": 0
+  },
+  "bare_moves": 1
+ },
+ {
+  "base": "New York",
+  "key": "newyork",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "New York (under Rocco DiSpirito)"
+  ],
+  "notes": [
+   "under rocco dispirito"
+  ],
+  "moves": {
+   "New York (under Rocco DiSpirito)": 2
+  },
+  "bare_moves": 7
+ },
+ {
+  "base": "Nico",
+  "key": "nico",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Nico (Jackson Square)"
+  ],
+  "notes": [
+   "jackson square"
+  ],
+  "moves": {
+   "Nico (Jackson Square)": 2
+  },
+  "bare_moves": 2
+ },
+ {
+  "base": "Nobu",
+  "key": "nobu",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Nobu (Palo Alto and Las Vegas locations)",
+   "Nobu (Palo Alto)"
+  ],
+  "notes": [
+   "palo alto and las vegas locations",
+   "palo alto"
+  ],
+  "moves": {
+   "Nobu (Palo Alto and Las Vegas locations)": 1,
+   "Nobu (Palo Alto)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "No Code",
+  "key": "nocode",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "No Code (Tokyo and Taipei)"
+  ],
+  "notes": [
+   "tokyo and taipei"
+  ],
+  "moves": {
+   "No Code (Tokyo and Taipei)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Noma",
+  "key": "noma",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Noma (stage)"
+  ],
+  "notes": [
+   "stage"
+  ],
+  "moves": {
+   "Noma (stage)": 0
+  },
+  "bare_moves": 3
+ },
+ {
+  "base": "Nopa",
+  "key": "nopa",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Nopa (staff meals)"
+  ],
+  "notes": [
+   "staff meals"
+  ],
+  "moves": {
+   "Nopa (staff meals)": 0
+  },
+  "bare_moves": 9
+ },
+ {
+  "base": "Nusara and Le Du",
+  "key": "nusaraandledu",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Nusara and Le Du (Bangkok)"
+  ],
+  "notes": [
+   "bangkok"
+  ],
+  "moves": {
+   "Nusara and Le Du (Bangkok)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Nyum Bai",
+  "key": "nyumbai",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Nyum Bai (Fruitvale Public Market space)",
+   "Nyum Bai (kiosk at Emeryville Public Market)",
+   "Nyum Bai (restaurant near Fruitvale Bart station)"
+  ],
+  "notes": [
+   "fruitvale public market space",
+   "kiosk at emeryville public market",
+   "restaurant near fruitvale bart station"
+  ],
+  "moves": {
+   "Nyum Bai (Fruitvale Public Market space)": 0,
+   "Nyum Bai (kiosk at Emeryville Public Market)": 0,
+   "Nyum Bai (restaurant near Fruitvale Bart station)": 0
+  },
+  "bare_moves": 1
+ },
+ {
+  "base": "Oakland Coliseum",
+  "key": "oaklandcoliseum",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Oakland Coliseum (Tailgate C-Lot)"
+  ],
+  "notes": [
+   "tailgate c-lot"
+  ],
+  "moves": {
+   "Oakland Coliseum (Tailgate C-Lot)": 0
+  },
+  "bare_moves": 2
+ },
+ {
+  "base": "O’ by Claude Le Tohic",
+  "key": "obyclaudeletohic",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "O’ by Claude Le Tohic (ONE65)"
+  ],
+  "notes": [
+   "one65"
+  ],
+  "moves": {
+   "O’ by Claude Le Tohic (ONE65)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "OK's Deli",
+  "key": "oksdeli",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "OK's Deli (permanent restaurant)",
+   "OK's Deli (pop-up)"
+  ],
+  "notes": [
+   "permanent restaurant",
+   "pop-up"
+  ],
+  "moves": {
+   "OK's Deli (permanent restaurant)": 0,
+   "OK's Deli (pop-up)": 0
+  },
+  "bare_moves": 4
+ },
+ {
+  "base": "Ono Snax",
+  "key": "onosnax",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Ono Snax (pop-up)"
+  ],
+  "notes": [
+   "pop-up"
+  ],
+  "moves": {
+   "Ono Snax (pop-up)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Orpheum Theatre restaurant",
+  "key": "orpheumtheatrerestaurant",
+  "kind": "not ruled",
+  "why": "the note describes a successor or placeholder",
+  "spellings": [
+   "Orpheum Theatre restaurant (unnamed)"
+  ],
+  "notes": [
+   "unnamed"
+  ],
+  "moves": {
+   "Orpheum Theatre restaurant (unnamed)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Out the Door",
+  "key": "outthedoor",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Out the Door (Bush Street)",
+   "Out the Door (Pacific Heights location)",
+   "Out the Door (Westfield San Francisco Centre)"
+  ],
+  "notes": [
+   "bush street",
+   "pacific heights location",
+   "westfield san francisco centre"
+  ],
+  "moves": {
+   "Out the Door (Bush Street)": 0,
+   "Out the Door (Pacific Heights location)": 0,
+   "Out the Door (Westfield San Francisco Centre)": 0
+  },
+  "bare_moves": 3
+ },
+ {
+  "base": "Oxbow Public Market",
+  "key": "oxbowpublicmarket",
+  "kind": "not ruled",
+  "why": "the note describes a successor or placeholder",
+  "spellings": [
+   "Oxbow Public Market (space formerly occupied by Oxbow Wine and Cheese Merchant)"
+  ],
+  "notes": [
+   "space formerly occupied by oxbow wine and cheese merchant"
+  ],
+  "moves": {
+   "Oxbow Public Market (space formerly occupied by Oxbow Wine and Cheese Merchant)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Ozumo",
+  "key": "ozumo",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Ozumo (East Bay)"
+  ],
+  "notes": [
+   "east bay"
+  ],
+  "moves": {
+   "Ozumo (East Bay)": 0
+  },
+  "bare_moves": 3
+ },
+ {
+  "base": "Pabu and Ramen Market",
+  "key": "pabuandramenmarket",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Pabu and Ramen Market (FiDi, San Francisco)"
+  ],
+  "notes": [
+   "fidi, san francisco"
+  ],
+  "moves": {
+   "Pabu and Ramen Market (FiDi, San Francisco)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Pacific Catch",
+  "key": "pacificcatch",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Pacific Catch (1200 Ninth Ave.)",
+   "Pacific Catch (Marin branch)",
+   "Pacific Catch (Ninth Ave. location)",
+   "Pacific Catch (Sunset location)"
+  ],
+  "notes": [
+   "1200 ninth ave.",
+   "marin branch",
+   "ninth ave. location",
+   "sunset location"
+  ],
+  "moves": {
+   "Pacific Catch (1200 Ninth Ave.)": 1,
+   "Pacific Catch (Marin branch)": 2,
+   "Pacific Catch (Ninth Ave. location)": 1,
+   "Pacific Catch (Sunset location)": 0
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Padovani's Restaurant and Wine Bar",
+  "key": "padovanisrestaurantandwinebar",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Padovani's Restaurant and Wine Bar (Honolulu)",
+   "Padovani's Restaurant and Wine Bar (San Francisco)"
+  ],
+  "notes": [
+   "honolulu",
+   "san francisco"
+  ],
+  "moves": {
+   "Padovani's Restaurant and Wine Bar (Honolulu)": 1,
+   "Padovani's Restaurant and Wine Bar (San Francisco)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Paragon Restaurant & Bar",
+  "key": "paragonrestaurantbar",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Paragon Restaurant & Bar (701 Second St.)"
+  ],
+  "notes": [
+   "701 second st."
+  ],
+  "moves": {
+   "Paragon Restaurant & Bar (701 Second St.)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Penrose",
+  "key": "penrose",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Penrose (rebranded as Almond & Oak)"
+  ],
+  "notes": [
+   "rebranded as almond & oak"
+  ],
+  "moves": {
+   "Penrose (rebranded as Almond & Oak)": 1
+  },
+  "bare_moves": 9
+ },
+ {
+  "base": "Peruvian-style seafood restaurant",
+  "key": "peruvianstyleseafoodrestaurant",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Peruvian-style seafood restaurant (737 Irving St.)"
+  ],
+  "notes": [
+   "737 irving st."
+  ],
+  "moves": {
+   "Peruvian-style seafood restaurant (737 Irving St.)": 2
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Petiscos",
+  "key": "petiscos",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Petiscos (Alum Rock Avenue location)",
+   "Petiscos (South First Street location)"
+  ],
+  "notes": [
+   "alum rock avenue location",
+   "south first street location"
+  ],
+  "moves": {
+   "Petiscos (Alum Rock Avenue location)": 2,
+   "Petiscos (South First Street location)": 0
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "P.F. Chang's China Bistro",
+  "key": "pfchangschinabistro",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "P.F. Chang's China Bistro (Walnut Creek)"
+  ],
+  "notes": [
+   "walnut creek"
+  ],
+  "moves": {
+   "P.F. Chang's China Bistro (Walnut Creek)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Picasso at the Bellagio Hotel and Resort",
+  "key": "picassoatthebellagiohotelandresort",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Picasso at the Bellagio Hotel and Resort (Las Vegas)"
+  ],
+  "notes": [
+   "las vegas"
+  ],
+  "moves": {
+   "Picasso at the Bellagio Hotel and Resort (Las Vegas)": 2
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Piccino",
+  "key": "piccino",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Piccino (Dogpatch)"
+  ],
+  "notes": [
+   "dogpatch"
+  ],
+  "moves": {
+   "Piccino (Dogpatch)": 2
+  },
+  "bare_moves": 7
+ },
+ {
+  "base": "Pier 5",
+  "key": "pier5",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Pier 5 (Spanish-inspired restaurant)"
+  ],
+  "notes": [
+   "spanish-inspired restaurant"
+  ],
+  "moves": {
+   "Pier 5 (Spanish-inspired restaurant)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Pierre Gagnaire group",
+  "key": "pierregagnairegroup",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Pierre Gagnaire group (Seoul, Hong Kong, Paris, and London)"
+  ],
+  "notes": [
+   "seoul, hong kong, paris, and london"
+  ],
+  "moves": {
+   "Pierre Gagnaire group (Seoul, Hong Kong, Paris, and London)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Pierre in Le Meridien Hotel",
+  "key": "pierreinlemeridienhotel",
+  "kind": "not ruled",
+  "why": "the note describes a successor or placeholder",
+  "spellings": [
+   "Pierre in Le Meridien Hotel (now the Argent)"
+  ],
+  "notes": [
+   "now the argent"
+  ],
+  "moves": {
+   "Pierre in Le Meridien Hotel (now the Argent)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Pietro’s",
+  "key": "pietros",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Pietro’s (282 Rocky Lane, Reynolds Ranch, Lodi)",
+   "Pietro’s (Kettleman Lane, Lodi)",
+   "Pietro’s (Lodi)",
+   "Pietro’s (Vacaville)"
+  ],
+  "notes": [
+   "282 rocky lane, reynolds ranch, lodi",
+   "kettleman lane, lodi",
+   "lodi",
+   "vacaville"
+  ],
+  "moves": {
+   "Pietro’s (282 Rocky Lane, Reynolds Ranch, Lodi)": 0,
+   "Pietro’s (Kettleman Lane, Lodi)": 0,
+   "Pietro’s (Lodi)": 1,
+   "Pietro’s (Vacaville)": 2
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Pig in a Pickle",
+  "key": "piginapickle",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Pig in a Pickle (Corte Madera)",
+   "Pig in a Pickle (Emeryville)"
+  ],
+  "notes": [
+   "corte madera",
+   "emeryville"
+  ],
+  "moves": {
+   "Pig in a Pickle (Corte Madera)": 0,
+   "Pig in a Pickle (Emeryville)": 0
+  },
+  "bare_moves": 1
+ },
+ {
+  "base": "Pinkie’s",
+  "key": "pinkies",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Pinkie’s (Bernal Heights)"
+  ],
+  "notes": [
+   "bernal heights"
+  ],
+  "moves": {
+   "Pinkie’s (Bernal Heights)": 0
+  },
+  "bare_moves": 1
+ },
+ {
+  "base": "Pinoy Heritage",
+  "key": "pinoyheritage",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Pinoy Heritage (pop-up)"
+  ],
+  "notes": [
+   "pop-up"
+  ],
+  "moves": {
+   "Pinoy Heritage (pop-up)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Pixlcat Coffee",
+  "key": "pixlcatcoffee",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Pixlcat Coffee (Clement Street location)",
+   "Pixlcat Coffee (Ninth Street location)"
+  ],
+  "notes": [
+   "clement street location",
+   "ninth street location"
+  ],
+  "moves": {
+   "Pixlcat Coffee (Clement Street location)": 1,
+   "Pixlcat Coffee (Ninth Street location)": 1
+  },
+  "bare_moves": 2
+ },
+ {
+  "base": "Pizza Hacker",
+  "key": "pizzahacker",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "PizzaHacker (brick-and-mortar)",
+   "PizzaHacker (itinerant/pop-up operation)"
+  ],
+  "notes": [
+   "brick-and-mortar",
+   "itinerant/pop-up operation"
+  ],
+  "moves": {
+   "PizzaHacker (brick-and-mortar)": 0,
+   "PizzaHacker (itinerant/pop-up operation)": 0
+  },
+  "bare_moves": 2
+ },
+ {
+  "base": "Plouf",
+  "key": "plouf",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Plouf (Financial District)"
+  ],
+  "notes": [
+   "financial district"
+  ],
+  "moves": {
+   "Plouf (Financial District)": 1
+  },
+  "bare_moves": 1
+ },
+ {
+  "base": "Plumed Horse",
+  "key": "plumedhorse",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Plumed Horse (Saratoga)"
+  ],
+  "notes": [
+   "saratoga"
+  ],
+  "moves": {
+   "Plumed Horse (Saratoga)": 3
+  },
+  "bare_moves": 2
+ },
+ {
+  "base": "Pokéworks",
+  "key": "pokeworks",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Pokéworks (SoMa location)"
+  ],
+  "notes": [
+   "soma location"
+  ],
+  "moves": {
+   "Pokéworks (SoMa location)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Portman Hotel",
+  "key": "portmanhotel",
+  "kind": "not ruled",
+  "why": "the note describes a successor or placeholder",
+  "spellings": [
+   "Portman Hotel (now the Pan Pacific Hotel)"
+  ],
+  "notes": [
+   "now the pan pacific hotel"
+  ],
+  "moves": {
+   "Portman Hotel (now the Pan Pacific Hotel)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Post Meridian",
+  "key": "postmeridian",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Post Meridian (at Naked Kitchen)"
+  ],
+  "notes": [
+   "at naked kitchen"
+  ],
+  "moves": {
+   "Post Meridian (at Naked Kitchen)": 2
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Prather Ranch",
+  "key": "pratherranch",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Prather Ranch (Ferry Building)"
+  ],
+  "notes": [
+   "ferry building"
+  ],
+  "moves": {
+   "Prather Ranch (Ferry Building)": 1
+  },
+  "bare_moves": 1
+ },
+ {
+  "base": "Prubechu",
+  "key": "prubechu",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Prubechu (18th Street location)",
+   "Prubechu (original Mission Street location)"
+  ],
+  "notes": [
+   "18th street location",
+   "original mission street location"
+  ],
+  "moves": {
+   "Prubechu (18th Street location)": 0,
+   "Prubechu (original Mission Street location)": 0
+  },
+  "bare_moves": 3
+ },
+ {
+  "base": "Quince",
+  "key": "quince",
+  "kind": "not ruled",
+  "why": "the note describes a successor or placeholder",
+  "spellings": [
+   "Quince (Octavia Street)",
+   "Quince (current location)",
+   "Quince (original location)",
+   "Quince (original location, now occupied by Baker and Banker)",
+   "Quince (post-renovation)",
+   "Quince (pre-renovation)"
+  ],
+  "notes": [
+   "octavia street",
+   "current location",
+   "original location",
+   "original location, now occupied by baker and banker",
+   "post-renovation",
+   "pre-renovation"
+  ],
+  "moves": {
+   "Quince (Octavia Street)": 1,
+   "Quince (current location)": 3,
+   "Quince (original location)": 2,
+   "Quince (original location, now occupied by Baker and Banker)": 1,
+   "Quince (post-renovation)": 0,
+   "Quince (pre-renovation)": 0
+  },
+  "bare_moves": 34
+ },
+ {
+  "base": "Raines Law Room",
+  "key": "raineslawroom",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Raines Law Room (NYC)"
+  ],
+  "notes": [
+   "nyc"
+  ],
+  "moves": {
+   "Raines Law Room (NYC)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "RakiRaki",
+  "key": "rakiraki",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "RakiRaki (San Diego-based chain)",
+   "RakiRaki (San Francisco outpost at 3282 Mission Street)"
+  ],
+  "notes": [
+   "san diego-based chain",
+   "san francisco outpost at 3282 mission street"
+  ],
+  "moves": {
+   "RakiRaki (San Diego-based chain)": 1,
+   "RakiRaki (San Francisco outpost at 3282 Mission Street)": 1
+  },
+  "bare_moves": 1
+ },
+ {
+  "base": "Rasoi",
+  "key": "rasoi",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Rasoi (Ferry Building)"
+  ],
+  "notes": [
+   "ferry building"
+  ],
+  "moves": {
+   "Rasoi (Ferry Building)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Ravintola Demo",
+  "key": "ravintolademo",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Ravintola Demo (Helsinki)"
+  ],
+  "notes": [
+   "helsinki"
+  ],
+  "moves": {
+   "Ravintola Demo (Helsinki)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Reem’s California",
+  "key": "reemscalifornia",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Reem's California (former Mission Pie space at 2901 Mission Street)",
+   "Reem’s California (Sunday farmers markets outside of the Ferry Building)"
+  ],
+  "notes": [
+   "former mission pie space at 2901 mission street",
+   "sunday farmers markets outside of the ferry building"
+  ],
+  "moves": {
+   "Reem's California (former Mission Pie space at 2901 Mission Street)": 0,
+   "Reem’s California (Sunday farmers markets outside of the Ferry Building)": 1
+  },
+  "bare_moves": 3
+ },
+ {
+  "base": "Rickey's",
+  "key": "rickeys",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Rickey's (Inn Marin)",
+   "Rickey's (at Inn Marin)"
+  ],
+  "notes": [
+   "inn marin",
+   "at inn marin"
+  ],
+  "moves": {
+   "Rickey's (Inn Marin)": 2,
+   "Rickey's (at Inn Marin)": 1
+  },
+  "bare_moves": 3
+ },
+ {
+  "base": "Ristorante Il Cartoccio",
+  "key": "ristoranteilcartoccio",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Ristorante Il Cartoccio (835 Hyde St.)",
+   "Ristorante Il Cartoccio (York Hotel)"
+  ],
+  "notes": [
+   "835 hyde st.",
+   "york hotel"
+  ],
+  "moves": {
+   "Ristorante Il Cartoccio (835 Hyde St.)": 2,
+   "Ristorante Il Cartoccio (York Hotel)": 2
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Ritz Carlton",
+  "key": "ritzcarlton",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Ritz Carlton (Phoenix)",
+   "Ritz Carlton (San Francisco)",
+   "Ritz-Carlton (San Francisco)",
+   "Ritz-Carlton (director of catering and conference services)"
+  ],
+  "notes": [
+   "phoenix",
+   "san francisco",
+   "san francisco",
+   "director of catering and conference services"
+  ],
+  "moves": {
+   "Ritz Carlton (Phoenix)": 1,
+   "Ritz Carlton (San Francisco)": 1,
+   "Ritz-Carlton (San Francisco)": 3,
+   "Ritz-Carlton (director of catering and conference services)": 0
+  },
+  "bare_moves": 3
+ },
+ {
+  "base": "Ritz Carlton Buckhead",
+  "key": "ritzcarltonbuckhead",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Ritz Carlton Buckhead (Atlanta)"
+  ],
+  "notes": [
+   "atlanta"
+  ],
+  "moves": {
+   "Ritz Carlton Buckhead (Atlanta)": 0
+  },
+  "bare_moves": 1
+ },
+ {
+  "base": "Ritz-Carlton Hotel",
+  "key": "ritzcarltonhotel",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Ritz-Carlton Hotel (San Francisco)"
+  ],
+  "notes": [
+   "san francisco"
+  ],
+  "moves": {
+   "Ritz-Carlton Hotel (San Francisco)": 2
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Riva Cucina",
+  "key": "rivacucina",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Riva Cucina (West Berkeley)",
+   "Riva Cucina (catering business in Napa Valley)"
+  ],
+  "notes": [
+   "west berkeley",
+   "catering business in napa valley"
+  ],
+  "moves": {
+   "Riva Cucina (West Berkeley)": 0,
+   "Riva Cucina (catering business in Napa Valley)": 0
+  },
+  "bare_moves": 1
+ },
+ {
+  "base": "RN74",
+  "key": "rn74",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "RN74 (in Millennium Tower)",
+   "RN74 (restaurant and wine bar in Millennium Tower)"
+  ],
+  "notes": [
+   "in millennium tower",
+   "restaurant and wine bar in millennium tower"
+  ],
+  "moves": {
+   "RN74 (in Millennium Tower)": 0,
+   "RN74 (restaurant and wine bar in Millennium Tower)": 1
+  },
+  "bare_moves": 7
+ },
+ {
+  "base": "Roastshop",
+  "key": "roastshop",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Roastshop (Palo Alto)"
+  ],
+  "notes": [
+   "palo alto"
+  ],
+  "moves": {
+   "Roastshop (Palo Alto)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Saha",
+  "key": "saha",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Saha (Hotel Carlton location)",
+   "Saha (Hotel Carlton, Lower Nob Hill)",
+   "Saha (downtown Berkeley)"
+  ],
+  "notes": [
+   "hotel carlton location",
+   "hotel carlton, lower nob hill",
+   "downtown berkeley"
+  ],
+  "moves": {
+   "Saha (Hotel Carlton location)": 1,
+   "Saha (Hotel Carlton, Lower Nob Hill)": 1,
+   "Saha (downtown Berkeley)": 2
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Salt & Straw",
+  "key": "saltstraw",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Salt & Straw (Burlingame)",
+   "Salt & Straw (Hayes Valley, San Francisco)",
+   "Salt & Straw (Pac Heights, San Francisco)",
+   "Salt & Straw (original Portland location)"
+  ],
+  "notes": [
+   "burlingame",
+   "hayes valley, san francisco",
+   "pac heights, san francisco",
+   "original portland location"
+  ],
+  "moves": {
+   "Salt & Straw (Burlingame)": 1,
+   "Salt & Straw (Hayes Valley, San Francisco)": 2,
+   "Salt & Straw (Pac Heights, San Francisco)": 4,
+   "Salt & Straw (original Portland location)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Sana’a Cafe",
+  "key": "sanaacafe",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Sana’a Cafe (San Rafael location)"
+  ],
+  "notes": [
+   "san rafael location"
+  ],
+  "moves": {
+   "Sana’a Cafe (San Rafael location)": 2
+  },
+  "bare_moves": 2
+ },
+ {
+  "base": "San Francisco",
+  "key": "sanfrancisco",
+  "kind": "not ruled",
+  "why": "the note describes a successor or placeholder",
+  "spellings": [
+   "San Francisco (unspecified location)"
+  ],
+  "notes": [
+   "unspecified location"
+  ],
+  "moves": {
+   "San Francisco (unspecified location)": 1
+  },
+  "bare_moves": 2
+ },
+ {
+  "base": "San Francisco Ferry Building",
+  "key": "sanfranciscoferrybuilding",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "San Francisco Ferry Building (food stall)"
+  ],
+  "notes": [
+   "food stall"
+  ],
+  "moves": {
+   "San Francisco Ferry Building (food stall)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Santa Monica restaurant",
+  "key": "santamonicarestaurant",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Santa Monica restaurant (Farmshop)"
+  ],
+  "notes": [
+   "farmshop"
+  ],
+  "moves": {
+   "Santa Monica restaurant (Farmshop)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Schat's Bakkerij",
+  "key": "schatsbakkerij",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Schat's Bakkerij (formerly Napa Valley Ovens)"
+  ],
+  "notes": [
+   "formerly napa valley ovens"
+  ],
+  "moves": {
+   "Schat's Bakkerij (formerly Napa Valley Ovens)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Scott Howard",
+  "key": "scotthoward",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Scott Howard (eponymous restaurant)"
+  ],
+  "notes": [
+   "eponymous restaurant"
+  ],
+  "moves": {
+   "Scott Howard (eponymous restaurant)": 1
+  },
+  "bare_moves": 2
+ },
+ {
+  "base": "Señor Sisig",
+  "key": "senorsisig",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Señor Sisig (Ferry Building outpost)",
+   "Señor Sisig (food truck business)",
+   "Señor Sisig (permanent location at 990 Valencia St)"
+  ],
+  "notes": [
+   "ferry building outpost",
+   "food truck business",
+   "permanent location at 990 valencia st"
+  ],
+  "moves": {
+   "Señor Sisig (Ferry Building outpost)": 0,
+   "Señor Sisig (food truck business)": 2,
+   "Señor Sisig (permanent location at 990 Valencia St)": 0
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Serrano's",
+  "key": "serranos",
+  "kind": "not ruled",
+  "why": "the note describes a successor or placeholder",
+  "spellings": [
+   "Serrano's (proposed)"
+  ],
+  "notes": [
+   "proposed"
+  ],
+  "moves": {
+   "Serrano's (proposed)": 2
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Servino Ristorante",
+  "key": "servinoristorante",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Servino Ristorante (Tiburon)"
+  ],
+  "notes": [
+   "tiburon"
+  ],
+  "moves": {
+   "Servino Ristorante (Tiburon)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Seven Hills",
+  "key": "sevenhills",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Seven Hills (new location)"
+  ],
+  "notes": [
+   "new location"
+  ],
+  "moves": {
+   "Seven Hills (new location)": 1
+  },
+  "bare_moves": 7
+ },
+ {
+  "base": "Seven Stills",
+  "key": "sevenstills",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Seven Stills (Bayview location)",
+   "Seven Stills (Mission Bay flagship)"
+  ],
+  "notes": [
+   "bayview location",
+   "mission bay flagship"
+  ],
+  "moves": {
+   "Seven Stills (Bayview location)": 4,
+   "Seven Stills (Mission Bay flagship)": 4
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Silks",
+  "key": "silks",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Silks (Mandarin Oriental Hotel)"
+  ],
+  "notes": [
+   "mandarin oriental hotel"
+  ],
+  "moves": {
+   "Silks (Mandarin Oriental Hotel)": 1
+  },
+  "bare_moves": 2
+ },
+ {
+  "base": "Skal",
+  "key": "skal",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Skal (NY)"
+  ],
+  "notes": [
+   "ny"
+  ],
+  "moves": {
+   "Skal (NY)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Soby’s New South Cuisine",
+  "key": "sobysnewsouthcuisine",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Soby’s New South Cuisine (Greenville, SC)"
+  ],
+  "notes": [
+   "greenville, sc"
+  ],
+  "moves": {
+   "Soby’s New South Cuisine (Greenville, SC)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Soma Grand",
+  "key": "somagrand",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Soma Grand (restaurant in the Soma Grand complex)"
+  ],
+  "notes": [
+   "restaurant in the soma grand complex"
+  ],
+  "moves": {
+   "Soma Grand (restaurant in the Soma Grand complex)": 0
+  },
+  "bare_moves": 1
+ },
+ {
+  "base": "Sons & Daughters",
+  "key": "sonsdaughters",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Sons & Daughters (new Mission District space)"
+  ],
+  "notes": [
+   "new mission district space"
+  ],
+  "moves": {
+   "Sons & Daughters (new Mission District space)": 0
+  },
+  "bare_moves": 14
+ },
+ {
+  "base": "South Food + Wine Bar",
+  "key": "southfoodwinebar",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "South Food + Wine Bar (LA expansion)"
+  ],
+  "notes": [
+   "la expansion"
+  ],
+  "moves": {
+   "South Food + Wine Bar (LA expansion)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Spago",
+  "key": "spago",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Spago (Palo Alto)"
+  ],
+  "notes": [
+   "palo alto"
+  ],
+  "moves": {
+   "Spago (Palo Alto)": 0
+  },
+  "bare_moves": 1
+ },
+ {
+  "base": "Squat & Gobble",
+  "key": "squatgobble",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Squat & Gobble (Castro location)",
+   "Squat & Gobble (Marina location)"
+  ],
+  "notes": [
+   "castro location",
+   "marina location"
+  ],
+  "moves": {
+   "Squat & Gobble (Castro location)": 1,
+   "Squat & Gobble (Marina location)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Stars (Gail Pirie) and Faz organization",
+  "key": "starsgailpirieandfazorganization",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Stars (Gail Pirie) and Faz organization (John Clark)"
+  ],
+  "notes": [
+   "john clark"
+  ],
+  "moves": {
+   "Stars (Gail Pirie) and Faz organization (John Clark)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Starter Bakery",
+  "key": "starterbakery",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Starter Bakery (brick-and-mortar)"
+  ],
+  "notes": [
+   "brick-and-mortar"
+  ],
+  "moves": {
+   "Starter Bakery (brick-and-mortar)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Steps of Rome",
+  "key": "stepsofrome",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Steps of Rome (new venture at 362 Columbus)"
+  ],
+  "notes": [
+   "new venture at 362 columbus"
+  ],
+  "moves": {
+   "Steps of Rome (new venture at 362 Columbus)": 2
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Straits",
+  "key": "straits",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Straits (San Francisco Centre)"
+  ],
+  "notes": [
+   "san francisco centre"
+  ],
+  "moves": {
+   "Straits (San Francisco Centre)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "St. Regis",
+  "key": "stregis",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "St. Regis (Los Angeles)"
+  ],
+  "notes": [
+   "los angeles"
+  ],
+  "moves": {
+   "St. Regis (Los Angeles)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "St. Regis Hotel",
+  "key": "stregishotel",
+  "kind": "not ruled",
+  "why": "the note describes a successor or placeholder",
+  "spellings": [
+   "St. Regis Hotel (unnamed restaurant)"
+  ],
+  "notes": [
+   "unnamed restaurant"
+  ],
+  "moves": {
+   "St. Regis Hotel (unnamed restaurant)": 2
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Sushi by Scratch",
+  "key": "sushibyscratch",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Sushi by Scratch (Healdsburg)",
+   "Sushi by Scratch (Santa Barbara County)"
+  ],
+  "notes": [
+   "healdsburg",
+   "santa barbara county"
+  ],
+  "moves": {
+   "Sushi by Scratch (Healdsburg)": 2,
+   "Sushi by Scratch (Santa Barbara County)": 2
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Syrah",
+  "key": "syrah",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Syrah (Santa Rosa)"
+  ],
+  "notes": [
+   "santa rosa"
+  ],
+  "moves": {
+   "Syrah (Santa Rosa)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Tacos El Último Baile",
+  "key": "tacoselultimobaile",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Tacos El Ultimo Baile (food truck/stand)",
+   "Tacos El Último Baile (Fruitvale Public Market)",
+   "Tacos El Último Baile (permanent space)"
+  ],
+  "notes": [
+   "food truck/stand",
+   "fruitvale public market",
+   "permanent space"
+  ],
+  "moves": {
+   "Tacos El Ultimo Baile (food truck/stand)": 0,
+   "Tacos El Último Baile (Fruitvale Public Market)": 0,
+   "Tacos El Último Baile (permanent space)": 0
+  },
+  "bare_moves": 1
+ },
+ {
+  "base": "Tap",
+  "key": "tap",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Tap(415)"
+  ],
+  "notes": [
+   "415"
+  ],
+  "moves": {
+   "Tap(415)": 2
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Tara’s Organic Ice Cream",
+  "key": "tarasorganicicecream",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Tara’s Organic Ice Cream (Oakland location)",
+   "Tara’s Organic Ice Cream (Temescal, Oakland location)"
+  ],
+  "notes": [
+   "oakland location",
+   "temescal, oakland location"
+  ],
+  "moves": {
+   "Tara’s Organic Ice Cream (Oakland location)": 1,
+   "Tara’s Organic Ice Cream (Temescal, Oakland location)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Tastings",
+  "key": "tastings",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Tastings (Healdsburg)",
+   "Tastings (Lahaina on Maui)"
+  ],
+  "notes": [
+   "healdsburg",
+   "lahaina on maui"
+  ],
+  "moves": {
+   "Tastings (Healdsburg)": 2,
+   "Tastings (Lahaina on Maui)": 2
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Tell Tale Preserve Co.",
+  "key": "telltalepreserveco",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Tell Tale Preserve Co. (pop-up at Big Daddy Antiques shop)"
+  ],
+  "notes": [
+   "pop-up at big daddy antiques shop"
+  ],
+  "moves": {
+   "Tell Tale Preserve Co. (pop-up at Big Daddy Antiques shop)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "The Terrace",
+  "key": "terrace",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "The Terrace (Ritz Carlton San Francisco)"
+  ],
+  "notes": [
+   "ritz carlton san francisco"
+  ],
+  "moves": {
+   "The Terrace (Ritz Carlton San Francisco)": 2
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Terrace Restaurant",
+  "key": "terracerestaurant",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Terrace Restaurant (Ritz-Carlton, San Francisco)"
+  ],
+  "notes": [
+   "ritz-carlton, san francisco"
+  ],
+  "moves": {
+   "Terrace Restaurant (Ritz-Carlton, San Francisco)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Thomas Keller's gardens",
+  "key": "thomaskellersgardens",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Thomas Keller's gardens (including the French Laundry)"
+  ],
+  "notes": [
+   "including the french laundry"
+  ],
+  "moves": {
+   "Thomas Keller's gardens (including the French Laundry)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Tiya",
+  "key": "tiya",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Tiya (San Francisco)"
+  ],
+  "notes": [
+   "san francisco"
+  ],
+  "moves": {
+   "Tiya (San Francisco)": 0
+  },
+  "bare_moves": 3
+ },
+ {
+  "base": "Todo el Dia",
+  "key": "todoeldia",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Todo el Dia (Noe Valley)"
+  ],
+  "notes": [
+   "noe valley"
+  ],
+  "moves": {
+   "Todo el Dia (Noe Valley)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Tomatina",
+  "key": "tomatina",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Tomatina (St. Helena)"
+  ],
+  "notes": [
+   "st. helena"
+  ],
+  "moves": {
+   "Tomatina (St. Helena)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Topper’s at the Wauwinet",
+  "key": "toppersatthewauwinet",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Topper’s at the Wauwinet (Nantucket’s Relais & Chateaux)"
+  ],
+  "notes": [
+   "nantucket’s relais & chateaux"
+  ],
+  "moves": {
+   "Topper’s at the Wauwinet (Nantucket’s Relais & Chateaux)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Torraku Ramen",
+  "key": "torrakuramen",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Torraku Ramen (1449 Lombard St.)",
+   "Torraku Ramen (300 De Haro, Potrero Hill)",
+   "Torraku Ramen (SoMa StrEat Food Park / District 6, food truck)"
+  ],
+  "notes": [
+   "1449 lombard st.",
+   "300 de haro, potrero hill",
+   "soma streat food park / district 6, food truck"
+  ],
+  "moves": {
+   "Torraku Ramen (1449 Lombard St.)": 1,
+   "Torraku Ramen (300 De Haro, Potrero Hill)": 1,
+   "Torraku Ramen (SoMa StrEat Food Park / District 6, food truck)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "T-Rex",
+  "key": "trex",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "T-Rex (upcoming venue)"
+  ],
+  "notes": [
+   "upcoming venue"
+  ],
+  "moves": {
+   "T-Rex (upcoming venue)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Tru",
+  "key": "tru",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Tru (Chicago)"
+  ],
+  "notes": [
+   "chicago"
+  ],
+  "moves": {
+   "Tru (Chicago)": 1
+  },
+  "bare_moves": 1
+ },
+ {
+  "base": "Tsuta",
+  "key": "tsuta",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Tsuta (San Francisco)",
+   "Tsuta (Tokyo)"
+  ],
+  "notes": [
+   "san francisco",
+   "tokyo"
+  ],
+  "moves": {
+   "Tsuta (San Francisco)": 1,
+   "Tsuta (Tokyo)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Ty-Flo land",
+  "key": "tyfloland",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Ty-Flo land (Wayfare Tavern, El Paseo, Rotisserie and Wine)"
+  ],
+  "notes": [
+   "wayfare tavern, el paseo, rotisserie and wine"
+  ],
+  "moves": {
+   "Ty-Flo land (Wayfare Tavern, El Paseo, Rotisserie and Wine)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Union Square",
+  "key": "unionsquare",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Union Square (dual cafes)"
+  ],
+  "notes": [
+   "dual cafes"
+  ],
+  "moves": {
+   "Union Square (dual cafes)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Venga Empanadas",
+  "key": "vengaempanadas",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Venga Empanadas (Mission shop)",
+   "Venga Empanadas (commercial kitchen)"
+  ],
+  "notes": [
+   "mission shop",
+   "commercial kitchen"
+  ],
+  "moves": {
+   "Venga Empanadas (Mission shop)": 1,
+   "Venga Empanadas (commercial kitchen)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Verjus",
+  "key": "verjus",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Verjus (reopened)"
+  ],
+  "notes": [
+   "reopened"
+  ],
+  "moves": {
+   "Verjus (reopened)": 0
+  },
+  "bare_moves": 4
+ },
+ {
+  "base": "Via Aurelia",
+  "key": "viaaurelia",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Via Aurelia (San Francisco)"
+  ],
+  "notes": [
+   "san francisco"
+  ],
+  "moves": {
+   "Via Aurelia (San Francisco)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Viognier",
+  "key": "viognier",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Viognier (Draeger's in San Mateo)"
+  ],
+  "notes": [
+   "draeger's in san mateo"
+  ],
+  "moves": {
+   "Viognier (Draeger's in San Mateo)": 2
+  },
+  "bare_moves": 4
+ },
+ {
+  "base": "Waterfront Restaurant & Cafe",
+  "key": "waterfrontrestaurantcafe",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Waterfront Restaurant & Cafe (upstairs dining room)"
+  ],
+  "notes": [
+   "upstairs dining room"
+  ],
+  "moves": {
+   "Waterfront Restaurant & Cafe (upstairs dining room)": 0
+  },
+  "bare_moves": 1
+ },
+ {
+  "base": "Waxman’s and J. Bird",
+  "key": "waxmansandjbird",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Waxman’s and J. Bird (Ghirardelli Square)"
+  ],
+  "notes": [
+   "ghirardelli square"
+  ],
+  "moves": {
+   "Waxman’s and J. Bird (Ghirardelli Square)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Wells Fargo",
+  "key": "wellsfargo",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Wells Fargo (private dining room)"
+  ],
+  "notes": [
+   "private dining room"
+  ],
+  "moves": {
+   "Wells Fargo (private dining room)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Whole Beast",
+  "key": "wholebeast",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Whole Beast (seafood stand)"
+  ],
+  "notes": [
+   "seafood stand"
+  ],
+  "moves": {
+   "Whole Beast (seafood stand)": 0
+  },
+  "bare_moves": 1
+ },
+ {
+  "base": "Whole Foods",
+  "key": "wholefoods",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Whole Foods (Berkeley)",
+   "Whole Foods (Berkeley, meat department)",
+   "Whole Foods (San Francisco, deli department)"
+  ],
+  "notes": [
+   "berkeley",
+   "berkeley, meat department",
+   "san francisco, deli department"
+  ],
+  "moves": {
+   "Whole Foods (Berkeley)": 0,
+   "Whole Foods (Berkeley, meat department)": 0,
+   "Whole Foods (San Francisco, deli department)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Whole Foods markets",
+  "key": "wholefoodsmarkets",
+  "kind": "not ruled",
+  "why": "the note names a place the rule cannot place",
+  "spellings": [
+   "Whole Foods markets (Northern California region)"
+  ],
+  "notes": [
+   "northern california region"
+  ],
+  "moves": {
+   "Whole Foods markets (Northern California region)": 2
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Wild Hare",
+  "key": "wildhare",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Wild Hare (Menlo Park)"
+  ],
+  "notes": [
+   "menlo park"
+  ],
+  "moves": {
+   "Wild Hare (Menlo Park)": 2
+  },
+  "bare_moves": 5
+ },
+ {
+  "base": "Willie's Cafe",
+  "key": "williescafe",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Willie's Cafe (Kentfield)"
+  ],
+  "notes": [
+   "kentfield"
+  ],
+  "moves": {
+   "Willie's Cafe (Kentfield)": 2
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Wine Spectator Restaurant at CIA's Greystone campus",
+  "key": "winespectatorrestaurantatciasgreystonecampus",
+  "kind": "locations",
+  "why": "a branch in another city",
+  "spellings": [
+   "Wine Spectator Restaurant at CIA's Greystone campus (St. Helena)"
+  ],
+  "notes": [
+   "st. helena"
+  ],
+  "moves": {
+   "Wine Spectator Restaurant at CIA's Greystone campus (St. Helena)": 1
+  },
+  "bare_moves": 0
+ },
+ {
+  "base": "Yabbies Coastal Kitchen",
+  "key": "yabbiescoastalkitchen",
+  "kind": "merge",
+  "why": "same-city relocation or room note",
+  "spellings": [
+   "Yabbies Coastal Kitchen (2237 Polk St.)"
+  ],
+  "notes": [
+   "2237 polk st."
+  ],
+  "moves": {
+   "Yabbies Coastal Kitchen (2237 Polk St.)": 3
+  },
+  "bare_moves": 7
+ }
+]
