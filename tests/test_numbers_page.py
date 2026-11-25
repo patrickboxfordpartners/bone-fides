@@ -42,7 +42,9 @@ def _clear_caches():
 
 def test_numbers_with_the_index_down():
     _clear_caches()
-    status, headers, body = _get("/api/numbers", "", "num-1")
+    # this Down fails count() too, so stats() dies the way a dead index dies
+    status, headers, body = dossier.dispatch(
+        "/api/numbers", "", "num-1", client=lambda: Down())
     d = json.loads(body)
     hdrs = {k.lower(): v for k, v in headers.items()}
     assert status == 200
@@ -81,6 +83,12 @@ def test_numbers_live_figures_and_freshness():
         canned["coverage"]["edges"] = 9400  # the graph is now stale
         out = dossier._numbers(None)
         assert out["fresh"] is False
+        # a live payload may sit in an edge cache only as long as its own TTL
+        status, headers, body = dossier.dispatch(
+            "/api/numbers", "", "num-2", client=lambda: None)
+        assert json.loads(body)["live"]["edges"] == 9400
+        assert {k.lower(): v for k, v in headers.items()}["cache-control"] == \
+            "public, max-age=300"
     finally:
         dossier.method = real
         _clear_caches()

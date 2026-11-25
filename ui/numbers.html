@@ -253,10 +253,10 @@ section .rsec{display:grid;grid-template-columns:120px 1fr;gap:0 24px}
     <div class="stat"><span class="micro-k">Between two named kitchens</span><b class="fig" data-fig="hops">&mdash;</b><span>Link two kitchens</span><small>these draw every tree, every line and every rank</small></div>
     <div class="stat"><span class="micro-k">Source articles</span><b class="fig" data-fig="live-sources">&mdash;</b><span>Articles cited</span><small>each one linked from the moves it supports</small></div>
   </div>
-  <p class="stale" id="stale" hidden></p>
-  <p class="livenote" id="livenote" hidden>The live figures could not be measured just now. The figures from the
+  <p class="stale" id="stale" role="status" hidden></p>
+  <p class="livenote" id="livenote" role="status" hidden>The live figures could not be measured just now. The figures from the
     committed files below carry their own build date.</p>
-  <p class="failmsg" id="fail" hidden>
+  <p class="failmsg" id="fail" role="status" hidden>
     <span id="failtxt">The figures could not be loaded. The request failed.</span><br>
     <button type="button" class="retry" id="retry">Try again</button>
   </p>
@@ -270,14 +270,14 @@ section .rsec{display:grid;grid-template-columns:120px 1fr;gap:0 24px}
           is a count of moves you can read, quote by quote, on this site.</p>
         <p class="figlabel"><span class="f">Fig. 1</span><span class="ft">From article to graph, measured <span class="fig" data-fig="graph-date">&mdash;</span></span></p>
         <div class="funnel">
-          <div class="frow"><div class="fn"><b class="fig" data-fig="live-edges2">&mdash;</b><span>Moves on record</span></div>
+          <div class="frow"><div class="fn"><b class="fig" data-fig="live-edges">&mdash;</b><span>Moves on record</span></div>
             <div class="fb"><div class="fbar" role="img" aria-label="All moves on record"><span data-bar="on-record" style="width:100%"></span></div>
-              <p class="ft">Extracted from <b class="fig" data-fig="live-sources2">&mdash;</b> articles of public food journalism. Each has a person, a kitchen, a role and a quoted sentence, and <b>the quote was found word for word in its article</b>.</p></div></div>
-          <div class="frow"><div class="fn"><b class="fig" data-fig="gate-passed2">&mdash;</b><span>Displayed after the citation gate</span></div>
+              <p class="ft">Extracted from <b class="fig" data-fig="live-sources">&mdash;</b> articles of public food journalism. Each has a person, a kitchen, a role and a quoted sentence, and <b>the quote was found word for word in its article</b>.</p></div></div>
+          <div class="frow"><div class="fn"><b class="fig" data-fig="gate-passed">&mdash;</b><span>Displayed after the citation gate</span></div>
             <div class="fb"><div class="fbar" role="img" aria-label="Displayed moves"><span data-bar="gate-passed"></span></div>
               <p class="ft"><b>The quote itself must state a career move.</b> Only these moves appear anywhere on the site.</p>
               <p class="drop">Held back: guest shifts, pop-ups, supplier credits, and quotes that set a name beside a kitchen without saying the person worked there.</p></div></div>
-          <div class="frow"><div class="fn"><b class="fig" data-fig="hops2">&mdash;</b><span>Between two named kitchens</span></div>
+          <div class="frow"><div class="fn"><b class="fig" data-fig="hops">&mdash;</b><span>Between two named kitchens</span></div>
             <div class="fb"><div class="fbar" role="img" aria-label="Moves between two named kitchens"><span data-bar="hops"></span></div>
               <p class="ft">Displayed moves that state both the kitchen left and the kitchen joined. <b>These draw every tree, every line and every rank.</b></p>
               <p class="drop">The rest state one kitchen only. They appear on a dossier and draw no line.</p></div></div>
@@ -340,19 +340,19 @@ section .rsec{display:grid;grid-template-columns:120px 1fr;gap:0 24px}
         <p class="figlabel"><span class="f">Fig. 3</span><span class="ft">Coverage of the record, measured</span></p>
         <div class="cov">
           <div class="covrow"><div class="covtop"><span class="cl">Displayed moves with a quoted sentence and a source link<span class="tag solid">all</span></span>
-            <span class="cv"><b class="fig" data-fig="gate-passed3">&mdash;</b> of <span class="fig" data-fig="gate-passed4">&mdash;</span></span></div>
+            <span class="cv"><b class="fig" data-fig="gate-passed">&mdash;</b> of <span class="fig" data-fig="gate-passed">&mdash;</span></span></div>
             <div class="track" role="img" aria-label="All displayed moves carry their quotation"><span data-bar="gate-quoted" style="width:100%"></span></div>
             <p class="covnote">The gate guarantees this one. A move without its sentence is not displayed.</p></div>
           <div class="covrow"><div class="covtop"><span class="cl">Displayed moves that carry a year<span class="tag thin">thin</span></span>
-            <span class="cv"><b class="fig" data-fig="moves-year">&mdash;</b> of <span class="fig" data-fig="gate-passed5">&mdash;</span></span></div>
+            <span class="cv"><b class="fig" data-fig="moves-year">&mdash;</b> of <span class="fig" data-fig="gate-passed">&mdash;</span></span></div>
             <div class="track" role="img" aria-label="Displayed moves with a year"><span data-bar="moves-year"></span></div>
             <p class="covnote">A move gets a year only when the article states one.</p></div>
           <div class="covrow"><div class="covtop"><span class="cl">Kitchens on record that a displayed move links<span class="tag part">partial</span></span>
-            <span class="cv"><b class="fig" data-fig="linked2">&mdash;</b> of <span class="fig" data-fig="live-venues">&mdash;</span></span></div>
+            <span class="cv"><b class="fig" data-fig="linked">&mdash;</b> of <span class="fig" data-fig="live-venues">&mdash;</span></span></div>
             <div class="track" role="img" aria-label="Kitchens on record that a displayed move links"><span data-bar="linked-venues"></span></div>
             <p class="covnote">The others appear on dossiers and are not yet joined to another kitchen.</p></div>
           <div class="covrow"><div class="covtop"><span class="cl">Linked kitchens in the largest connected set<span class="tag part">partial</span></span>
-            <span class="cv"><b class="fig" data-fig="largest2">&mdash;</b> of <span class="fig" data-fig="linked3">&mdash;</span></span></div>
+            <span class="cv"><b class="fig" data-fig="largest">&mdash;</b> of <span class="fig" data-fig="linked">&mdash;</span></span></div>
             <div class="track" role="img" aria-label="Linked kitchens in the largest connected set"><span data-bar="largest-linked"></span></div>
             <p class="covnote">Connect can join any two of these. The rest sit in smaller sets.</p></div>
           <div class="covrow"><div class="covtop"><span class="cl">Michelin-starred San Francisco kitchens with a displayed move<span class="tag part">partial</span></span>
@@ -364,7 +364,7 @@ section .rsec{display:grid;grid-template-columns:120px 1fr;gap:0 24px}
         <p class="sbody">Nine limits a reader should know. Each carries its own figure.</p>
         <ol class="gaps">
           <li><p><b class="fig" data-fig="held-back">&mdash;</b> moves on record are not displayed, because the quote does not state the move. The site shows the smaller number, not the bigger one.</p></li>
-          <li><p>The precision of the displayed moves is a sample measurement: <b class="fig" data-fig="sample-true">&mdash;</b> of <b class="fig" data-fig="sample-n2">&mdash;</b> sampled moves held up, measured <span class="fig" data-fig="gate-date2">&mdash;</span>, with a 95% lower bound of <b class="fig" data-fig="precision-low2">&mdash;</b>%.</p></li>
+          <li><p>The precision of the displayed moves is a sample measurement: <b class="fig" data-fig="sample-true">&mdash;</b> of <b class="fig" data-fig="sample-n">&mdash;</b> sampled moves held up, measured <span class="fig" data-fig="gate-date">&mdash;</span>, with a 95% lower bound of <b class="fig" data-fig="precision-low">&mdash;</b>%.</p></li>
           <li><p>Dates are thin: <b class="fig" data-fig="date-pct">&mdash;</b>% of moves on record carry a date and <b class="fig" data-fig="era-pct">&mdash;</b>% a usable year. The site makes no timeline claim.</p></li>
           <li><p>Two outlets supply nearly all moves: <b class="fig" data-fig="two-outlets-pct">&mdash;</b>% from Eater and SFGATE together. The record follows their coverage.</p></li>
           <li><p>Some starred kitchens have no displayed move. <span class="fig names" data-fig="starred-missing">&mdash;</span></p></li>
@@ -386,7 +386,7 @@ section .rsec{display:grid;grid-template-columns:120px 1fr;gap:0 24px}
           checked against that exact restaurant.</p>
         <p class="figlabel"><span class="f">Fig. 4</span><span class="ft">Booking coverage, verified pages only</span></p>
         <div class="bgrid">
-          <div class="bcard"><span class="big fig" data-fig="booking-pins2">&mdash;</span>
+          <div class="bcard"><span class="big fig" data-fig="booking-pins">&mdash;</span>
             <p class="bsub">venues carry a verified booking link</p>
             <div class="plat"><span class="p">Resy</span><span class="p">OpenTable</span><span class="p">Tock</span></div>
             <p class="bnote" style="margin-top:16px">The booking files hold <b class="fig" data-fig="dossier-names">&mdash;</b> verified restaurant pages in all, and <b class="fig" data-fig="graph-kitchens">&mdash;</b> kitchens in the graph carry a verified link on their dossier.</p></div>
@@ -418,7 +418,7 @@ section .rsec{display:grid;grid-template-columns:120px 1fr;gap:0 24px}
         <div class="callout"><h4>What this page does not count.</h4>
           <p>How many kitchens on record sit outside San Francisco is not given here. The record holds no location
             per kitchen, so that number cannot be read from it, and none is offered. The permit file places
-            <b class="fig" data-fig="placed-sf2">&mdash;</b> linked kitchens in San Francisco; the rest are closed San
+            <b class="fig" data-fig="placed-sf">&mdash;</b> linked kitchens in San Francisco; the rest are closed San
             Francisco kitchens, Bay Area kitchens and kitchens elsewhere, and the record cannot split them.</p></div>
         <p class="next">A new market needs three things from this repository, and no date is given because none has been
           measured: <b>a source list</b> (the reading list and the corpus queries), <b>the permit file of each city</b>
@@ -491,18 +491,15 @@ section .rsec{display:grid;grid-template-columns:120px 1fr;gap:0 24px}
   function $ (id) { return document.getElementById(id); }
   function fig (key, v, pct) {
     document.querySelectorAll('[data-fig="' + key + '"]').forEach(function (el) {
-      el.textContent = v == null ? '—' : (pct ? v.toFixed(1) : L.fmt(v));
-    });
-  }
-  // dates and other raw strings never go through the number formatter
-  function figRaw (key, v) {
-    document.querySelectorAll('[data-fig="' + key + '"]').forEach(function (el) {
-      el.textContent = v == null || v === '' ? '—' : String(v);
+      // a raw string (a date) never goes through the number formatter
+      el.textContent = v == null || v === '' ? '—'
+        : (typeof v === 'string' ? v : (pct ? v.toFixed(1) : L.fmt(v)));
     });
   }
   function bar (key, w) {
+    w = isFinite(w) ? Math.max(0, Math.min(100, w)) : 0;
     document.querySelectorAll('[data-bar="' + key + '"]').forEach(function (el) {
-      el.style.width = Math.max(0, Math.min(100, w)) + '%';
+      el.style.width = w + '%';
     });
   }
 
@@ -512,36 +509,34 @@ section .rsec{display:grid;grid-template-columns:120px 1fr;gap:0 24px}
     var displayed = g.gate_passed;
     fig('on-record', onRecord);
     fig('displayed', displayed);
-    fig('live-edges', onRecord); fig('live-edges2', onRecord);
-    fig('gate-passed', displayed); fig('gate-passed2', displayed);
-    fig('gate-passed3', displayed); fig('gate-passed4', displayed);
-    fig('gate-passed5', displayed);
-    fig('hops', g.hops); fig('hops2', g.hops);
-    fig('linked', g.kitchens_linked); fig('linked2', g.kitchens_linked);
-    fig('linked3', g.kitchens_linked);
-    fig('largest', g.largest_set); fig('largest2', g.largest_set);
+    fig('live-edges', onRecord);
+    fig('gate-passed', displayed);
+    fig('hops', g.hops);
+    fig('linked', g.kitchens_linked);
+    fig('largest', g.largest_set);
     fig('live-sources', live ? live.sources : null);
-    fig('live-sources2', live ? live.sources : null);
     fig('live-venues', live ? live.venues : null);
-    figRaw('graph-date', (g.built_at || '').slice(0, 10) || null);
+    fig('graph-date', (g.built_at || '').slice(0, 10) || null);
 
     // funnel bars: every row is a share of the moves on record
-    var base = onRecord || displayed;
+    var base = live ? live.edges : g.source_moves;
     bar('gate-passed', 100 * displayed / base);
     bar('hops', 100 * g.hops / base);
     bar('linked', 100 * g.kitchens_linked / base);
     bar('largest', 100 * g.largest_set / base);
 
-    // the gate measurement
-    fig('precision-pct', gate.precision != null ? 100 * gate.precision : null);
-    fig('precision-low', gate.precision_low != null ? 100 * gate.precision_low : null);
-    fig('precision-low2', gate.precision_low != null ? 100 * gate.precision_low : null);
-    fig('sample-n', gate.sample_n); fig('sample-n2', gate.sample_n);
-    fig('sample-true', gate.sample_true);
-    fig('baseline-pct', gate.baseline_n ? 100 * gate.baseline_true / gate.baseline_n : null);
-    fig('baseline-true', gate.baseline_true); fig('baseline-n', gate.baseline_n);
-    fig('newly-displayed', gate.newly_displayed);
-    figRaw('gate-date', gate.measured_at); figRaw('gate-date2', gate.measured_at);
+    // the gate measurement: a missing stamp leaves these slots empty
+    // without aborting the rest of the page
+    if (gate) {
+      fig('precision-pct', gate.precision != null ? 100 * gate.precision : null);
+      fig('precision-low', gate.precision_low != null ? 100 * gate.precision_low : null);
+      fig('sample-n', gate.sample_n);
+      fig('sample-true', gate.sample_true);
+      fig('baseline-pct', gate.baseline_n ? 100 * gate.baseline_true / gate.baseline_n : null);
+      fig('baseline-true', gate.baseline_true); fig('baseline-n', gate.baseline_n);
+      fig('newly-displayed', gate.newly_displayed);
+      fig('gate-date', gate.measured_at);
+    }
 
     // sources
     var tiers = live ? live.tiers : null;
@@ -557,7 +552,6 @@ section .rsec{display:grid;grid-template-columns:120px 1fr;gap:0 24px}
     // coverage rows
     fig('moves-year', g.moves_with_year);
     bar('moves-year', 100 * g.moves_with_year / displayed);
-    bar('gate-quoted', 100);
     bar('linked-venues', live ? 100 * g.kitchens_linked / live.venues : 0);
     bar('largest-linked', 100 * g.largest_set / g.kitchens_linked);
     var star = g.starred || {};
@@ -575,13 +569,12 @@ section .rsec{display:grid;grid-template-columns:120px 1fr;gap:0 24px}
     fig('era-pct', live && live.edges ? 100 * live.coverage.era_bucket / live.edges : null, true);
     fig('outside-main', g.kitchens_linked - g.largest_set);
     fig('published', g.published_at);
-    fig('booking-pins', d.booking ? d.booking.map_pins : null);
-    fig('booking-pins2', d.booking ? d.booking.map_pins : null);
-    fig('map-pins', d.map ? d.map.pins : null);
-    fig('dossier-names', d.booking ? d.booking.dossier_names : null);
-    fig('graph-kitchens', d.booking ? d.booking.graph_kitchens : null);
+    var bk = d.booking || {}, mp = d.map || {};
+    fig('booking-pins', bk.map_pins);
+    fig('map-pins', mp.pins);
+    fig('dossier-names', bk.dossier_names);
+    fig('graph-kitchens', bk.graph_kitchens);
     fig('placed-sf', g.bay_area ? g.bay_area.kitchens_placed_sf : null);
-    fig('placed-sf2', g.bay_area ? g.bay_area.kitchens_placed_sf : null);
 
     // the Bay Area
     var ba = g.bay_area || {};

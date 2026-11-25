@@ -63,24 +63,21 @@ _METHOD_CACHE = {"at": 0.0, "value": None}
 _COVERAGE_FIELDS = ("date", "era_bucket", "venue_hoods", "action", "mentor")
 
 
+def _json_count(name):
+    """Key count of one committed JSON file, or 0 when it is absent."""
+    try:
+        with open(data_path(name)) as f:
+            return len(json.load(f))
+    except (OSError, ValueError):
+        return 0
+
+
 def _booking_figures(g):
     """Booking coverage for /numbers: verified links only, by file (section 11)."""
-    venue_file = data_path("venue_booking.json")
-    map_pins = 0
-    try:
-        with open(venue_file) as f:
-            map_pins = len(json.load(f))
-    except (OSError, ValueError):
-        pass
-    dossier_names = 0
-    try:
-        with open(data_path("dossier_booking.json")) as f:
-            dossier_names = len(json.load(f))
-    except (OSError, ValueError):
-        pass
-    graph_kitchens = sum(1 for k in g["kitchens"] if dossier_booking(k[1]))
-    return {"map_pins": map_pins, "dossier_names": dossier_names,
-            "graph_kitchens": graph_kitchens}
+    return {"map_pins": _json_count("venue_booking.json"),
+            "dossier_names": _json_count("dossier_booking.json"),
+            "graph_kitchens": sum(1 for k in g["kitchens"]
+                                  if dossier_booking(k[1]))}
 
 
 def _numbers(es):
@@ -101,18 +98,17 @@ def _numbers(es):
            "booking": _booking_figures(g),
            "map": {"pins": len(venues_geo())}}
     try:
-        m = method(es)
-        c = m["coverage"]
-        out["live"] = {
-            "edges": c["edges"], "people": c["people"],
-            "venues": c["venues"], "sources": c["sources"],
-            "coverage": {f: c[f] for f in _COVERAGE_FIELDS},
-            "tiers": m["tiers"],
-        }
-        out["fresh"] = c["edges"] == s["source_moves"]
+        m = method(es)  # the only call that may fail: the index is down
     except Exception:
-        out["live"] = None
-        out["fresh"] = None
+        return out
+    c = m["coverage"]
+    out["live"] = {
+        "edges": c["edges"], "people": c["people"],
+        "venues": c["venues"], "sources": c["sources"],
+        "coverage": {f: c[f] for f in _COVERAGE_FIELDS},
+        "tiers": m["tiers"],
+    }
+    out["fresh"] = c["edges"] == s["source_moves"]
     return out
 
 
@@ -1869,7 +1865,11 @@ def dispatch(path, query_string="", ip="", body_bytes=None, client=make_client):
                                   {"Cache-Control": _GRAPH_CACHE_CONTROL})
         if endpoint == "numbers":
             out = _numbers(client())
-            cache = _GRAPH_CACHE_CONTROL if out["live"] is not None else "no-store"
+            # the live half of this payload lives for 300 s in process; the
+            # edge must not hold it longer than that, or /numbers and /method
+            # would disagree. A dead index is never cached at all.
+            cache = ("public, max-age=300" if out["live"] is not None
+                     else "no-store")
             return _json_response(200, out, {"Cache-Control": cache})
         if endpoint == "nodes":
             q = (q1("q") or "").strip()[:MAX_QUERY_LEN]
