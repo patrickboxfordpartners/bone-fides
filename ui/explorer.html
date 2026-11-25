@@ -425,17 +425,18 @@
 
   /* ── touch targets ──
      Quiet pills and text links are 12–25px tall: fine for a mouse, too small
-     for a thumb. On touch layouts the pills get real height, and the inline
-     links get a 44px hit area through a pseudo-element so the editorial line
-     rhythm does not change. */
+     for a thumb. On touch layouts the pills get real height. Text links keep
+     their line (the hover underline stays under the word) and grow a hit area
+     10px above and below; the rows that hold them open up by the same 20px,
+     so one link's area never covers the link on the next line. */
   @media (max-width: 900px), (pointer: coarse) {
     .watchbtn, .copybtn, .rolebar .rchip { display: inline-flex; align-items: center; min-height: 40px; padding-block: 0; }
-    .chips { row-gap: 14px; }
-    .flaglink { margin-top: 10px; }
+    .chips, .chain, .tlvenues { row-gap: 20px; }
+    .flaglink { margin-top: 18px; }
     .chip, .vchip, .flaglink, .viewtoggle button, .chef .src a, .imgcredit a, .pedmethod { position: relative; }
     .chip::before, .vchip::before, .flaglink::before, .viewtoggle button::before,
     .chef .src a::before, .imgcredit a::before, .pedmethod::before {
-      content: ''; position: absolute; left: -6px; right: -6px; top: 50%; height: 44px; transform: translateY(-50%); }
+      content: ''; position: absolute; inset: -10px -3px; }
   }
 </style>
 </head>
@@ -732,6 +733,9 @@ let lastFetch = 0;
 // chip re-renders the same data instead of refetching (the filter is a view,
 // not a query)
 let lastDossier = null;
+// booking pages of the dossier on screen (payload.booking); kept beside
+// lastDossier because role-chip re-renders reuse it
+let dossierBooking = null;
 // server-side role facet (roadmap 4.3) + era/hood facets (roadmap 4.4):
 // active on permalink loads (/explorer?q=A16&role=chef or &era=2010s or
 // &hood=Marina) and kept across retries of that same load. A NEW query
@@ -860,6 +864,7 @@ async function run(opts){
     return;
   }
   lastDossier = { q, lineage: d.lineage, ms: performance.now() - t0, ped: d.pedigree, identity: d.identity };
+  dossierBooking = d.booking || null;
   render(q, d.lineage, performance.now() - t0, d.pedigree, d.identity, null,
          { role: d.role_filter || null, era: d.era_filter || null, hood: d.hood_filter || null,
            eraCoverage: d.era_coverage || null, hoodCoverage: d.hood_coverage || null });
@@ -1405,7 +1410,7 @@ function render(q, edges, ms, ped, identity, roleFilter, serverFilter){
     <div class="kicker">Kitchen dossier</div>
     <h2>${esc(q)}<button type="button" class="watchbtn" id="watchbtn" data-watch="${esc(q)}" aria-pressed="false">☆ watch this</button><button type="button" class="copybtn" id="copybtn" title="Copy a link to this dossier">copy link</button></h2>
     <div class="sub"><b>${shown}</b> chef${shown===1?'':'s'} in the record${roleFilter ? ' · filtered to ' + esc(BUCKET_LABEL[roleFilter] || roleFilter) : ''}${svRole && !roleFilter ? ' · filtered to ' + esc(BUCKET_LABEL[svRole] || svRole) + ' (server-side)' : ''} · <i>click any kitchen to keep tracing</i></div>
-    ${isPersonQuery ? '' : '<div class="bookrow" id="bookrow" data-q="' + esc(q) + '" hidden></div>'}
+    ${isPersonQuery ? '' : bookingRow(dossierBooking)}
     ${pedHTML}
     <div class="legend" aria-hidden="true"><span><span class="conf high"></span>High confidence</span><span><span class="conf medium"></span>Medium</span><span><span class="conf low"></span>Low</span></div>
     ${rolebar}
@@ -1416,41 +1421,19 @@ function render(q, edges, ms, ped, identity, roleFilter, serverFilter){
     <div class="flagrow"><button type="button" class="flaglink" data-flag="dossier" title="Missing a cited move or source? Add it">flag or add to this dossier</button></div>`;
   buildTreeToggle(q, edges, isPersonQuery);
   syncWatchBtn();
-  fillBooking(q);
 }
 
-/* Booking buttons for a kitchen dossier. /api/venues carries the verified
-   Resy / OpenTable / Tock pages per map pin (scripts/build_venue_booking.py);
-   the dossier shows a pin's pages only when that pin is this kitchen: its own
-   name equals the dossier name, or the map already links it to this lineage
-   name and its own name starts with it ("Kin Khao Thai Eatery" for "Kin
-   Khao"). A looser link ("Balboa" -> "Balboa Produce") shows nothing. */
+/* Booking buttons for a kitchen dossier. /api/search returns `booking` only
+   for a dossier whose own name each Resy / OpenTable / Tock page was verified
+   against (scripts/build_venue_booking.py), so the explorer never matches
+   restaurants to pages itself. Chef dossiers get no row. */
 const BOOKING_PLATFORMS = [['resy', 'Resy'], ['opentable', 'OpenTable'], ['tock', 'Tock']];
-function bookingKey(s){
-  return (s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
-}
-function bookingFor(q, venues){
-  const k = bookingKey(q);
-  if(!k) return null;
-  const hit = (venues || []).find(v => v.booking &&
-    (bookingKey(v.name) === k || (bookingKey(v.lineage_name) === k && bookingKey(v.name).startsWith(k))));
-  return hit ? hit.booking : null;
-}
-async function fillBooking(q){
-  const row = document.getElementById('bookrow');
-  if(!row) return;
-  window.__bfVenuesPromise = window.__bfVenuesPromise || fetch('/api/venues').then(r => r.json());
-  let venues = [];
-  try { venues = (await window.__bfVenuesPromise).venues || []; } catch(e) { return; }
-  // the venues payload is ~1MB: a newer dossier may have replaced this one
-  if(!row.isConnected || row.dataset.q !== q) return;
-  const links = bookingFor(q, venues);
-  if(!links) return;
-  const html = BOOKING_PLATFORMS.filter(([key]) => links[key]).map(([key, label]) =>
-    `<a class="res" href="${esc(links[key])}" target="_blank" rel="noopener">Book on ${label}</a>`).join('');
-  if(!html) return;
-  row.innerHTML = html;
-  row.hidden = false;
+function bookingRow(links){
+  const html = BOOKING_PLATFORMS
+    .filter(([key]) => links && /^https:\/\//.test(links[key] || ''))
+    .map(([key, label]) => `<a class="res" href="${esc(links[key])}" target="_blank" rel="noopener">Book on ${label}</a>`)
+    .join('');
+  return html ? `<div class="bookrow">${html}</div>` : '';
 }
 
 /* Person-query chain: no venue pivot exists, so lay the chef's cited moves

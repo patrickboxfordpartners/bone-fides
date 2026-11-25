@@ -177,6 +177,45 @@ def test_venues_api_carries_only_verified_links():
     assert "/city/" not in json.dumps(booking) and "query=" not in json.dumps(booking)
 
 
+def test_dossier_booking_is_verified_against_the_dossier_name():
+    """The map links "Palette Tea House" to the lineage "Palette" (a different,
+    closed restaurant) and "Camino Alto" to "Camino" (Oakland). A dossier gets
+    a pin's page only when the URL names the dossier's own kitchen."""
+    dossiers = json.load(open(os.path.join(_ROOT, "ui", "dossier_booking.json")))
+    assert dossiers, "ui/dossier_booking.json is empty; run scripts/build_venue_booking.py"
+    for wrong in ("Palette", "Camino", "Balboa", "Laguna", "Catch"):
+        assert wrong not in dossiers, wrong
+    assert "opentable" in dossiers["Palette Tea House"] and "resy" in dossiers["Camino Alto"]
+    cities = bvb.load_cities()
+    for name, links in dossiers.items():
+        for platform, url in links.items():
+            assert bvb.verified(platform, url, [bvb.clean_name(name)], cities), (name, url)
+
+
+def test_build_dossiers_rejects_a_lineage_name_the_url_does_not_name(monkeypatch):
+    pins = {"Palette Tea House": {"opentable": "https://www.opentable.com/r/palette-tea-house-san-francisco"},
+            "Kin Khao Thai Eatery": {"resy": "https://resy.com/cities/san-francisco-ca/venues/kin-khao"}}
+    monkeypatch.setattr(bvb.dossier, "venues_geo", lambda: [
+        {"name": "Palette Tea House", "lineage_name": "Palette"},
+        {"name": "Kin Khao Thai Eatery", "lineage_name": "Kin Khao"}])
+    out = bvb.build_dossiers(pins, {})
+    assert "Palette" not in out and "Palette Tea House" in out
+    assert out["Kin Khao"] == pins["Kin Khao Thai Eatery"]
+    assert "Kin Khao Thai Eatery" not in out, "/venues/kin-khao does not name the longer pin name's extra words"
+
+
+def test_search_payload_carries_booking_only_for_a_resolved_dossier(monkeypatch):
+    monkeypatch.setattr(dossier, "lineage", lambda es, q, **kw: [])
+    monkeypatch.setattr(dossier, "fetch_person_edges", lambda es, names: [])
+    for resolved, expect in ((True, True), (False, False)):
+        monkeypatch.setattr(dossier, "assemble_dossier", lambda q, lin, **kw: {"query": q, "resolved": resolved})
+        status, _, body = dossier.dispatch("/api/search", "q=Zuni+Caf%C3%A9", "bk" + str(resolved), client=lambda: object())
+        payload = json.loads(body)
+        assert status == 200 and ("booking" in payload) is expect
+    assert dossier.dossier_booking("Zuni Café") == dossier.dossier_booking("zuni cafe")
+    assert dossier.dossier_booking("Palette") is None and dossier.dossier_booking("") is None
+
+
 def test_map_popup_uses_verified_links_not_a_resy_search():
     js = open(os.path.join(_ROOT, "ui", "map.js")).read()
     assert "resy.com/city" not in js

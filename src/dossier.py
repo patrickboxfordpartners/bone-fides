@@ -1246,7 +1246,31 @@ def _search(es, q1):
                      and (not era or e.get("era_bucket") == era)
                      and (not hood or hood in (e.get("venue_hoods") or []))]
             lin = dedupe(lin + extra)
-    return assemble_dossier(q, lin, role=role, era=era, hood=hood, es=es)
+    out = assemble_dossier(q, lin, role=role, era=era, hood=hood, es=es)
+    booking = dossier_booking(q) if out.get("resolved") else None
+    if booking:
+        out["booking"] = booking
+    return out
+
+
+_DOSSIER_BOOKING = None
+
+
+def dossier_booking(name):
+    """Verified Resy / OpenTable / Tock pages for the kitchen dossier `name`,
+    or None. Read from dossier_booking.json (scripts/build_venue_booking.py),
+    where every page was verified against the dossier's own name, so a pin the
+    map only loosely links to a lineage name cannot lend it a booking button."""
+    global _DOSSIER_BOOKING
+    if _DOSSIER_BOOKING is None:
+        try:
+            with open(data_path("dossier_booking.json")) as f:
+                raw = json.load(f)
+        except (OSError, ValueError):
+            raw = {}
+        _DOSSIER_BOOKING = {venue_key(k): v for k, v in raw.items() if venue_key(k)}
+    key = venue_key(name or "")
+    return _DOSSIER_BOOKING.get(key) if key else None
 
 
 def _tip(es, ip, body_bytes):

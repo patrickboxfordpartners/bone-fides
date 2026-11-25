@@ -17,7 +17,9 @@ at a same-named restaurant in another city. The map must never offer a
 
 The output maps each pin's exact name to {platform: url} (pins with a verified
 link only). build.sh ships it with the API, and src/dossier.venues_geo()
-attaches it to /api/venues as `booking`. Re-run after src/venue_images.py
+attaches it to /api/venues as `booking`. A second file, ui/dossier_booking.json,
+maps each dossier name those pages also verify for (see build_dossiers);
+/api/search returns it as `booking` on a kitchen dossier. Re-run after src/venue_images.py
 finds new booking pages.
 
 Usage: .venv/bin/python scripts/build_venue_booking.py [--report]
@@ -40,6 +42,7 @@ CACHE = os.path.join(BASE, "crawl", "venue_images.json")
 # url -> city read from the booking page itself (scripts/check_booking_cities.py)
 CITIES = os.path.join(BASE, "crawl", "booking_cities.json")
 OUT = os.path.join(BASE, "ui", "venue_booking.json")
+DOSSIER_OUT = os.path.join(BASE, "ui", "dossier_booking.json")
 
 HOSTS = {"resy": "resy.com", "opentable": "opentable.com", "tock": "exploretock.com"}
 
@@ -207,14 +210,43 @@ def build(cities=None, require_city=True):
     return out, rejected
 
 
+def build_dossiers(pins, cities=None):
+    """Booking pages per DOSSIER name: {name: {platform: url}}.
+
+    A dossier is traced by a pin's lineage name or its own name. A pin's page
+    is offered on that dossier only when the URL also verifies for THAT name:
+    the map links "Palette Tea House" to the lineage "Palette" (a different,
+    closed restaurant) and "Camino Alto" to "Camino" (Oakland), and neither
+    page names the dossier's kitchen. "Kin Khao Thai Eatery" -> "Kin Khao"
+    passes, because /venues/kin-khao names it."""
+    out = {}
+    for pin in dossier.venues_geo():
+        links = pins.get(pin.get("name"))
+        if not links:
+            continue
+        for name in dict.fromkeys(n for n in (pin.get("lineage_name"), pin.get("name")) if n):
+            for platform, url in links.items():
+                if verified(platform, url, [clean_name(name)], cities):
+                    out.setdefault(name, {}).setdefault(platform, url)
+    return out
+
+
+def _write(path, data):
+    with open(path + ".tmp", "w") as f:
+        json.dump(data, f, indent=1, sort_keys=True)
+        f.write("\n")
+    os.replace(path + ".tmp", path)
+
+
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
-    out, rejected = build(load_cities())
-    with open(OUT + ".tmp", "w") as f:
-        json.dump(out, f, indent=1, sort_keys=True)
-        f.write("\n")
-    os.replace(OUT + ".tmp", OUT)
+    cities = load_cities()
+    out, rejected = build(cities)
+    _write(OUT, out)
+    dossiers = build_dossiers(out, cities)
+    _write(DOSSIER_OUT, dossiers)
     print(f"wrote {OUT}: {len(out)} pins with a verified booking page, {len(rejected)} links rejected")
+    print(f"wrote {DOSSIER_OUT}: {len(dossiers)} dossier names")
     if "--report" in argv:
         for name, url in rejected:
             print(f"  reject {name!r}: {url}")
