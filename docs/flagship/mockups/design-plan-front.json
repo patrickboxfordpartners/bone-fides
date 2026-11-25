@@ -1,0 +1,70 @@
+{
+  "title": "Bone Fides front door: rebuilt landing page and By the numbers",
+  "summary": "Two public pages on the existing warm-dark Fraunces identity (tokens, CTA, stat band, cited-move row, booking pills and source badges copied from landing.html, method.html and explorer.html; shared 60px header with a Menu button on phone, as designed in the views task). Every figure is read from the gated data brief: 9,312 moves on record, 3,388 displayed after the citation gate, 1,595 between two named kitchens, 1,575 kitchens linked, 618 in the largest connected set, 2,221 articles, 19 of 26 starred kitchens linked, 222 verified booking venues. Landing: a live dateline of figures under the header, a hero that shows the graph working, three feature plates (Tree, Connect, Ledger) each with a real specimen, then proof (stat band, one move taken apart, 19 of 26, 222, 720 of 3,388 dated). Two hero directions: Tree hero puts The French Laundry's gated tree (15 alumni, 61 kitchens within three moves, 6 starred) beside the headline with one branch selected, its quoted sentence and a verified Book button, so explore, trust and book all sit in the first screen; Line hero makes the headline itself a result (Quince to Kin Khao in three cited moves) over a full-width chain. Tree hero is recommended: it shows scale and stars at a glance and keeps search as the primary action. By the numbers reads like an annual report: numbered sections with a left rail, the honest funnel as Fig. 1 (9,312 to 3,388 to 1,595, with what each step holds back and why), outlet mix, measured coverage including what is thin, the gated ledger, booking checks, the Bay Area as the next step with no count of kitchens outside San Francisco, use cases stated as questions with real answers, and a mail link to patrick@boxfordpartners.com. Motion is CSS only, plays once and honours reduced motion; every chart has a list or table equivalent.",
+  "sections": [
+    {
+      "title": "Landing page, desktop",
+      "key": "front-landing-desktop",
+      "description": "Rebuilt landing at 1440px: live figures, a hero that shows the graph, three features, proof.",
+      "variations": [
+        {
+          "title": "Tree hero: The French Laundry's family tree beside the headline",
+          "key": "tree-hero",
+          "html_link": "front-landing-desktop-tree-hero.html",
+          "is_recommended": true
+        },
+        {
+          "title": "Line hero: Quince to Kin Khao in three cited moves",
+          "key": "line-hero",
+          "html_link": "front-landing-desktop-line-hero.html",
+          "is_recommended": false
+        }
+      ]
+    },
+    {
+      "title": "Landing page, phone",
+      "key": "front-landing-phone",
+      "description": "The same landing at 390px, with the tree in list form and the line drawn vertically.",
+      "variations": [
+        {
+          "title": "Tree hero, list-form tree",
+          "key": "tree-hero",
+          "html_link": "front-landing-phone-tree-hero.html",
+          "is_recommended": true
+        },
+        {
+          "title": "Line hero, vertical chain",
+          "key": "line-hero",
+          "html_link": "front-landing-phone-line-hero.html",
+          "is_recommended": false
+        }
+      ]
+    },
+    {
+      "title": "By the numbers, desktop",
+      "key": "front-numbers-desktop",
+      "description": "Public investor and press page at 1440px: the funnel, sources, coverage, ledger, booking, next market, uses, contact.",
+      "variations": [
+        {
+          "title": "Annual-report layout with numbered rail",
+          "key": "report",
+          "html_link": "front-numbers-desktop-report.html",
+          "is_recommended": true
+        }
+      ]
+    },
+    {
+      "title": "By the numbers, phone",
+      "key": "front-numbers-phone",
+      "description": "The same report at 390px, single column, tables in place of wide figures.",
+      "variations": [
+        {
+          "title": "Annual-report layout, single column",
+          "key": "report",
+          "html_link": "front-numbers-phone-report.html",
+          "is_recommended": true
+        }
+      ]
+    }
+  ]
+}

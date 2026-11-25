@@ -1,0 +1,3444 @@
+{
+ "NOTE": "PROTOTYPE FIGURES, GATED. Every move here passes the site display gate (citation_supported): the quote itself states a career move. These are the figures a reader can verify on the site today. An earlier version of this file counted all 9,312 extracted moves; do not use those larger figures (262 kitchens, 12 starred, 37 alumni).",
+ "stats": {
+  "moves_on_record": 9312,
+  "moves_displayed_after_gate": 3388,
+  "hops_between_two_named_kitchens": 1595,
+  "kitchens_linked": 1575,
+  "kitchens_in_largest_connected_set": 618,
+  "chefs_on_record": 3119,
+  "kitchens_on_record": 4412,
+  "source_articles": 2221,
+  "michelin_starred_sf_kitchens": 26,
+  "starred_kitchens_linked_in_graph": 19,
+  "verified_booking_venues": 222,
+  "moves_with_year": 1454,
+  "gated_moves_with_year": 720
+ },
+ "ledger_top_alumni_kitchens": [
+  {
+   "kitchen": "Chez Panisse",
+   "alumni": 21,
+   "kitchens_within_3_moves": 36,
+   "starred_within_3_moves": []
+  },
+  {
+   "kitchen": "The French Laundry",
+   "alumni": 15,
+   "kitchens_within_3_moves": 61,
+   "starred_within_3_moves": [
+    "Angler",
+    "Benu",
+    "Mister Jiu's",
+    "Quince",
+    "San Ho Won",
+    "Ssal"
+   ]
+  },
+  {
+   "kitchen": "Aqua",
+   "alumni": 14,
+   "kitchens_within_3_moves": 71,
+   "starred_within_3_moves": []
+  },
+  {
+   "kitchen": "Campton Place",
+   "alumni": 10,
+   "kitchens_within_3_moves": 71,
+   "starred_within_3_moves": [
+    "Ssal"
+   ]
+  },
+  {
+   "kitchen": "Boulevard",
+   "alumni": 10,
+   "kitchens_within_3_moves": 24,
+   "starred_within_3_moves": [
+    "Niku Steakhouse"
+   ]
+  },
+  {
+   "kitchen": "Per Se",
+   "alumni": 9,
+   "kitchens_within_3_moves": 64,
+   "starred_within_3_moves": [
+    "Angler",
+    "Benu",
+    "Mister Jiu's",
+    "Quince",
+    "San Ho Won"
+   ]
+  },
+  {
+   "kitchen": "Quince",
+   "alumni": 9,
+   "kitchens_within_3_moves": 32,
+   "starred_within_3_moves": [
+    "Angler",
+    "Kin Khao",
+    "Mister Jiu's"
+   ]
+  },
+  {
+   "kitchen": "Coi",
+   "alumni": 9,
+   "kitchens_within_3_moves": 17,
+   "starred_within_3_moves": []
+  },
+  {
+   "kitchen": "Fifth Floor",
+   "alumni": 9,
+   "kitchens_within_3_moves": 11,
+   "starred_within_3_moves": []
+  },
+  {
+   "kitchen": "Manresa",
+   "alumni": 8,
+   "kitchens_within_3_moves": 36,
+   "starred_within_3_moves": [
+    "Californios",
+    "Kin Khao",
+    "Nari",
+    "Sons & Daughters"
+   ]
+  },
+  {
+   "kitchen": "Michael Mina",
+   "alumni": 8,
+   "kitchens_within_3_moves": 24,
+   "starred_within_3_moves": []
+  },
+  {
+   "kitchen": "Postrio",
+   "alumni": 7,
+   "kitchens_within_3_moves": 8,
+   "starred_within_3_moves": []
+  },
+  {
+   "kitchen": "Gary Danko",
+   "alumni": 7,
+   "kitchens_within_3_moves": 38,
+   "starred_within_3_moves": [
+    "Californios",
+    "Kin Khao",
+    "Nari",
+    "Sons & Daughters"
+   ]
+  },
+  {
+   "kitchen": "Benu",
+   "alumni": 7,
+   "kitchens_within_3_moves": 9,
+   "starred_within_3_moves": [
+    "San Ho Won"
+   ]
+  },
+  {
+   "kitchen": "La Folie",
+   "alumni": 7,
+   "kitchens_within_3_moves": 14,
+   "starred_within_3_moves": [
+    "Kin Khao"
+   ]
+  }
+ ],
+ "top_mentors_by_chefs": [
+  [
+   "Thomas Keller",
+   5
+  ],
+  [
+   "George Morrone",
+   3
+  ],
+  [
+   "Roland Passot",
+   3
+  ],
+  [
+   "Wolfgang Puck",
+   3
+  ],
+  [
+   "Michael Mina",
+   3
+  ],
+  [
+   "David Kinch",
+   2
+  ],
+  [
+   "Bernard Loiseau",
+   2
+  ],
+  [
+   "Craig Stoll",
+   2
+  ],
+  [
+   "Michael Tusk",
+   2
+  ],
+  [
+   "Jeremiah Tower",
+   2
+  ]
+ ],
+ "outlet_mix_gated": [
+  [
+   "sfgate",
+   1876
+  ],
+  [
+   "eater",
+   1499
+  ],
+  [
+   "other",
+   9
+  ],
+  [
+   "sfchronicle",
+   4
+  ]
+ ],
+ "tree_french_laundry": {
+  "kitchen": "The French Laundry",
+  "alumni": 15,
+  "kitchens_within_3_moves": 61,
+  "per_ring": [
+   15,
+   22,
+   24
+  ],
+  "starred_within_3_moves": [
+   "Angler",
+   "Benu",
+   "Mister Jiu's",
+   "Quince",
+   "San Ho Won",
+   "Ssal"
+  ],
+  "children": [
+   {
+    "kitchen": "Benu",
+    "stars": 3,
+    "cited_by": [
+     {
+      "person": "Corey Lee",
+      "role": "chef de cuisine",
+      "year": 2010,
+      "outlet": "sfgate",
+      "source_url": "https://www.sfgate.com/restaurants/article/Former-French-Laundry-chef-to-open-Benu-3283156.php",
+      "quote": "Corey Lee, former chef de cuisine at the French Laundry, finally has the space for his own restaurant. He's taking over the Two space in San Francisco's SoMa (22 Hawthorne St.) for a restaurant he plans to open in the sp"
+     },
+     {
+      "person": "Corey Lee",
+      "role": "Chef de Cuisine",
+      "year": null,
+      "outlet": "sfgate",
+      "source_url": "https://www.sfgate.com/restaurants/article/french-laundry-chef-thomas-keller-s-recipe-for-5536678.php",
+      "quote": "Corey Lee, who was Keller's chef de cuisine before leaving to open his own top-rated spot, Benu, in San Francisco, says watching Keller transition out of the kitchen was illuminating."
+     }
+    ],
+    "children": [
+     {
+      "kitchen": "San Ho Won",
+      "stars": 1,
+      "cited_by": [
+       {
+        "person": "Jeong-In Hwang",
+        "role": "chef",
+        "year": null,
+        "outlet": "eater",
+        "source_url": "https://sf.eater.com/2021/11/1/22756844/corey-lee-san-ho-won-opening-menu",
+        "quote": "Jeong-In Hwang... has spent the past five years... leading the kitchen at Benu. Together, they\u2019re opening the Korean restaurant San Ho Won"
+       }
+      ],
+      "children": []
+     },
+     {
+      "kitchen": "Avery",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Matthew Mako",
+        "role": "co-owner and cook",
+        "year": null,
+        "outlet": "eater",
+        "source_url": "https://sf.eater.com/2023/10/11/23913318/avery-restaurant-closing-reservations",
+        "quote": "co-owned by partner Matthew Mako who also cooked at Saison and Benu."
+       }
+      ],
+      "children": [
+       {
+        "kitchen": "Avery Edinburgh",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Rodney Wages",
+          "role": "head chef",
+          "year": null,
+          "outlet": "eater",
+          "source_url": "https://sf.eater.com/2023/10/11/23913318/avery-restaurant-closing-reservations",
+          "quote": "The head chef will oversee the final dinner on Saturday before heading to Europe, possibly for good... Avery Edinburgh, is set to open in 2024."
+         }
+        ],
+        "children": []
+       },
+       {
+        "kitchen": "new casual concept",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Rodney Wages",
+          "role": "Chef-owner",
+          "year": null,
+          "outlet": "sfgate",
+          "source_url": "https://www.sfgate.com/food/article/san-francisco-michelin-avery-restaurant-closing-18420418.php",
+          "quote": "In the former Avery space on Fillmore Street, he plans to open a new, more casual concept that is less chef-forward."
+         }
+        ],
+        "children": []
+       }
+      ]
+     },
+     {
+      "kitchen": "Happy Crane",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "James Parry",
+        "role": "chef",
+        "year": null,
+        "outlet": "eater",
+        "source_url": "https://sf.eater.com/2023/12/29/24012799/best-dishes-eat-drink-san-francisco-eater-2023",
+        "quote": "Parry, who was raised in Hong Kong and moved to San Francisco to cook at three-Michelin-starred Benu, started the meal with a constellation of small bites..."
+       },
+       {
+        "person": "James Parry",
+        "role": "chef",
+        "year": null,
+        "outlet": "eater",
+        "source_url": "https://sf.eater.com/2023/7/7/23786038/best-dishes-eat-drink-san-francisco-eater",
+        "quote": "Parry, who was raised in Hong Kong and moved to San Francisco to cook at three-Michelin-starred Benu, started the meal with a constellation of small bites..."
+       }
+      ],
+      "children": []
+     },
+     {
+      "kitchen": "OK's Deli",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Karis Kochi",
+        "role": "Chef",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/food/article/oks-deli-opens-new-sandwich-shop-oakland-17385747.php",
+        "quote": "Karis Kochi, originally from Hawaii, who worked at Benu and Monsieur Benjamin in San Francisco"
+       }
+      ],
+      "children": []
+     },
+     {
+      "kitchen": "The Snug",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Brian Shin",
+        "role": "chef",
+        "year": null,
+        "outlet": "eater",
+        "source_url": "https://sf.eater.com/2017/10/25/16547424/snug-bar-pacific-heights-november-opening-fillmore",
+        "quote": "Food will come from Brian Shin, previously of In Situ and Benu and, before that, Alinea\u200b \u200bin Chicago and Corton in New York."
+       }
+      ],
+      "children": []
+     }
+    ]
+   },
+   {
+    "kitchen": "Quince",
+    "stars": 3,
+    "cited_by": [
+     {
+      "person": "Devin McDavid",
+      "role": "pastry chef",
+      "year": null,
+      "outlet": "eater",
+      "source_url": "https://sf.eater.com/2011/11/3/6639297/tacolicious-mosto-and-crab-season-all-coming-soon",
+      "quote": "Michael Tusk has hired new pastry chef Devin McDavid to take the pastry programs at Quince and Cotogna in a new direction. McDavid has two of Thomas Keller\u2019s restaurants on his resume: The French Laundry and Per Se."
+     }
+    ],
+    "children": [
+     {
+      "kitchen": "Angler",
+      "stars": 1,
+      "cited_by": [
+       {
+        "person": "Brian Limoges",
+        "role": "Corporate Chef",
+        "year": null,
+        "outlet": "eater",
+        "source_url": "https://sf.eater.com/2021/10/21/22738397/san-francisco-restaurants-dog-menus",
+        "quote": "At Angler, Saison Hospitality Corporate Chef Brian Limoges \u2014 who\u2019s spent time in the kitchen at some of San Francisco\u2019s finest restaurants including Birdsong, Quince, and Atelier Crenn \u2014 admits he was skeptical when the "
+       }
+      ],
+      "children": []
+     },
+     {
+      "kitchen": "Mister Jiu's",
+      "stars": 1,
+      "cited_by": [
+       {
+        "person": "Brandon Jew",
+        "role": "Chef",
+        "year": 2016,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/food/article/where-michelin-starred-sf-chef-gets-dumplings-19610684.php",
+        "quote": "from his training in Shanghai and his time at Quince to his Michelin star and mentorship of countless young Asian American and Pacific Islander chefs, Jew said the landscape was different when he opened Mister Jiu\u2019s in 2"
+       }
+      ],
+      "children": [
+       {
+        "kitchen": "Four Kings",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Franky Ho",
+          "role": "chef",
+          "year": null,
+          "outlet": "eater",
+          "source_url": "https://sf.eater.com/2023/11/6/23949171/hadeem-four-kings-buddy-holiday-pop-up",
+          "quote": "Ho and Long most recently worked at Mister Jiu\u2019s"
+         },
+         {
+          "person": "Mike Long",
+          "role": "chef",
+          "year": null,
+          "outlet": "eater",
+          "source_url": "https://sf.eater.com/2023/11/6/23949171/hadeem-four-kings-buddy-holiday-pop-up",
+          "quote": "Ho and Long most recently worked at Mister Jiu\u2019s"
+         }
+        ],
+        "children": []
+       },
+       {
+        "kitchen": "Soon and Soon Souvenir Shop",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Brandon Jew",
+          "role": "chef",
+          "year": null,
+          "outlet": "eater",
+          "source_url": "https://sf.eater.com/maps/the-bay-area-heatmap-where-to-eat-huxley-plank-arguello",
+          "quote": "Soon and Soon Souvenir Shop first opened in 2022 as a coffee window on Grant Avenue, an offshoot of Michelin-starred Mister Jiu\u2019s... a collab between Mister Jiu\u2019s and local cafe favorite Paper Son Coffee. The cafe focuse"
+         },
+         {
+          "person": "Brandon Jew",
+          "role": "chef",
+          "year": null,
+          "outlet": "eater",
+          "source_url": "https://sf.eater.com/maps/best-new-restaurants-san-francisco",
+          "quote": "Soon and Soon Souvenir Shop first opened in 2022 as a coffee window on Grant Avenue, an offshoot of Michelin-starred Mister Jiu\u2019s... a collab between Mister Jiu\u2019s and local cafe favorite Paper Son Coffee. The cafe focuse"
+         }
+        ],
+        "children": []
+       }
+      ]
+     },
+     {
+      "kitchen": "Chez Noir",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Jonny Black",
+        "role": "chef de cuisine",
+        "year": null,
+        "outlet": "eater",
+        "source_url": "https://sf.eater.com/dining-report/210246/chez-noir-carmel-review",
+        "quote": "When it opened a few years ago, Chez Noir brought the tremendous talents of former Quince chef de cuisine Jonny Black to the idyllic town of Carmel-by-the-Sea"
+       }
+      ],
+      "children": []
+     },
+     {
+      "kitchen": "Coi",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Evan Rich",
+        "role": "chef de cuisine",
+        "year": null,
+        "outlet": "eater",
+        "source_url": "https://sf.eater.com/2009/12/23/6749197/corbett-joins-coi-old-atrium-space-going-upscale-chinese",
+        "quote": "Evan Rich\u2014formerly the chef de cuisine at Quince\u2014has been appointed chef de cuisine at Coi."
+       },
+       {
+        "person": "Evan Rich",
+        "role": "chef de cuisine",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/restaurants/article/2-chefs-looking-at-places-at-101-California-3277504.php",
+        "quote": "Evan Rich, formerly of Quince in San Francisco and Bouley in New York, is the new chef de cuisine"
+       }
+      ],
+      "children": [
+       {
+        "kitchen": "Aster",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Daniel Patterson",
+          "role": "chef",
+          "year": null,
+          "outlet": "eater",
+          "source_url": "https://sf.eater.com/2014/11/20/7254735/daniel-patterson-to-eliminate-tipping-at-new-restaurant",
+          "quote": "Daniel Patterson, who runs the two-Michelin-starred Coi in San Francisco, will eliminate gratuities at his newest restaurant. At Aster, which Patterson will open in The Mission with chef Brett Cooper..."
+         },
+         {
+          "person": "Brett Cooper",
+          "role": "formerly of",
+          "year": null,
+          "outlet": "eater",
+          "source_url": "https://sf.eater.com/2019/11/8/20880199/daniel-patterson-alta-nigel-jones-kaya-reem-assil-dyafa-heena-patel-besharem",
+          "quote": "Graduates of the Coi kitchen include some of the region\u2019s most celebrated restaurateurs, including... Brett Cooper, formerly of Aster and Outerlands."
+         }
+        ],
+        "children": []
+       },
+       {
+        "kitchen": "Bump Bar",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Nate Tauer",
+          "role": "Chef",
+          "year": null,
+          "outlet": "eater",
+          "source_url": "https://sf.eater.com/2019/11/7/20949280/bump-bar-caviar-company-sausalito-sf",
+          "quote": "Chef Nate Tauer, who previously worked at Petit Crenn and Coi, has also added a few snacks to the menu"
+         }
+        ],
+        "children": []
+       },
+       {
+        "kitchen": "Firebrand Artisan Breads",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Tommy Schnell",
+          "role": "head chef",
+          "year": null,
+          "outlet": "eater",
+          "source_url": "https://sf.eater.com/maps/best-oakland-northgate-waverly-koreatown-restaurants-bars",
+          "quote": "owners Matt Kreutz and Colleen Orlando are offering their own expression of Bay Area bread, featuring Highwire Coffee, and an all day menu from newly appointed head chef Tommy Schnell (Coi)."
+         }
+        ],
+        "children": []
+       },
+       {
+        "kitchen": "Mission Bowling Club",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Chris Kiyuna",
+          "role": "chef (prior to promotion)",
+          "year": null,
+          "outlet": "eater",
+          "source_url": "https://sf.eater.com/2012/12/21/6504147/mission-bowling-club-strikes-new-direction-in-2013",
+          "quote": "Before that, he worked in the kitchens at Coi and The Front Porch."
+         }
+        ],
+        "children": []
+       },
+       {
+        "kitchen": "Outerlands",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Brett Cooper",
+          "role": "formerly of",
+          "year": null,
+          "outlet": "eater",
+          "source_url": "https://sf.eater.com/2019/11/8/20880199/daniel-patterson-alta-nigel-jones-kaya-reem-assil-dyafa-heena-patel-besharem",
+          "quote": "Graduates of the Coi kitchen include some of the region\u2019s most celebrated restaurateurs, including... Brett Cooper, formerly of Aster and Outerlands."
+         }
+        ],
+        "children": []
+       },
+       {
+        "kitchen": "The Morris",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Gavin Schmidt",
+          "role": "chef/partner",
+          "year": null,
+          "outlet": "eater",
+          "source_url": "https://sf.eater.com/2016/10/19/13325596/the-morris-san-francisco-open-photos",
+          "quote": "The Morris , the restaurant from sommelier Paul Einbund (Frances, Octavia) and chef/partner Gavin Schmidt (Coi, Campton Place), is now open"
+         }
+        ],
+        "children": []
+       },
+       {
+        "kitchen": "Truss Restaurant + Bar",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Erik Anderson",
+          "role": "executive chef",
+          "year": null,
+          "outlet": "eater",
+          "source_url": "https://sf.eater.com/2021/11/1/22757701/truss-restaurant-four-seasons-napa-opening-menu",
+          "quote": "Chef Erik Anderson, who previously worked as the executive chef at Coi in San Francisco (two Michelin stars), and before that Catbird Seat in Nashville, is leading the new restaurant."
+         }
+        ],
+        "children": []
+       }
+      ]
+     },
+     {
+      "kitchen": "Flour + Water",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Thomas McNaughton",
+        "role": "Chef",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/restaurants/article/Opening-Flour-Water-2302820.php",
+        "quote": "Chef Thomas McNaughton (formerly of La Folie and Quince) manages the kitchen along with Jon Darsky (formerly of Pizza Delfina)."
+       },
+       {
+        "person": "Thomas McNaughton",
+        "role": "chef-owner",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/restaurants/article/Thomas-McNaughton-The-chef-behind-Flour-Water-2388927.php",
+        "quote": "But McNaughton also wanted a taste of Europe, so he traveled and staged in France, Germany, Spain, Italy and other countries... When he decided to open a restaurant, McNaughton incorporated what he'd learned from the Bol"
+       }
+      ],
+      "children": [
+       {
+        "kitchen": "Central Kitchen",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Thomas McNaughton",
+          "role": "chef",
+          "year": null,
+          "outlet": "sfgate",
+          "source_url": "https://www.sfgate.com/restaurants/article/Central-Kitchen-finds-footing-year-later-4597429.php",
+          "quote": "With the immense popularity of Flour + Water, there were high expectations placed on chef Thomas McNaughton and his crew when their second restaurant, Central Kitchen, opened about a year ago."
+         },
+         {
+          "person": "Thomas McNaughton",
+          "role": "chef-partner",
+          "year": 2012,
+          "outlet": "sfgate",
+          "source_url": "https://www.sfgate.com/restaurants/article/Also-open-3603029.php",
+          "quote": "the crew behind the Mission's ever-popular Flour + Water opened Central Kitchen, a new restaurant a block away. Chef-partner Thomas McNaughton is running the show"
+         }
+        ],
+        "children": []
+       },
+       {
+        "kitchen": "Central Kitchen/Salumeria",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Flour + Water team",
+          "role": "team behind the project",
+          "year": null,
+          "outlet": "eater",
+          "source_url": "https://sf.eater.com/2011/10/4/6647929/five-top-neighborhood-gamechangers-coming-this-year",
+          "quote": "A restaurant and an upscale daytime delicatessen from the Flour + Water team will join The Parlour by Humphry Slocombe, and the Bon Vivants\u2019 Trick Dog around an 'all season, all weather' enclosed courtyard on 20th Street"
+         }
+        ],
+        "children": []
+       },
+       {
+        "kitchen": "Great Gold",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Brandon Kirksey",
+          "role": "chef de cuisine",
+          "year": null,
+          "outlet": "eater",
+          "source_url": "https://sf.eater.com/maps/where-to-eat-road-trip-san-francisco-sacramento-tahoe",
+          "quote": "Former Flour + Water chef de cuisine Brandon Kirksey opened this Italian American restaurant"
+         }
+        ],
+        "children": []
+       }
+      ]
+     },
+     {
+      "kitchen": "Osteria Coppa",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Chanan Kamen",
+        "role": "chef",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/restaurants/article/Osteria-Coppa-opens-in-San-Mateo-3254848.php",
+        "quote": "the kitchen is helmed by Chanan Kamen, a 29-year-old chef who has spent the last five years working at Quince in San Francisco."
+       }
+      ],
+      "children": []
+     },
+     {
+      "kitchen": "Rich Table",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Sarah Rich",
+        "role": "owner and chef",
+        "year": null,
+        "outlet": "eater",
+        "source_url": "https://sf.eater.com/2012/12/21/6505119/rich-tables-nicole-conrardy-on-long-waits-vips",
+        "quote": "owners Sarah and Evan Rich successfully raised the funds to start their \"small neighborhood restaurant,\" bringing fine-dining techniques to a a casual-ish atmosphere. Since opening in late July, the chef couple (who work"
+       },
+       {
+        "person": "Evan Rich",
+        "role": "owner and chef",
+        "year": null,
+        "outlet": "eater",
+        "source_url": "https://sf.eater.com/2012/12/21/6505119/rich-tables-nicole-conrardy-on-long-waits-vips",
+        "quote": "owners Sarah and Evan Rich successfully raised the funds to start their \"small neighborhood restaurant,\" bringing fine-dining techniques to a a casual-ish atmosphere. Since opening in late July, the chef couple (who work"
+       }
+      ],
+      "children": [
+       {
+        "kitchen": "Ernest",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Brandon Rice",
+          "role": "chef-owner",
+          "year": null,
+          "outlet": "eater",
+          "source_url": "https://sf.eater.com/2021/10/15/22728394/fancy-tater-tot-trend-san-francisco",
+          "quote": "Rice says he was playing around with caviar tots years ago at Rich Table, and Malloy adds that he misses the tater tot waffle with smoked salmon at the Riddler, may it rest in closed-restaurant peace. When chef-owner Bra"
+         }
+        ],
+        "children": []
+       },
+       {
+        "kitchen": "Ox & Tiger",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "EJ Macayan",
+          "role": "chef",
+          "year": null,
+          "outlet": "eater",
+          "source_url": "https://sf.eater.com/dining-report/209022/ox-and-tiger-review",
+          "quote": "Macayan cooked at Rich Table \u2014 pairs perfectly with its friendly, small environs."
+         }
+        ],
+        "children": []
+       },
+       {
+        "kitchen": "Viridian",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "William Tsui",
+          "role": "head of the beverage program",
+          "year": null,
+          "outlet": "eater",
+          "source_url": "https://sf.eater.com/2022/11/21/23471514/viridian-pop-up-oakland-bar-christmas",
+          "quote": "William Tsui, formerly of Lazy Bear, Hotel Nikko, Rich Table, and True Laurel, brings expert experience as head of the beverage program."
+         }
+        ],
+        "children": []
+       }
+      ]
+     },
+     {
+      "kitchen": "Seven Hills",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Anthony Florian",
+        "role": "chef",
+        "year": 2013,
+        "outlet": "eater",
+        "source_url": "https://sf.eater.com/2016/10/14/13241616/week-in-reviews",
+        "quote": "That Bauer bump comes courtesy of Anthony Florian (Quince, Cotogna), who took over the kitchen in 2013"
+       },
+       {
+        "person": "Anthony Florian",
+        "role": "chef",
+        "year": null,
+        "outlet": "eater",
+        "source_url": "https://sf.eater.com/2013/11/25/6323631/chef-shuffles",
+        "quote": "Anthony Florian , a pasta whiz who\u2019s cooked at Quince and Bar Bambino . Meanwhile, Seven Hills ... is ... the new chef"
+       }
+      ],
+      "children": [
+       {
+        "kitchen": "Plin",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Alexander Alioto",
+          "role": "chef",
+          "year": 2013,
+          "outlet": "eater",
+          "source_url": "https://sf.eater.com/2018/12/4/18125722/seven-hills-move-stones-throw-russian-hill",
+          "quote": "Florian took over in 2013 when Alioto left to open now-closed Plin;"
+         }
+        ],
+        "children": []
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "kitchen": "Broad Museum restaurant",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Timothy Hollingsworth",
+      "role": "executive chef",
+      "year": "last year",
+      "outlet": "sfgate",
+      "source_url": "https://www.sfgate.com/restaurants/article/timothy-hollingsworth-high-profile-chef-from-the-5277336.php",
+      "quote": "He left the French Laundry last year, signing on as executive chef at the stand-alone restaurant attached to the Broad Museum in downtown Los Angeles"
+     }
+    ],
+    "children": []
+   },
+   {
+    "kitchen": "Charlie's",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Eliott Bell",
+      "role": "former sous chef",
+      "year": null,
+      "outlet": "eater",
+      "source_url": "https://sf.eater.com/2023/10/6/23906330/castro-lgbtq-bar-badlands-reopens",
+      "quote": "Eliott Bell, former sous chef at famed French Laundry, has thrown open the doors to his casual family restaurant, Charlie\u2019s"
+     },
+     {
+      "person": "Elliot Bell",
+      "role": "Executive Sous Chef (previously), Chef/Owner (currently)",
+      "year": null,
+      "outlet": "eater",
+      "source_url": "https://sf.eater.com/2023/10/10/23903218/new-restaurants-openings-san-francisco-oakland-bay-area",
+      "quote": "a new restaurant from Elliot Bell, who previously worked as an executive sous chef at the French Laundry."
+     }
+    ],
+    "children": []
+   },
+   {
+    "kitchen": "Chez TJ",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Scott Nishiyama",
+      "role": "chef",
+      "year": null,
+      "outlet": "sfgate",
+      "source_url": "https://www.sfgate.com/food/insidescoop/article/Michelin-starred-Chez-TJ-gets-SF-chef-3203868.php",
+      "quote": "Chef Scott Nishiyama, formerly of Yoshi's in San Francisco and the French Laundry in Yountville, has taken the helm at Mountain View's Chez TJ"
+     },
+     {
+      "person": "Scott Nishiyama",
+      "role": "chef",
+      "year": null,
+      "outlet": "sfgate",
+      "source_url": "https://www.sfgate.com/restaurants/article/Another-talented-chef-stars-at-Chez-TJ-2299826.php",
+      "quote": "Scott Nishiyama, formerly of the French Laundry and Yoshi's."
+     }
+    ],
+    "children": [
+     {
+      "kitchen": "Baume",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Bruno Chemel",
+        "role": "chef",
+        "year": null,
+        "outlet": "eater",
+        "source_url": "https://sf.eater.com/2010/10/26/6713015/march-of-the-michelin-stars-the-restaurant-at-meadowood-gets-a",
+        "quote": "Bruno Chemel , who wasn\u2019t exactly in the kindest of situations when he was axed for not earning Chez TJ an additional star last year. Remeber Chemel went on to launch his solo venture Baume."
+       }
+      ],
+      "children": [
+       {
+        "kitchen": "Palo Alto Grill",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Ryan Shelton",
+          "role": "head chef",
+          "year": null,
+          "outlet": "sfgate",
+          "source_url": "https://www.sfgate.com/food/insidescoop/article/Masa-s-to-close-when-chef-Short-leaves-4257660.php",
+          "quote": "Ryan Shelton, formerly of Baum\u00e9 and Le Cigare Volante, to head the kitchen."
+         }
+        ],
+        "children": []
+       }
+      ]
+     },
+     {
+      "kitchen": "Meadowood",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Christopher Kostow",
+        "role": "chef",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/restaurants/article/The-Inside-Scoop-French-chef-Bruno-Chemel-to-3297491.php",
+        "quote": "When news broke that Christopher Kostow, the acclaimed young chef of Chez TJ in Mountain View (938 Villa St.) was headed to Napa Valley's Meadowood"
+       },
+       {
+        "person": "Christopher Kostow",
+        "role": "head chef",
+        "year": 2008,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/restaurants/article/Chez-TJ-chef-heading-north-to-Meadowood-3299214.php",
+        "quote": "Chez TJ's Christopher Kostow, another Chronicle three-star chef, will move from Mountain View to St. Helena to head up Meadowood's kitchen starting next month."
+       }
+      ],
+      "children": [
+       {
+        "kitchen": "Ssal",
+        "stars": 1,
+        "cited_by": [
+         {
+          "person": "Junsoo Bae",
+          "role": "chef/owner",
+          "year": 2020,
+          "outlet": "other",
+          "source_url": "https://kimcmarket.com/blogs/chef-series/kimc-market-chef-series-chef-junsoo-bae",
+          "quote": "Then, in 2020, I opened SSAL in San Francisco"
+         }
+        ],
+        "children": []
+       },
+       {
+        "kitchen": "Cavallo Point resort",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Joseph Humphrey",
+          "role": "executive chef",
+          "year": 2008,
+          "outlet": "sfgate",
+          "source_url": "https://www.sfgate.com/restaurants/article/Chez-TJ-chef-heading-north-to-Meadowood-3299214.php",
+          "quote": "Cavallo Point resort, at Fort Baker near Sausalito, where Humphrey will be executive chef overseeing the restaurant, lounge and cooking school, is expected to open in the summer."
+         },
+         {
+          "person": "Joseph Humphrey",
+          "role": "executive chef",
+          "year": 2008,
+          "outlet": "sfgate",
+          "source_url": "https://www.sfgate.com/restaurants/article/Chez-TJ-chef-heading-north-to-Meadowood-3299214.php",
+          "quote": "Cavallo Point resort, at Fort Baker near Sausalito, where Humphrey will be executive chef overseeing the restaurant, lounge and cooking school, is expected to open in the summer."
+         }
+        ],
+        "children": []
+       },
+       {
+        "kitchen": "Dixie",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Joseph Humphrey",
+          "role": "chef",
+          "year": null,
+          "outlet": "eater",
+          "source_url": "https://sf.eater.com/2011/12/6/6631965/more-details-on-joseph-humphreys-dixie-in-the-presidio",
+          "quote": "Humphrey is excited to offer something much more casual and cozy than the restaurants he\u2019s worked at in the past: little spots like Murray Circle at Cavallo Point (where he earned a Michelin star) and Meadowood (where he"
+         },
+         {
+          "person": "Joseph Humphrey",
+          "role": "chef",
+          "year": 2011,
+          "outlet": "sfgate",
+          "source_url": "https://www.sfgate.com/food/insidescoop/article/Joseph-Humphrey-to-open-Dixie-in-Presidio-in-fall-2335623.php",
+          "quote": "The chef who earned rave reviews for his upscale fare at resorts like Napa's Meadowood and Marin's Cavallo Point is finally opening his own restaurant... This fall, Humphrey and partner Khalid Lahlou plan to open Dixie"
+         }
+        ],
+        "children": []
+       },
+       {
+        "kitchen": "Murray Circle",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Joseph Humphrey",
+          "role": "chef",
+          "year": null,
+          "outlet": "eater",
+          "source_url": "https://sf.eater.com/2008/10/20/6782765/eater-interview-michelins-jean-luc-naret",
+          "quote": "the restaurant he left, Meadowood, earned two stars right away even though it has a new chef as well. What\u2019s the usual minimum time the inspectors wait after opening and how many times do they usually visit? We will neve"
+         }
+        ],
+        "children": []
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "kitchen": "Chicken Fried Palace",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Gabrielle Pabonan",
+      "role": "pastry chef",
+      "year": null,
+      "outlet": "eater",
+      "source_url": "https://sf.eater.com/restaurant-news/209787/chicken-fried-palace-san-francisco-restaurant-opening-mission",
+      "quote": "Pastry chef Gabrielle Pabonan previously worked at high-end places like Craftsman and Wolves, the French Laundry, Quince, and Osito with Stowaway"
+     }
+    ],
+    "children": []
+   },
+   {
+    "kitchen": "Cotogna",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Devin McDavid",
+      "role": "pastry chef",
+      "year": null,
+      "outlet": "eater",
+      "source_url": "https://sf.eater.com/2011/11/3/6639297/tacolicious-mosto-and-crab-season-all-coming-soon",
+      "quote": "Michael Tusk has hired new pastry chef Devin McDavid to take the pastry programs at Quince and Cotogna in a new direction. McDavid has two of Thomas Keller\u2019s restaurants on his resume: The French Laundry and Per Se."
+     }
+    ],
+    "children": [
+     {
+      "kitchen": "Petit Crenn",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Ellie Estrada-Londo",
+        "role": "chef",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/food/article/michelin-starred-sf-restaurant-home-pastries-20194622.php",
+        "quote": "She later trained under esteemed chefs Michael Tusk at Cotogna and Dominique Crenn at Petit Crenn."
+       }
+      ],
+      "children": []
+     }
+    ]
+   },
+   {
+    "kitchen": "El Dorado Kitchen",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Ryan Fancher",
+      "role": "opening chef",
+      "year": null,
+      "outlet": "sfgate",
+      "source_url": "https://www.sfgate.com/restaurants/article/El-Dorado-Kitchen-caters-to-all-seasons-2300358.php",
+      "quote": "Ryan Fancher, who cooked at the French Laundry prior before becoming El Dorado's opening chef two years ago."
+     }
+    ],
+    "children": [
+     {
+      "kitchen": "Murray Circle at Cavallo Point",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Justin Everett",
+        "role": "executive chef",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/food/insidescoop/article/Origen-to-open-at-fickle-Telegraph-Avenue-spot-2373896.php",
+        "quote": "Taking over will be Justin Everett of Sonoma's El Dorado Kitchen... He's handpicked a successor, whom he'll help ease into the executive chef position over the next few weeks."
+       }
+      ],
+      "children": []
+     }
+    ]
+   },
+   {
+    "kitchen": "Monsieur Benjamin",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Jason Berthold",
+      "role": "chef",
+      "year": null,
+      "outlet": "eater",
+      "source_url": "https://sf.eater.com/2013/12/18/6311003/more-on-monsieur-benjamin-corey-lees-forthcoming-hayes-valley-french",
+      "quote": "Taking the reins in the kitchen will be chef Jason Berthold, formerly of RN74, the French Laundry and Per Se."
+     }
+    ],
+    "children": []
+   },
+   {
+    "kitchen": "Morimoto",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Nai Kang Kuan",
+      "role": "executive sous chef",
+      "year": null,
+      "outlet": "sfgate",
+      "source_url": "https://www.sfgate.com/food/insidescoop/article/Kim-Alter-and-Matt-Kahn-to-open-Plate-Shop-2477928.php",
+      "quote": "Demi-sous chef Nai Kang Kuan is moving to Morimoto as its executive sous chef."
+     }
+    ],
+    "children": [
+     {
+      "kitchen": "The Shota",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Ingi \u201cShota\u201d Son",
+        "role": "chef-owner",
+        "year": null,
+        "outlet": "eater",
+        "source_url": "https://sf.eater.com/2018/11/8/18076244/the-shota-opens-financial-district-san-francisco-omakase-japanese-sushi-restaurant",
+        "quote": "Chef-owner Ingi \u201cShota\u201d Son comes with an impressive resume, including stints at Morimoto Napa, Hashieri, and Omakase \u2014 he helped open the latter as a sushi chef, and Omakase went on to earn a Michelin star."
+       }
+      ],
+      "children": []
+     }
+    ]
+   },
+   {
+    "kitchen": "Mosu",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Sung Anh",
+      "role": "chef",
+      "year": null,
+      "outlet": "eater",
+      "source_url": "https://sf.eater.com/2015/12/8/9872440/mosu-korean-tasting-menu-san-francisco",
+      "quote": "Sung Anh is about to change that with the impending opening of Mosu, his reservations-required, tasting menu-only Korean restaurant in the Fillmore District... Anh has cooked at The French Laundry, Benu, Aziza and Urasaw"
+     }
+    ],
+    "children": []
+   },
+   {
+    "kitchen": "Old Post Office",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Jonathan Granada",
+      "role": "chef",
+      "year": null,
+      "outlet": "eater",
+      "source_url": "https://sf.eater.com/restaurant-news/213747/the-old-post-office-restaurant-opening-bay-area-burlingame",
+      "quote": "an ambitious menu from chef Jonathan Granada, who spent time working at the French Laundry and now-closed Los Angeles restaurant Otium under chef Timothy Hollingsworth"
+     }
+    ],
+    "children": []
+   },
+   {
+    "kitchen": "PlumpJack Group's Farm",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Ryan Jett\u00e9",
+      "role": "chef de cuisine",
+      "year": null,
+      "outlet": "eater",
+      "source_url": "https://sf.eater.com/2009/11/3/6754511/plumpjackin",
+      "quote": "The new chef de cuisine is Ryan Jett\u00e9, a 29-year-old who has worked at The French Laundry for over a year as chef de partie"
+     }
+    ],
+    "children": []
+   },
+   {
+    "kitchen": "Spice Kit",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "William Pacio",
+      "role": "chef",
+      "year": null,
+      "outlet": "sfgate",
+      "source_url": "https://www.sfgate.com/food/insidescoop/article/Cafe-Des-Amis-opening-as-economy-warms-up-3184631.php",
+      "quote": "Pacio has spent more than four years in the Thomas Keller farm system, cooking at both Per Se in New York and the French Laundry in Yountville... Spice Kit will be a quick-service spot"
+     }
+    ],
+    "children": []
+   },
+   {
+    "kitchen": "Spruce",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Walter Abrams",
+      "role": "chef de cuisine",
+      "year": null,
+      "outlet": "sfgate",
+      "source_url": "https://www.sfgate.com/food/insidescoop/article/Kim-Alter-and-Matt-Kahn-to-open-Plate-Shop-2477928.php",
+      "quote": "Back at the French Laundry, sous chef Walter Abrams is leaving to head the kitchen at San Francisco's Spruce, where he'll be chef de cuisine."
+     }
+    ],
+    "children": [
+     {
+      "kitchen": "Anomaly",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Mike Lanham",
+        "role": "chef",
+        "year": null,
+        "outlet": "eater",
+        "source_url": "https://sf.eater.com/2022/12/5/23494804/anomaly-san-francisco-fine-dining-mike-lanham",
+        "quote": "he previously worked at Auberge du Soleil and SolBar, Spruce, Commis, and Bird Dog in Palo Alto."
+       }
+      ],
+      "children": []
+     },
+     {
+      "kitchen": "Auro",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Rogelio Garcia",
+        "role": "chef",
+        "year": null,
+        "outlet": "eater",
+        "source_url": "https://sf.eater.com/2022/10/20/23415189/rogelio-garcia-auro-opening-napa-wine-country",
+        "quote": "All of the dishes are in part crafted by chef de cuisine Elijah Cortez (who worked with Garcia at Spruce)."
+       },
+       {
+        "person": "Elijah Cortez",
+        "role": "chef de cuisine",
+        "year": null,
+        "outlet": "eater",
+        "source_url": "https://sf.eater.com/2022/10/20/23415189/rogelio-garcia-auro-opening-napa-wine-country",
+        "quote": "All of the dishes are in part crafted by chef de cuisine Elijah Cortez (who worked with Garcia at Spruce)."
+       }
+      ],
+      "children": []
+     },
+     {
+      "kitchen": "Piccino",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Jason Wittek",
+        "role": "sous chef",
+        "year": null,
+        "outlet": "eater",
+        "source_url": "https://sf.eater.com/2013/11/14/6329581/chef-shuffles",
+        "quote": "Wittek\u2019s background includes a stint as sous chef at Piccino and, before that, five years working under Mark Sullivan at Spruce"
+       }
+      ],
+      "children": [
+       {
+        "kitchen": "NOON All Day",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Sarah Hipwell",
+          "role": "pastry chef",
+          "year": "this summer",
+          "outlet": "eater",
+          "source_url": "https://sf.eater.com/2017/12/21/16770164/noon-all-day-dogpatch-piccino-eater-inside-open",
+          "quote": "pastry chef Sarah Hipwell, who took over Piccino\u2019s pastry operations this summer. Her creations include kimchi danishes with Fontina cheese, zaatar croissants, and a breakfast pastry called a Holy Mole, with mole, fontin"
+         }
+        ],
+        "children": []
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ },
+ "tree_chez_panisse": {
+  "kitchen": "Chez Panisse",
+  "alumni": 21,
+  "kitchens_within_3_moves": 36,
+  "per_ring": [
+   19,
+   13,
+   4
+  ],
+  "starred_within_3_moves": [],
+  "children": [
+   {
+    "kitchen": "Arrows Restaurant",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Clark Frasier",
+      "role": "chef",
+      "year": null,
+      "outlet": "eater",
+      "source_url": "https://sf.eater.com/maps/where-to-eat-clean-across-the-country",
+      "quote": "Twenty-five years ago, Mark Gaier and Clark Frasier left behind their life in California\u2014where they had been mentored by Chez Panisse legend Jeremiah Tower\u2014to open this now-iconic farm-to-table fine dining outpost in Mai"
+     },
+     {
+      "person": "Mark Gaier",
+      "role": "chef",
+      "year": null,
+      "outlet": "eater",
+      "source_url": "https://sf.eater.com/maps/where-to-eat-clean-across-the-country",
+      "quote": "Twenty-five years ago, Mark Gaier and Clark Frasier left behind their life in California\u2014where they had been mentored by Chez Panisse legend Jeremiah Tower\u2014to open this now-iconic farm-to-table fine dining outpost in Mai"
+     }
+    ],
+    "children": []
+   },
+   {
+    "kitchen": "Banter Wine",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Claire Sullivan",
+      "role": "Co-owner/chef",
+      "year": null,
+      "outlet": "eater",
+      "source_url": "https://sf.eater.com/2022/10/19/23412946/che-fico-alimentari-menu-deal",
+      "quote": "Bay Area born-and-raised Claire Sullivan (who worked at Chez Panisse) and Devin Hohler will open Banter Wine"
+     }
+    ],
+    "children": []
+   },
+   {
+    "kitchen": "Camino",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Russell Moore",
+      "role": "chef",
+      "year": null,
+      "outlet": "sfgate",
+      "source_url": "https://www.sfgate.com/restaurants/article/Tunes-that-keep-Bay-Area-chefs-in-the-groove-3231416.php",
+      "quote": "Russell Moore Restaurant: Camino, Oakland Moore, a Chez Panisse alum who opened Camino last year, tailors his menu to the open fire that's the restaurant's focal point."
+     },
+     {
+      "person": "Russell Moore",
+      "role": "chef/owner",
+      "year": null,
+      "outlet": "eater",
+      "source_url": "https://sf.eater.com/2018/10/5/17941028/camino-closing-russ-moore-allison-hopelain-oakland",
+      "quote": "Moore and Hopelain, both of whom worked for many years at Chez Panisse, founded a restaurant known for its sometimes strict dedication to its owners\u2019 ethos..."
+     }
+    ],
+    "children": [
+     {
+      "kitchen": "The Kebabery",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Russell Moore",
+        "role": "owner",
+        "year": null,
+        "outlet": "eater",
+        "source_url": "https://sf.eater.com/2022/7/7/23198954/san-francisco-bay-area-restaurant-closures",
+        "quote": "BERKELEY \u2014 As Eater SF reported previously, popular grilled meat restaurant the Kebabery will serve its final skewers on October 8. Owner Russell Moore, who gained attention for his live-fire cooking at the now-closed re"
+       }
+      ],
+      "children": []
+     }
+    ]
+   },
+   {
+    "kitchen": "C\u00e9sar",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Richard Warren Mazzera",
+      "role": "founder",
+      "year": null,
+      "outlet": "eater",
+      "source_url": "https://sf.eater.com/2019/12/18/21028175/burger-king-sfo-free-cesar-buttigieg-alice-waters",
+      "quote": "Mazzera, who briefly worked for musician Jackson Browne before taking a role as business manager of Chez Panisse, \"joined the Famille Panisse when we most needed his skills and talents,\" Alice Waters, the restaurant\u2019s fo"
+     }
+    ],
+    "children": []
+   },
+   {
+    "kitchen": "Eccolo",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Christopher Lee",
+      "role": "chef",
+      "year": null,
+      "outlet": "sfgate",
+      "source_url": "https://www.sfgate.com/restaurants/diningout/article/Chez-Christopher-Chez-Panisse-chef-opens-2301226.php",
+      "quote": "After 16 years in one of the most rarefied kitchens in the country, chef Christopher Lee has ventured out of Chez Panisse to make it on his own... where he has opened Eccolo"
+     }
+    ],
+    "children": [
+     {
+      "kitchen": "Bacar",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Douglas Bernstein",
+        "role": "executive chef",
+        "year": null,
+        "outlet": "eater",
+        "source_url": "https://sf.eater.com/2009/12/17/6749803/bacar-names-new-chef-nombe-gets-booze-lingba-update",
+        "quote": "The new chef is Douglas Bernstein, who was last seen at Eccolo. He\u2019s been working in the Bacar kitchen for the last two months and soon he\u2019ll roll out his new dinner, brunch and bar menus."
+       }
+      ],
+      "children": [
+       {
+        "kitchen": "E&O Asian Kitchen",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Arnold Eric Wong",
+          "role": "consulting chef",
+          "year": null,
+          "outlet": "sfgate",
+          "source_url": "https://www.sfgate.com/restaurants/article/E-O-Asian-Kitchen-opens-in-S-F-3705911.php",
+          "quote": "consulting chef Arnold Eric Wong, formerly of Bacar and Eos, has overhauled the menu"
+         }
+        ],
+        "children": []
+       },
+       {
+        "kitchen": "Terrapin Creek",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Andrew Truong",
+          "role": "sous chef",
+          "year": null,
+          "outlet": "sfgate",
+          "source_url": "https://www.sfgate.com/restaurants/article/Out-the-Door-closed-for-repairs-new-Peruvian-and-3281530.php",
+          "quote": "San Franciscans Truong, formerly sous chef at Bacar; and his wife, Lin, previously a cook at Ducca and Michael Mina."
+         }
+        ],
+        "children": []
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "kitchen": "Fava",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "former Chez Panisse chefs",
+      "role": "chefs",
+      "year": null,
+      "outlet": "eater",
+      "source_url": "https://sf.eater.com/2019/12/26/21032376/best-new-restaurants-sf-2019",
+      "quote": "The two former Chez Panisse chefs who opened Fava in North Berkeley are killing it with their juicy, flavorful braised lamb wraps, fresh salads, and other lunchtime eats."
+     }
+    ],
+    "children": [
+     {
+      "kitchen": "Porch Party",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Ari Louie",
+        "role": "chef",
+        "year": null,
+        "outlet": "eater",
+        "source_url": "https://sf.eater.com/2022/9/28/23377179/best-new-pop-ups-san-francisco-bay-area",
+        "quote": "Her food is nostalgic and comforting: Think gooey and crispy patty melts, garlic lemon herb chicken thighs. She\u2019s got a cult status in the East Bay, now, and uses her time in the city\u2019s deeply storied co-op landscape to "
+       }
+      ],
+      "children": []
+     }
+    ]
+   },
+   {
+    "kitchen": "Ginger Island",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Christopher Lee",
+      "role": "chef",
+      "year": null,
+      "outlet": "sfgate",
+      "source_url": "https://www.sfgate.com/food/insidescoop/article/Chez-Panisse-chef-splits-for-Fourth-Street-2829168.php",
+      "quote": "For the last nine years, Lee has been co-chef of Chez Panisse. Ginger Island, the original home of the ground-breaking Fourth Street Grill, closed on Jan. 5. It's a move reminiscent of another former Chez Panisse chef, M"
+     }
+    ],
+    "children": []
+   },
+   {
+    "kitchen": "Ici Ice Cream",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Mary Canales",
+      "role": "pastry chef",
+      "year": null,
+      "outlet": "eater",
+      "source_url": "https://sf.eater.com/2018/11/29/18118584/ici-ice-cream-closes-berkeley-mary-canales",
+      "quote": "Canales came from nine years as pastry chef of Chez Panisse"
+     },
+     {
+      "person": "Mary Canales",
+      "role": "pastry chef",
+      "year": null,
+      "outlet": "eater",
+      "source_url": "https://sf.eater.com/2018/11/29/18118584/ici-ice-cream-closes-berkeley-mary-canales",
+      "quote": "Canales came from nine years as pastry chef of Chez Panisse"
+     }
+    ],
+    "children": []
+   },
+   {
+    "kitchen": "Jojo",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Peter Steiner",
+      "role": "maitre d'",
+      "year": null,
+      "outlet": "sfgate",
+      "source_url": "https://www.sfgate.com/restaurants/diningout/article/Thinking-Small-Pays-Off-Big-at-Jojo-Two-veteran-2302369.php",
+      "quote": "Thoresen was able to nab maitre d' Peter Steiner, who worked at Chez Panisse for years"
+     }
+    ],
+    "children": []
+   },
+   {
+    "kitchen": "Le Papillon",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Brian Fernando",
+      "role": "intern",
+      "year": null,
+      "outlet": "sfgate",
+      "source_url": "https://www.sfgate.com/restaurants/diningout/article/Exciting-new-tastes-at-1601-Bar-amp-Kitchen-4637662.php",
+      "quote": "after an internship at Chez Panisse, spent a decade at Le Papillon in San Jose."
+     }
+    ],
+    "children": []
+   },
+   {
+    "kitchen": "Oliveto",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Paul Bertolli",
+      "role": "chef",
+      "year": null,
+      "outlet": "sfgate",
+      "source_url": "https://www.sfgate.com/restaurants/diningout/article/Chez-Christopher-Chez-Panisse-chef-opens-2301226.php",
+      "quote": "Like Paul Bertolli before him who left Chez Panisse to 'out-Italian' the Italians at Oliveto"
+     }
+    ],
+    "children": [
+     {
+      "kitchen": "Corso",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Elaine Rivera",
+        "role": "chef de cuisine",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/restaurants/article/What-s-New-Corso-opens-in-Berkeley-3209170.php",
+        "quote": "Elaine Rivera, formerly of Oliveto, is chef de cuisine"
+       }
+      ],
+      "children": []
+     },
+     {
+      "kitchen": "Crescent Park Grill",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Christopher Fernandez",
+        "role": "chef",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/restaurants/diningout/article/Italy-by-Way-of-Sausalito-Restaurateur-Larry-3313895.php",
+        "quote": "From there, he traveled to Palo Alto to open the now-closed Crescent Park Grill before heading to Stars in San Francisco."
+       }
+      ],
+      "children": [
+       {
+        "kitchen": "Stars",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Christopher Fernandez",
+          "role": "chef",
+          "year": null,
+          "outlet": "sfgate",
+          "source_url": "https://www.sfgate.com/restaurants/diningout/article/Italy-by-Way-of-Sausalito-Restaurateur-Larry-3313895.php",
+          "quote": "From there, he traveled to Palo Alto to open the now-closed Crescent Park Grill before heading to Stars in San Francisco."
+         }
+        ],
+        "children": []
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "kitchen": "Oliveto Cafe and Restaurant",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Paul Bertolli",
+      "role": "chef",
+      "year": null,
+      "outlet": "sfgate",
+      "source_url": "https://www.sfgate.com/food/insidescoop/article/Two-East-Bay-Chefs-Alight-in-New-Jobs-3039060.php",
+      "quote": "Longtime Chez Panisse chef Paul Bertolli, who has been looking around for his next project ever since he left the restaurant in 1992, is now one of the owners of Oakland's 8-year-old Oliveto Cafe and Restaurant. He will "
+     },
+     {
+      "person": "Mike Tusk",
+      "role": "sous chef",
+      "year": null,
+      "outlet": "sfgate",
+      "source_url": "https://www.sfgate.com/food/insidescoop/article/Two-East-Bay-Chefs-Alight-in-New-Jobs-3039060.php",
+      "quote": "He oversees all the food... and works with his two able and accomplished sous chefs:... Mike Tusk, who has cooked at Bizou and Chez Panisse."
+     }
+    ],
+    "children": []
+   },
+   {
+    "kitchen": "Pizzaiolo",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Charlie Hallowell",
+      "role": "chef-owner",
+      "year": null,
+      "outlet": "eater",
+      "source_url": "https://sf.eater.com/2017/12/28/16825686/charlie-hallowell-sexual-harassment-pizzaiolo-oakland",
+      "quote": "Hallowell, who got his start at Chez Panisse, opened Pizzaiolo in 2005 in Oakland\u2019s Temescal neighborhood, energizing the East Bay dining scene."
+     }
+    ],
+    "children": [
+     {
+      "kitchen": "Boot and Shoe Service",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Charlie Hallowell",
+        "role": "chef-owner",
+        "year": null,
+        "outlet": "eater",
+        "source_url": "https://sf.eater.com/2017/12/28/16825686/charlie-hallowell-sexual-harassment-pizzaiolo-oakland",
+        "quote": "He subsequently opened Boot and Shoe Service and Penrose in Grand Lake."
+       }
+      ],
+      "children": []
+     },
+     {
+      "kitchen": "Flora",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Rico Rivera",
+        "role": "chef",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/food/insidescoop/article/Frascati-owners-headed-to-Iluna-Basque-3252275.php",
+        "quote": "Chris Dettmer, who took over the kitchen in April, has been replaced by Pizzaiolo vet Rico Rivera"
+       }
+      ],
+      "children": [
+       {
+        "kitchen": "Prizefighter",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Lucia Gonzales",
+          "role": "bar team member",
+          "year": null,
+          "outlet": "eater",
+          "source_url": "https://sf.eater.com/2011/11/23/6634435/prizefighter-to-east-bay-bistro-unique-on-union-more",
+          "quote": "Absinthe's Carlos Yturria, Prospect's Patrick Brennan and Lucia Gonzales of Flora have all joined the bar team full-time."
+         }
+        ],
+        "children": []
+       }
+      ]
+     },
+     {
+      "kitchen": "Penrose",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Charlie Hallowell",
+        "role": "chef-owner",
+        "year": null,
+        "outlet": "eater",
+        "source_url": "https://sf.eater.com/2017/12/28/16825686/charlie-hallowell-sexual-harassment-pizzaiolo-oakland",
+        "quote": "He subsequently opened Boot and Shoe Service and Penrose in Grand Lake."
+       }
+      ],
+      "children": []
+     },
+     {
+      "kitchen": "Sfizio",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Matt Solimano",
+        "role": "chef and owner",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/food/article/new-oakland-pasta-restaurant-opens-18096948.php",
+        "quote": "Chef and owner Matt Solimano, who previously worked as a sous chef at Pizzaiolo, also features three starters and a dessert (currently strawberry shortcake) on the menu."
+       }
+      ],
+      "children": []
+     },
+     {
+      "kitchen": "Starline Social Club",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Austin Holey",
+        "role": "chef-partner",
+        "year": null,
+        "outlet": "eater",
+        "source_url": "https://sf.eater.com/2015/12/10/9886542/starline-social-club-grocery-cafe-chef-shuffle",
+        "quote": "chef-partner Austin Holey (previously of Bones in Paris, as well also East Bay spots like Pizzaiolo."
+       }
+      ],
+      "children": []
+     },
+     {
+      "kitchen": "Western Pacific",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Charlie Hallowell",
+        "role": "Chef-Owner",
+        "year": null,
+        "outlet": "eater",
+        "source_url": "https://sf.eater.com/2018/10/12/17967998/alameda-county-shuts-down-chef-smelly-pop-up-restaurant-oakland-complex",
+        "quote": "The chef-owner of Pizzaiolo, who has been widely accused of sexual harassment, sent out a long open letter last night outlining his plan to return to his restaurant. It includes a dunk tank (really), and the name of his "
+       },
+       {
+        "person": "Charlie Hallowell",
+        "role": "Chef-Owner",
+        "year": null,
+        "outlet": "eater",
+        "source_url": "https://sf.eater.com/2018/10/12/17967998/alameda-county-shuts-down-chef-smelly-pop-up-restaurant-oakland-complex",
+        "quote": "The chef-owner of Pizzaiolo, who has been widely accused of sexual harassment, sent out a long open letter last night outlining his plan to return to his restaurant. It includes a dunk tank (really), and the name of his "
+       }
+      ],
+      "children": []
+     }
+    ]
+   },
+   {
+    "kitchen": "Ramen Shop",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "SiewChinn Chin",
+      "role": "pastry chef",
+      "year": null,
+      "outlet": "eater",
+      "source_url": "https://sf.eater.com/2023/11/20/23966186/hoshigaki-hachiya-persimmon-how-to",
+      "quote": "Prior to joining the Ramen Shop team, she worked as a pastry chef at Berkeley\u2019s esteemed Chez Panisse and was a Basque Culinary World Prize finalist in 2019."
+     }
+    ],
+    "children": []
+   },
+   {
+    "kitchen": "Rintaro",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Sylvan Mishima Bracket",
+      "role": "alum / chef",
+      "year": 2014,
+      "outlet": "sfgate",
+      "source_url": "https://www.sfgate.com/restaurants/diningout/article/S-F-s-trendsetting-chefs-hone-their-focus-for-5979973.php",
+      "quote": "Chez Panisse alum Sylvan Mishima Bracket last month opened Rintaro in a handsome warehouse space on 14th Street..."
+     }
+    ],
+    "children": []
+   },
+   {
+    "kitchen": "Sailing Goat",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Arnon Oren",
+      "role": "chef",
+      "year": null,
+      "outlet": "eater",
+      "source_url": "https://sf.eater.com/dining-report/213758/sailing-goat-review",
+      "quote": "Chef Arnon Oren runs the Point San Pablo Harbor restaurant; Oren has worked at Chez Panisse, plus now-closed Oliveto Cafe and Restaurant, and Cafe Cacao."
+     }
+    ],
+    "children": []
+   },
+   {
+    "kitchen": "The Rustic",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Zoti Ali Turap",
+      "role": "Chef (previously), Owner/Chef (currently)",
+      "year": null,
+      "outlet": "eater",
+      "source_url": "https://sf.eater.com/2023/10/10/23903218/new-restaurants-openings-san-francisco-oakland-bay-area",
+      "quote": "The restaurant comes from owner Zoti Ali Turap, who previously worked at acclaimed Chez Panisse in Berkeley, and serves a \u201ccontinent-spanning menu,\u201d the outlet reports."
+     }
+    ],
+    "children": []
+   },
+   {
+    "kitchen": "Tosca Caf\u00e9",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "April Bloomfield",
+      "role": "chef and owner",
+      "year": null,
+      "outlet": "sfgate",
+      "source_url": "https://www.sfgate.com/restaurants/article/new-owners-preparing-for-tosca-s-encore-4883146.php",
+      "quote": "Bloomfield's own stint cooking at Chez Panisse in Berkeley years ago"
+     }
+    ],
+    "children": []
+   },
+   {
+    "kitchen": "Zuni Cafe",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Gilbert Pilgrim",
+      "role": "business partner",
+      "year": null,
+      "outlet": "sfgate",
+      "source_url": "https://www.sfgate.com/restaurants/article/Iconic-restaurants-thriving-at-30-3169301.php",
+      "quote": "she is quick to give credit for Zuni's success over the last couple of difficult years to longtime customer Gilbert Pilgrim (formerly with Chez Panisse), who eventually became her business partner."
+     }
+    ],
+    "children": [
+     {
+      "kitchen": "OK Falls",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Rebecca Boice",
+        "role": "Executive Chef",
+        "year": null,
+        "outlet": "eater",
+        "source_url": "https://sf.eater.com/2014/11/5/7164439/an-italian-addition-to-oakland-ok-falls-set-for-spring",
+        "quote": "Executive Chef Rebecca Boice, previously of Zuni Cafe and Toast Kitchen + Bar, is heading up the kitchen."
+       }
+      ],
+      "children": []
+     },
+     {
+      "kitchen": "Turner\u2019s Kitchen",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Ken Turner",
+        "role": "chef and owner",
+        "year": "nine years ago",
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/food/article/turners-kitchen-sf-deli-sandwiches-19482897.php",
+        "quote": "Turner opened his sandwich shop, at 3505 B 17th St., nine years ago after the former occupant, Clare\u2019s Deli, called it quits."
+       },
+       {
+        "person": "Ken Turner",
+        "role": "chef",
+        "year": 2015,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/food/article/zuni-chef-sandwich-shop-closing-20058759.php",
+        "quote": "Turner first opened the hole-in-the-wall sandwich shop in 2015, taking over the former Clare\u2019s Deli, as SFGATE previously reported. After working at Zuni Cafe for seven years"
+       }
+      ],
+      "children": []
+     }
+    ]
+   }
+  ]
+ },
+ "tree_aqua": {
+  "kitchen": "Aqua",
+  "alumni": 14,
+  "kitchens_within_3_moves": 71,
+  "per_ring": [
+   15,
+   38,
+   18
+  ],
+  "starred_within_3_moves": [],
+  "children": [
+   {
+    "kitchen": "Arcadia",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Michael Mina",
+      "role": "Chef and Operator",
+      "year": null,
+      "outlet": "sfgate",
+      "source_url": "https://www.sfgate.com/food/insidescoop/article/San-Jose-dining-scene-perks-up-with-2-openings-2662256.php",
+      "quote": "Chef Michael Mina, formerly of Aqua, will manage and operate the 120-seat Arcadia in the new 506-room San Jose Marriott"
+     }
+    ],
+    "children": [
+     {
+      "kitchen": "Absinthe",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Adam Keough",
+        "role": "kitchen lead",
+        "year": null,
+        "outlet": "eater",
+        "source_url": "https://sf.eater.com/2010/10/12/6715051/chef-adam-keough-discusses-changes-at-absinthe",
+        "quote": "Adam Keough took over the kitchen at Hayes Valley fixture Absinthe . Keough\u2019s resume includes work with Michael Mina at Arcadia"
+       }
+      ],
+      "children": [
+       {
+        "kitchen": "Comstock Saloon",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Jonny Raglin",
+          "role": "focus shift (implied role: bar/restaurant professional)",
+          "year": null,
+          "outlet": "eater",
+          "source_url": "https://sf.eater.com/2009/12/9/6750797/south-changing-concepts-bar-shuffle-at-absinthe",
+          "quote": "With Jeff Hollinger and Jonny Raglin turning their focus to the upcoming Comstock Saloon, the restaurant has announced that Carlos Yturria has been appointed the full-time bar manager at Absinthe."
+         },
+         {
+          "person": "Jeff Hollinger",
+          "role": "focus shift (implied role: bar/restaurant professional)",
+          "year": null,
+          "outlet": "eater",
+          "source_url": "https://sf.eater.com/2009/12/9/6750797/south-changing-concepts-bar-shuffle-at-absinthe",
+          "quote": "With Jeff Hollinger and Jonny Raglin turning their focus to the upcoming Comstock Saloon, the restaurant has announced that Carlos Yturria has been appointed the full-time bar manager at Absinthe."
+         }
+        ],
+        "children": []
+       },
+       {
+        "kitchen": "Prizefighter",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Carlos Yturria",
+          "role": "bar team member",
+          "year": null,
+          "outlet": "eater",
+          "source_url": "https://sf.eater.com/2011/11/23/6634435/prizefighter-to-east-bay-bistro-unique-on-union-more",
+          "quote": "Absinthe's Carlos Yturria, Prospect's Patrick Brennan and Lucia Gonzales of Flora have all joined the bar team full-time."
+         }
+        ],
+        "children": []
+       },
+       {
+        "kitchen": "Sam's Chowder House",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Ross Browne",
+          "role": "chef",
+          "year": null,
+          "outlet": "sfgate",
+          "source_url": "https://www.sfgate.com/food/insidescoop/article/New-chefs-for-LuLu-Azie-2491555.php",
+          "quote": "After eight years, Absinthe (398 Hayes, at Gough) chef Ross Browne has left to lead the kitchen at Sam's Chowder House (4210 N. Cabrillo Hwy.)..."
+         }
+        ],
+        "children": []
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "kitchen": "Beautifull",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Ron Boyd",
+      "role": "director of research and development",
+      "year": null,
+      "outlet": "sfgate",
+      "source_url": "https://www.sfgate.com/restaurants/article/Aqua-tidal-wave-chef-change-legal-dispute-3163356.php",
+      "quote": "Ron Boyd, the chef de cuisine and a 2005 Chronicle Rising Star chef, is leaving and moving up the road apiece to Beautifull, a company that makes healthful packaged meals... Boyd has been hired on as director of research"
+     },
+     {
+      "person": "Ron Boyd",
+      "role": "director of research and development",
+      "year": null,
+      "outlet": "sfgate",
+      "source_url": "https://www.sfgate.com/restaurants/article/Aqua-tidal-wave-chef-change-legal-dispute-3163356.php",
+      "quote": "Ron Boyd, the chef de cuisine and a 2005 Chronicle Rising Star chef, is leaving and moving up the road apiece to Beautifull, a company that makes healthful packaged meals... Boyd has been hired on as director of research"
+     }
+    ],
+    "children": []
+   },
+   {
+    "kitchen": "Bruno's",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "James Ormsby",
+      "role": "chef",
+      "year": null,
+      "outlet": "sfgate",
+      "source_url": "https://www.sfgate.com/food/insidescoop/article/Bruno-s-Reopens-3017935.php",
+      "quote": "hiring chef James Ormsby, who cooked at Aqua before spending three years in the private dining room at Wells Fargo"
+     }
+    ],
+    "children": [
+     {
+      "kitchen": "Jack Falstaff",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "James Ormsby",
+        "role": "chef",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/restaurants/article/Crudo-catches-on-Chefs-of-all-stripes-are-2596525.php",
+        "quote": "Ormsby says he was deep into tartares when he was chef at Bruno's in the Mission. Then he ate at Esca shortly after it opened and caught crudo fever. ... Chefs like James Ormsby at Jack Falstaff in San Francisco's South "
+       },
+       {
+        "person": "James Ormsby",
+        "role": "chef",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/restaurants/article/Crudo-catches-on-Chefs-of-all-stripes-are-2596525.php",
+        "quote": "Ormsby says he was deep into tartares when he was chef at Bruno's in the Mission. Then he ate at Esca shortly after it opened and caught crudo fever. ... James Ormsby at Jack Falstaff in San Francisco's South of Market n"
+       }
+      ],
+      "children": []
+     },
+     {
+      "kitchen": "PlumpJack Cafe",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "James Ormsby",
+        "role": "chef",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/food/insidescoop/article/Charles-Nob-Hill-to-close-Sunday-Location-will-2730933.php",
+        "quote": "Chef James Ormsby, now at PlumpJack, made his bones there"
+       }
+      ],
+      "children": [
+       {
+        "kitchen": "Manresa",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "James Syhabout",
+          "role": "chef",
+          "year": null,
+          "outlet": "eater",
+          "source_url": "https://sf.eater.com/2007/10/24/6811015/week-in-reviews-bauer-goes-plumpjackin-and-more",
+          "quote": "high 3.5-star standards set by his predecessor James Syhabout, now at Manresa"
+         },
+         {
+          "person": "James Syhabout",
+          "role": "chef de cuisine",
+          "year": null,
+          "outlet": "sfgate",
+          "source_url": "https://www.sfgate.com/food/insidescoop/article/Top-S-F-chefs-to-feed-museumgoers-2582954.php",
+          "quote": "PlumpJack Cafe executive chef James Syhabout, a 2007 Chronicle Rising Star Chef, is heading back to Manresa (320 Village Lane, Los Gatos) to work with his mentor, David Kinch. He'll replace his best friend, Jeremy Fox wh"
+         }
+        ],
+        "children": []
+       },
+       {
+        "kitchen": "Merenda",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Keith Luce",
+          "role": "chef",
+          "year": null,
+          "outlet": "sfgate",
+          "source_url": "https://www.sfgate.com/restaurants/diningout/article/A-CULINARY-COMEBACK-Restaurant-openings-may-3316331.php",
+          "quote": "He was the chef at PlumpJack for several years (and also cooked at the White House) before striking out on his own to create a French-inspired cafe (Merenda)."
+         }
+        ],
+        "children": []
+       }
+      ]
+     },
+     {
+      "kitchen": "Red Herring",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "James Ormsby",
+        "role": "Head of the kitchen",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/restaurants/article/DINING-UPDATES-Chef-s-Back-All-s-Well-at-2953633.php",
+        "quote": "When Ormsby left to head the kitchen at Red Herring, neither did as well."
+       },
+       {
+        "person": "James Ormsby",
+        "role": "Head of the kitchen",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/restaurants/article/DINING-UPDATES-Chef-s-Back-All-s-Well-at-2953633.php",
+        "quote": "When Ormsby left to head the kitchen at Red Herring, neither did as well."
+       }
+      ],
+      "children": []
+     }
+    ]
+   },
+   {
+    "kitchen": "Burdell",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Geoff Davis",
+      "role": "chef",
+      "year": null,
+      "outlet": "eater",
+      "source_url": "https://sf.eater.com/23939609/eater-awards-san-francisco-bay-area-winners-best-restaurants-2023",
+      "quote": "The dishes reflect Davis\u2019s meditations on the Great Migration and his family history, as seen through the lens of his experience working at lauded restaurants such as Cyrus, Aqua, True Laurel, and Penny Roma."
+     }
+    ],
+    "children": [
+     {
+      "kitchen": "Uncle's",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Geoff Davis",
+        "role": "chef",
+        "year": null,
+        "outlet": "eater",
+        "source_url": "https://sf.eater.com/openings",
+        "quote": "Burdell Chef Geoff Davis Is Ready to Open His Second Restaurant in Oakland Uncle\u2019s is a new bar and grill opening in Rockridge"
+       }
+      ],
+      "children": []
+     }
+    ]
+   },
+   {
+    "kitchen": "Campton Place",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Eric Oberholtzer",
+      "role": "cook",
+      "year": null,
+      "outlet": "sfgate",
+      "source_url": "https://www.sfgate.com/restaurants/article/Napa-Chef-Produces-Souffles-Aphorisms-With-Aplomb-2926006.php",
+      "quote": "had cooked at Aqua in San Francisco and Lark Creek Inn."
+     }
+    ],
+    "children": [
+     {
+      "kitchen": "Catahoula Restaurant & Saloon",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Jan Birnbaum",
+        "role": "executive chef",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/food/insidescoop/article/The-long-awaited-Two-B-restaurant-debuts-near-Pac-2579114.php",
+        "quote": "Birnbaum opened Catahoula, located in the Mount View Hotel at 1457 Lincoln Ave. (near Fair Way), after he left as the executive chef of Campton Place"
+       },
+       {
+        "person": "Jan Birnbaum",
+        "role": "chef-owner",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/food/insidescoop/article/The-long-awaited-Two-B-restaurant-debuts-near-Pac-2579114.php",
+        "quote": "Birnbaum opened Catahoula, located in the Mount View Hotel at 1457 Lincoln Ave. (near Fair Way), after he left as the executive chef of Campton Place."
+       }
+      ],
+      "children": []
+     },
+     {
+      "kitchen": "Chez TJ",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Christopher Kostow",
+        "role": "sous chef",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/restaurants/article/Chez-TJ-chef-heading-north-to-Meadowood-3299214.php",
+        "quote": "Before working at Chez TJ, Kostow was sous chef at Campton Place in San Francisco under Daniel Humm."
+       },
+       {
+        "person": "Christopher Kostow",
+        "role": "sous chef",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/restaurants/article/Chez-TJ-chef-heading-north-to-Meadowood-3299214.php",
+        "quote": "Before working at Chez TJ, Kostow was sous chef at Campton Place in San Francisco under Daniel Humm."
+       }
+      ],
+      "children": [
+       {
+        "kitchen": "Baume",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Bruno Chemel",
+          "role": "chef",
+          "year": null,
+          "outlet": "eater",
+          "source_url": "https://sf.eater.com/2010/10/26/6713015/march-of-the-michelin-stars-the-restaurant-at-meadowood-gets-a",
+          "quote": "Bruno Chemel , who wasn\u2019t exactly in the kindest of situations when he was axed for not earning Chez TJ an additional star last year. Remeber Chemel went on to launch his solo venture Baume."
+         }
+        ],
+        "children": []
+       },
+       {
+        "kitchen": "Meadowood",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Christopher Kostow",
+          "role": "chef",
+          "year": null,
+          "outlet": "sfgate",
+          "source_url": "https://www.sfgate.com/restaurants/article/The-Inside-Scoop-French-chef-Bruno-Chemel-to-3297491.php",
+          "quote": "When news broke that Christopher Kostow, the acclaimed young chef of Chez TJ in Mountain View (938 Villa St.) was headed to Napa Valley's Meadowood"
+         },
+         {
+          "person": "Christopher Kostow",
+          "role": "head chef",
+          "year": 2008,
+          "outlet": "sfgate",
+          "source_url": "https://www.sfgate.com/restaurants/article/Chez-TJ-chef-heading-north-to-Meadowood-3299214.php",
+          "quote": "Chez TJ's Christopher Kostow, another Chronicle three-star chef, will move from Mountain View to St. Helena to head up Meadowood's kitchen starting next month."
+         }
+        ],
+        "children": []
+       }
+      ]
+     },
+     {
+      "kitchen": "Ettan",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Srijith Gopinathan",
+        "role": "chef-partner",
+        "year": null,
+        "outlet": "eater",
+        "source_url": "https://sf.eater.com/2019/12/5/20997091/oaklands-food-truck-3300-club-ettan",
+        "quote": "Chef Srijith Gopinathan has been named the chef-partner of Ettan, a \"contemporary Indian\" spot expected to open at 518 Bryant Street in Palo Alto in January... Gopinathan won\u2019t be leaving Campton Place, however."
+       }
+      ],
+      "children": []
+     },
+     {
+      "kitchen": "Greenbrier",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Michael Scaffidi",
+        "role": "beverage director",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/restaurants/article/A-Sabella-s-to-close-after-87-years-2541125.php",
+        "quote": "And at Campton Place, Michael Scaffidi is leaving to take over as beverage director at the Greenbrier, a resort in White Sulphur Springs, W.Va."
+       },
+       {
+        "person": "Michael Scaffidi",
+        "role": "beverage director",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/restaurants/article/A-Sabella-s-to-close-after-87-years-2541125.php",
+        "quote": "at Campton Place, Michael Scaffidi is leaving to take over as beverage director at the Greenbrier, a resort in White Sulphur Springs, W.Va."
+       }
+      ],
+      "children": []
+     },
+     {
+      "kitchen": "Kahala Mandarin Oriental hotel",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Eric Oberholtzer",
+        "role": "sous chef",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/restaurants/article/Napa-Chef-Produces-Souffles-Aphorisms-With-Aplomb-2926006.php",
+        "quote": "Before that, he was sous chef at Campton Place in San Francisco and had cooked at Aqua in San Francisco and Lark Creek Inn."
+       }
+      ],
+      "children": [
+       {
+        "kitchen": "Left Bank",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Eric Oberholtzer",
+          "role": "chef de cuisine",
+          "year": null,
+          "outlet": "sfgate",
+          "source_url": "https://www.sfgate.com/restaurants/article/Napa-Chef-Produces-Souffles-Aphorisms-With-Aplomb-2926006.php",
+          "quote": "Oberholtzer had been sous chef for the fine dining restaurant at the Kahala Mandarin Oriental hotel in Hawaii. Before that, he was sous chef at Campton Place in San Francisco and had cooked at Aqua in San Francisco and L"
+         }
+        ],
+        "children": []
+       }
+      ]
+     },
+     {
+      "kitchen": "Madera",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Peter Rudolph",
+        "role": "executive chef",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/restaurants/article/What-s-New-More-restaurant-openings-3245844.php",
+        "quote": "The seasonal menu, by executive chef Peter Rudolph, formerly of Campton Place, is centered on the restaurant's wood-fired grill."
+       }
+      ],
+      "children": [
+       {
+        "kitchen": "Cin Cin",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "RJ Subaba",
+          "role": "sous chef (previously), chef (currently)",
+          "year": null,
+          "outlet": "eater",
+          "source_url": "https://sf.eater.com/2012/12/5/6512499/pizzeria-delfina-heads-south-cin-cins-new-chef",
+          "quote": "He\u2019s previously been a sous chef at The Village Pub, Madera, and Murray Circle and plans to add his 'personal finesse and refinements' while continuing the global small plate format that has gotten winks from a Michelin "
+         }
+        ],
+        "children": []
+       }
+      ]
+     },
+     {
+      "kitchen": "The Morris",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Gavin Schmidt",
+        "role": "chef/partner",
+        "year": null,
+        "outlet": "eater",
+        "source_url": "https://sf.eater.com/2016/10/19/13325596/the-morris-san-francisco-open-photos",
+        "quote": "The Morris , the restaurant from sommelier Paul Einbund (Frances, Octavia) and chef/partner Gavin Schmidt (Coi, Campton Place), is now open"
+       }
+      ],
+      "children": [
+       {
+        "kitchen": "Maison Nico",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Paul Einbund",
+          "role": "co-owner and sommelier",
+          "year": null,
+          "outlet": "eater",
+          "source_url": "https://sf.eater.com/2020/10/23/21530861/maison-nico-epicerie-opens-sf",
+          "quote": "The Delaroques are joining forces with longtime friend and colleague Paul Einbund as an equal-part co-owner for this new venture. Einbund is also the owner and sommelier of the Morris, and he is now stocking the wine cas"
+         },
+         {
+          "person": "Paul Einbund",
+          "role": "co-owner and sommelier",
+          "year": null,
+          "outlet": "eater",
+          "source_url": "https://sf.eater.com/2020/10/23/21530861/maison-nico-epicerie-opens-sf",
+          "quote": "The Delaroques are joining forces with longtime friend and colleague Paul Einbund as an equal-part co-owner for this new venture. Einbund is also the owner and sommelier of the Morris, and he is now stocking the wine cas"
+         }
+        ],
+        "children": []
+       }
+      ]
+     },
+     {
+      "kitchen": "The Restaurant at Meadowood",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Matthew Tinder",
+        "role": "pastry chef",
+        "year": null,
+        "outlet": "eater",
+        "source_url": "https://sf.eater.com/2009/11/18/6752769/meadowood-snags-itself-a-new-pastry-chef",
+        "quote": "The talented Tinder has previously worked at notable places like Brick and Campton Place, the latter where he was Boris Portnoy\u2019s second-in-command. The move caps off... where Christopher Kostow and company have recently"
+       }
+      ],
+      "children": [
+       {
+        "kitchen": "Cavallo Point",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Joseph Humphrey",
+          "role": "executive chef",
+          "year": null,
+          "outlet": "eater",
+          "source_url": "https://sf.eater.com/2007/12/4/6808479/eaterwire-am-edition-chefs-out-at-meadowood-myth",
+          "quote": "Joseph Humphrey has decided to leave The Restaurant at Meadowood. Humphrey will take up executive chef duties at Cavallo Point, the upcoming Fort Baker restaurant expected to open sometime in summer 2008."
+         }
+        ],
+        "children": []
+       },
+       {
+        "kitchen": "Goop Kitchen",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Kim Floresca",
+          "role": "chef",
+          "year": null,
+          "outlet": "eater",
+          "source_url": "https://sf.eater.com/restaurant-news/208683/goop-kitchen-san-francisco-bay-area-opening-gwyneth-paltrow-208683",
+          "quote": "The initial effort was led by chef Kim Floresca, previously of Per Se, El Bulli, and wine country\u2019s own the Restaurant at Meadowood."
+         }
+        ],
+        "children": []
+       },
+       {
+        "kitchen": "Hadeem",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Spencer Horovitz",
+          "role": "chef",
+          "year": null,
+          "outlet": "eater",
+          "source_url": "https://sf.eater.com/23939609/eater-awards-san-francisco-bay-area-winners-best-restaurants-2023",
+          "quote": "Horovitz most recently led the kitchen at Oakland\u2019s Slug and previously worked at Itria, the Progress, and the Restaurant at Meadowood."
+         }
+        ],
+        "children": []
+       },
+       {
+        "kitchen": "Harbor House",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Amy Smith",
+          "role": "farmer",
+          "year": 2021,
+          "outlet": "sfgate",
+          "source_url": "https://www.sfgate.com/food/article/michelin-starred-calif-restaurant-thriving-19667021.php",
+          "quote": "Smith spent six years at St. Helena\u2019s three-Michelin-starred Restaurant at Meadowood before coming to Harbor House... Harbor House farmer Amy Smith, who joined the team in 2021."
+         }
+        ],
+        "children": []
+       },
+       {
+        "kitchen": "The Charter Oak",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Christopher Kostow",
+          "role": "chef",
+          "year": null,
+          "outlet": "eater",
+          "source_url": "https://sf.eater.com/2017/11/6/16615070/12-days-christmas-meadowood-kostow-napa-san-francisco",
+          "quote": "After taking a year off to open his casual spinoff The Charter Oak, chef Christopher Kostow has brought back the 12 Days of Christmas to The Restaurant at Meadowood."
+         }
+        ],
+        "children": []
+       }
+      ]
+     },
+     {
+      "kitchen": "Tra Vigne",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Nate Appleman",
+        "role": "chef",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/food/insidescoop/article/A16-chef-takes-the-lead-2536855.php",
+        "quote": "Appleman worked in Tuscany for a year after he graduated from the Culinary Institute of America in Hyde Park, N.Y. He met Hille when the two worked at Campton Place (340 Stockton, near Sutter) under Laurent Manrique. Fro"
+       }
+      ],
+      "children": []
+     }
+    ]
+   },
+   {
+    "kitchen": "Cav Wine Bar",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "John Maher",
+      "role": "executive chef",
+      "year": null,
+      "outlet": "sfgate",
+      "source_url": "https://www.sfgate.com/restaurants/article/Barbacco-wine-bar-to-open-sans-wine-briefly-3209190.php",
+      "quote": "John Maher has started as the executive chef at San Francisco's Cav Wine Bar (1666 Market St.). Maher was formerly at Thomas Keller's French Laundry in Yountville, and most recently was sous chef at Aqua in San Francisco"
+     },
+     {
+      "person": "John Maher",
+      "role": "executive chef",
+      "year": null,
+      "outlet": "sfgate",
+      "source_url": "https://www.sfgate.com/restaurants/article/Barbacco-wine-bar-to-open-sans-wine-briefly-3209190.php",
+      "quote": "John Maher has started as the executive chef at San Francisco's Cav Wine Bar (1666 Market St.). Maher was formerly at Thomas Keller's French Laundry in Yountville, and most recently was sous chef at Aqua in San Francisco"
+     }
+    ],
+    "children": []
+   },
+   {
+    "kitchen": "Charles Nob Hill",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Melissa Perello",
+      "role": "executive chef",
+      "year": null,
+      "outlet": "sfgate",
+      "source_url": "https://www.sfgate.com/food/insidescoop/article/Fifth-Floor-s-Perello-to-leave-Eos-gets-a-new-2483916.php",
+      "quote": "Perello was a major coup for the Fifth Floor when she took over, after cutting her teeth at Aqua and scoring the executive chef's job at Charles Nob Hill when she was just 25."
+     }
+    ],
+    "children": []
+   },
+   {
+    "kitchen": "Dry Creek Kitchen",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Dustin Valette",
+      "role": "chef de cuisine",
+      "year": null,
+      "outlet": "eater",
+      "source_url": "https://sf.eater.com/2009/12/10/6750563/new-chef-at-dry-creek-kitchen-kevin-had-the-sads",
+      "quote": "Sonoma native Dustin Valette, who is a CIA Hyde Park grad and has worked at Aqua and Bouchon... has named a new chef de cuisine at his Dry Creek Kitchen"
+     }
+    ],
+    "children": []
+   },
+   {
+    "kitchen": "Eos Restaurant & Wine Bar",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Michael Roon",
+      "role": "Chef de Cuisine",
+      "year": null,
+      "outlet": "eater",
+      "source_url": "https://sf.eater.com/2010/12/8/6707039/chef-shuffles",
+      "quote": "Roon, who hails from Los Gatos, worked at Roys Hawaiian Fusion and Aqua before becoming EOS's Chef de Cuisine two years ago."
+     }
+    ],
+    "children": []
+   },
+   {
+    "kitchen": "Estiatorio Ornos",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Michael Mina",
+      "role": "chef",
+      "year": null,
+      "outlet": "eater",
+      "source_url": "https://sf.eater.com/restaurant-news/208614/bourbon-steak-opening-steph-curry-san-francisco",
+      "quote": "Aqua, Mina\u2019s other most buzzy restaurant, was a few blocks away where Ornos later took over, both of which have since closed."
+     }
+    ],
+    "children": []
+   },
+   {
+    "kitchen": "Fifth Floor",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "George Morrone",
+      "role": "chef",
+      "year": null,
+      "outlet": "sfgate",
+      "source_url": "https://www.sfgate.com/food/insidescoop/article/Gras-leaves-as-Perello-ascends-to-Fifth-Floor-2640529.php",
+      "quote": "Morrone, who had opened Aqua for Condy, opened the Fifth Floor for Kimpton."
+     }
+    ],
+    "children": [
+     {
+      "kitchen": "Conduit",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Justin Deering",
+        "role": "chef",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/food/insidescoop/article/Michelin-starred-Chez-TJ-gets-SF-chef-3203868.php",
+        "quote": "Chef Justin Deering, formerly of Boulevard and Fifth Floor, will be seeking new work"
+       }
+      ],
+      "children": []
+     },
+     {
+      "kitchen": "Copper Spoon",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Andre Hall",
+        "role": "executive chef",
+        "year": null,
+        "outlet": "eater",
+        "source_url": "https://sf.eater.com/2017/10/17/16486504/hayes-valley-wise-sons-opening-october-31-am-intel",
+        "quote": "Copper Spoon executive chef Andre Hall, who has cooked at Bar Tartine and Fifth Floor, has an eclectic food menu..."
+       }
+      ],
+      "children": []
+     },
+     {
+      "kitchen": "Frances",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Melissa Perello",
+        "role": "executive chef",
+        "year": null,
+        "outlet": "eater",
+        "source_url": "https://sf.eater.com/2010/12/7/6707171/candid-chatter-with-melissa-perello-of-frances-fame",
+        "quote": "at Fifth Floor as executive chef, it was her leap 'down' from fine dining... Melissa Perello opened Castro popularity content winner Frances on December 1st last year"
+       },
+       {
+        "person": "Melissa Perello",
+        "role": "chef/owner",
+        "year": 2006,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/food/insidescoop/article/A-Plum-assignment-for-chef-Ron-Boyd-3175464.php",
+        "quote": "Melissa Perello left Fifth Floor in 2006; she went on to open Frances, the Castro's popular bistro."
+       }
+      ],
+      "children": []
+     },
+     {
+      "kitchen": "L2O",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Laurent Gras",
+        "role": "chef/co-owner",
+        "year": 2004,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/food/insidescoop/article/A-Plum-assignment-for-chef-Ron-Boyd-3175464.php",
+        "quote": "Laurent Gras left San Francisco's Fifth Floor (12 Fourth St.) in 2004; he's chef/co-owner of Chicago's four-star, cutting-edge L2O."
+       }
+      ],
+      "children": []
+     },
+     {
+      "kitchen": "Le Truc",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Jennie Lorenzo",
+        "role": "chef",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/food/insidescoop/article/A-Plum-assignment-for-chef-Ron-Boyd-3175464.php",
+        "quote": "The latest chef to depart from the fine-dining destination is Jennie Lorenzo. To continue with the flow chart, Lorenzo's next gig is this weekend, cooking for Le Truc."
+       }
+      ],
+      "children": []
+     },
+     {
+      "kitchen": "Orson",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Ryan Farr",
+        "role": "chef de cuisine",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/food/insidescoop/article/Citizen-Cake-chef-s-new-spot-gets-going-2481789.php",
+        "quote": "Falkner will be the executive chef -- as she is now at her Citizen Cake restaurant (399 Grove St., at Gough) -- with Ryan Farr as chef de cuisine. The 28-year-old Farr is currently at Fifth Floor (12 Fourth St., in the H"
+       }
+      ],
+      "children": []
+     },
+     {
+      "kitchen": "Redwood Park",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "George Morrone",
+        "role": "chef",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/restaurants/article/DINING-UPDATES-New-Fifth-Floor-chef-a-master-2301891.php",
+        "quote": "George Morrone packed up his crew and left the Fifth Floor for Redwood Park"
+       },
+       {
+        "person": "George Morrone",
+        "role": "chef",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/restaurants/article/DINING-UPDATES-New-Fifth-Floor-chef-a-master-2301891.php",
+        "quote": "George Morrone packed up his crew and left the Fifth Floor for Redwood Park"
+       }
+      ],
+      "children": [
+       {
+        "kitchen": "Straight Wharf Restaurant",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Arnold Rossman",
+          "role": "executive chef",
+          "year": "April 12",
+          "outlet": "sfgate",
+          "source_url": "https://www.sfgate.com/food/insidescoop/article/Belon-chef-makes-a-grand-re-entry-2862385.php",
+          "quote": "Arnold Rossman... is leaving Redwood Park, where he is the dining room manager of the more casual upstairs venue... He'll leave Redwood Park April 12 and travel to Nantucket Island to become the executive chef at the awa"
+         }
+        ],
+        "children": []
+       }
+      ]
+     },
+     {
+      "kitchen": "Viognier",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Robert Exelrod",
+        "role": "general manager",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/food/insidescoop/article/The-long-awaited-Two-B-restaurant-debuts-near-Pac-2579114.php",
+        "quote": "Another industry veteran making a change is Robert Exelrod, who 3 1/2 weeks ago, started in his new position as general manager at Viognier restaurant ... He was the general manager at Fifth Floor in San Francisco when i"
+       },
+       {
+        "person": "Robert Exelrod",
+        "role": "general manager",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/food/insidescoop/article/The-long-awaited-Two-B-restaurant-debuts-near-Pac-2579114.php",
+        "quote": "Another industry veteran making a change is Robert Exelrod, who 3 1/2 weeks ago, started in his new position as general manager at Viognier restaurant (222 E. Fourth Ave., at B Street) in San Mateo. ... Exelrod was the g"
+       }
+      ],
+      "children": []
+     }
+    ]
+   },
+   {
+    "kitchen": "Masa's",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Michael Judge",
+      "role": "Service Director",
+      "year": null,
+      "outlet": "sfgate",
+      "source_url": "https://www.sfgate.com/restaurants/diningout/article/Masa-s-Returns-to-Elegance-Chef-Ron-Siegel-2302089.php",
+      "quote": "After that he worked at Aqua, Charles Nob Hill and Gary Danko. Rather than ignoring customers, which was our experience before, the staff works in consort to modulate the pace while remaining unobtrusive."
+     }
+    ],
+    "children": [
+     {
+      "kitchen": "Aramark",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Gregory Short",
+        "role": "corporate chef",
+        "year": 2013,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/food/insidescoop/article/Masa-s-to-close-when-chef-Short-leaves-4257660.php",
+        "quote": "Chef Gregory Short, the French Laundry vet who has been in the Masa's kitchen since 2004, is leaving Feb. 16 for a corporate chef job at Aramark."
+       }
+      ],
+      "children": []
+     },
+     {
+      "kitchen": "Fish",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Chad Callahan",
+        "role": "chef",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/food/insidescoop/article/2004-sees-openings-closings-and-new-ventures-2816339.php",
+        "quote": "Former Masa's chef Chad Callahan will open a casual cafe and fish store, aptly named Fish, at 350 Harbor Drive in Sausalito in February or March."
+       }
+      ],
+      "children": []
+     },
+     {
+      "kitchen": "Isa",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Luke Sung",
+        "role": "chef/owner",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/food/insidescoop/article/Woodside-s-Village-Pub-Pioneers-New-Venture-2709242.php",
+        "quote": "Owner Luke Sung is well thought of in the cooking community, formerly having worked with Roland Passot at La Folie, Julian Serrano at Masa's and Sylvan Portay at the Ritz-Carlton."
+       },
+       {
+        "person": "Luke Sung",
+        "role": "chef/owner",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/food/insidescoop/article/Woodside-s-Village-Pub-Pioneers-New-Venture-2709242.php",
+        "quote": "Owner Luke Sung is well thought of in the cooking community, formerly having worked with Roland Passot at La Folie, Julian Serrano at Masa's and Sylvan Portay at the Ritz-Carlton."
+       }
+      ],
+      "children": []
+     },
+     {
+      "kitchen": "Olympic Club",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "James Cox III",
+        "role": "chef",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/food/insidescoop/article/Read-It-Here-First-Two-to-Debut-in-2000-2922796.php",
+        "quote": "has worked at Masa's and as banquet chef at the Ritz Carlton here"
+       }
+      ],
+      "children": []
+     },
+     {
+      "kitchen": "Picasso at Bellagio Resort & Casino",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Julian Serrano",
+        "role": "chef",
+        "year": 1998,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/food/insidescoop/article/231-Ellsworth-s-Closure-Leaves-Many-Puzzled-2905880.php",
+        "quote": "Since leaving San Francisco and Masa's restaurant after 14 years to open Picasso in Steve Wynn's Bellagio Resort & Casino last year, Serrano has garnered national coverage."
+       }
+      ],
+      "children": []
+     },
+     {
+      "kitchen": "Picasso at the Bellagio Resort & Casino",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Julian Serrano",
+        "role": "executive chef",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/food/insidescoop/article/Kitchen-Shakeup-at-Masa-s-Callahan-Is-Out-2689037.php",
+        "quote": "He was appointed executive chef in August 1997, after Serrano moved to Las Vegas to head up Picasso at the Belaggio Resort & Casino."
+       }
+      ],
+      "children": []
+     },
+     {
+      "kitchen": "Picasso by Serrano",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Julian Serrano",
+        "role": "executive chef",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/food/insidescoop/article/Serrano-to-Leave-Masa-s-And-Head-for-Las-Vegas-3000961.php",
+        "quote": "Julian Serrano, signed a five-year contract to open a spectacular restaurant called Picasso by Serrano in Steve Wynn's almost $2 billion, 3,000 room, Belaggio Hotel & Resort, opening mid-October on the Strip in Las Vegas"
+       }
+      ],
+      "children": []
+     }
+    ]
+   },
+   {
+    "kitchen": "Pisces",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Victor Scargle",
+      "role": "opening chef",
+      "year": null,
+      "outlet": "sfgate",
+      "source_url": "https://www.sfgate.com/food/seasonalcook/article/Chef-reaps-Copia-s-rewards-2713413.php",
+      "quote": "A protege of Michael Mina, he has cooked at Aqua and was the opening chef of Pisces, the Aqua spin-off in Burlingame."
+     },
+     {
+      "person": "Victor Scargle",
+      "role": "opening chef",
+      "year": null,
+      "outlet": "sfgate",
+      "source_url": "https://www.sfgate.com/food/seasonalcook/article/Chef-reaps-Copia-s-rewards-2713413.php",
+      "quote": "A protege of Michael Mina, he has cooked at Aqua and was the opening chef of Pisces, the Aqua spin-off in Burlingame."
+     }
+    ],
+    "children": [
+     {
+      "kitchen": "Julia's Kitchen",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Victor Scargle",
+        "role": "chef",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/food/insidescoop/article/Look-who-s-in-Julia-s-Kitchen-2633706.php",
+        "quote": "Victor Scargle, formerly of the Grand Cafe in San Francisco and Chronicle Rising Star chef when he was at the helm at Pisces in Burlingame, will head up the kitchen."
+       }
+      ],
+      "children": []
+     }
+    ]
+   },
+   {
+    "kitchen": "Plumed Horse",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Peter Armellino",
+      "role": "executive chef",
+      "year": "mid-May",
+      "outlet": "sfgate",
+      "source_url": "https://www.sfgate.com/food/insidescoop/article/Aqua-chef-to-take-love-of-seafood-to-Saratoga-2465773.php",
+      "quote": "Peter Armellino, chef de cuisine at Aqua (252 California St.), is leaving the critically acclaimed San Francisco restaurant and partnering with the new owners of the Plumed Horse (14555 Big Basin Way), a Saratoga institu"
+     }
+    ],
+    "children": [
+     {
+      "kitchen": "The Sherman",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Ron Cohen",
+        "role": "executive chef",
+        "year": null,
+        "outlet": "eater",
+        "source_url": "https://sf.eater.com/2007/12/3/6808535/post-plywood-report-boat-edition-the-sherman-sets-sail-in-burlingame",
+        "quote": "Long hired Ron Cohen, formerly of the Plumed Horse in Saratoga, as executive chef."
+       }
+      ],
+      "children": []
+     }
+    ]
+   },
+   {
+    "kitchen": "Rubicon",
+    "stars": 0,
+    "cited_by": [
+     {
+      "person": "Mark Lusardi",
+      "role": "unknown",
+      "year": null,
+      "outlet": "sfgate",
+      "source_url": "https://www.sfgate.com/food/insidescoop/article/The-long-awaited-Two-B-restaurant-debuts-near-Pac-2579114.php",
+      "quote": "Over the past dozen years, Lusardi has cooked at some of the top places in San Francisco, including Aqua, Rubicon and finally, in 1995, as the opening chef of the long-closed Vertigo in the TransAmerica Pyramid."
+     }
+    ],
+    "children": [
+     {
+      "kitchen": "Belon",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Paul Arenstam",
+        "role": "chef-owner",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/restaurants/article/Bay-Area-Restaurants-Net-the-Silicon-Set-3305181.php",
+        "quote": "Belon: At an urban oasis at Mason and Eddy streets, chef-owner Paul Arenstam, formerly chef de cuisine at Rubicon, has created a mostly French menu and an impressive oyster bar."
+       },
+       {
+        "person": "Paul Arenstam",
+        "role": "chef-owner",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/restaurants/article/Bay-Area-Restaurants-Net-the-Silicon-Set-3305181.php",
+        "quote": "Belon: At an urban oasis at Mason and Eddy streets, chef-owner Paul Arenstam, formerly chef de cuisine at Rubicon, has created a mostly French menu and an impressive oyster bar."
+       }
+      ],
+      "children": [
+       {
+        "kitchen": "Grand Cafe in the Hotel Monaco",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Paul Arenstam",
+          "role": "executive chef",
+          "year": null,
+          "outlet": "sfgate",
+          "source_url": "https://www.sfgate.com/food/insidescoop/article/Belon-chef-makes-a-grand-re-entry-2862385.php",
+          "quote": "Arenstam has accepted the executive chef position at the Grand Cafe in the Hotel Monaco. The former chef, Victor Scargill, left recently to pursue other opportunities."
+         }
+        ],
+        "children": []
+       }
+      ]
+     },
+     {
+      "kitchen": "Canteen",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Dennis Leary",
+        "role": "chef-owner",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/food/insidescoop/article/Dennis-Leary-to-close-Canteen-to-open-2-new-places-4645936.php",
+        "quote": "It's been quite a ride for Leary, who opened Canteen after leaving the acclaimed Rubicon, moving away from fine dining and opting for a personal restaurant where he was a one-man show."
+       }
+      ],
+      "children": []
+     },
+     {
+      "kitchen": "Citizen Cake",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Elizabeth Falkner",
+        "role": "pastry chef",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/restaurants/article/Bardelli-s-restaurateur-moves-to-Marin-3090843.php",
+        "quote": "Elizabeth Falkner, extraordinary pastry chef late of Drew Nieporent's Rubicon, has opened her own patisserie / cafe in the Mission District, with the catchy name of Citizen Cake."
+       },
+       {
+        "person": "Elizabeth Falkner",
+        "role": "pastry chef",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/restaurants/article/Bardelli-s-restaurateur-moves-to-Marin-3090843.php",
+        "quote": "Elizabeth Falkner, extraordinary pastry chef late of Drew Nieporent's Rubicon, has opened her own patisserie / cafe in the Mission District, with the catchy name of Citizen Cake."
+       }
+      ],
+      "children": []
+     },
+     {
+      "kitchen": "Freestyle",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Greg Hardesty",
+        "role": "Sous Chef",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/food/insidescoop/article/A-Better-Basta-Pasta-Reopens-3001501.php",
+        "quote": "Nieporent has appointed Rubicon sous chef Greg Hardesty as their replacement"
+       }
+      ],
+      "children": []
+     },
+     {
+      "kitchen": "La Folie Lounge",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Casper Rice",
+        "role": "head bartender",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/restaurants/article/Opening-La-Folie-Lounge-2300140.php",
+        "quote": "Cezar Kusik and Casper Rice, both formerly of Rubicon, serve as head bartenders"
+       },
+       {
+        "person": "Cezar Kusik",
+        "role": "head bartender",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/restaurants/article/Opening-La-Folie-Lounge-2300140.php",
+        "quote": "Cezar Kusik and Casper Rice, both formerly of Rubicon, serve as head bartenders"
+       }
+      ],
+      "children": []
+     },
+     {
+      "kitchen": "Twenty Five Lusk",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Cezar Kusik",
+        "role": "wine director",
+        "year": null,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/food/insidescoop/article/Frascati-owners-headed-to-Iluna-Basque-3252275.php",
+        "quote": "they've hired Cezar Kusik as wine director. Kusik was the wine director at Rubicon, where he worked for years under the renowned Larry Stone"
+       }
+      ],
+      "children": []
+     },
+     {
+      "kitchen": "Vertigo",
+      "stars": 0,
+      "cited_by": [
+       {
+        "person": "Mark Lusardi",
+        "role": "opening chef",
+        "year": 1995,
+        "outlet": "sfgate",
+        "source_url": "https://www.sfgate.com/food/insidescoop/article/The-long-awaited-Two-B-restaurant-debuts-near-Pac-2579114.php",
+        "quote": "Over the past dozen years, Lusardi has cooked at some of the top places in San Francisco, including Aqua, Rubicon and finally, in 1995, as the opening chef of the long-closed Vertigo in the TransAmerica Pyramid."
+       }
+      ],
+      "children": [
+       {
+        "kitchen": "Yabbies Coastal Kitchen",
+        "stars": 0,
+        "cited_by": [
+         {
+          "person": "Mark Lusardi",
+          "role": "owner",
+          "year": 2000,
+          "outlet": "sfgate",
+          "source_url": "https://www.sfgate.com/food/insidescoop/article/The-long-awaited-Two-B-restaurant-debuts-near-Pac-2579114.php",
+          "quote": "After leaving Vertigo, he opened Yabbies Coastal Kitchen on Polk Street."
+         }
+        ],
+        "children": []
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ },
+ "paths": {
+  "French Laundry -> Mister Jiu's": [
+   {
+    "from": "The French Laundry",
+    "to": "Quince",
+    "move_direction": "forward",
+    "person": "Devin McDavid",
+    "role": "pastry chef",
+    "year": null,
+    "outlet": "eater",
+    "source_url": "https://sf.eater.com/2011/11/3/6639297/tacolicious-mosto-and-crab-season-all-coming-soon",
+    "quote": "Michael Tusk has hired new pastry chef Devin McDavid to take the pastry programs at Quince and Cotogna in a new direction. McDavid has two of Thomas Keller\u2019s restaurants on his resume: The French Laundry and Per Se."
+   },
+   {
+    "from": "Quince",
+    "to": "Mister Jiu's",
+    "move_direction": "forward",
+    "person": "Brandon Jew",
+    "role": "Chef",
+    "year": 2016,
+    "outlet": "sfgate",
+    "source_url": "https://www.sfgate.com/food/article/where-michelin-starred-sf-chef-gets-dumplings-19610684.php",
+    "quote": "from his training in Shanghai and his time at Quince to his Michelin star and mentorship of countless young Asian American and Pacific Islander chefs, Jew said the landscape was different when he opened Mister Jiu\u2019s in 2"
+   }
+  ],
+  "French Laundry -> Benu": [
+   {
+    "from": "The French Laundry",
+    "to": "Benu",
+    "move_direction": "forward",
+    "person": "Corey Lee",
+    "role": "chef de cuisine",
+    "year": 2010,
+    "outlet": "sfgate",
+    "source_url": "https://www.sfgate.com/restaurants/article/Former-French-Laundry-chef-to-open-Benu-3283156.php",
+    "quote": "Corey Lee, former chef de cuisine at the French Laundry, finally has the space for his own restaurant. He's taking over the Two space in San Francisco's SoMa (22 Hawthorne St.) for a restaurant he plans to open in the sp"
+   }
+  ],
+  "Aqua -> Quince": [
+   {
+    "from": "Aqua",
+    "to": "Grand Cafe",
+    "move_direction": "backward",
+    "person": "Ron Boyd",
+    "role": "executive chef",
+    "year": null,
+    "outlet": "sfgate",
+    "source_url": "https://www.sfgate.com/food/insidescoop/article/Changes-spring-up-in-Bay-Area-kitchens-2601204.php",
+    "quote": "replacing Ron Boyd, who is now at Aqua (252 California, at Battery)."
+   },
+   {
+    "from": "Grand Cafe",
+    "to": "Coi",
+    "move_direction": "forward",
+    "person": "Erik Anderson",
+    "role": "executive chef",
+    "year": null,
+    "outlet": "eater",
+    "source_url": "https://sf.eater.com/2017/11/20/16682902/coi-michelin-chef-kirkley-erik-anderson-san-francisco",
+    "quote": "Anderson has already started at the restaurant after moving to San Francisco from Minneapolis, where he and partner Jamie Malone recently revamped the 70-year-old Grand Caf\u00e9."
+   },
+   {
+    "from": "Coi",
+    "to": "Quince",
+    "move_direction": "backward",
+    "person": "Evan Rich",
+    "role": "chef de cuisine",
+    "year": null,
+    "outlet": "eater",
+    "source_url": "https://sf.eater.com/2009/12/23/6749197/corbett-joins-coi-old-atrium-space-going-upscale-chinese",
+    "quote": "Evan Rich\u2014formerly the chef de cuisine at Quince\u2014has been appointed chef de cuisine at Coi."
+   }
+  ],
+  "Chez Panisse -> Zuni Cafe": [
+   {
+    "from": "Chez Panisse",
+    "to": "Zuni Cafe",
+    "move_direction": "forward",
+    "person": "Gilbert Pilgrim",
+    "role": "business partner",
+    "year": null,
+    "outlet": "sfgate",
+    "source_url": "https://www.sfgate.com/restaurants/article/Iconic-restaurants-thriving-at-30-3169301.php",
+    "quote": "she is quick to give credit for Zuni's success over the last couple of difficult years to longtime customer Gilbert Pilgrim (formerly with Chez Panisse), who eventually became her business partner."
+   }
+  ],
+  "Boulevard -> Niku Steakhouse": [
+   {
+    "from": "Boulevard",
+    "to": "Niku Steakhouse",
+    "move_direction": "forward",
+    "person": "Francesca Cunningham",
+    "role": "general manager",
+    "year": null,
+    "outlet": "eater",
+    "source_url": "https://sf.eater.com/2018/10/11/17965458/omakase-group-one-henry-adams-udon-time-sf-opening-details-news",
+    "quote": "Francesca Cunningham, a longtime server at Boulevard , has been appointed general manager at Niku Steakhouse"
+   }
+  ],
+  "Chez Panisse -> State Bird Provisions": [
+   {
+    "from": "Chez Panisse",
+    "to": "Eccolo",
+    "move_direction": "forward",
+    "person": "Christopher Lee",
+    "role": "chef",
+    "year": null,
+    "outlet": "sfgate",
+    "source_url": "https://www.sfgate.com/restaurants/diningout/article/Chez-Christopher-Chez-Panisse-chef-opens-2301226.php",
+    "quote": "After 16 years in one of the most rarefied kitchens in the country, chef Christopher Lee has ventured out of Chez Panisse to make it on his own... where he has opened Eccolo"
+   },
+   {
+    "from": "Eccolo",
+    "to": "Bacar",
+    "move_direction": "forward",
+    "person": "Douglas Bernstein",
+    "role": "executive chef",
+    "year": null,
+    "outlet": "eater",
+    "source_url": "https://sf.eater.com/2009/12/17/6749803/bacar-names-new-chef-nombe-gets-booze-lingba-update",
+    "quote": "The new chef is Douglas Bernstein, who was last seen at Eccolo. He\u2019s been working in the Bacar kitchen for the last two months and soon he\u2019ll roll out his new dinner, brunch and bar menus."
+   },
+   {
+    "from": "Bacar",
+    "to": "Terrapin Creek",
+    "move_direction": "forward",
+    "person": "Andrew Truong",
+    "role": "sous chef",
+    "year": null,
+    "outlet": "sfgate",
+    "source_url": "https://www.sfgate.com/restaurants/article/Out-the-Door-closed-for-repairs-new-Peruvian-and-3281530.php",
+    "quote": "San Franciscans Truong, formerly sous chef at Bacar; and his wife, Lin, previously a cook at Ducca and Michael Mina."
+   },
+   {
+    "from": "Terrapin Creek",
+    "to": "Michael Mina",
+    "move_direction": "backward",
+    "person": "Liya Lin",
+    "role": "cook",
+    "year": null,
+    "outlet": "sfgate",
+    "source_url": "https://www.sfgate.com/restaurants/article/Out-the-Door-closed-for-repairs-new-Peruvian-and-3281530.php",
+    "quote": "his wife, Lin, previously a cook at Ducca and Michael Mina."
+   },
+   {
+    "from": "Michael Mina",
+    "to": "Coi",
+    "move_direction": "forward",
+    "person": "Bill Corbett",
+    "role": "executive pastry chef",
+    "year": null,
+    "outlet": "eater",
+    "source_url": "https://sf.eater.com/2009/12/23/6749197/corbett-joins-coi-old-atrium-space-going-upscale-chinese",
+    "quote": "Corbett, last seen at Michael Mina, will also hold the same position at Oakland\u2019s Bracina, due in spring 2010. In other Daniel Patterson news, Evan Rich\u2014formerly the chef de cuisine at Quince\u2014has been appointed chef de c"
+   },
+   {
+    "from": "Coi",
+    "to": "Outerlands",
+    "move_direction": "forward",
+    "person": "Brett Cooper",
+    "role": "formerly of",
+    "year": null,
+    "outlet": "eater",
+    "source_url": "https://sf.eater.com/2019/11/8/20880199/daniel-patterson-alta-nigel-jones-kaya-reem-assil-dyafa-heena-patel-besharem",
+    "quote": "Graduates of the Coi kitchen include some of the region\u2019s most celebrated restaurateurs, including... Brett Cooper, formerly of Aster and Outerlands."
+   },
+   {
+    "from": "Outerlands",
+    "to": "Range Life",
+    "move_direction": "forward",
+    "person": "Sarah Niles",
+    "role": "manager and wine director",
+    "year": null,
+    "outlet": "eater",
+    "source_url": "https://sf.eater.com/2017/12/14/16776932/range-life-restaurant-chefs-san-francisco-livermore",
+    "quote": "Sarah Niles, manager and wine director of Outerlands... They\u2019ve moved to Livermore to open a restaurant and retail space called Range Life."
+   },
+   {
+    "from": "Range Life",
+    "to": "Tartine Manufactory",
+    "move_direction": "backward",
+    "person": "Bill Niles",
+    "role": "co-chef",
+    "year": null,
+    "outlet": "eater",
+    "source_url": "https://sf.eater.com/2017/12/14/16776932/range-life-restaurant-chefs-san-francisco-livermore",
+    "quote": "Bill Niles, former co-chef of Tartine Manufactory... They\u2019ve moved to Livermore to open a restaurant and retail space called Range Life."
+   },
+   {
+    "from": "Tartine Manufactory",
+    "to": "Friends and Family",
+    "move_direction": "forward",
+    "person": "Christa Chase",
+    "role": "chef",
+    "year": null,
+    "outlet": "eater",
+    "source_url": "https://sf.eater.com/2019/10/9/20906312/hookers-sweet-treats-sf-closing-tenderloin",
+    "quote": "Christa Chase, formerly of Tartine Manufactory . Now Chase has left Tartine to help friends open a new bar in Oakland, called Friends and Family"
+   },
+   {
+    "from": "Friends and Family",
+    "to": "State Bird Provisions",
+    "move_direction": "backward",
+    "person": "Gaby Maeda",
+    "role": "chef",
+    "year": null,
+    "outlet": "eater",
+    "source_url": "https://sf.eater.com/restaurant-news/209161/friends-and-family-oakland-closing",
+    "quote": "In 2024, former State Bird Provisions chef Gaby Maeda joined the team, pioneering powerful dishes including upscale onigiri and the creamy roe-topped les eggs."
+   }
+  ],
+  "Quince -> Kin Khao": [
+   {
+    "from": "Quince",
+    "to": "Flour + Water",
+    "move_direction": "forward",
+    "person": "Thomas McNaughton",
+    "role": "Chef",
+    "year": null,
+    "outlet": "sfgate",
+    "source_url": "https://www.sfgate.com/restaurants/article/Opening-Flour-Water-2302820.php",
+    "quote": "Chef Thomas McNaughton (formerly of La Folie and Quince) manages the kitchen along with Jon Darsky (formerly of Pizza Delfina)."
+   },
+   {
+    "from": "Flour + Water",
+    "to": "Central Kitchen",
+    "move_direction": "forward",
+    "person": "Thomas McNaughton",
+    "role": "chef",
+    "year": null,
+    "outlet": "sfgate",
+    "source_url": "https://www.sfgate.com/restaurants/article/Central-Kitchen-finds-footing-year-later-4597429.php",
+    "quote": "With the immense popularity of Flour + Water, there were high expectations placed on chef Thomas McNaughton and his crew when their second restaurant, Central Kitchen, opened about a year ago."
+   },
+   {
+    "from": "Central Kitchen",
+    "to": "Kin Khao",
+    "move_direction": "forward",
+    "person": "Michael Gaines",
+    "role": "Chef",
+    "year": null,
+    "outlet": "sfgate",
+    "source_url": "https://www.sfgate.com/restaurants/diningout/article/At-Kin-Khao-a-chef-in-pursuit-of-authentic-Thai-5450176.php",
+    "quote": "To produce the 23-item menu, she brought in Michael Gaines, formerly of Manresa and Central Kitchen."
+   }
+  ],
+  "Rubicon -> State Bird Provisions": [
+   {
+    "from": "Rubicon",
+    "to": "Aqua",
+    "move_direction": "backward",
+    "person": "Mark Lusardi",
+    "role": "unknown",
+    "year": null,
+    "outlet": "sfgate",
+    "source_url": "https://www.sfgate.com/food/insidescoop/article/The-long-awaited-Two-B-restaurant-debuts-near-Pac-2579114.php",
+    "quote": "Over the past dozen years, Lusardi has cooked at some of the top places in San Francisco, including Aqua, Rubicon and finally, in 1995, as the opening chef of the long-closed Vertigo in the TransAmerica Pyramid."
+   },
+   {
+    "from": "Aqua",
+    "to": "Campton Place",
+    "move_direction": "forward",
+    "person": "Eric Oberholtzer",
+    "role": "cook",
+    "year": null,
+    "outlet": "sfgate",
+    "source_url": "https://www.sfgate.com/restaurants/article/Napa-Chef-Produces-Souffles-Aphorisms-With-Aplomb-2926006.php",
+    "quote": "had cooked at Aqua in San Francisco and Lark Creek Inn."
+   },
+   {
+    "from": "Campton Place",
+    "to": "The Restaurant at Meadowood",
+    "move_direction": "forward",
+    "person": "Matthew Tinder",
+    "role": "pastry chef",
+    "year": null,
+    "outlet": "eater",
+    "source_url": "https://sf.eater.com/2009/11/18/6752769/meadowood-snags-itself-a-new-pastry-chef",
+    "quote": "The talented Tinder has previously worked at notable places like Brick and Campton Place, the latter where he was Boris Portnoy\u2019s second-in-command. The move caps off... where Christopher Kostow and company have recently"
+   },
+   {
+    "from": "The Restaurant at Meadowood",
+    "to": "Hadeem",
+    "move_direction": "forward",
+    "person": "Spencer Horovitz",
+    "role": "chef",
+    "year": null,
+    "outlet": "eater",
+    "source_url": "https://sf.eater.com/23939609/eater-awards-san-francisco-bay-area-winners-best-restaurants-2023",
+    "quote": "Horovitz most recently led the kitchen at Oakland\u2019s Slug and previously worked at Itria, the Progress, and the Restaurant at Meadowood."
+   },
+   {
+    "from": "Hadeem",
+    "to": "The Progress",
+    "move_direction": "backward",
+    "person": "Spencer Horovitz",
+    "role": "chef",
+    "year": null,
+    "outlet": "eater",
+    "source_url": "https://sf.eater.com/23939609/eater-awards-san-francisco-bay-area-winners-best-restaurants-2023",
+    "quote": "Horovitz most recently led the kitchen at Oakland\u2019s Slug and previously worked at Itria, the Progress, and the Restaurant at Meadowood."
+   },
+   {
+    "from": "The Progress",
+    "to": "State Bird Provisions",
+    "move_direction": "backward",
+    "person": "Stuart Brioza",
+    "role": "chef",
+    "year": null,
+    "outlet": "eater",
+    "source_url": "https://sf.eater.com/2014/12/15/7394969/check-out-the-menus-for-the-progress-opening-tomorrow",
+    "quote": "State Bird Provisions\u2019 Stuart Brioza and Nicole Krasinski are just about ready to open up their new next-door spot The Progress"
+   }
+  ]
+ },
+ "KNOWN_FALSE_POSITIVE": "Removed from 'paths': Manresa -> Californios. Its only move (Val Cantu) quotes a December guest takeout series at Manresa, not a career move. Today's gate accepts it. Figures that depend on it are therefore overstated: 'Californios' in starred_within_3_moves for Manresa and Gary Danko. The plan's labelled baseline sample exists to measure rows like this."
+}

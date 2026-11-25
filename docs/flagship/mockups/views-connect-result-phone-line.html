@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bone Fides — Connect result (phone)</title>
+<meta name="description" content="Phone mockup of a traced line read top to bottom: two cited moves from The French Laundry to Mister Jiu&#x27;s.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#171310;--bg2:#1f1a15;--ink:#efe6d3;--dim:#9b8f7c;--faint:rgba(239,230,211,.14);
+  --accent:#d08152;--gold:#c2a05a;--stargold:#efd9a0;--ok:#8fb996;--bad:#d9776b;}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Fraunces',Georgia,serif;font-size:17px;line-height:1.6;font-weight:350}
+.frame{position:relative;overflow:hidden;background:var(--bg)}
+a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(194,160,90,.35)}
+a:hover{color:var(--ink);border-color:var(--ink)}
+button{font-family:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+::selection{background:rgba(208,129,82,.35)}
+/* bf:chrome — shared header: skip link, wordmark, six links; wraps to two rows when narrow */
+.bf-skip{position:absolute;left:12px;top:-60px;z-index:20;background:var(--bg2);color:var(--ink);border:1px solid var(--accent);border-radius:999px;
+  padding:0 18px;min-height:44px;display:inline-flex;align-items:center;font-size:13.5px}
+.bf-skip:focus,.bf-skip.is-focused{top:8px;left:168px;outline:2px solid var(--accent);outline-offset:3px}
+.bf-skip.narrow:focus{top:6px;left:132px}
+.bf-top{min-height:60px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:0 28px;padding:0 32px;
+  border-bottom:1px solid var(--faint);background:var(--bg);position:relative;z-index:5}
+.wordmark{font-size:19px;font-weight:560;letter-spacing:.01em;color:var(--ink);border:0;display:inline-flex;align-items:baseline;gap:7px;line-height:1}
+.wordmark em{color:var(--accent);font-style:italic;font-weight:500}
+.bf-nav{display:flex;gap:28px;align-self:stretch}
+.bf-nav a{font-size:13.5px;font-weight:400;color:var(--dim);border:0;border-bottom:1px solid transparent;margin-bottom:-1px;display:flex;align-items:center;line-height:1;min-height:59px}
+.bf-nav a:hover{color:var(--ink)}
+.bf-nav a[aria-current=page]{color:var(--ink);border-bottom-color:var(--accent)}
+.bf-top.narrow{min-height:56px;padding:0 20px}
+.bf-menu{font:500 12px/1 'Fraunces',Georgia,serif;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);background:transparent;
+  border:1px solid var(--faint);border-radius:999px;padding:0 18px;min-height:44px;cursor:pointer}
+.bf-menu:hover,.bf-menu[aria-expanded=true]{color:var(--accent);border-color:var(--accent)}
+/* /bf:chrome */
+.kicker{font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);line-height:1.4}
+.st{color:var(--stargold);letter-spacing:.1em;font-style:normal}
+.srcbadge{display:inline-block;font-size:10.5px;font-weight:560;letter-spacing:.08em;text-transform:uppercase;padding:1px 7px 2px;
+  border:1px solid currentColor;border-radius:99px;margin-left:8px;vertical-align:1px;line-height:1.4}
+.srcbadge.sfgate{color:#7dcec8}.srcbadge.eater{color:var(--gold)}.srcbadge.sfchronicle{color:#e7b0a4}.srcbadge.other{color:var(--dim)}
+.src{font-size:12.5px;color:var(--dim);letter-spacing:.04em;line-height:1.5}
+.src a{color:var(--gold);border-bottom:1px solid rgba(194,160,90,.35)}
+blockquote.ev{font-size:14.5px;line-height:1.5;color:var(--dim);font-weight:350;font-style:italic}
+.pill,.res{display:inline-flex;align-items:center;font-size:13.5px;color:var(--gold);text-decoration:none;border:1px solid rgba(194,160,90,.45);
+  border-radius:999px;padding:0 14px;min-height:40px;line-height:1}
+.res{background:var(--gold);color:var(--bg);border-color:var(--gold);font-weight:600}
+.copybtn{font:400 12px 'Fraunces',Georgia,serif;letter-spacing:.06em;border:1px solid var(--faint);background:none;color:var(--dim);
+  border-radius:999px;padding:4px 12px;cursor:pointer;line-height:1.5}
+.copybtn:hover{color:var(--accent);border-color:var(--accent)}
+.go{font:500 12px/1 'Fraunces',Georgia,serif;padding:0 24px;background:transparent;color:var(--dim);border:1px solid var(--faint);
+  border-radius:999px;cursor:pointer;letter-spacing:.2em;text-transform:uppercase;min-height:46px}
+.go:hover{color:var(--accent);border-color:var(--accent)}
+.textlink{font-size:13.5px;color:var(--gold);border-bottom:1px solid rgba(194,160,90,.35)}
+.morecite{font:400 12.5px 'Fraunces',Georgia,serif;color:var(--gold);background:none;border:0;border-bottom:1px solid rgba(194,160,90,.35);padding:0;cursor:pointer;margin-top:8px}
+.flaglink{background:none;border:0;padding:2px 0;color:var(--dim);font:italic 350 12.5px 'Fraunces',Georgia,serif;cursor:pointer;
+  text-decoration:underline;text-decoration-color:rgba(155,143,124,.4);text-underline-offset:3px}
+.viewtoggle{display:flex;align-items:baseline;gap:14px}
+.viewtoggle button{font:400 12.5px 'Fraunces',Georgia,serif;letter-spacing:.08em;background:none;border:0;cursor:pointer;color:var(--dim);
+  border-bottom:1px solid transparent;padding:0 0 1px;text-transform:uppercase}
+.viewtoggle button[aria-pressed=true]{color:var(--accent);border-bottom-color:var(--accent)}
+input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none;width:14px;height:14px;margin-left:10px;cursor:pointer;background:var(--dim);
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M2 2l10 10M12 2L2 12' stroke='black' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M2 2l10 10M12 2L2 12' stroke='black' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat}
+input[type=search]:focus{outline:none;border-bottom-color:var(--accent)}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+
+.frame{width:390px;height:1370px}
+
+.cbar{display:flex;align-items:flex-end;gap:18px;padding:18px 72px 16px;border-bottom:1px solid var(--faint)}
+.cfield{flex:0 0 300px}
+.cfield label{display:block;font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);line-height:1.4}
+.cfield input{width:100%;font:350 19px/1 'Fraunces',Georgia,serif;padding:8px 2px 9px;border:0;border-bottom:1px solid var(--faint);background:transparent;color:var(--ink)}
+.swap{width:44px;height:44px;border-radius:999px;border:1px solid var(--faint);background:none;color:var(--dim);cursor:pointer;font-size:15px;line-height:1}
+.swap:hover{color:var(--accent);border-color:var(--accent)}
+.cbar .go{min-height:44px}
+.cbar .right{margin-left:auto;display:flex;gap:8px;align-items:center}
+.cres{padding:46px 72px 0}
+.cres h1{font-size:48px;line-height:1.04;font-weight:380;letter-spacing:-.015em;margin-top:16px}
+.cres h1 em{color:var(--accent);font-style:italic;font-weight:500}
+.meta{margin-top:18px;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
+.meta b{color:var(--gold);font-weight:600}
+ol.line{list-style:none;position:relative;margin-top:44px;display:grid;gap:0 56px}
+ol.line::before{content:'';position:absolute;left:0;right:0;top:53px;height:2px;background:var(--accent);transform-origin:left;animation:grow .5s ease-out both}
+.station{position:absolute;top:0;display:flex;flex-direction:column;align-items:center;gap:13px;transform:translateX(-50%)}
+.station.first{transform:none;align-items:flex-start}
+.station.last{transform:translateX(-100%);align-items:flex-end}
+.station a{font-size:21px;font-weight:420;color:var(--ink);border:0;line-height:1.3;white-space:nowrap}
+.station.end a{color:var(--accent);font-weight:560}
+.station .st{font-size:12px;margin-left:8px;vertical-align:2px}
+.station i{width:14px;height:14px;border-radius:50%;background:var(--bg);border:2px solid var(--accent);display:block}
+.station.end i{background:var(--accent);width:16px;height:16px;margin-top:-1px}
+.station.star i{background:var(--stargold);border-color:var(--stargold)}
+.hop{grid-row:1;padding-top:96px;position:relative;opacity:0;animation:rise .4s ease-out forwards}
+.hop .dirmark{position:absolute;left:50%;top:44px;margin-left:-10px}
+.hop .mv{font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);line-height:1.5}
+.hop .sent{font-size:23px;font-weight:400;line-height:1.3;margin-top:8px;max-width:26em}
+.hop .sent a{color:var(--ink);font-weight:560;border-bottom:1px solid var(--faint)}
+.hop .role{color:var(--dim);font-size:13.5px;font-style:italic;font-weight:340;margin-top:4px}
+.hop .role .yr{font-style:normal;color:var(--gold);font-size:11.5px;letter-spacing:.06em;margin-left:10px}
+.hop blockquote.ev{margin-top:14px;font-size:15.5px;max-width:34em}
+.hop .src{margin-top:8px}
+.note{margin-top:34px;font-size:12.5px;color:var(--dim);font-style:italic}
+.endrow{position:absolute;left:72px;right:72px;bottom:30px;border-top:1px solid var(--faint);padding-top:18px;display:flex;align-items:center;gap:22px}
+.endrow .who .nm{font-size:24px;font-weight:400;line-height:1.1;margin-top:6px}
+.endrow .who .st{font-size:13px;margin-left:8px;vertical-align:4px}
+.endrow .bookrow{display:flex;gap:8px;margin:0 0 0 12px}
+.endrow .links{display:flex;gap:22px;margin-left:auto;align-items:center}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){ol.line::before{transform:none}.hop{opacity:1}}
+
+.ph{padding:22px 20px 0}
+.ends{border:1px solid var(--faint);background:var(--bg2);padding:14px 16px 12px;display:grid;grid-template-columns:1fr auto;gap:2px 12px;align-items:center}
+.ends .lbl{font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);line-height:1.5}
+.ends .v{font-size:19px;font-weight:420;line-height:1.3}
+.ends .v .st{font-size:11px;margin-left:6px}
+.ends .sep{grid-column:1;height:1px;background:var(--faint);margin:8px 0}
+.ends .bf-menu{grid-column:2;grid-row:1 / span 5;align-self:center}
+.ph h1{font-size:34px;line-height:1.06;font-weight:380;letter-spacing:-.015em;margin-top:26px}
+.ph h1 em{color:var(--accent);font-style:italic;font-weight:500}
+.ph .meta{line-height:1.9;letter-spacing:.16em}
+ol.vline{list-style:none;margin-top:24px;border-top:2px solid var(--ink);padding-top:6px}
+.vline .station{position:static;transform:none;display:grid;grid-template-columns:16px 1fr;gap:0 12px;align-items:center;padding-top:12px}
+.vline .station i{width:12px;height:12px;justify-self:center;position:relative;z-index:1}
+.vline .station.end i{width:14px;height:14px;margin:0}
+.vline .station a{font-size:20px;grid-column:2;grid-row:1;white-space:normal}
+.vline .hop{opacity:1;animation:none;padding:10px 0 8px 28px;position:relative}
+.vline .hop::before{content:'';position:absolute;left:7px;top:-4px;bottom:-16px;width:2px;background:var(--accent)}
+.vline .hop .sent{font-size:20px}
+.vline .hop blockquote.ev{font-size:14.5px}
+.pnote{font-size:13px;color:var(--dim);font-style:italic;line-height:1.5;margin-top:24px}
+.pend{margin-top:22px;border-top:1px solid var(--faint);padding:18px 0 30px}
+.pend .bookrow{margin-top:12px;display:flex;gap:8px}
+.pend .links{display:flex;flex-wrap:wrap;gap:4px 22px;margin-top:10px;align-items:center}
+.pend .links a{min-height:44px;display:inline-flex;align-items:center;border:0;text-decoration:underline;text-decoration-color:rgba(194,160,90,.35);text-underline-offset:4px}
+.pend .copybtn{min-height:40px;padding:0 14px}
+</style>
+</head>
+<body>
+<div class="frame" data-frame="390x1370">
+<a class="bf-skip narrow" href="#main" data-component-id="site-skip-link">Skip to content</a><header class="bf-top narrow" data-component-id="site-header"><a class="wordmark" href="#" data-component-id="site-wordmark" aria-label="Bone Fides, home">Bone <em>Fides</em></a><button type="button" class="bf-menu" aria-expanded="false" aria-controls="bf-nav" data-component-id="site-menu-button">Menu</button></header>
+<main id="main" class="ph">
+  <div class="ends" role="group" aria-label="The two ends">
+    <div><p class="lbl">From</p><p class="v">The French Laundry</p></div>
+    <button type="button" class="bf-menu" data-component-id="connect-change-ends">Change</button>
+    <div class="sep"></div>
+    <div><p class="lbl">To</p><p class="v">Mister Jiu&#x27;s<span class="st" aria-label="1 Michelin star">★</span></p></div>
+  </div>
+  <h1 aria-live="polite">The French Laundry to Mister Jiu&#x27;s, in <em>two cited moves</em>.</h1>
+  <p class="meta"><b>2</b> cited moves · <b>2</b> people · <b>2</b> source articles</p>
+  <ol class="vline" aria-label="The line, in order"><li class="station end"><i aria-hidden="true"></i><a href="#" data-component-id="connect-station-the-french-laundry">The French Laundry</a></li><li class="hop"><p class="mv">Move 1 of 2</p><p class="sent"><a href="#" data-component-id="connect-move1-person">Devin McDavid</a> went from The French Laundry to Quince.</p><p class="role">pastry chef</p><blockquote class="ev">“Michael Tusk has hired new pastry chef Devin McDavid to take the pastry programs at Quince and Cotogna in a new direction. McDavid has two of Thomas Keller’s restaurants on his resume: The French Laundry and Per Se.”</blockquote><div class="src">§ <a href="https://sf.eater.com/2011/11/3/6639297/tacolicious-mosto-and-crab-season-all-coming-soon" target="_blank" rel="noopener" data-component-id="connect-move1-source" aria-label="Read the source article on sf.eater.com">sf.eater.com</a><span class="srcbadge eater">Eater</span></div></li><li class="station star"><i aria-hidden="true"></i><a href="#" data-component-id="connect-station-quince">Quince<span class="st" aria-label="3 Michelin stars">★★★</span></a></li><li class="hop"><p class="mv">Move 2 of 2</p><p class="sent"><a href="#" data-component-id="connect-move2-person">Brandon Jew</a> went from Quince to Mister Jiu&#x27;s.</p><p class="role">Chef<span class="yr">2016</span></p><blockquote class="ev">“from his training in Shanghai and his time at Quince to his Michelin star and mentorship of countless young Asian American and Pacific Islander chefs, Jew said the landscape was different when he opened Mister Jiu’s in 2…”</blockquote><div class="src">§ <a href="https://www.sfgate.com/food/article/where-michelin-starred-sf-chef-gets-dumplings-19610684.php" target="_blank" rel="noopener" data-component-id="connect-move2-source" aria-label="Read the source article on sfgate.com">sfgate.com</a><span class="srcbadge sfgate">SFGate</span></div></li><li class="station end star"><i aria-hidden="true"></i><a href="#" data-component-id="connect-station-mister-jiu-s">Mister Jiu&#x27;s<span class="st" aria-label="1 Michelin star">★</span></a></li></ol>
+  <p class="pnote">Each link is one named person cited at both kitchens. The line is the shortest route, not a timeline.</p>
+  <div class="pend" data-end>
+    <p class="kicker">At the end of the line</p>
+    <div class="bookrow"><a class="res" href="#" data-component-id="connect-book-tock">Book on Tock</a></div>
+    <div class="links"><a class="textlink" href="#" data-component-id="connect-end-dossier">Open dossier →</a>
+      <a class="textlink" href="#" data-component-id="connect-end-tree">Family tree →</a>
+      <button type="button" class="copybtn" data-component-id="connect-copy-link">copy link</button></div>
+  </div>
+</main>
+</div>
+</body>
+</html>

@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bone Fides — The Tree: The French Laundry (phone)</title>
+<meta name="description" content="Phone mockup of The French Laundry family tree: the figures, the size of each generation, then every branch as a nested list with one citation open.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#171310;--bg2:#1f1a15;--ink:#efe6d3;--dim:#9b8f7c;--faint:rgba(239,230,211,.14);
+  --accent:#d08152;--gold:#c2a05a;--stargold:#efd9a0;--ok:#8fb996;--bad:#d9776b;}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Fraunces',Georgia,serif;font-size:17px;line-height:1.6;font-weight:350}
+.frame{position:relative;overflow:hidden;background:var(--bg)}
+a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(194,160,90,.35)}
+a:hover{color:var(--ink);border-color:var(--ink)}
+button{font-family:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+::selection{background:rgba(208,129,82,.35)}
+/* bf:chrome — shared header: skip link, wordmark, six links; wraps to two rows when narrow */
+.bf-skip{position:absolute;left:12px;top:-60px;z-index:20;background:var(--bg2);color:var(--ink);border:1px solid var(--accent);border-radius:999px;
+  padding:0 18px;min-height:44px;display:inline-flex;align-items:center;font-size:13.5px}
+.bf-skip:focus,.bf-skip.is-focused{top:8px;left:168px;outline:2px solid var(--accent);outline-offset:3px}
+.bf-skip.narrow:focus{top:6px;left:132px}
+.bf-top{min-height:60px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:0 28px;padding:0 32px;
+  border-bottom:1px solid var(--faint);background:var(--bg);position:relative;z-index:5}
+.wordmark{font-size:19px;font-weight:560;letter-spacing:.01em;color:var(--ink);border:0;display:inline-flex;align-items:baseline;gap:7px;line-height:1}
+.wordmark em{color:var(--accent);font-style:italic;font-weight:500}
+.bf-nav{display:flex;gap:28px;align-self:stretch}
+.bf-nav a{font-size:13.5px;font-weight:400;color:var(--dim);border:0;border-bottom:1px solid transparent;margin-bottom:-1px;display:flex;align-items:center;line-height:1;min-height:59px}
+.bf-nav a:hover{color:var(--ink)}
+.bf-nav a[aria-current=page]{color:var(--ink);border-bottom-color:var(--accent)}
+.bf-top.narrow{min-height:56px;padding:0 20px}
+.bf-menu{font:500 12px/1 'Fraunces',Georgia,serif;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);background:transparent;
+  border:1px solid var(--faint);border-radius:999px;padding:0 18px;min-height:44px;cursor:pointer}
+.bf-menu:hover,.bf-menu[aria-expanded=true]{color:var(--accent);border-color:var(--accent)}
+/* /bf:chrome */
+.kicker{font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);line-height:1.4}
+.st{color:var(--stargold);letter-spacing:.1em;font-style:normal}
+.srcbadge{display:inline-block;font-size:10.5px;font-weight:560;letter-spacing:.08em;text-transform:uppercase;padding:1px 7px 2px;
+  border:1px solid currentColor;border-radius:99px;margin-left:8px;vertical-align:1px;line-height:1.4}
+.srcbadge.sfgate{color:#7dcec8}.srcbadge.eater{color:var(--gold)}.srcbadge.sfchronicle{color:#e7b0a4}.srcbadge.other{color:var(--dim)}
+.src{font-size:12.5px;color:var(--dim);letter-spacing:.04em;line-height:1.5}
+.src a{color:var(--gold);border-bottom:1px solid rgba(194,160,90,.35)}
+blockquote.ev{font-size:14.5px;line-height:1.5;color:var(--dim);font-weight:350;font-style:italic}
+.pill,.res{display:inline-flex;align-items:center;font-size:13.5px;color:var(--gold);text-decoration:none;border:1px solid rgba(194,160,90,.45);
+  border-radius:999px;padding:0 14px;min-height:40px;line-height:1}
+.res{background:var(--gold);color:var(--bg);border-color:var(--gold);font-weight:600}
+.copybtn{font:400 12px 'Fraunces',Georgia,serif;letter-spacing:.06em;border:1px solid var(--faint);background:none;color:var(--dim);
+  border-radius:999px;padding:4px 12px;cursor:pointer;line-height:1.5}
+.copybtn:hover{color:var(--accent);border-color:var(--accent)}
+.go{font:500 12px/1 'Fraunces',Georgia,serif;padding:0 24px;background:transparent;color:var(--dim);border:1px solid var(--faint);
+  border-radius:999px;cursor:pointer;letter-spacing:.2em;text-transform:uppercase;min-height:46px}
+.go:hover{color:var(--accent);border-color:var(--accent)}
+.textlink{font-size:13.5px;color:var(--gold);border-bottom:1px solid rgba(194,160,90,.35)}
+.morecite{font:400 12.5px 'Fraunces',Georgia,serif;color:var(--gold);background:none;border:0;border-bottom:1px solid rgba(194,160,90,.35);padding:0;cursor:pointer;margin-top:8px}
+.flaglink{background:none;border:0;padding:2px 0;color:var(--dim);font:italic 350 12.5px 'Fraunces',Georgia,serif;cursor:pointer;
+  text-decoration:underline;text-decoration-color:rgba(155,143,124,.4);text-underline-offset:3px}
+.viewtoggle{display:flex;align-items:baseline;gap:14px}
+.viewtoggle button{font:400 12.5px 'Fraunces',Georgia,serif;letter-spacing:.08em;background:none;border:0;cursor:pointer;color:var(--dim);
+  border-bottom:1px solid transparent;padding:0 0 1px;text-transform:uppercase}
+.viewtoggle button[aria-pressed=true]{color:var(--accent);border-bottom-color:var(--accent)}
+input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none;width:14px;height:14px;margin-left:10px;cursor:pointer;background:var(--dim);
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M2 2l10 10M12 2L2 12' stroke='black' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M2 2l10 10M12 2L2 12' stroke='black' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat}
+input[type=search]:focus{outline:none;border-bottom-color:var(--accent)}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+
+.frame{width:390px;height:2252px}
+
+.treepage{display:grid;grid-template-columns:1040px 400px;height:840px}
+.treepage.wide{grid-template-columns:1440px}
+.stage{position:relative;height:840px}
+.side{position:absolute;left:32px;top:30px;width:236px;z-index:2}
+.side h1{font-size:38px;line-height:1;font-weight:380;letter-spacing:-.01em;margin:10px 0 0;white-space:nowrap}
+.side .sub{font-size:14px;color:var(--dim);font-style:italic;font-weight:340;line-height:1.45;margin-top:12px;width:228px}
+.grow{display:flex;gap:10px;margin-top:18px;align-items:center;width:214px}
+.grow input{flex:1;min-width:0;font:350 15px/1 'Fraunces',Georgia,serif;padding:9px 2px;border:0;border-bottom:1px solid var(--faint);background:transparent;color:var(--ink)}
+.grow input::placeholder{color:#7d7361;font-style:italic}
+.grow .go{min-height:36px;padding:0 14px;font-size:11px}
+.tstats{margin-top:26px;border-top:1px solid var(--faint);width:164px}
+.tstat{padding:12px 0 11px;border-bottom:1px solid var(--faint)}
+.tstat b{display:block;font-size:40px;font-weight:420;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.01em;color:var(--ink)}
+.tstat.key b{color:var(--accent)}
+.tstat.star b{color:var(--stargold)}
+.tstat span{display:block;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin-top:8px;line-height:1.5}
+.side .viewtoggle{margin-top:20px}
+.share{position:absolute;right:24px;bottom:22px;display:flex;gap:8px;z-index:2}
+.chip rect{fill:var(--bg2);stroke:var(--dim);stroke-width:1}
+.chip.star rect{stroke:var(--gold)}
+.chip.on rect{stroke:var(--ink);stroke-width:1.6}
+.chip text{font-size:12.5px;fill:var(--ink);font-weight:420}
+.chip.star text{fill:var(--stargold);font-weight:560}
+.graph a:focus-visible .chip rect,.graph a:focus-visible rect{stroke:var(--accent);stroke-width:2px}
+.legend{position:absolute;left:32px;bottom:22px;width:240px;z-index:2;font-size:12.5px;color:var(--dim);line-height:1.45}
+.legend li{list-style:none;display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:start;margin-top:6px}
+.legend svg{margin-top:5px}
+.legend .st{font-size:12px}
+.legend b{color:var(--ink);font-weight:500;font-variant-numeric:tabular-nums}
+.graph{position:absolute;inset:0}
+.graph text{font-family:'Fraunces',Georgia,serif}
+.graph a{cursor:pointer}
+.guide{fill:none;stroke:var(--faint)}
+.cap{font-size:9.5px;letter-spacing:.22em;fill:var(--dim);paint-order:stroke;stroke:var(--bg);stroke-width:8px}
+.e{fill:none;stroke:var(--dim);stroke-width:1;stroke-linecap:round}
+.e.w2{stroke-width:2.2}
+.e.s{stroke:var(--gold);stroke-width:1.3}
+.e.s.w2{stroke-width:2.4}
+.e.sel{stroke:var(--ink);stroke-width:2.8}
+.dot{fill:var(--accent)}
+.lab{font-size:12.5px;fill:var(--ink);font-weight:380;paint-order:stroke;stroke:var(--bg);stroke-width:4px;stroke-linejoin:round}
+.lab.star{fill:var(--stargold);font-weight:560}
+.lab.on{fill:var(--ink);font-weight:600}
+.starglyph{fill:var(--stargold);font-size:13px;paint-order:stroke;stroke:var(--bg);stroke-width:3px}
+.rootdisc{fill:var(--bg2);stroke:var(--accent);stroke-width:1.4}
+.rootname{fill:var(--accent);font-size:12.5px;font-weight:600}
+.selring{fill:none;stroke:var(--ink);stroke-width:1.4}
+.graph a:focus-visible{outline:none}
+.graph a:focus-visible .dot,.graph a:focus-visible .starglyph{stroke:var(--accent);stroke-width:2px}
+.graph a:hover .lab{fill:var(--accent)}
+.lab.tip{opacity:0;pointer-events:none}
+.graph a:hover .lab.tip,.graph a:focus .lab.tip{opacity:1;fill:var(--ink);font-weight:600}
+.graph a:focus .dot{stroke:var(--accent);stroke-width:2px}
+.g1{stroke-dasharray:1;stroke-dashoffset:1;animation:draw .22s ease-out forwards}
+.g2{stroke-dasharray:1;stroke-dashoffset:1;animation:draw .22s ease-out .14s forwards}
+.g3{stroke-dasharray:1;stroke-dashoffset:1;animation:draw .22s ease-out .28s forwards}
+.f1{opacity:0;animation:fadein .3s ease-out .1s forwards}
+.f2{opacity:0;animation:fadein .3s ease-out .2s forwards}
+.f3{opacity:0;animation:fadein .3s ease-out .3s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes fadein{to{opacity:1}}
+@media (prefers-reduced-motion: reduce){.g1,.g2,.g3{stroke-dashoffset:0}.f1,.f2,.f3{opacity:1}}
+/* citation panel */
+.panel{border-left:1px solid var(--faint);padding:28px 34px 0 32px;height:840px;position:relative;
+  background:linear-gradient(180deg,rgba(208,129,82,.05),transparent 320px)}
+.panel h2{font-size:34px;font-weight:380;line-height:1.05;letter-spacing:-.01em;margin-top:8px}
+.panel h2 .st{font-size:15px;margin-left:8px;vertical-align:6px}
+.panel .psub{color:var(--dim);font-size:14px;margin-top:8px;font-style:italic;font-weight:340;line-height:1.45}
+.panel .psub b{color:var(--ink);font-style:normal;font-weight:500}
+.bookrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.hops{margin-top:20px;border-top:2px solid var(--ink)}
+.stop{display:grid;grid-template-columns:14px 1fr;gap:0 12px;align-items:center;padding-top:14px}
+.stop .d{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px var(--bg);justify-self:center;position:relative;z-index:1}
+.stop .d.star{background:var(--stargold)}
+.stop .nm{font:420 16px/1.3 'Fraunces',Georgia,serif;color:var(--ink);border:0;background:none;padding:0;text-align:left;cursor:pointer}
+.stop .nm.origin{color:var(--accent);font-weight:640}
+.stop .nm .st{font-size:11px;margin-left:6px}
+.hop{display:grid;grid-template-columns:14px 1fr;gap:0 12px;position:relative}
+.hop::before{content:'';position:absolute;left:6.5px;top:-6px;bottom:-20px;width:1px;background:var(--dim)}
+.hop .body{grid-column:2;padding:8px 0 4px}
+.hop .who{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.hop .pname{font-size:21px;font-weight:560;letter-spacing:.01em;line-height:1.2;color:var(--ink);border:0}
+.hop .role{color:var(--dim);font-size:13.5px;font-style:italic;font-weight:340}
+.hop .yr{font:340 11.5px Fraunces,Georgia,serif;color:var(--gold);letter-spacing:.06em;font-variant-numeric:tabular-nums}
+.hop .ev{margin-top:8px}
+.hop .src{margin-top:6px}
+.beyond{margin-top:18px;font-size:13.5px;color:var(--dim);line-height:1.5}
+.beyond a{font-size:13.5px}
+.pactions{position:absolute;left:32px;right:34px;bottom:22px;border-top:1px solid var(--faint);padding-top:13px;display:flex;flex-wrap:wrap;gap:6px 20px;align-items:baseline}
+.closex{position:absolute;right:26px;top:22px;width:40px;height:40px;border-radius:999px;border:1px solid var(--faint);background:none;color:var(--dim);cursor:pointer;font-size:15px;line-height:1}
+.closex:hover{color:var(--accent);border-color:var(--accent)}
+.idle{position:absolute;right:24px;bottom:70px;width:300px;font-size:15px;color:var(--dim);font-style:italic;line-height:1.5;text-align:right}
+
+.listpage{position:relative}
+.listwrap{margin-left:404px;width:1004px;padding-top:30px}
+.listhead{padding-bottom:16px;border-bottom:2px solid var(--ink)}
+.listhead p{font-size:14px;color:var(--dim);font-style:italic;font-weight:340;max-width:70ch}
+.listhead p b{color:var(--ink);font-style:normal;font-weight:500}
+.tl,.tl ul{list-style:none}
+.tl ul{margin-left:9px;padding-left:26px;border-left:1px solid var(--dim)}
+.tl li{position:relative}
+.tl > li{border-bottom:1px solid var(--faint)}
+.row{display:grid;grid-template-columns:minmax(0,340px) 1fr;gap:0 24px;align-items:baseline;min-height:44px;padding:10px 150px 9px 0}
+.tl ul .row{grid-template-columns:304px 1fr}
+.tl ul ul .row{grid-template-columns:268px 1fr}
+.tl ul .row::before{content:'';position:absolute;left:-26px;top:23px;width:18px;height:1px;background:var(--dim)}
+.tl ul li.star > .row::before,.tl ul li.route > .row::before{background:var(--gold)}
+.row .k{font-size:19px;font-weight:420;color:var(--ink);border:0;line-height:1.25}
+.tl ul .row .k{font-size:17px}
+.tl ul ul .row .k{font-size:15.5px}
+.row .k .st{font-size:12px;margin-left:8px}
+.row .k:hover{color:var(--accent)}
+.row .via{font-size:13.5px;color:var(--dim);font-style:italic;font-weight:340;line-height:1.4}
+.row .via a{font-style:normal;color:var(--ink);font-weight:480;border-bottom:1px solid var(--faint)}
+.row .via .yr{font-style:normal;color:var(--gold);font-size:11.5px;letter-spacing:.06em;margin-left:4px}
+li.on > .row .k{color:var(--accent);font-weight:560}
+details.cite summary{position:absolute;right:0;top:0;height:44px;display:flex;align-items:center;gap:8px;cursor:pointer;list-style:none;
+  font-size:12.5px;color:var(--gold);letter-spacing:.02em}
+details.cite summary::-webkit-details-marker{display:none}
+details.cite summary::after{content:'▾';color:var(--dim);font-size:11px}
+details.cite[open] summary::after{content:'▴';color:var(--accent)}
+.citebody{margin:0 150px 14px 0;padding:12px 18px 14px;background:rgba(208,129,82,.06);border-left:2px solid var(--accent);max-width:78ch}
+.citebody .src{margin-top:6px}
+.citebody .src + .ev{margin-top:12px}
+.citebody .rowlinks{display:flex;gap:8px 18px;flex-wrap:wrap;margin-top:12px;align-items:center}
+.lfoot{padding:18px 0 0;font-size:12.5px;color:var(--dim);line-height:1.6}
+.lfoot b{color:var(--ink);font-weight:550;font-variant-numeric:tabular-nums}
+
+.ph{padding:24px 20px 0}
+.ph h1{font-size:36px;line-height:1.02;font-weight:380;letter-spacing:-.01em;margin-top:10px}
+.ph .sub{font-size:15px;color:var(--dim);font-style:italic;font-weight:340;line-height:1.45;margin-top:10px}
+.pstats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--faint);border:1px solid var(--faint);margin-top:20px}
+.pstats div{background:var(--bg);padding:14px 12px 12px}
+.pstats b{display:block;font-size:30px;font-weight:420;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.pstats .key b{color:var(--accent)}.pstats .star b{color:var(--stargold)}
+.pstats span{display:block;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-top:8px;line-height:1.45}
+.gens{display:flex;gap:3px;margin-top:14px}
+.gens div{min-width:0}
+.gens i{display:block;height:5px;border-radius:3px;background:linear-gradient(90deg,var(--accent),var(--gold))}
+.gens span{display:block;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-top:7px;line-height:1.4;white-space:nowrap}
+.gens b{color:var(--ink);font-weight:550;font-variant-numeric:tabular-nums}
+.ptools{display:flex;justify-content:space-between;align-items:center;margin-top:22px;padding-bottom:12px;border-bottom:2px solid var(--ink)}
+.ptools .lbl{font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim)}
+.ptools .copybtn{min-height:40px;padding:0 14px}
+.ph .tl ul{margin-left:0;padding-left:14px}
+.ph .row,.ph .tl ul .row,.ph .tl ul ul .row{grid-template-columns:1fr;padding:11px 62px 10px 0;min-height:56px;gap:2px}
+.ph .tl ul .row::before{left:-14px;width:9px;top:24px}
+.ph .row .k{font-size:18px}
+.ph .tl ul .row .k{font-size:17px}
+.ph .tl ul ul .row .k{font-size:16px}
+.ph .row .via{font-size:13.5px}
+.ph .row .via b{font-style:normal;color:var(--ink);font-weight:480}
+.ph .more{position:absolute;right:0;top:6px;min-width:52px;height:44px;border:1px solid var(--faint);border-radius:999px;background:none;color:var(--dim);
+  font:400 13px 'Fraunces',Georgia,serif;font-variant-numeric:tabular-nums;cursor:pointer}
+.ph .more[aria-expanded=true]{color:var(--accent);border-color:var(--accent)}
+.ph .citebody{margin:0 0 14px 0;padding:12px 14px 14px}
+.ph .citebody .rowlinks a.textlink{min-height:44px;display:inline-flex;align-items:center;border:0;text-decoration:underline;text-decoration-color:rgba(194,160,90,.35);text-underline-offset:4px}
+.ph .lfoot{padding-bottom:28px}
+</style>
+</head>
+<body>
+<div class="frame" data-frame="390x2252">
+<a class="bf-skip narrow" href="#main" data-component-id="site-skip-link">Skip to content</a><header class="bf-top narrow" data-component-id="site-header"><a class="wordmark" href="#" data-component-id="site-wordmark" aria-label="Bone Fides, home">Bone <em>Fides</em></a><button type="button" class="bf-menu" aria-expanded="false" aria-controls="bf-nav" data-component-id="site-menu-button">Menu</button></header>
+<main id="main" class="ph">
+  <p class="kicker">Family tree</p>
+  <h1>The French Laundry</h1>
+  <p class="sub">Where its alumni went next, and where their alumni went after that.</p>
+  <div class="pstats" aria-live="polite" aria-label="Summary">
+    <div class="key"><b>61</b><span>Kitchens within three cited moves</span></div>
+    <div class="star"><b>6</b><span>Michelin-starred among them</span></div>
+    <div><b>15</b><span>Cited alumni</span></div>
+  </div>
+  <div class="gens" aria-label="Kitchens at each move: 15, 22 and 24"><div style="flex:15"><i></i><span>1st move <b>15</b></span></div><div style="flex:22"><i></i><span>2nd move <b>22</b></span></div><div style="flex:24"><i></i><span>3rd move <b>24</b></span></div></div>
+  <div class="ptools"><span class="lbl">Every branch, as a list</span>
+    <button type="button" class="copybtn" data-component-id="tree-copy-link">copy link</button></div>
+  <ul class="tl"><li class="star route"><div class="row"><a class="k" href="#" aria-expanded="false" data-component-id="tree-quince">Quince<span class="st" aria-label="3 Michelin stars">★★★</span></a><span class="via">via <b>Devin McDavid</b>, pastry chef</span></div><button type="button" class="more" aria-expanded="false" aria-label="Show the 24 kitchens beyond Quince" data-component-id="tree-quince-toggle">+24</button></li><li class="star route on"><div class="row"><a class="k" href="#" aria-expanded="false" data-component-id="tree-benu">Benu<span class="st" aria-label="3 Michelin stars">★★★</span></a><span class="via">via <b>Corey Lee</b>, chef de cuisine <span class="yr">2010</span></span></div><button type="button" class="more" aria-expanded="true" aria-label="Hide the 7 kitchens beyond Benu" data-component-id="tree-benu-toggle">▴</button><ul class="route"><li class="star route on"><div class="row"><a class="k" href="#" aria-expanded="true" data-component-id="tree-benu-san-ho-won">San Ho Won<span class="st" aria-label="1 Michelin star">★</span></a><span class="via">via <b>Jeong-In Hwang</b>, chef</span></div><div class="citebody"><blockquote class="ev">“Jeong-In Hwang... has spent the past five years... leading the kitchen at Benu. Together, they’re opening the Korean restaurant San Ho Won”</blockquote><div class="src">§ <a href="https://sf.eater.com/2021/11/1/22756844/corey-lee-san-ho-won-opening-menu" target="_blank" rel="noopener" data-component-id="tree-benu-san-ho-won-source1" aria-label="Read the source article on sf.eater.com">sf.eater.com</a><span class="srcbadge eater">Eater</span></div><div class="rowlinks"><a class="res" href="#" data-component-id="tree-benu-san-ho-won-book-tock">Book on Tock</a><a class="textlink" href="#" data-component-id="tree-benu-san-ho-won-dossier">Open dossier →</a><a class="textlink" href="#" data-component-id="tree-benu-san-ho-won-grow">Grow the tree from here →</a></div></div></li><li class=""><div class="row"><a class="k" href="#" aria-expanded="false" data-component-id="tree-benu-avery">Avery</a><span class="via">via <b>Matthew Mako</b>, co-owner and cook</span></div><button type="button" class="more" aria-expanded="true" aria-label="Hide the 2 kitchens beyond Avery" data-component-id="tree-benu-avery-toggle">▴</button><ul class=""><li class=""><div class="row"><a class="k" href="#" aria-expanded="false" data-component-id="tree-benu-avery-avery-edinburgh">Avery Edinburgh</a><span class="via">via <b>Rodney Wages</b>, head chef</span></div></li><li class=""><div class="row"><a class="k" href="#" aria-expanded="false" data-component-id="tree-benu-avery-new-casual-concept">new casual concept</a><span class="via">via <b>Rodney Wages</b>, Chef-owner</span></div></li></ul></li><li class=""><div class="row"><a class="k" href="#" aria-expanded="false" data-component-id="tree-benu-happy-crane">Happy Crane</a><span class="via">via <b>James Parry</b>, chef</span></div></li><li class=""><div class="row"><a class="k" href="#" aria-expanded="false" data-component-id="tree-benu-ok-s-deli">OK&#x27;s Deli</a><span class="via">via <b>Karis Kochi</b>, Chef</span></div></li><li class=""><div class="row"><a class="k" href="#" aria-expanded="false" data-component-id="tree-benu-the-snug">The Snug</a><span class="via">via <b>Brian Shin</b>, chef</span></div></li></ul></li><li class="route"><div class="row"><a class="k" href="#" aria-expanded="false" data-component-id="tree-chez-tj">Chez TJ</a><span class="via">via <b>Scott Nishiyama</b>, chef</span></div><button type="button" class="more" aria-expanded="false" aria-label="Show the 7 kitchens beyond Chez TJ" data-component-id="tree-chez-tj-toggle">+7</button></li><li class=""><div class="row"><a class="k" href="#" aria-expanded="false" data-component-id="tree-spruce">Spruce</a><span class="via">via <b>Walter Abrams</b>, chef de cuisine</span></div><button type="button" class="more" aria-expanded="false" aria-label="Show the 4 kitchens beyond Spruce" data-component-id="tree-spruce-toggle">+4</button></li><li class=""><div class="row"><a class="k" href="#" aria-expanded="false" data-component-id="tree-cotogna">Cotogna</a><span class="via">via <b>Devin McDavid</b>, pastry chef</span></div><button type="button" class="more" aria-expanded="false" aria-label="Show the 1 kitchen beyond Cotogna" data-component-id="tree-cotogna-toggle">+1</button></li><li class=""><div class="row"><a class="k" href="#" aria-expanded="false" data-component-id="tree-el-dorado-kitchen">El Dorado Kitchen</a><span class="via">via <b>Ryan Fancher</b>, opening chef</span></div><button type="button" class="more" aria-expanded="false" aria-label="Show the 1 kitchen beyond El Dorado Kitchen" data-component-id="tree-el-dorado-kitchen-toggle">+1</button></li><li class=""><div class="row"><a class="k" href="#" aria-expanded="false" data-component-id="tree-morimoto">Morimoto</a><span class="via">via <b>Nai Kang Kuan</b>, executive sous chef</span></div><button type="button" class="more" aria-expanded="false" aria-label="Show the 1 kitchen beyond Morimoto" data-component-id="tree-morimoto-toggle">+1</button></li><li class=""><div class="row"><a class="k" href="#" aria-expanded="false" data-component-id="tree-broad-museum-restaurant">Broad Museum restaurant</a><span class="via">via <b>Timothy Hollingsworth</b>, executive chef</span></div></li><li class=""><div class="row"><a class="k" href="#" aria-expanded="false" data-component-id="tree-charlie-s">Charlie&#x27;s</a><span class="via">via <b>Eliott Bell, Elliot Bell</b>, former sous chef</span></div></li><li class=""><div class="row"><a class="k" href="#" aria-expanded="false" data-component-id="tree-chicken-fried-palace">Chicken Fried Palace</a><span class="via">via <b>Gabrielle Pabonan</b>, pastry chef</span></div></li><li class=""><div class="row"><a class="k" href="#" aria-expanded="false" data-component-id="tree-monsieur-benjamin">Monsieur Benjamin</a><span class="via">via <b>Jason Berthold</b>, chef</span></div></li><li class=""><div class="row"><a class="k" href="#" aria-expanded="false" data-component-id="tree-mosu">Mosu</a><span class="via">via <b>Sung Anh</b>, chef</span></div></li><li class=""><div class="row"><a class="k" href="#" aria-expanded="false" data-component-id="tree-old-post-office">Old Post Office</a><span class="via">via <b>Jonathan Granada</b>, chef</span></div></li><li class=""><div class="row"><a class="k" href="#" aria-expanded="false" data-component-id="tree-plumpjack-group-s-farm">PlumpJack Group&#x27;s Farm</a><span class="via">via <b>Ryan Jetté</b>, chef de cuisine</span></div></li><li class=""><div class="row"><a class="k" href="#" aria-expanded="false" data-component-id="tree-spice-kit">Spice Kit</a><span class="via">via <b>William Pacio</b>, chef</span></div></li></ul>
+  <p class="lfoot" data-end>Stars: Michelin Guide 2026, San Francisco kitchens only. Generations follow cited moves, not dates:
+    <b>720</b> of <b>3,388</b> displayed moves carry a year.</p>
+</main>
+</div>
+</body>
+</html>
