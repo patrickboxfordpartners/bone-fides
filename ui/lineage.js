@@ -409,10 +409,7 @@
      * over the drawing (the tree page's stats sit there); the root and every
      * limb, branch and twig stay right of it */
     var leftPad = opts.leftPad || 0;
-    var ROOTX = leftPad + (W - leftPad) / 2, ROOTY = 646, TRUNKY = 566;
-    function point(cx, cy, r, ang) {
-      return { x: cx + r * Math.cos(ang), y: cy + r * Math.sin(ang) };
-    }
+    var ROOTX = leftPad + (W - leftPad) / 2, ROOTY = 646, TRUNKY = 480;
     function clip(s, n) {
       s = String(s);
       if (s.length <= n) return s;
@@ -458,7 +455,13 @@
      * limb whose sector width follows the size of what grows from it */
     function desc(n) {
       var c = 0;
-      (function cc(kids) { (kids || []).forEach(function (k) { c++; cc(k.children); }); })(n.children);
+      (function cc(kids, g) {
+        (kids || []).forEach(function (k) {
+          if (g + 1 > maxGen) return;   /* undrawn twigs take no room */
+          c++;
+          cc(k.children, g + 1);
+        });
+      })(n.children, 1);
       return c;
     }
     var pos = {};
@@ -643,21 +646,48 @@
         return Math.min(a.right, b.right) - Math.max(a.left, b.left) > -5 &&
                Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) > -5;
       }
-      var moved = true;
-      while (moved && rounds < 24) {
-        moved = false;
-        rounds++;
-        for (var i = 0; i < labs.length; i++) {
-          for (var k = i + 1; k < labs.length; k++) {
-            if (overlaps(box(labs[i]), box(labs[k]))) {
-              /* the right-hand label steps away from the trunk's height band */
-              var y = parseFloat(labs[k].getAttribute('y'));
-              var away = y < (TRUNKY - 100) ? -15 : 15;
-              labs[k].setAttribute('y', (y + away));
-              moved = true;
+      function step(el) {
+        var y = parseFloat(el.getAttribute('y'));
+        var away = y < (TRUNKY - 100) ? -15 : 15;
+        /* the drawing is taller than any label stack the record holds;
+         * the round bound keeps a pathological tree from running away */
+        el.setAttribute('y', (y + away));
+        return true;
+      }
+      function run() {
+        /* a hidden drawing measures 0 by 0 and every pair would "overlap";
+         * the pass runs only when the drawing is visible */
+        if (box(svg).width === 0) return false;
+        var moved = true;
+        var n = 0;
+        while (moved && n < 24) {
+          moved = false;
+          n++;
+          for (var i = 0; i < labs.length; i++) {
+            for (var k = i + 1; k < labs.length; k++) {
+              if (overlaps(box(labs[i]), box(labs[k]))) {
+                /* a label steps away from the trunk's height band, never
+                 * more than the cap from where it started; when the first
+                 * label of the pair is capped, the other one moves */
+                moved = step(labs[k]) || step(labs[i]) || moved;
+              }
             }
           }
         }
+        return true;
+      }
+      if (!run()) {
+        /* the drawing is hidden (the phone opens in list view): run the
+         * pass when it becomes visible, within a bounded wait */
+        var tries = 0;
+        var timer = setInterval(function () {
+          if (run() || ++tries > 240) { clearInterval(timer); }
+        }, 250);
+      }
+      /* the first render often races the webfont: once Fraunces lands the
+       * label boxes change, so the pass runs again */
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(function () { run(); });
       }
     })();
     return parents;
