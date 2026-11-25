@@ -162,6 +162,7 @@ td.key .num{color:var(--accent)}
 .lfoot{max-width:1288px;margin:28px auto 0;border-top:1px solid var(--faint);padding:16px 72px 0;font-size:12.5px;color:var(--dim);line-height:1.6}
 .lfoot b{color:var(--ink);font-weight:550;font-variant-numeric:tabular-nums}
 .failmsg{max-width:1288px;margin:34px auto 0;padding:0 72px;color:var(--dim);font-style:italic}
+.textlink{font-size:13.5px;color:var(--gold);border-bottom:1px solid rgba(194,160,90,.35)}
 .retry{font:500 12px/1 'Fraunces',Georgia,serif;letter-spacing:.2em;text-transform:uppercase;padding:0 18px;
   background:transparent;color:var(--dim);border:1px solid var(--faint);border-radius:999px;cursor:pointer;min-height:44px}
 .retry:hover{color:var(--accent);border-color:var(--accent)}
@@ -182,6 +183,9 @@ td.key .num{color:var(--accent)}
   thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
   tbody tr{border-bottom:1px solid var(--faint);padding:10px 0 16px}
   tbody td{border-bottom:0;padding:0 0 0 44px}
+  tbody td::before{content:attr(data-label);display:block;font-size:10.5px;font-weight:560;
+    letter-spacing:.16em;text-transform:uppercase;color:var(--gold);line-height:1.5;padding-top:10px}
+  tbody td.kn::before{display:none}
   tbody td.rk{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
   tbody td.kn{padding-left:0}
   tbody td.kn a{font-size:21px;min-height:44px;display:inline-flex;align-items:center}
@@ -219,7 +223,7 @@ td.key .num{color:var(--accent)}
     <p class="lede">Ranked from the record, by moves you can read on this site. These are counts
       of what has been reported and cited, not of everyone who ever worked the line.</p>
   </div>
-  <div class="leaders" aria-label="Record holders">
+  <div class="leaders">
     <a class="leader" href="#kitchens" id="lead-alumni"><span class="lk">Most cited alumni</span><b>&mdash;</b><span class="who">&mdash;</span><span class="unit">named people with a displayed cited move out</span></a>
     <a class="leader" href="#kitchens" id="lead-reach"><span class="lk">Widest reach</span><b>&mdash;</b><span class="who">&mdash;</span><span class="unit">kitchens within three moves</span></a>
     <a class="leader star" href="#kitchens" id="lead-starred"><span class="lk">Most starred within three moves</span><b>&mdash;</b><span class="who">&mdash;</span><span class="unit">Michelin-starred kitchens within three moves</span></a>
@@ -235,16 +239,16 @@ td.key .num{color:var(--accent)}
         <button type="button" data-sort="starred" aria-pressed="false">Starred within</button>
         <button type="button" data-sort="kitchen" aria-pressed="false">A to Z</button>
       </div>
-      <table id="ktab">
+      <table id="ktab" role="table">
         <caption class="sr-only">Kitchens ranked by cited alumni, reach within three moves, and starred kitchens within three moves. Sortable columns.</caption>
-        <thead><tr>
-          <th scope="col" class="sr-only">Rank</th>
-          <th scope="col"><button type="button" class="sortbtn" data-sort="kitchen"><span class="h">Kitchen<span class="arr" data-arr></span></span></button></th>
-          <th scope="col"><button type="button" class="sortbtn" data-sort="alumni"><span class="h">Alumni<span class="arr" data-arr></span></span><span class="def">Named people with a displayed cited move out of the kitchen.</span></button></th>
-          <th scope="col"><button type="button" class="sortbtn" data-sort="reach"><span class="h">Within three moves<span class="arr" data-arr></span></span><span class="def">Kitchens reachable by following displayed cited moves, up to three.</span></button></th>
-          <th scope="col"><button type="button" class="sortbtn" data-sort="starred"><span class="h">Starred within three moves<span class="arr" data-arr></span></span><span class="def">Of those kitchens, the ones with San Francisco stars in the Michelin Guide.</span></button></th>
+        <thead role="rowgroup"><tr role="row">
+          <th scope="col" role="columnheader" class="sr-only">Rank</th>
+          <th scope="col" role="columnheader"><button type="button" class="sortbtn" data-sort="kitchen"><span class="h">Kitchen<span class="arr" data-arr></span></span></button></th>
+          <th scope="col" role="columnheader"><button type="button" class="sortbtn" data-sort="alumni"><span class="h">Alumni<span class="arr" data-arr></span></span><span class="def">Named people with a displayed cited move out of the kitchen.</span></button></th>
+          <th scope="col" role="columnheader"><button type="button" class="sortbtn" data-sort="reach"><span class="h">Within three moves<span class="arr" data-arr></span></span><span class="def">Kitchens reachable by following displayed cited moves, up to three.</span></button></th>
+          <th scope="col" role="columnheader"><button type="button" class="sortbtn" data-sort="starred"><span class="h">Starred within three moves<span class="arr" data-arr></span></span><span class="def">Of those kitchens, the ones with San Francisco stars in the Michelin Guide.</span></button></th>
         </tr></thead>
-        <tbody id="kbody"><tr><td colspan="5">&mdash;</td></tr></tbody>
+        <tbody id="kbody" role="rowgroup"><tr role="row"><td role="cell" colspan="5">&mdash;</td></tr></tbody>
       </table>
       <p class="trule">The table holds the kitchens with <b id="trule-min">3</b> or more alumni.
         Reach follows displayed cited moves up to <b id="trule-depth">three</b>. Stars come from the San Francisco list.</p>
@@ -257,22 +261,22 @@ td.key .num{color:var(--accent)}
         displayed moves do. This list is a floor, not a census. Open a row for the quotations.</p>
     </section>
   </div>
-  <div class="starline"><p><b id="joined">&mdash;</b> of San Francisco&rsquo;s <b>26</b> Michelin-starred
+  <div class="starline"><p><b id="joined">&mdash;</b> of San Francisco&rsquo;s <b id="stotal">&mdash;</b> Michelin-starred
     kitchens are joined to the graph by a displayed cited move.</p><a class="textlink" href="#starred">The starred kitchens &rarr;</a></div>
   <div class="sgrid">
     <section id="starred" aria-labelledby="starred-h">
       <h2 class="bh" id="starred-h">The starred kitchens</h2>
-      <p class="brule">All twenty-six San Francisco Michelin-starred kitchens, their cited arrivals and where the chefs came from.</p>
-      <table class="stab" id="stab">
+      <p class="brule">Every San Francisco Michelin-starred kitchen, its cited arrivals and where the chefs came from.</p>
+      <table class="stab" id="stab" role="table">
         <caption class="sr-only">The San Francisco Michelin-starred kitchens with their cited arrivals and the kitchens those chefs came from.</caption>
-        <thead><tr>
-          <th scope="col" class="sr-only">Rank</th>
-          <th scope="col"><span class="h">Kitchen</span></th>
-          <th scope="col"><span class="h">Cited arrivals</span><span class="def">Displayed moves of chefs into this kitchen.</span></th>
-          <th scope="col"><span class="h">Came from</span></th>
-          <th scope="col"><span class="h">Alumni</span><span class="def">Named people with a displayed cited move out.</span></th>
+        <thead role="rowgroup"><tr role="row">
+          <th scope="col" role="columnheader" class="sr-only">Rank</th>
+          <th scope="col" role="columnheader"><span class="h">Kitchen</span></th>
+          <th scope="col" role="columnheader"><span class="h">Cited arrivals</span><span class="def">Displayed moves of chefs into this kitchen.</span></th>
+          <th scope="col" role="columnheader"><span class="h">Came from</span></th>
+          <th scope="col" role="columnheader"><span class="h">Alumni</span><span class="def">Named people with a displayed cited move out.</span></th>
         </tr></thead>
-        <tbody id="sbody"><tr><td colspan="5">&mdash;</td></tr></tbody>
+        <tbody id="sbody" role="rowgroup"><tr role="row"><td role="cell" colspan="5">&mdash;</td></tr></tbody>
       </table>
       <p class="trule">A starred kitchen with no arrivals row says &ldquo;no cited move yet&rdquo;: the record
         holds no displayed move for it. Stars come from the San Francisco list of the Michelin Guide.</p>
@@ -338,7 +342,6 @@ td.key .num{color:var(--accent)}
   'use strict';
   var L = window.Lineage;
   var data = null;
-  var sortKey = null;
 
   function $ (id) { return document.getElementById(id); }
 
@@ -351,7 +354,6 @@ td.key .num{color:var(--accent)}
 
   function setSort (key, push) {
     if (!data) return;
-    sortKey = key;
     var rows = data.kitchens.slice();
     if (key === 'kitchen') { rows.sort(function (a, b) { return a.kitchen.name.localeCompare(b.kitchen.name); }); }
     else { rows.sort(function (a, b) { return (b[key] - a[key]) || b.reach - a.reach ||
@@ -386,23 +388,22 @@ td.key .num{color:var(--accent)}
       var k = r.kitchen;
       var sd;
       if (r.starred > 0) {
-        sd = '<div class="sd"><span class="cnt" aria-label="' + r.starred +
-          ' starred within three moves"><i aria-hidden="true">\u2605</i>' + r.starred + '</span>' +
+        sd = '<div class="sd"><span class="cnt"><i aria-hidden="true">\u2605</i>' + r.starred + '</span>' +
           '<span class="names">' + L.esc(r.starred_names.join(', ')) + '</span></div>';
       } else {
         sd = '<div class="sd"><span class="cnt none">0</span>' +
           '<span class="names">None within three moves</span></div>';
       }
-      return '<tr><td class="rk">' + pad2(i + 1) + '</td>' +
-        '<td class="kn"><a href="/tree?k=' + encodeURIComponent(k.slug) + '">' + L.esc(k.name) + '</a>' +
+      return '<tr role="row"><td role="cell" class="rk">' + pad2(i + 1) + '</td>' +
+        '<td role="cell" data-label="Kitchen" class="kn"><a href="/tree?k=' + encodeURIComponent(k.slug) + '">' + L.esc(k.name) + '</a>' +
         starBadge(k) +
         '<span class="lnk"><a href="/tree?k=' + encodeURIComponent(k.slug) + '">Tree \u2192</a>' +
         '<a href="/explorer?q=' + encodeURIComponent(k.name) + '">Dossier \u2192</a></span></td>' +
-        '<td class="key"><span class="num">' + L.fmt(r.alumni) + '</span>' +
+        '<td role="cell" data-label="Alumni" class="key"><span class="num">' + L.fmt(r.alumni) + '</span>' +
         '<div class="pedbar" aria-hidden="true"><span style="width:' + (100 * r.alumni / maxA).toFixed(1) + '%"></span></div></td>' +
-        '<td><span class="num">' + L.fmt(r.reach) + '</span>' +
+        '<td role="cell" data-label="Within three moves"><span class="num">' + L.fmt(r.reach) + '</span>' +
         '<div class="pedbar" aria-hidden="true"><span style="width:' + (100 * r.reach / maxR).toFixed(1) + '%"></span></div></td>' +
-        '<td>' + sd + '</td></tr>';
+        '<td role="cell" data-label="Starred within three moves">' + sd + '</td></tr>';
     }).join('');
   }
 
@@ -435,12 +436,15 @@ td.key .num{color:var(--accent)}
       var from = r.from && r.from.length
         ? L.esc(r.from.join(', '))
         : (r.status === 'none' ? '<span class="nonote">none on record</span>' : '&mdash;');
-      return '<tr><td class="rk">' + pad2(i + 1) + '</td>' +
-        '<td class="kn">' + name + starBadge(k) + links + '</td><td>' + arrivals + '</td><td class="frm">' + from + '</td>' +
-        '<td><span class="num' + (r.alumni ? '' : ' none') + '">' + (r.alumni || 0) + '</span></td></tr>';
+      return '<tr role="row"><td role="cell" class="rk">' + pad2(i + 1) + '</td>' +
+        '<td role="cell" data-label="Kitchen" class="kn">' + name + starBadge(k) + links + '</td>' +
+        '<td role="cell" data-label="Cited arrivals">' + arrivals + '</td>' +
+        '<td role="cell" data-label="Came from" class="frm">' + from + '</td>' +
+        '<td role="cell" data-label="Alumni"><span class="num' + (r.alumni ? '' : ' none') + '">' + (r.alumni || 0) + '</span></td></tr>';
     }).join('');
     var joined = data.starred.filter(function (r) { return r.status === 'linked'; }).length;
     $('joined').textContent = joined;
+    $('stotal').textContent = data.starred.length;
   }
 
   function render () {
@@ -461,8 +465,12 @@ td.key .num{color:var(--accent)}
     $('lfig').textContent = L.fmt(data.moves_on_display || 0);
     renderMentors();
     renderStarred();
-    var q = new URLSearchParams(location.search).get('sort') || 'alumni';
+    var raw = new URLSearchParams(location.search).get('sort');
+    var q = raw || 'alumni';
     if (['alumni', 'reach', 'starred', 'kitchen'].indexOf(q) === -1) { q = 'alumni'; }
+    if (raw && q !== raw && history.replaceState) {
+      history.replaceState(null, '', '/ledger');
+    }
     setSort(q, false);
     $('fail').hidden = true;
   }

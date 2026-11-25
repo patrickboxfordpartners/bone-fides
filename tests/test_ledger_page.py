@@ -44,8 +44,8 @@ def test_the_plan_anchors_exist():
 def test_the_kitchen_table_has_a_caption_and_button_headers():
     p = _page()
     assert "<caption" in p, "the kitchen table needs a caption"
-    heads = re.findall(r'<th scope="col"><button type="button" class="sortbtn" '
-                       r'data-sort="(\w+)"', p)
+    heads = re.findall(r'<th scope="col" role="columnheader"><button type="button" '
+                       r'class="sortbtn" data-sort="(\w+)"', p)
     assert sorted(heads) == ["alumni", "kitchen", "reach", "starred"]
     assert "Starred within three moves" in p
     assert "starred descendants" not in p, "the mockup label is not used (section 2)"
