@@ -23,6 +23,7 @@
     { "source": "/tree", "destination": "/tree.html" },
     { "source": "/connect", "destination": "/connect.html" },
     { "source": "/ledger", "destination": "/ledger.html" },
+    { "source": "/numbers", "destination": "/numbers.html" },
     { "source": "/explorer", "destination": "/explorer.html" },
     { "source": "/method", "destination": "/method.html" },
     { "source": "/landing", "destination": "/landing.html" }

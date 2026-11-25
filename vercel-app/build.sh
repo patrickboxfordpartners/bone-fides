@@ -22,7 +22,7 @@ fi
 # the output root would win over the "/" -> landing.html rewrite.
 rm -rf public
 mkdir -p public
-cp ../ui/explorer.html ../ui/landing.html ../ui/method.html ../ui/tree.html ../ui/connect.html ../ui/ledger.html ../ui/lineage.js public/
+cp ../ui/explorer.html ../ui/landing.html ../ui/method.html ../ui/tree.html ../ui/connect.html ../ui/ledger.html ../ui/numbers.html ../ui/lineage.js public/
 
 rm -rf api/_lib
 mkdir -p api/_lib

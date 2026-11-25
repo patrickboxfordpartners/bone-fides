@@ -1,0 +1,633 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bone Fides — By the numbers</title>
+<meta name="description" content="The San Francisco chef record in measured figures: moves on record, the citation gate and its measured precision, sources, coverage and its honest gaps, verified booking pages, and the reach into the wider Bay Area.">
+<meta property="og:title" content="Bone Fides — By the numbers">
+<meta property="og:description" content="Every figure the record can prove, each one measured and traceable to a quotation: the gate, the sources, the coverage gaps, booking, and the Bay Area.">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&display=swap" rel="stylesheet">
+<style>
+/* bf:chrome */
+/* Shared header, phone menu and footer. Tokens from docs/DESIGN.md only. */
+.bf-skip{position:absolute;left:12px;top:-60px;z-index:20;background:var(--bg2);color:var(--ink);
+  border:1px solid var(--accent);border-radius:999px;padding:0 18px;min-height:44px;
+  display:inline-flex;align-items:center;font-size:13.5px}
+.bf-skip:focus{top:8px;left:12px}
+.bf-top{min-height:60px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
+  gap:0 28px;padding:0 32px;border-bottom:1px solid var(--faint);background:var(--bg);
+  position:relative;z-index:5}
+.wordmark{font-size:19px;font-weight:560;letter-spacing:.01em;color:var(--ink);border:0;
+  display:inline-flex;align-items:baseline;gap:7px;line-height:1}
+.wordmark em{color:var(--accent);font-style:italic;font-weight:500}
+.bf-nav{display:flex;gap:28px;align-self:stretch}
+.bf-nav a{font-size:13.5px;font-weight:400;color:var(--dim);border:0;border-bottom:1px solid transparent;
+  margin-bottom:-1px;display:flex;align-items:center;line-height:1;min-height:59px}
+.bf-nav a:hover{color:var(--ink)}
+.bf-nav a[aria-current=page]{color:var(--ink);border-bottom-color:var(--accent)}
+.bf-menu{font:500 12px/1 'Fraunces',Georgia,serif;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--dim);background:transparent;border:1px solid var(--faint);border-radius:999px;
+  padding:0 18px;min-height:44px;cursor:pointer;display:none}
+.bf-menu:hover,.bf-menu[aria-expanded=true]{color:var(--accent);border-color:var(--accent)}
+/* JavaScript folds the nav behind the Menu button at 760 px and narrower.
+   Without JavaScript the button stays hidden and the links show as a
+   wrapped block under the wordmark, so every link stays reachable. */
+@media (max-width:760px){
+  .bf-top{min-height:56px;padding:0 20px}
+  .bf-nav a{min-height:44px}
+  body.bf-js .bf-nav{display:none;flex-direction:column;gap:0;position:absolute;top:100%;
+    left:0;right:0;background:var(--bg2);border-bottom:1px solid var(--faint);
+    padding:0 20px 10px;z-index:6}
+  body.bf-js .bf-nav.open{display:flex}
+  body.bf-js .bf-menu{display:inline-flex;align-items:center}
+  .bf-nav a{min-height:44px}
+}
+/* Shared footer */
+.bf-foot{border-top:1px solid var(--faint);padding:26px 32px 44px;margin-top:56px}
+.bf-foot .footrow{display:flex;flex-wrap:wrap;gap:10px 28px;justify-content:space-between;
+  font-size:13.5px;color:var(--dim)}
+.bf-foot .footrow b{color:var(--ink);font-weight:560}
+.bf-foot .footrow a{color:var(--gold);border-bottom:1px solid rgba(194,160,90,.35)}
+.bf-foot .footrow a:hover{color:var(--ink);border-color:var(--ink)}
+.bf-foot .footnote{font-size:12.5px;color:var(--dim);line-height:1.6;margin-top:14px;max-width:72ch}
+/* /bf:chrome */
+:root{--bg:#171310;--bg2:#1f1a15;--ink:#efe6d3;--dim:#9b8f7c;--faint:rgba(239,230,211,.14);
+  --accent:#d08152;--gold:#c2a05a;--stargold:#efd9a0;--ok:#8fb996;--bad:#d9776b;}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--ink);font-family:'Fraunces',Georgia,serif;font-size:17px;line-height:1.6;font-weight:350}
+a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(194,160,90,.35)}
+a:hover{color:var(--ink);border-color:var(--ink)}
+button{font-family:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+::selection{background:rgba(208,129,82,.35)}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+main{display:block}
+.nh{max-width:1288px;margin:0 auto;padding:48px 72px 0}
+.nh .kicker{font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);line-height:1.4}
+.nh h1{font-size:clamp(30px,3.6vw,50px);line-height:1.06;font-weight:380;letter-spacing:-.015em;margin-top:18px;max-width:24ch}
+.nh h1 em{color:var(--accent);font-style:italic;font-weight:500}
+.nh h1 .fig{font-weight:560;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.lede{font-size:18px;color:var(--dim);line-height:1.55;font-weight:350;max-width:66ch;margin-top:18px}
+.lede b{color:var(--ink);font-weight:480;font-variant-numeric:tabular-nums}
+.fig{font-variant-numeric:tabular-nums}
+.statrow{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--faint);border:1px solid var(--faint);
+  max-width:1288px;margin:34px auto 0}
+.stat{background:var(--bg);padding:22px 22px 18px}
+.stat .micro-k{display:block;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);line-height:1.5}
+.stat b{display:block;font-size:44px;font-weight:420;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.01em;
+  margin-top:12px;color:var(--accent)}
+.stat span{display:block;font-size:14px;font-weight:480;margin-top:10px;line-height:1.3;color:var(--ink)}
+.stat small{display:block;font-size:12.5px;color:var(--dim);font-style:italic;line-height:1.4;margin-top:4px}
+.stale{max-width:1288px;margin:18px auto 0;padding:0 72px;font-size:13.5px;color:var(--gold);font-style:italic}
+.stale b{color:var(--ink);font-weight:550;font-style:normal;font-variant-numeric:tabular-nums}
+section{display:block}
+.wrap{max-width:1288px;margin:0 auto;padding:60px 72px 0}
+section .rsec{display:grid;grid-template-columns:120px 1fr;gap:0 24px}
+.rail{border-left:1px solid var(--faint);padding-left:18px}
+.rail .n{display:block;font-size:11px;letter-spacing:.2em;color:var(--gold);font-variant-numeric:tabular-nums}
+.rail .t{display:block;font-size:13px;color:var(--dim);letter-spacing:.12em;text-transform:uppercase;margin-top:4px;line-height:1.5}
+.shead{font-size:clamp(24px,2.6vw,34px);font-weight:380;line-height:1.12;letter-spacing:-.01em;max-width:36ch}
+.shead em{color:var(--accent);font-style:italic;font-weight:500}
+.sbody{font-size:15.5px;color:var(--dim);line-height:1.6;max-width:70ch;margin-top:14px}
+.sbody b{color:var(--ink);font-weight:520;font-variant-numeric:tabular-nums}
+.rc{max-width:912px}
+.figlabel{display:flex;gap:14px;align-items:baseline;margin-top:28px}
+.figlabel .f{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:560}
+.figlabel .ft{font-size:12.5px;color:var(--dim);font-style:italic}
+.funnel{border:1px solid var(--faint);background:var(--bg2);margin-top:12px}
+.frow{display:grid;grid-template-columns:230px 1fr;gap:24px;padding:18px 22px;border-bottom:1px solid var(--faint)}
+.frow:last-child{border-bottom:0}
+.frow .fn b{display:block;font-size:30px;font-weight:420;line-height:1;font-variant-numeric:tabular-nums;color:var(--accent)}
+.frow .fn span{display:block;font-size:12.5px;color:var(--dim);font-style:italic;margin-top:5px;line-height:1.4}
+.frow .fb{min-width:0}
+.fbar{height:5px;border-radius:3px;background:var(--faint);overflow:hidden;max-width:520px}
+.fbar span{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,var(--accent),var(--gold))}
+.frow .ft{font-size:13.5px;color:var(--dim);line-height:1.55;margin-top:9px}
+.frow .ft b{color:var(--ink);font-weight:520;font-variant-numeric:tabular-nums}
+.frow .drop{font-size:12.5px;color:var(--dim);font-style:italic;margin-top:4px;line-height:1.5}
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:28px}
+.pcard{border:1px solid var(--faint);background:var(--bg2);padding:22px 24px}
+.pcard .micro{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.pcard .big{display:block;font-size:52px;font-weight:420;line-height:1;margin-top:14px;color:var(--ok);font-variant-numeric:tabular-nums}
+.pcard .big small{font-size:26px;font-weight:380}
+.pcard p{font-size:13.5px;color:var(--dim);line-height:1.6;margin-top:10px}
+.pcard p b{color:var(--ink);font-weight:520;font-variant-numeric:tabular-nums}
+.steps{margin-top:28px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px}
+.step{border-top:1px solid var(--faint);padding-top:14px}
+.step .sn{display:inline-block;font-style:italic;color:var(--gold);font-size:14px;margin-bottom:8px}
+.step h4{font-size:16.5px;font-weight:480;line-height:1.3}
+.step p{font-size:13.5px;color:var(--dim);line-height:1.6;margin-top:8px}
+.step p b{color:var(--ink);font-weight:520;font-variant-numeric:tabular-nums}
+.mixbar{display:flex;height:26px;border-radius:8px;overflow:hidden;margin-top:12px;background:var(--faint)}
+.mixbar span{display:block;height:100%}
+.mixbar .sfgate{background:#7dcec8}
+.mixbar .eater{background:var(--gold)}
+.mixbar .chron{background:#e7b0a4}
+.mixbar .other{background:var(--dim)}
+.mixleg{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:14px}
+.mixleg li{border-left:2px solid var(--faint);padding-left:12px}
+.mixleg .nm{display:flex;gap:8px;align-items:center;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.mixleg .sw{width:10px;height:10px;border-radius:2px;display:inline-block}
+.mixleg b{display:block;font-size:26px;font-weight:420;font-variant-numeric:tabular-nums;margin-top:6px}
+.mixleg small{display:block;font-size:12px;color:var(--dim);font-style:italic;line-height:1.4;margin-top:2px}
+.cov{margin-top:12px}
+.covrow{padding:14px 0;border-bottom:1px solid var(--faint)}
+.covtop{display:flex;justify-content:space-between;gap:18px;align-items:baseline}
+.covtop .cl{font-size:14.5px;color:var(--ink);line-height:1.4}
+.covtop .tag{display:inline-block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;border:1px solid currentColor;
+  border-radius:99px;padding:1px 8px 2px;margin-left:10px;vertical-align:1px}
+.tag.solid{color:var(--ok)}
+.tag.thin{color:var(--gold)}
+.tag.part{color:var(--dim)}
+.covtop .cv{white-space:nowrap;font-size:15px;color:var(--dim)}
+.covtop .cv b{color:var(--ink);font-weight:550;font-variant-numeric:tabular-nums;font-size:17px}
+.track{height:5px;border-radius:3px;background:var(--faint);overflow:hidden;margin-top:9px;max-width:520px}
+.track span{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,var(--accent),var(--gold))}
+.covnote{font-size:12.5px;color:var(--dim);font-style:italic;margin-top:6px;line-height:1.5}
+.gaps{list-style:none;counter-reset:gap;margin-top:30px;border-top:2px solid var(--ink)}
+.gaps li{counter-increment:gap;display:grid;grid-template-columns:44px 1fr;gap:14px;padding:16px 0;border-bottom:1px solid var(--faint)}
+.gaps li::before{content:counter(gap,decimal-leading-zero);font-size:13px;color:var(--gold);font-variant-numeric:tabular-nums;padding-top:3px}
+.gaps p{font-size:14.5px;color:var(--dim);line-height:1.55}
+.gaps p b{color:var(--ink);font-weight:540;font-variant-numeric:tabular-nums}
+.gaps .names{font-style:italic}
+.bgrid{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:12px}
+.bcard{border:1px solid var(--faint);background:var(--bg2);padding:24px}
+.bcard .big{display:block;font-size:52px;font-weight:420;line-height:1;margin-top:14px;color:var(--accent);font-variant-numeric:tabular-nums}
+.bcard .bsub{font-size:14px;color:var(--ink);margin-top:8px;line-height:1.4}
+.plat{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+.plat .p{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);border:1px solid var(--faint);
+  border-radius:99px;padding:4px 12px}
+.checks{list-style:none;margin-top:14px}
+.checks li{position:relative;padding:9px 0 9px 26px;font-size:14px;color:var(--dim);line-height:1.5;border-bottom:1px solid var(--faint)}
+.checks li::before{content:'\2713';position:absolute;left:0;top:9px;color:var(--ok)}
+.bnote{font-size:12.5px;color:var(--dim);font-style:italic;margin-top:14px;line-height:1.5}
+.bnote b{color:var(--ink);font-style:normal;font-weight:540;font-variant-numeric:tabular-nums}
+.towns{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.towns .tw{border:1px solid var(--faint);border-radius:999px;padding:6px 14px;font-size:13px;color:var(--ink);
+  font-variant-numeric:tabular-nums}
+.towns .tw b{color:var(--gold);font-weight:560}
+.towns .tw i{font-style:normal;color:var(--dim);margin-left:7px}
+.anch{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--faint);border:1px solid var(--faint);margin-top:26px}
+.anch a{background:var(--bg);padding:20px 20px 16px;border:0;display:block}
+.anch .an{font-size:18px;font-weight:480;line-height:1.25}
+.anch .at{font-size:12px;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin-top:3px}
+.anch .am{font-size:30px;font-weight:420;font-variant-numeric:tabular-nums;margin-top:12px;color:var(--accent)}
+.anch .aq{font-size:12.5px;color:var(--dim);font-style:italic;line-height:1.4;margin-top:2px}
+.anch:hover .an{color:var(--accent)}
+.callout{border:1px solid var(--faint);background:var(--bg2);padding:20px 24px;margin-top:26px;max-width:70ch}
+.callout h4{font-size:16px;font-weight:480}
+.callout p{font-size:13.5px;color:var(--dim);line-height:1.6;margin-top:8px}
+.callout p b{color:var(--ink);font-weight:540;font-variant-numeric:tabular-nums}
+.next{font-size:13.5px;color:var(--dim);line-height:1.6;margin-top:26px;max-width:70ch}
+.next b{color:var(--ink);font-weight:540}
+.contact{max-width:1288px;margin:60px auto 0;border-top:1px solid var(--faint);padding:40px 72px 0}
+.contact h2{font-size:clamp(22px,2.4vw,30px);font-weight:380;line-height:1.15;max-width:36ch}
+.contact p{font-size:15px;color:var(--dim);line-height:1.6;margin-top:12px;max-width:66ch}
+.contact a.mail{display:inline-block;font-size:17px;color:var(--gold);border:1px solid var(--faint);border-radius:999px;
+  padding:12px 24px;margin-top:18px;min-height:44px;line-height:1.4}
+.contact a.mail:hover{color:var(--accent);border-color:var(--accent)}
+.failmsg{max-width:1288px;margin:34px auto 0;padding:0 72px;color:var(--dim);font-style:italic}
+.retry{font:500 12px/1 'Fraunces',Georgia,serif;letter-spacing:.2em;text-transform:uppercase;padding:0 18px;
+  background:transparent;color:var(--dim);border:1px solid var(--faint);border-radius:999px;cursor:pointer;min-height:44px}
+.retry:hover{color:var(--accent);border-color:var(--accent)}
+.failmsg .retry{margin-top:14px}
+.livenote{font-size:13px;color:var(--gold);font-style:italic;margin-top:14px}
+@media (max-width:1100px){
+  section .rsec{grid-template-columns:1fr}
+  .rail{border-left:0;border-bottom:1px solid var(--faint);padding:0 0 10px;display:flex;gap:12px;align-items:baseline}
+  .steps{grid-template-columns:1fr}
+  .pgrid,.bgrid{grid-template-columns:1fr}
+  .anch{grid-template-columns:1fr}
+}
+@media (max-width:760px){
+  .nh{padding:26px 20px 0}
+  .nh h1{font-size:32px}
+  .lede{font-size:15.5px;margin-top:14px}
+  .statrow{grid-template-columns:1fr 1fr;margin:24px 20px 0}
+  .stat{padding:16px 14px 14px}
+  .stat b{font-size:32px}
+  .stale,.failmsg{padding-left:20px;padding-right:20px}
+  .wrap{padding:40px 20px 0}
+  .frow{grid-template-columns:1fr;gap:10px;padding:16px 14px}
+  .mixleg{grid-template-columns:1fr 1fr}
+  .covtop{flex-direction:column;gap:6px}
+  .gaps li{grid-template-columns:34px 1fr}
+  .contact{padding:34px 20px 0}
+  .contact a.mail{font-size:15.5px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<!-- bf:header -->
+<a class="bf-skip" href="#main">Skip to content</a>
+<header class="bf-top">
+  <a class="wordmark" href="/" aria-label="Bone Fides, home">Bone <em>Fides</em></a>
+  <button type="button" class="bf-menu" hidden aria-expanded="false" aria-controls="bf-nav">Menu</button>
+  <nav class="bf-nav" id="bf-nav" aria-label="Site">
+    <a href="/explorer">Explore</a>
+    <a href="/tree">Trees</a>
+    <a href="/connect">Connect</a>
+    <a href="/ledger">Ledger</a>
+    <a href="/method">Method</a>
+    <a href="/numbers" aria-current="page">Numbers</a>
+  </nav>
+</header>
+<!-- /bf:header -->
+<main id="main">
+  <div class="nh">
+    <p class="kicker">By the numbers &middot; San Francisco</p>
+    <h1><span class="fig" data-fig="on-record">&mdash;</span> moves on record.
+      <span class="fig" data-fig="displayed">&mdash;</span> pass the gate.</h1>
+    <p class="lede">Bone Fides is a record of who cooked where, built from public food journalism and
+      shown only where the quoted sentence states the move. Every figure on this page is measured,
+      and each carries the date it was measured on.</p>
+  </div>
+  <div class="statrow" aria-label="The record in figures">
+    <div class="stat"><span class="micro-k">Moves on record</span><b class="fig" data-fig="live-edges">&mdash;</b><span>Extracted from cited articles</span><small>each with a person, a kitchen, a role and a quoted sentence found word for word in its article</small></div>
+    <div class="stat"><span class="micro-k">Displayed</span><b class="fig" data-fig="gate-passed">&mdash;</b><span>Pass the citation gate</span><small>the quote itself states a career move</small></div>
+    <div class="stat"><span class="micro-k">Between two named kitchens</span><b class="fig" data-fig="hops">&mdash;</b><span>Link two kitchens</span><small>these draw every tree, every line and every rank</small></div>
+    <div class="stat"><span class="micro-k">Source articles</span><b class="fig" data-fig="live-sources">&mdash;</b><span>Articles cited</span><small>each one linked from the moves it supports</small></div>
+  </div>
+  <p class="stale" id="stale" hidden></p>
+  <p class="livenote" id="livenote" hidden>The live figures could not be measured just now. The figures from the
+    committed files below carry their own build date.</p>
+  <p class="failmsg" id="fail" hidden>
+    <span id="failtxt">The figures could not be loaded. The request failed.</span><br>
+    <button type="button" class="retry" id="retry">Try again</button>
+  </p>
+
+  <section class="wrap" id="gate" aria-labelledby="gate-h">
+    <div class="rsec">
+      <div class="rail"><span class="n">01</span><span class="t">The gate</span></div>
+      <div class="rc">
+        <h2 class="shead" id="gate-h">Every step holds back moves the evidence does not fully support.</h2>
+        <p class="sbody">The bigger number would be easy. The smaller number is the product: each figure below
+          is a count of moves you can read, quote by quote, on this site.</p>
+        <p class="figlabel"><span class="f">Fig. 1</span><span class="ft">From article to graph, measured <span class="fig" data-fig="graph-date">&mdash;</span></span></p>
+        <div class="funnel">
+          <div class="frow"><div class="fn"><b class="fig" data-fig="live-edges2">&mdash;</b><span>Moves on record</span></div>
+            <div class="fb"><div class="fbar" role="img" aria-label="All moves on record"><span data-bar="on-record" style="width:100%"></span></div>
+              <p class="ft">Extracted from <b class="fig" data-fig="live-sources2">&mdash;</b> articles of public food journalism. Each has a person, a kitchen, a role and a quoted sentence, and <b>the quote was found word for word in its article</b>.</p></div></div>
+          <div class="frow"><div class="fn"><b class="fig" data-fig="gate-passed2">&mdash;</b><span>Displayed after the citation gate</span></div>
+            <div class="fb"><div class="fbar" role="img" aria-label="Displayed moves"><span data-bar="gate-passed"></span></div>
+              <p class="ft"><b>The quote itself must state a career move.</b> Only these moves appear anywhere on the site.</p>
+              <p class="drop">Held back: guest shifts, pop-ups, supplier credits, and quotes that set a name beside a kitchen without saying the person worked there.</p></div></div>
+          <div class="frow"><div class="fn"><b class="fig" data-fig="hops2">&mdash;</b><span>Between two named kitchens</span></div>
+            <div class="fb"><div class="fbar" role="img" aria-label="Moves between two named kitchens"><span data-bar="hops"></span></div>
+              <p class="ft">Displayed moves that state both the kitchen left and the kitchen joined. <b>These draw every tree, every line and every rank.</b></p>
+              <p class="drop">The rest state one kitchen only. They appear on a dossier and draw no line.</p></div></div>
+          <div class="frow"><div class="fn"><b class="fig" data-fig="linked">&mdash;</b><span>Kitchens linked by such a move</span></div>
+            <div class="fb"><div class="fbar" role="img" aria-label="Kitchens linked"><span data-bar="linked"></span></div>
+              <p class="ft">Distinct named kitchens joined to the record by at least one displayed move between two named kitchens.</p></div></div>
+          <div class="frow"><div class="fn"><b class="fig" data-fig="largest">&mdash;</b><span>Largest connected set</span></div>
+            <div class="fb"><div class="fbar" role="img" aria-label="Kitchens in the largest connected set"><span data-bar="largest"></span></div>
+              <p class="ft">Any two of these kitchens can be joined by a chain of displayed moves; Connect traces it. The rest sit in smaller sets.</p></div></div>
+        </div>
+        <div class="pgrid">
+          <div class="pcard"><span class="micro">Measured precision</span>
+            <span class="big"><span class="fig" data-fig="precision-pct">&mdash;</span><small>%</small></span>
+            <p>of a labelled sample of <b class="fig" data-fig="sample-n">&mdash;</b> displayed moves state the move
+              they claim, checked by hand against the article. The Wilson 95% lower bound is
+              <b class="fig" data-fig="precision-low">&mdash;</b>%. Measured <span class="fig" data-fig="gate-date">&mdash;</span>.</p></div>
+          <div class="pcard"><span class="micro">The gate before this fix</span>
+            <span class="big"><span class="fig" data-fig="baseline-pct">&mdash;</span><small>%</small></span>
+            <p>the same check on the previous gate: <b class="fig" data-fig="baseline-true">&mdash;</b> of
+              <b class="fig" data-fig="baseline-n">&mdash;</b> sampled moves. The widened gate displays
+              <b class="fig" data-fig="newly-displayed">&mdash;</b> more moves at a higher measured precision.</p></div>
+        </div>
+        <div class="steps">
+          <div class="step"><span class="sn">i</span><div><h4>The bigger number would be easy.</h4>
+            <p>Any extraction can print a count. A count of moves a reader can verify, quote by quote, is the only one worth printing.</p></div></div>
+          <div class="step"><span class="sn">ii</span><div><h4>It can be audited by a stranger.</h4>
+            <p>Every displayed move links to the article behind it. A reader can check any figure here against its sources without our help.</p></div></div>
+          <div class="step"><span class="sn">iii</span><div><h4>The work is in the refusals, and it compounds.</h4>
+            <p>Each refusal keeps a false move out of every tree, line and rank at once. The sample above measures the refusals, not just the keepings.</p></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap" id="sources" aria-labelledby="sources-h">
+    <div class="rsec">
+      <div class="rail"><span class="n">02</span><span class="t">Sources</span></div>
+      <div class="rc">
+        <h2 class="shead" id="sources-h">Two outlets carry <em>almost all</em> of the record.</h2>
+        <p class="sbody">Moves on record, counted by the outlet of the article that cites them. The concentration
+          is a known limit of the record, stated here rather than left for a reader to find.</p>
+        <p class="figlabel"><span class="f">Fig. 2</span><span class="ft">Moves on record by outlet</span></p>
+        <div class="mixbar" role="img" aria-label="Moves on record by outlet"><span class="sfgate" data-mix="sfgate"></span><span class="eater" data-mix="eater"></span><span class="chron" data-mix="sfchronicle"></span><span class="other" data-mix="other"></span></div>
+        <ul class="mixleg">
+          <li><span class="nm"><span class="sw" style="background:#7dcec8"></span>SFGATE</span><b class="fig" data-fig="tier-sfgate">&mdash;</b><small><span class="fig" data-fig="tier-sfgate-pct">&mdash;</span>% of moves on record</small></li>
+          <li><span class="nm"><span class="sw" style="background:var(--gold)"></span>Eater SF</span><b class="fig" data-fig="tier-eater">&mdash;</b><small><span class="fig" data-fig="tier-eater-pct">&mdash;</span>% of moves on record</small></li>
+          <li><span class="nm"><span class="sw" style="background:#e7b0a4"></span>SF Chronicle</span><b class="fig" data-fig="tier-sfchronicle">&mdash;</b><small>in the pipeline, thin in the record</small></li>
+          <li><span class="nm"><span class="sw" style="background:var(--dim)"></span>Other outlets</span><b class="fig" data-fig="tier-other">&mdash;</b><small>independent writers and chef-profile sites</small></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap" id="coverage" aria-labelledby="coverage-h">
+    <div class="rsec">
+      <div class="rail"><span class="n">03</span><span class="t">Coverage and gaps</span></div>
+      <div class="rc">
+        <h2 class="shead" id="coverage-h">What the record holds, and <em>what it is missing</em>.</h2>
+        <p class="sbody">Coverage is uneven, and a reader should know where. These are measured rates, not targets.</p>
+        <p class="figlabel"><span class="f">Fig. 3</span><span class="ft">Coverage of the record, measured</span></p>
+        <div class="cov">
+          <div class="covrow"><div class="covtop"><span class="cl">Displayed moves with a quoted sentence and a source link<span class="tag solid">all</span></span>
+            <span class="cv"><b class="fig" data-fig="gate-passed3">&mdash;</b> of <span class="fig" data-fig="gate-passed4">&mdash;</span></span></div>
+            <div class="track" role="img" aria-label="All displayed moves carry their quotation"><span data-bar="gate-quoted" style="width:100%"></span></div>
+            <p class="covnote">The gate guarantees this one. A move without its sentence is not displayed.</p></div>
+          <div class="covrow"><div class="covtop"><span class="cl">Displayed moves that carry a year<span class="tag thin">thin</span></span>
+            <span class="cv"><b class="fig" data-fig="moves-year">&mdash;</b> of <span class="fig" data-fig="gate-passed5">&mdash;</span></span></div>
+            <div class="track" role="img" aria-label="Displayed moves with a year"><span data-bar="moves-year"></span></div>
+            <p class="covnote">A move gets a year only when the article states one.</p></div>
+          <div class="covrow"><div class="covtop"><span class="cl">Kitchens on record that a displayed move links<span class="tag part">partial</span></span>
+            <span class="cv"><b class="fig" data-fig="linked2">&mdash;</b> of <span class="fig" data-fig="live-venues">&mdash;</span></span></div>
+            <div class="track" role="img" aria-label="Kitchens on record that a displayed move links"><span data-bar="linked-venues"></span></div>
+            <p class="covnote">The others appear on dossiers and are not yet joined to another kitchen.</p></div>
+          <div class="covrow"><div class="covtop"><span class="cl">Linked kitchens in the largest connected set<span class="tag part">partial</span></span>
+            <span class="cv"><b class="fig" data-fig="largest2">&mdash;</b> of <span class="fig" data-fig="linked3">&mdash;</span></span></div>
+            <div class="track" role="img" aria-label="Linked kitchens in the largest connected set"><span data-bar="largest-linked"></span></div>
+            <p class="covnote">Connect can join any two of these. The rest sit in smaller sets.</p></div>
+          <div class="covrow"><div class="covtop"><span class="cl">Michelin-starred San Francisco kitchens with a displayed move<span class="tag part">partial</span></span>
+            <span class="cv"><b class="fig" data-fig="starred-move">&mdash;</b> of <span class="fig" data-fig="starred-total">&mdash;</span></span></div>
+            <div class="track" role="img" aria-label="Starred kitchens with a displayed move"><span data-bar="starred-move"></span></div>
+            <p class="covnote">The star list covers San Francisco only.</p></div>
+        </div>
+        <h3 class="bh" style="font-size:24px;margin-top:36px">The honest gaps</h3>
+        <p class="sbody">Nine limits a reader should know. Each carries its own figure.</p>
+        <ol class="gaps">
+          <li><p><b class="fig" data-fig="held-back">&mdash;</b> moves on record are not displayed, because the quote does not state the move. The site shows the smaller number, not the bigger one.</p></li>
+          <li><p>The precision of the displayed moves is a sample measurement: <b class="fig" data-fig="sample-true">&mdash;</b> of <b class="fig" data-fig="sample-n2">&mdash;</b> sampled moves held up, measured <span class="fig" data-fig="gate-date2">&mdash;</span>, with a 95% lower bound of <b class="fig" data-fig="precision-low2">&mdash;</b>%.</p></li>
+          <li><p>Dates are thin: <b class="fig" data-fig="date-pct">&mdash;</b>% of moves on record carry a date and <b class="fig" data-fig="era-pct">&mdash;</b>% a usable year. The site makes no timeline claim.</p></li>
+          <li><p>Two outlets supply nearly all moves: <b class="fig" data-fig="two-outlets-pct">&mdash;</b>% from Eater and SFGATE together. The record follows their coverage.</p></li>
+          <li><p>Some starred kitchens have no displayed move. <span class="fig names" data-fig="starred-missing">&mdash;</span></p></li>
+          <li><p><b class="fig" data-fig="outside-main">&mdash;</b> linked kitchens sit outside the main connected set, about half. No chain exists between two kitchens in different sets, and Connect says so.</p></li>
+          <li><p>No record carries an article publication date yet: <b class="fig" data-fig="published">&mdash;</b> on record. The page shows no growth chart.</p></li>
+          <li><p>Booking covers a small share of the map: <b class="fig" data-fig="booking-pins">&mdash;</b> verified of <b class="fig" data-fig="map-pins">&mdash;</b> pins.</p></li>
+          <li><p>The record holds no location for a kitchen. The city permit file places <b class="fig" data-fig="placed-sf">&mdash;</b> linked kitchens in San Francisco; the rest cannot be split by city, and the star list covers San Francisco only.</p></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap" id="booking" aria-labelledby="booking-h">
+    <div class="rsec">
+      <div class="rail"><span class="n">04</span><span class="t">Booking</span></div>
+      <div class="rc">
+        <h2 class="shead" id="booking-h">From lineage to a table, <em>only where verified</em>.</h2>
+        <p class="sbody">A booking button appears on a kitchen only when its page on the booking platform has been
+          checked against that exact restaurant.</p>
+        <p class="figlabel"><span class="f">Fig. 4</span><span class="ft">Booking coverage, verified pages only</span></p>
+        <div class="bgrid">
+          <div class="bcard"><span class="big fig" data-fig="booking-pins2">&mdash;</span>
+            <p class="bsub">venues carry a verified booking link</p>
+            <div class="plat"><span class="p">Resy</span><span class="p">OpenTable</span><span class="p">Tock</span></div>
+            <p class="bnote" style="margin-top:16px">The booking files hold <b class="fig" data-fig="dossier-names">&mdash;</b> verified restaurant pages in all, and <b class="fig" data-fig="graph-kitchens">&mdash;</b> kitchens in the graph carry a verified link on their dossier.</p></div>
+          <div class="bcard"><p style="font-size:15px;color:var(--ink)">A link is kept only when</p>
+            <ul class="checks">
+              <li>the booking page&rsquo;s address names this restaurant, on a word boundary;</li>
+              <li>no leftover word points to a second name or another branch;</li>
+              <li>the page names San Francisco, or names no other city;</li>
+              <li>the dossier&rsquo;s name is the exact name the page was verified for.</li>
+            </ul>
+            <p class="bnote">A same-named restaurant in another city fails the third check. No match, no button.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap" id="bayarea" aria-labelledby="bayarea-h">
+    <div class="rsec">
+      <div class="rail"><span class="n">05</span><span class="t">The next market</span></div>
+      <div class="rc">
+        <h2 class="shead" id="bayarea-h">The record already reaches <em>the wider Bay Area</em>.</h2>
+        <p class="sbody"><b>The French Laundry in Yountville, Chez Panisse in Berkeley and Manresa in Los Gatos</b> are
+          in the record today, because San Francisco&rsquo;s reporting follows its cooks there. The Bay Area is the next step.</p>
+        <p class="figlabel"><span class="f">Fig. 5</span><span class="ft">Bay Area towns named in displayed moves</span></p>
+        <p class="sbody"><b class="fig" data-fig="bay-moves">&mdash;</b> displayed moves name a Bay Area town outside San
+          Francisco. The towns the quotations name:</p>
+        <div class="towns" id="towns"><span class="tw">&mdash;</span></div>
+        <div class="anch" id="anchors" aria-label="Bay Area anchors"></div>
+        <div class="callout"><h4>What this page does not count.</h4>
+          <p>How many kitchens on record sit outside San Francisco is not given here. The record holds no location
+            per kitchen, so that number cannot be read from it, and none is offered. The permit file places
+            <b class="fig" data-fig="placed-sf2">&mdash;</b> linked kitchens in San Francisco; the rest are closed San
+            Francisco kitchens, Bay Area kitchens and kitchens elsewhere, and the record cannot split them.</p></div>
+        <p class="next">A new market needs three things from this repository, and no date is given because none has been
+          measured: <b>a source list</b> (the reading list and the corpus queries), <b>the permit file of each city</b>
+          so kitchens can be placed, and <b>the star list</b> for that city, matched to kitchen names. The extraction,
+          the quote check, the citation gate and the identity rules carry over unchanged.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="contact" id="contact" aria-labelledby="contact-h">
+    <h2 id="contact-h">The record, in one file, for anyone who wants to check it.</h2>
+    <p>Every figure on this page comes from a measurement the site states in public. If a number looks wrong,
+      or a source should be in the record and is not, write and it will be checked against the articles.</p>
+    <a class="mail" href="mailto:patrick@boxfordpartners.com">patrick@boxfordpartners.com</a>
+  </div>
+
+<!-- bf:footer -->
+<footer class="bf-foot">
+  <div class="footrow">
+    <span><b>Bone Fides</b> · the kitchen lineage of San Francisco</span>
+    <span><a href="/explorer">Explore</a> · <a href="/tree">Trees</a> · <a href="/connect">Connect</a> · <a href="/ledger">Ledger</a> · <a href="/method">Method</a> · <a href="/numbers">Numbers</a></span>
+  </div>
+  <p class="footnote">Lineage is reconstructed from public reporting and can be incomplete or
+    contested. Every claim on this page links to the article behind it, so you can read the same
+    evidence we did. A line between two kitchens is a cited move by a named person, and nothing
+    more is claimed. Corrections and source tips welcome.</p>
+</footer>
+<!-- /bf:footer -->
+<!-- bf:chrome-js -->
+<script>
+(function () {
+  'use strict';
+  // Phone menu: fold the nav behind the Menu button. Without JavaScript the
+  // button stays hidden (the hidden attribute) and the links stay visible.
+  document.body.classList.add('bf-js');
+  var btn = document.querySelector('.bf-menu');
+  var nav = document.getElementById('bf-nav');
+  if (!btn || !nav) return;
+  btn.removeAttribute('hidden');
+  function setOpen(open) {
+    nav.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', String(open));
+    btn.textContent = open ? 'Close' : 'Menu';
+  }
+  btn.addEventListener('click', function () {
+    setOpen(!nav.classList.contains('open'));
+  });
+  btn.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Escape') { setOpen(false); }
+  });
+  document.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Escape' && nav.classList.contains('open')) {
+      setOpen(false);
+      btn.focus();
+    }
+  });
+  nav.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () { setOpen(false); });
+  });
+})();
+</script>
+<!-- /bf:chrome-js -->
+</div>
+<script src="/lineage.js"></script>
+<script>
+(function () {
+  'use strict';
+  var L = window.Lineage;
+
+  function $ (id) { return document.getElementById(id); }
+  function fig (key, v, pct) {
+    document.querySelectorAll('[data-fig="' + key + '"]').forEach(function (el) {
+      el.textContent = v == null ? '—' : (pct ? v.toFixed(1) : L.fmt(v));
+    });
+  }
+  // dates and other raw strings never go through the number formatter
+  function figRaw (key, v) {
+    document.querySelectorAll('[data-fig="' + key + '"]').forEach(function (el) {
+      el.textContent = v == null || v === '' ? '—' : String(v);
+    });
+  }
+  function bar (key, w) {
+    document.querySelectorAll('[data-bar="' + key + '"]').forEach(function (el) {
+      el.style.width = Math.max(0, Math.min(100, w)) + '%';
+    });
+  }
+
+  function render (d) {
+    var live = d.live, g = d.graph, gate = d.gate;
+    var onRecord = live ? live.edges : null;
+    var displayed = g.gate_passed;
+    fig('on-record', onRecord);
+    fig('displayed', displayed);
+    fig('live-edges', onRecord); fig('live-edges2', onRecord);
+    fig('gate-passed', displayed); fig('gate-passed2', displayed);
+    fig('gate-passed3', displayed); fig('gate-passed4', displayed);
+    fig('gate-passed5', displayed);
+    fig('hops', g.hops); fig('hops2', g.hops);
+    fig('linked', g.kitchens_linked); fig('linked2', g.kitchens_linked);
+    fig('linked3', g.kitchens_linked);
+    fig('largest', g.largest_set); fig('largest2', g.largest_set);
+    fig('live-sources', live ? live.sources : null);
+    fig('live-sources2', live ? live.sources : null);
+    fig('live-venues', live ? live.venues : null);
+    figRaw('graph-date', (g.built_at || '').slice(0, 10) || null);
+
+    // funnel bars: every row is a share of the moves on record
+    var base = onRecord || displayed;
+    bar('gate-passed', 100 * displayed / base);
+    bar('hops', 100 * g.hops / base);
+    bar('linked', 100 * g.kitchens_linked / base);
+    bar('largest', 100 * g.largest_set / base);
+
+    // the gate measurement
+    fig('precision-pct', gate.precision != null ? 100 * gate.precision : null);
+    fig('precision-low', gate.precision_low != null ? 100 * gate.precision_low : null);
+    fig('precision-low2', gate.precision_low != null ? 100 * gate.precision_low : null);
+    fig('sample-n', gate.sample_n); fig('sample-n2', gate.sample_n);
+    fig('sample-true', gate.sample_true);
+    fig('baseline-pct', gate.baseline_n ? 100 * gate.baseline_true / gate.baseline_n : null);
+    fig('baseline-true', gate.baseline_true); fig('baseline-n', gate.baseline_n);
+    fig('newly-displayed', gate.newly_displayed);
+    figRaw('gate-date', gate.measured_at); figRaw('gate-date2', gate.measured_at);
+
+    // sources
+    var tiers = live ? live.tiers : null;
+    var tierTotal = tiers ? tiers.eater + tiers.sfgate + tiers.sfchronicle + tiers.other : 0;
+    ['sfgate', 'eater', 'sfchronicle', 'other'].forEach(function (t) {
+      fig('tier-' + t, tiers ? tiers[t] : null);
+      fig('tier-' + t + '-pct', tiers && tierTotal ? 100 * tiers[t] / tierTotal : null, true);
+      var mx = document.querySelector('[data-mix="' + t + '"]');
+      if (mx) { mx.style.flex = (tiers ? tiers[t] : 0) + ' 1 0'; }
+    });
+    fig('two-outlets-pct', tiers && tierTotal ? 100 * (tiers.eater + tiers.sfgate) / tierTotal : null, true);
+
+    // coverage rows
+    fig('moves-year', g.moves_with_year);
+    bar('moves-year', 100 * g.moves_with_year / displayed);
+    bar('gate-quoted', 100);
+    bar('linked-venues', live ? 100 * g.kitchens_linked / live.venues : 0);
+    bar('largest-linked', 100 * g.largest_set / g.kitchens_linked);
+    var star = g.starred || {};
+    fig('starred-move', star.with_move); fig('starred-total', star.total);
+    bar('starred-move', star.total ? 100 * star.with_move / star.total : 0);
+    var missing = (star.missing_rows || []).map(function (r) { return L.esc(r.name); }).join(', ');
+    document.querySelectorAll('[data-fig="starred-missing"]').forEach(function (el) {
+      el.innerHTML = missing ? 'The others: ' + missing + '.' :
+        'Every starred kitchen has a displayed move.';
+    });
+
+    // the honest gaps
+    fig('held-back', onRecord != null ? onRecord - displayed : null);
+    fig('date-pct', live && live.edges ? 100 * live.coverage.date / live.edges : null, true);
+    fig('era-pct', live && live.edges ? 100 * live.coverage.era_bucket / live.edges : null, true);
+    fig('outside-main', g.kitchens_linked - g.largest_set);
+    fig('published', g.published_at);
+    fig('booking-pins', d.booking ? d.booking.map_pins : null);
+    fig('booking-pins2', d.booking ? d.booking.map_pins : null);
+    fig('map-pins', d.map ? d.map.pins : null);
+    fig('dossier-names', d.booking ? d.booking.dossier_names : null);
+    fig('graph-kitchens', d.booking ? d.booking.graph_kitchens : null);
+    fig('placed-sf', g.bay_area ? g.bay_area.kitchens_placed_sf : null);
+    fig('placed-sf2', g.bay_area ? g.bay_area.kitchens_placed_sf : null);
+
+    // the Bay Area
+    var ba = g.bay_area || {};
+    fig('bay-moves', ba.moves);
+    if (ba.towns) {
+      var top = ba.towns.slice().sort(function (a, b) { return b[1] - a[1]; }).slice(0, 10);
+      $('towns').innerHTML = top.map(function (t) {
+        return '<span class="tw">' + L.esc(t[0]) + '<i>' + L.fmt(t[1]) + '</i></span>';
+      }).join('');
+    }
+    if (ba.anchors) {
+      $('anchors').innerHTML = ba.anchors.filter(function (a) {
+        return a.quotes_naming_town >= 1;
+      }).map(function (a) {
+        return '<a href="/tree?k=' + encodeURIComponent(a.slug) + '">' +
+          '<span class="an">' + L.esc(a.name) + '</span>' +
+          '<span class="at">' + L.esc(a.town) + '</span>' +
+          '<span class="am">' + L.fmt(a.moves) + '</span>' +
+          '<span class="aq">displayed moves; ' + L.fmt(a.quotes_naming_town) +
+          ' quotations name ' + L.esc(a.town) + '</span></a>';
+      }).join('');
+    }
+
+    // the stale-graph sentence, only when the two counts disagree
+    if (d.fresh === false && live) {
+      var el = $('stale');
+      el.hidden = false;
+      el.innerHTML = 'The graph views were built on <b>' + L.esc((g.built_at || '').slice(0, 10)) +
+        '</b> from <b>' + L.fmt(g.source_moves) + '</b> moves. The index now holds <b>' +
+        L.fmt(live.edges) + '</b>.';
+    } else if (live == null) {
+      $('livenote').hidden = false;
+    }
+    $('fail').hidden = true;
+  }
+
+  function load () {
+    fetch('/api/numbers')
+      .then(function (r) { if (!r.ok) throw new Error('numbers request failed'); return r.json(); })
+      .then(render)
+      .catch(function () { $('fail').hidden = false; });
+  }
+
+  $('retry').addEventListener('click', load);
+  load();
+})();
+</script>
+</body>
+</html>
