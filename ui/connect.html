@@ -252,6 +252,15 @@ window.addEventListener('DOMContentLoaded', function () {
   L.picker(toEl, function (n) { setB(n); maybeTrace(); },
            { kind: 'kitchen', near: nearA });
 
+  function syncEnd(el, which) {
+    var t = el.value.trim();
+    var cur = state[which];
+    if (cur && (cur.name || '') === t) return;   // pick and field still agree
+    state[which] = t ? { slug: t, name: t } : null;   // an edit re-enters the text
+  }
+  fromEl.addEventListener('input', function () { syncEnd(fromEl, 'a'); });
+  toEl.addEventListener('input', function () { syncEnd(toEl, 'b'); });
+
   function maybeTrace() {
     if (state.a && state.b) trace(state.a, state.b);
   }
