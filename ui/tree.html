@@ -7,8 +7,8 @@
 <meta name="description" content="The family tree of a San Francisco kitchen: where its cited alumni went, within three cited moves. Every branch is one quoted move by a named person, with the article it came from.">
 <meta property="og:title" content="Bone Fides — Family trees">
 <meta property="og:description" content="A kitchen's family tree drawn from cited moves: who left, where they went, and where their cooks went next. Every branch links to its article.">
-<meta property="og:image" content="https://bone-fides.vercel.app/og.png">
-<meta property="og:url" content="https://bone-fides.vercel.app/tree">
+<meta property="og:image" content="https://bone-fides-pat-mitchells-projects.vercel.app/og.png">
+<meta property="og:url" content="https://bone-fides-pat-mitchells-projects.vercel.app/tree">
 <meta name="twitter:card" content="summary">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&display=swap" rel="stylesheet">
 <style>
@@ -332,7 +332,6 @@ details.cite[open] summary::after{content:'▴';color:var(--accent)}
 (function () {
   'use strict';
   var L = window.Lineage;
-  var CX = 560, CY = 384, R1 = 168, R2 = 280, R3 = 330;
   var state = { k: null, dir: 'down', view: 'graph', tree: null, req: 0,
                 parents: {}, selected: null, focusNode: null };
   var $ = function (id) { return document.getElementById(id); };
@@ -425,7 +424,7 @@ details.cite[open] summary::after{content:'▴';color:var(--accent)}
   function render(t) {
     setStats(t);
     // the rings drawing is shared with the landing hero (lineage.js)
-    state.parents = L.renderRings($('graph'), t, { onSelect: select });
+    state.parents = L.renderRings($('graph'), t, { onSelect: select, listHint: true });
     L.renderTreeList($('phone-list'), t, { phone: true });
     L.renderTreeList($('desk-list'), t, { phone: false });
     applyView();

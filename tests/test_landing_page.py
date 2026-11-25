@@ -68,7 +68,7 @@ def test_the_hero_drawing_uses_the_shared_renderer():
 
 
 def test_every_page_ships_the_share_tags():
-    og_img = 'content="https://bone-fides.vercel.app/og.png"'
+    og_img = 'content="https://bone-fides-pat-mitchells-projects.vercel.app/og.png"'
     for name in ("landing.html", "explorer.html", "tree.html", "connect.html",
                  "ledger.html", "numbers.html", "method.html"):
         p = _page(name)

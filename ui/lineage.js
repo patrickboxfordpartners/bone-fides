@@ -424,7 +424,8 @@
 
     svg.innerHTML = '';
     svg.setAttribute('aria-label', 'Family tree of ' + t.root.name + ': ' +
-      t.summary.reach + ' kitchens within three cited moves, ' + t.summary.starred + ' Michelin-starred.');
+      t.summary.reach + ' kitchens within three cited moves, ' + t.summary.starred + ' Michelin-starred.' +
+      (opts.listHint ? ' The same branches are in the list view.' : ''));
     [R1, R2, R3].forEach(function (r) {
       var c = document.createElementNS(SVG_NS, 'circle');
       c.setAttribute('class', 'guide'); c.setAttribute('cx', CX); c.setAttribute('cy', CY); c.setAttribute('r', r);
@@ -499,8 +500,10 @@
 
     flat.forEach(function (n) {
       var a = document.createElementNS(SVG_NS, 'a');
-      a.setAttribute('tabindex', '0');
-      a.setAttribute('role', 'link');
+      if (opts.onSelect) {
+        a.setAttribute('tabindex', '0');
+        a.setAttribute('role', 'link');
+      }
       var via0 = (n.via && n.via[0]) || null;
       var moved = via0 ? via0.person : 'a cited move';
       var role = via0 && via0.role ? ', ' + via0.role : '';
