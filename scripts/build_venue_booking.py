@@ -54,6 +54,9 @@ _LEGAL = {"llc", "inc", "corp", "co", "ltd", "lp", "sf", "cal", "dba", "restaura
 
 def clean_name(name):
     head = re.split(r"[/,]", name or "")[0]
+    # Apostrophes join, as they do in slugs ("Akiko's" -> akikos). Splitting
+    # on them made "Schroeder's" two words and let it pass the multi-word rule.
+    head = re.sub(r"['\u2019]", "", head)
     words = [w for w in re.split(r"[^a-z0-9]+", head.lower()) if w and w not in _LEGAL]
     if len(words) > 1 and words[0] == "the":  # the slug matcher does not skip a leading "the"
         words = words[1:]
@@ -79,8 +82,15 @@ def _path_ok(platform, url):
 
 
 def _leftover_words(path, name):
+    """Slug words that are neither the pin's own words nor neutral.
+
+    A slug may run the name together (`/garydanko`, `/zunicafe`), which
+    _slug_names_venue accepts. Joins of consecutive own words therefore count
+    as own words too; anything else left over still means another place."""
     words = set(re.split(r"[^a-z0-9]+", path.lower())) - {""}
-    own = set(name.split())
+    parts = name.split()
+    own = set(parts) | {"".join(parts[i:j]) for i in range(len(parts))
+                        for j in range(i + 2, len(parts) + 1)}
     return sorted(w for w in words - own - _NEUTRAL if not w.isdigit())
 
 

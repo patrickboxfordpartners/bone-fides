@@ -25,12 +25,20 @@ def test_clean_name_drops_permit_register_noise():
     assert bvb.clean_name("Ernest Restaurant / Befr Llc") == "ernest"
     assert bvb.clean_name("Penny Roma/Flour+Water Pasta Shop") == "penny roma"
     assert bvb.clean_name("The Brixton") == "brixton"
+    assert bvb.clean_name("Schroeder's") == "schroeders"
 
 
 def test_accepts_the_venues_own_sf_page():
     assert bvb.verified("opentable", "https://www.opentable.com/r/tosca-cafe-san-francisco", ["tosca cafe"])
     assert bvb.verified("opentable", "https://www.opentable.com/r/the-brixton-san-francisco", ["brixton"])
     assert bvb.verified("opentable", "https://www.opentable.com/gary-danko", ["gary danko"])
+
+
+def test_accepts_a_slug_that_runs_the_name_together():
+    assert bvb.verified("tock", "https://www.exploretock.com/garydanko", ["gary danko"])
+    assert bvb.verified("tock", "https://www.exploretock.com/zunicafe/", ["zuni cafe"])
+    # a joined name with a place word left over is still another restaurant
+    assert not bvb.verified("tock", "https://www.exploretock.com/garydanko-napa", ["gary danko"])
 
 
 def test_rejects_a_same_named_restaurant_elsewhere():
@@ -48,6 +56,7 @@ def test_a_url_without_a_city_needs_the_pins_own_multiword_name():
     # one word and no city: Kaya, Sasa and Hearth are restaurants in other towns too
     assert not bvb.verified("opentable", "https://www.opentable.com/kaya", ["kaya house", "kaya"])
     assert not bvb.verified("opentable", "https://www.opentable.com/r/hearth", ["hearth"])
+    assert not bvb.verified("opentable", "https://www.opentable.com/r/schroeders", [bvb.clean_name("Schroeder's")])
     # the lineage name (second entry) cannot vouch for a city-less page
     assert not bvb.verified("opentable", "https://www.opentable.com/r/the-richmond", ["richmond market", "the richmond"])
 
