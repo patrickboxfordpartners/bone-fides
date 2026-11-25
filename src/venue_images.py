@@ -45,8 +45,9 @@ BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, BASE)
 
 CACHE = os.path.join(BASE, "crawl", "venue_images.json")
-# Downloaded venue photos live under ui/ so both server twins can serve them
-# statically without a third-party request at render time.
+# Downloaded photos land here (gitignored) under relative "venue-images/..."
+# urls; scripts/publish_venue_images.py uploads them to Vercel Blob and
+# rewrites those urls, so nothing is hotlinked at render time.
 IMG_DIR = os.path.join(BASE, "ui", "venue-images")
 UA = {"User-Agent": "BoneFides/1.0 (kitchen lineage research; patrick@boxfordpartners.com)"}
 

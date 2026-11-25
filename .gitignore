@@ -1,10 +1,11 @@
 .env
 .env.*
 !.env.example
-superpowers/
+.superpowers/
 __pycache__/
 *.pyc
 .venv/
 data/
 .gstack/
 .vercel
+ui/venue-images/
