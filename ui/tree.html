@@ -99,7 +99,7 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;appeara
 
 .treepage{display:grid;grid-template-columns:minmax(0,1fr);min-height:70vh}
 .stage{position:relative;min-height:520px}
-.side{position:absolute;left:32px;top:26px;width:236px;z-index:2}
+.side{position:relative;margin-left:32px;padding-top:26px;width:236px;z-index:2}
 .side h1{font-size:clamp(26px,3vw,38px);line-height:1.05;font-weight:380;letter-spacing:-.01em;margin-top:10px}
 .side .sub{font-size:14px;color:var(--dim);font-style:italic;font-weight:340;line-height:1.45;margin-top:12px;width:232px}
 .grow{position:relative;margin-top:18px;width:214px}
@@ -124,15 +124,26 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;appeara
 .legend ul{list-style:none}
 .legend li{display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:start;margin-top:6px}
 .legend svg{margin-top:5px}
+.legend svg .e.s{stroke-width:1.4}
 .legend b{color:var(--ink);font-weight:500;font-variant-numeric:tabular-nums}
 .share{position:absolute;right:24px;bottom:18px;display:flex;gap:8px;z-index:2}
 .graph{position:absolute;inset:0;width:100%;height:100%}
 .graph text{font-family:'Fraunces',Georgia,serif}
 .graph a{cursor:pointer;border:0}
-.guide{fill:none;stroke:var(--faint)}
+.guide{fill:none;stroke:var(--dim);stroke-width:1.2;opacity:.38}
+/* the tree: a trunk, tapering limbs, branches and twigs */
+.trunk{fill:none;stroke:var(--dim);stroke-width:5;stroke-linecap:round}
 .e{fill:none;stroke:var(--dim);stroke-width:1;stroke-linecap:round}
+.e.g1{stroke-width:2.4}
+.e.g2{stroke-width:1.4}
+.e.g3{stroke-width:1}
+/* weight and gold always add, whatever the generation; the legend's
+   bare sample carries w2 alone, so it keeps a default width too */
 .e.w2{stroke-width:2.2}
-.e.s{stroke:var(--gold);stroke-width:1.3}
+.e.g1.w2{stroke-width:3.4}
+.e.g2.w2{stroke-width:2.6}
+.e.g3.w2{stroke-width:1.8}
+.e.s{stroke:var(--gold)}
 .e.sel{stroke:var(--ink);stroke-width:2.8}
 .dot{fill:var(--accent)}
 .lab{font-size:12.5px;fill:var(--ink);font-weight:380;paint-order:stroke;stroke:var(--bg);stroke-width:4px;stroke-linejoin:round}
@@ -222,7 +233,7 @@ details.cite[open] summary::after{content:'▴';color:var(--accent)}
 /* phone: the tree is the nested list with a per-generation size bar */
 @media (max-width:899px){
   .treepage{grid-template-columns:1fr}
-  .side{position:static;width:auto;padding:24px 20px 0}
+  .side{width:auto;margin-left:0;padding:24px 20px 0}
   .side .sub{width:auto}
   .grow{width:100%}
   .tstats{width:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--faint);border:1px solid var(--faint)}
@@ -309,8 +320,8 @@ details.cite[open] summary::after{content:'▴';color:var(--accent)}
       <li><svg width="30" height="8" aria-hidden="true"><path d="M1 4h28" class="e"/></svg><span>A cited move by a named person.</span></li>
       <li><svg width="30" height="8" aria-hidden="true"><path d="M1 4h28" class="e w2"/></svg><span>Heavier: two or more cited moves join the two kitchens.</span></li>
       <li><svg width="30" height="8" aria-hidden="true"><path d="M1 4h28" class="e s"/></svg><span>Gold: leads to a starred kitchen. <span class="st">★</span> Stars: Michelin Guide 2026, San Francisco kitchens only.</span></li>
-      <li><svg width="30" height="8" aria-hidden="true"><circle cx="6" cy="4" r="2.4" class="mark3"/><circle cx="15" cy="4" r="2.4" class="mark3"/><circle cx="24" cy="4" r="2.4" class="mark3"/></svg><span>Outer ring: one mark for each third-move kitchen. Point at a mark, or tab to it, for its name.</span></li>
-      <li><span></span><span>Rings follow cited moves, not dates: <b id="leg-year">—</b> of <b id="leg-displayed">—</b> displayed moves carry a year.</span></li>
+      <li><svg width="30" height="8" aria-hidden="true"><circle cx="6" cy="4" r="2.4" class="mark3"/><circle cx="15" cy="4" r="2.4" class="mark3"/><circle cx="24" cy="4" r="2.4" class="mark3"/></svg><span>Twigs: one mark for each third-move kitchen. Point at a mark, or tab to it, for its name.</span></li>
+      <li><span></span><span>Branches follow cited moves, not dates: <b id="leg-year">—</b> of <b id="leg-displayed">—</b> displayed moves carry a year.</span></li>
     </ul>
     </div>
     <svg class="graph desk-only" id="graph" viewBox="0 0 1040 760" role="group" aria-label="Family tree drawing"></svg>
@@ -420,10 +431,21 @@ details.cite[open] summary::after{content:'▴';color:var(--accent)}
     $('dir-up').setAttribute('aria-pressed', t.direction === 'up');
   }
 
+  /* the keep-out band is measured, not guessed: it is the side column's
+   * right edge in drawing units, plus air */
+  function leftPad() {
+    var side = document.querySelector('.side');
+    var svg = $('graph');
+    if (!side || !svg) return 340;
+    var sr = side.getBoundingClientRect(), gr = svg.getBoundingClientRect();
+    if (gr.width === 0 || sr.bottom <= gr.top) return 0;  /* no overlay */
+    return Math.min(600, Math.round((sr.right - gr.left) / gr.width * 1040) + 24);
+  }
+
   function render(t) {
     setStats(t);
-    // the rings drawing is shared with the landing hero (lineage.js)
-    state.parents = L.renderRings($('graph'), t, { onSelect: select, listHint: true });
+    // the tree drawing is shared with the landing hero (lineage.js)
+    state.parents = L.renderRings($('graph'), t, { onSelect: select, listHint: true, leftPad: leftPad() });
     L.renderTreeList($('phone-list'), t, { phone: true });
     L.renderTreeList($('desk-list'), t, { phone: false });
     applyView();
