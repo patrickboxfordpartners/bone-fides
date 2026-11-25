@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bone Fides — The Ledger</title>
+<meta name="description" content="The record holders of the San Francisco chef record: the kitchens with the most cited alumni, their reach within three cited moves, the starred kitchens among them, and the named mentors.">
+<meta property="og:title" content="Bone Fides — The Ledger">
+<meta property="og:description" content="The kitchens San Francisco's chefs came from, ranked from the cited record: alumni, reach within three moves, starred kitchens, and named mentors.">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&display=swap" rel="stylesheet">
+<style>
+/* bf:chrome */
+/* Shared header, phone menu and footer. Tokens from docs/DESIGN.md only. */
+.bf-skip{position:absolute;left:12px;top:-60px;z-index:20;background:var(--bg2);color:var(--ink);
+  border:1px solid var(--accent);border-radius:999px;padding:0 18px;min-height:44px;
+  display:inline-flex;align-items:center;font-size:13.5px}
+.bf-skip:focus{top:8px;left:12px}
+.bf-top{min-height:60px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
+  gap:0 28px;padding:0 32px;border-bottom:1px solid var(--faint);background:var(--bg);
+  position:relative;z-index:5}
+.wordmark{font-size:19px;font-weight:560;letter-spacing:.01em;color:var(--ink);border:0;
+  display:inline-flex;align-items:baseline;gap:7px;line-height:1}
+.wordmark em{color:var(--accent);font-style:italic;font-weight:500}
+.bf-nav{display:flex;gap:28px;align-self:stretch}
+.bf-nav a{font-size:13.5px;font-weight:400;color:var(--dim);border:0;border-bottom:1px solid transparent;
+  margin-bottom:-1px;display:flex;align-items:center;line-height:1;min-height:59px}
+.bf-nav a:hover{color:var(--ink)}
+.bf-nav a[aria-current=page]{color:var(--ink);border-bottom-color:var(--accent)}
+.bf-menu{font:500 12px/1 'Fraunces',Georgia,serif;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--dim);background:transparent;border:1px solid var(--faint);border-radius:999px;
+  padding:0 18px;min-height:44px;cursor:pointer;display:none}
+.bf-menu:hover,.bf-menu[aria-expanded=true]{color:var(--accent);border-color:var(--accent)}
+/* JavaScript folds the nav behind the Menu button at 760 px and narrower.
+   Without JavaScript the button stays hidden and the links show as a
+   wrapped block under the wordmark, so every link stays reachable. */
+@media (max-width:760px){
+  .bf-top{min-height:56px;padding:0 20px}
+  .bf-nav a{min-height:44px}
+  body.bf-js .bf-nav{display:none;flex-direction:column;gap:0;position:absolute;top:100%;
+    left:0;right:0;background:var(--bg2);border-bottom:1px solid var(--faint);
+    padding:0 20px 10px;z-index:6}
+  body.bf-js .bf-nav.open{display:flex}
+  body.bf-js .bf-menu{display:inline-flex;align-items:center}
+  .bf-nav a{min-height:44px}
+}
+/* Shared footer */
+.bf-foot{border-top:1px solid var(--faint);padding:26px 32px 44px;margin-top:56px}
+.bf-foot .footrow{display:flex;flex-wrap:wrap;gap:10px 28px;justify-content:space-between;
+  font-size:13.5px;color:var(--dim)}
+.bf-foot .footrow b{color:var(--ink);font-weight:560}
+.bf-foot .footrow a{color:var(--gold);border-bottom:1px solid rgba(194,160,90,.35)}
+.bf-foot .footrow a:hover{color:var(--ink);border-color:var(--ink)}
+.bf-foot .footnote{font-size:12.5px;color:var(--dim);line-height:1.6;margin-top:14px;max-width:72ch}
+/* /bf:chrome */
+:root{--bg:#171310;--bg2:#1f1a15;--ink:#efe6d3;--dim:#9b8f7c;--faint:rgba(239,230,211,.14);
+  --accent:#d08152;--gold:#c2a05a;--stargold:#efd9a0;--ok:#8fb996;--bad:#d9776b;}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--ink);font-family:'Fraunces',Georgia,serif;font-size:17px;line-height:1.6;font-weight:350}
+a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(194,160,90,.35)}
+a:hover{color:var(--ink);border-color:var(--ink)}
+button{font-family:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+::selection{background:rgba(208,129,82,.35)}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+/* ledger page */
+.kicker{font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);line-height:1.4}
+.st{color:var(--stargold);letter-spacing:.1em;font-style:normal}
+.srcbadge{display:inline-block;font-size:10.5px;font-weight:560;letter-spacing:.08em;text-transform:uppercase;padding:1px 7px 2px;
+  border:1px solid currentColor;border-radius:99px;margin-left:8px;vertical-align:1px;line-height:1.4}
+.srcbadge.sfgate{color:#7dcec8}.srcbadge.eater{color:var(--gold)}.srcbadge.sfchronicle{color:#e7b0a4}.srcbadge.other{color:var(--dim)}
+.src{font-size:12.5px;color:var(--dim);letter-spacing:.04em;line-height:1.5}
+.src a{color:var(--gold);border-bottom:1px solid rgba(194,160,90,.35)}
+blockquote.ev{font-size:14.5px;line-height:1.5;color:var(--dim);font-weight:350;font-style:italic}
+.who{font-size:15px;line-height:1.5}
+.who .pname{color:var(--ink);font-weight:560;border-bottom:1px solid var(--faint)}
+.who .hom{font-size:11.5px;color:var(--dim);font-style:italic;margin-left:6px}
+.who .role{color:var(--dim);font-size:13.5px;font-style:italic;margin-left:6px}
+.who .yr{font-style:normal;color:var(--gold);font-size:11.5px;letter-spacing:.06em;margin-left:4px}
+main{display:block}
+.lh{max-width:1288px;margin:0 auto;padding:48px 72px 0}
+.lh h1{font-size:clamp(34px,4vw,56px);line-height:1.02;font-weight:380;letter-spacing:-.015em;margin-top:18px}
+.lh h1 em{color:var(--accent);font-style:italic;font-weight:500}
+.lede{font-size:18px;color:var(--dim);line-height:1.55;font-weight:350;max-width:66ch;margin-top:18px}
+.lede b{color:var(--ink);font-weight:480;font-variant-numeric:tabular-nums}
+.leaders{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--faint);border:1px solid var(--faint);
+  max-width:1288px;margin:34px auto 0}
+.leader{background:var(--bg);padding:22px 22px 18px;border:0;color:var(--ink);display:block}
+.leader .lk{display:block;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);line-height:1.5}
+.leader b{display:block;font-size:46px;font-weight:420;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.01em;
+  margin-top:12px;color:var(--accent)}
+.leader.star b{color:var(--stargold)}
+.leader .who{display:block;font-size:19px;font-weight:420;margin-top:10px;line-height:1.25}
+.leader .unit{display:block;font-size:12.5px;color:var(--dim);font-style:italic;line-height:1.4;margin-top:2px}
+.leader:hover .who{color:var(--accent)}
+.lgrid{display:grid;grid-template-columns:minmax(0,912px) 328px;gap:56px;max-width:1288px;margin:0 auto;padding:44px 72px 0}
+section{scroll-margin-top:80px}
+.bh{font-size:30px;font-weight:380;line-height:1.15;letter-spacing:-.01em}
+.brule{font-size:14px;color:var(--dim);font-style:italic;line-height:1.45;margin-top:6px}
+/* the kitchen table */
+table{width:100%;border-collapse:collapse;margin-top:18px;font-variant-numeric:tabular-nums}
+thead th{text-align:left;vertical-align:top;padding:12px 18px 12px 0;border-top:2px solid var(--ink);
+  border-bottom:1px solid var(--faint);font-weight:400}
+thead th .h{display:block;font-weight:500;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);line-height:1.5}
+thead th .def{display:block;font-size:12.5px;color:var(--dim);font-style:italic;line-height:1.4;margin-top:4px}
+th .sortbtn{background:none;border:0;color:inherit;padding:0;cursor:pointer;display:block;width:100%;min-height:44px;text-align:left}
+th .sortbtn:hover .h{color:var(--accent)}
+th[aria-sort] .h{color:var(--accent)}
+th .arr{display:inline-block;width:14px;font-size:10px;color:var(--accent)}
+tbody td{padding:15px 18px 14px 0;border-bottom:1px solid var(--faint);vertical-align:top}
+.rk{font-size:13.5px;color:var(--gold);letter-spacing:.1em;font-weight:560;font-variant-numeric:tabular-nums;width:44px;padding-top:19px}
+.kn{min-width:150px}
+.kn a{font-size:21px;font-weight:420;color:var(--ink);border:0;line-height:1.25}
+.kn a:hover{color:var(--accent)}
+.kn .lnk{display:flex;gap:16px;margin-top:4px}
+.kn .lnk a{font-size:12.5px;font-weight:400;color:var(--gold);border-bottom:1px solid rgba(194,160,90,.35);line-height:1.5;min-height:44px}
+.num{display:block;font-size:24px;font-weight:420;line-height:1.1;font-variant-numeric:tabular-nums;letter-spacing:-.01em;color:var(--ink)}
+td.key .num{color:var(--accent)}
+.pedbar{height:5px;border-radius:3px;background:var(--faint);overflow:hidden;margin-top:9px;max-width:120px}
+.pedbar span{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,var(--accent),var(--gold))}
+.sd{display:grid;grid-template-columns:50px 1fr;gap:0 6px;align-items:start}
+.sd .cnt{font-size:24px;font-weight:420;line-height:1.1;color:var(--stargold);font-variant-numeric:tabular-nums;white-space:nowrap}
+.sd .cnt i{font-style:normal;font-size:14px;vertical-align:3px;margin-right:5px}
+.sd .cnt.none{color:var(--dim)}
+.sd .names{font-size:12.5px;color:var(--dim);font-style:italic;font-weight:340;line-height:1.5;padding-top:5px}
+.trule{font-size:14px;color:var(--dim);font-style:italic;line-height:1.5;margin-top:16px}
+.trule b{color:var(--ink);font-weight:550;font-style:normal;font-variant-numeric:tabular-nums}
+/* sort chips: the phone sort control; hidden on wide screens */
+.sortchips{display:none;gap:8px;flex-wrap:wrap;margin-top:16px}
+.sortchips button{font:400 12.5px 'Fraunces',Georgia,serif;letter-spacing:.06em;background:none;border:1px solid var(--faint);
+  color:var(--dim);border-radius:999px;padding:0 16px;min-height:44px;cursor:pointer;line-height:1}
+.sortchips button[aria-pressed=true]{color:var(--accent);border-color:var(--accent)}
+.sortchips button:hover{color:var(--accent);border-color:var(--accent)}
+/* mentors */
+.mlist{list-style:none;margin-top:18px;border-top:2px solid var(--ink)}
+.mlist details{border-bottom:1px solid var(--faint)}
+.mlist summary{display:grid;grid-template-columns:34px 1fr auto 18px;gap:0 8px;align-items:baseline;cursor:pointer;
+  list-style:none;padding:13px 0 12px;color:var(--ink);min-height:44px}
+.mlist summary::-webkit-details-marker{display:none}
+.mlist summary .rk{padding:0;width:auto}
+.mlist summary .mn{font-size:18px;font-weight:420;line-height:1.25}
+.mlist summary:hover .mn{color:var(--accent)}
+.mlist summary .mc{font-size:18px;font-weight:420;font-variant-numeric:tabular-nums;color:var(--accent)}
+.mlist summary .tw{font-size:11px;color:var(--dim)}
+.mlist details[open] summary .tw{transform:rotate(180deg)}
+.mlist .mq{padding:2px 0 18px 42px}
+.mlist .mq .cite{margin-top:10px}
+.mnote{font-size:12.5px;color:var(--dim);line-height:1.6;margin-top:14px}
+.mnote b{color:var(--ink);font-weight:550;font-style:normal;font-variant-numeric:tabular-nums}
+/* the starred strip and table */
+.starline{max-width:1288px;margin:44px auto 0;border:1px solid var(--faint);background:var(--bg2);padding:20px 24px;
+  display:flex;align-items:center;justify-content:space-between;gap:24px}
+.starline p{font-size:19px;font-weight:380;line-height:1.35}
+.starline p b{color:var(--stargold);font-weight:480;font-variant-numeric:tabular-nums}
+.sgrid{max-width:1288px;margin:0 auto;padding:10px 72px 0}
+.stab td{padding:13px 18px 12px 0}
+.stab .kn a{font-size:19px}
+.stab .frm{font-size:12.5px;color:var(--dim);font-style:italic;line-height:1.5;max-width:34ch}
+.stab .nonote{color:var(--dim);font-style:italic}
+.lfoot{max-width:1288px;margin:28px auto 0;border-top:1px solid var(--faint);padding:16px 72px 0;font-size:12.5px;color:var(--dim);line-height:1.6}
+.lfoot b{color:var(--ink);font-weight:550;font-variant-numeric:tabular-nums}
+.failmsg{max-width:1288px;margin:34px auto 0;padding:0 72px;color:var(--dim);font-style:italic}
+.textlink{font-size:13.5px;color:var(--gold);border-bottom:1px solid rgba(194,160,90,.35)}
+.retry{font:500 12px/1 'Fraunces',Georgia,serif;letter-spacing:.2em;text-transform:uppercase;padding:0 18px;
+  background:transparent;color:var(--dim);border:1px solid var(--faint);border-radius:999px;cursor:pointer;min-height:44px}
+.retry:hover{color:var(--accent);border-color:var(--accent)}
+.failmsg .retry{margin-top:14px}
+/* tablet: the mentor column drops below before the kitchen table starves */
+@media (max-width:1100px){
+  .lgrid{grid-template-columns:1fr;gap:40px}
+}
+/* phone: chips show, headers hide, rows stack but keep their table roles */
+@media (max-width:760px){
+  .lh{padding:26px 20px 0}
+  .lh h1{font-size:36px;line-height:1.04}
+  .lede{font-size:15.5px;margin-top:14px}
+  .leaders{grid-template-columns:1fr 1fr;margin:24px 20px 0}
+  .leader{padding:16px 14px 14px}
+  .leader b{font-size:34px}
+  .leader .who{font-size:16px}
+  .lgrid{grid-template-columns:1fr;gap:40px;padding:34px 20px 0}
+  .bh{font-size:26px}
+  .sortchips{display:flex}
+  table, thead, tbody, tr, td, th{display:block}
+  thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  tbody tr{border-bottom:1px solid var(--faint);padding:10px 0 16px}
+  tbody td{border-bottom:0;padding:0 0 0 44px}
+  tbody td::before{content:attr(data-label);display:block;font-size:10.5px;font-weight:560;
+    letter-spacing:.16em;text-transform:uppercase;color:var(--gold);line-height:1.5;padding-top:10px}
+  tbody td.kn::before{display:none}
+  tbody td.rk{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  tbody td.kn{padding-left:0}
+  tbody td.kn a{font-size:21px;min-height:44px;display:inline-flex;align-items:center}
+  .kn .lnk a{display:inline-flex;align-items:center}
+  tbody td .num{font-size:22px}
+  .sd{grid-template-columns:50px 1fr;margin-left:0}
+  .mlist summary{grid-template-columns:26px 1fr auto 18px;padding:8px 0;min-height:44px}
+  .mlist .mq{padding-left:26px}
+  .starline{margin:34px 20px 0;padding:16px 18px;flex-direction:column;align-items:flex-start;gap:10px}
+  .sgrid,.lfoot,.failmsg{padding-left:20px;padding-right:20px}
+  .lfoot{padding-bottom:0}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<!-- bf:header -->
+<a class="bf-skip" href="#main">Skip to content</a>
+<header class="bf-top">
+  <a class="wordmark" href="/" aria-label="Bone Fides, home">Bone <em>Fides</em></a>
+  <button type="button" class="bf-menu" hidden aria-expanded="false" aria-controls="bf-nav">Menu</button>
+  <nav class="bf-nav" id="bf-nav" aria-label="Site">
+    <a href="/explorer">Explore</a>
+    <a href="/tree">Trees</a>
+    <a href="/connect">Connect</a>
+    <a href="/ledger" aria-current="page">Ledger</a>
+    <a href="/method">Method</a>
+  </nav>
+</header>
+<!-- /bf:header -->
+<main id="main">
+  <div class="lh">
+    <p class="kicker">The Ledger</p>
+    <h1>The kitchens San Francisco&rsquo;s chefs <em>came from</em>.</h1>
+    <p class="lede">Ranked from the record, by moves you can read on this site. These are counts
+      of what has been reported and cited, not of everyone who ever worked the line.</p>
+  </div>
+  <div class="leaders">
+    <a class="leader" href="#kitchens" id="lead-alumni"><span class="lk">Most cited alumni</span><b>&mdash;</b><span class="who">&mdash;</span><span class="unit">named people with a displayed cited move out</span></a>
+    <a class="leader" href="#kitchens" id="lead-reach"><span class="lk">Widest reach</span><b>&mdash;</b><span class="who">&mdash;</span><span class="unit">kitchens within three moves</span></a>
+    <a class="leader star" href="#kitchens" id="lead-starred"><span class="lk">Most starred within three moves</span><b>&mdash;</b><span class="who">&mdash;</span><span class="unit">Michelin-starred kitchens within three moves</span></a>
+    <a class="leader" href="#mentors" id="lead-mentor"><span class="lk">Most-named mentor</span><b>&mdash;</b><span class="who">&mdash;</span><span class="unit">chefs whose quoted sentence names this person</span></a>
+  </div>
+  <div class="lgrid">
+    <section id="kitchens" aria-labelledby="kitchens-h">
+      <h2 class="bh" id="kitchens-h">The kitchen rankings</h2>
+      <p class="brule">Every kitchen with three or more cited alumni, ranked by the column you choose.</p>
+      <div class="sortchips" role="group" aria-label="Sort the kitchens">
+        <button type="button" data-sort="alumni" aria-pressed="true">Alumni</button>
+        <button type="button" data-sort="reach" aria-pressed="false">Within three moves</button>
+        <button type="button" data-sort="starred" aria-pressed="false">Starred within</button>
+        <button type="button" data-sort="kitchen" aria-pressed="false">A to Z</button>
+      </div>
+      <table id="ktab" role="table">
+        <caption class="sr-only">Kitchens ranked by cited alumni, reach within three moves, and starred kitchens within three moves. Sortable columns.</caption>
+        <thead role="rowgroup"><tr role="row">
+          <th scope="col" role="columnheader" class="sr-only">Rank</th>
+          <th scope="col" role="columnheader"><button type="button" class="sortbtn" data-sort="kitchen"><span class="h">Kitchen<span class="arr" data-arr></span></span></button></th>
+          <th scope="col" role="columnheader"><button type="button" class="sortbtn" data-sort="alumni"><span class="h">Alumni<span class="arr" data-arr></span></span><span class="def">Named people with a displayed cited move out of the kitchen.</span></button></th>
+          <th scope="col" role="columnheader"><button type="button" class="sortbtn" data-sort="reach"><span class="h">Within three moves<span class="arr" data-arr></span></span><span class="def">Kitchens reachable by following displayed cited moves, up to three.</span></button></th>
+          <th scope="col" role="columnheader"><button type="button" class="sortbtn" data-sort="starred"><span class="h">Starred within three moves<span class="arr" data-arr></span></span><span class="def">Of those kitchens, the ones with San Francisco stars in the Michelin Guide.</span></button></th>
+        </tr></thead>
+        <tbody id="kbody" role="rowgroup"><tr role="row"><td role="cell" colspan="5">&mdash;</td></tr></tbody>
+      </table>
+      <p class="trule">The table holds the kitchens with <b id="trule-min">3</b> or more alumni.
+        Reach follows displayed cited moves up to <b id="trule-depth">three</b>. Stars come from the San Francisco list.</p>
+    </section>
+    <section id="mentors" aria-labelledby="mentors-h">
+      <h2 class="bh" id="mentors-h">Named mentors</h2>
+      <p class="brule">Chefs whose quoted sentence names this person as their mentor.</p>
+      <ol class="mlist" id="mlist"><li>&mdash;</li></ol>
+      <p class="mnote">A mentor is counted only where the quotation names one: <b id="mfigure">&mdash;</b>
+        displayed moves do. This list is a floor, not a census. Open a row for the quotations.</p>
+    </section>
+  </div>
+  <div class="starline"><p><b id="joined">&mdash;</b> of San Francisco&rsquo;s <b id="stotal">&mdash;</b> Michelin-starred
+    kitchens are joined to the graph by a displayed cited move.</p><a class="textlink" href="#starred">The starred kitchens &rarr;</a></div>
+  <div class="sgrid">
+    <section id="starred" aria-labelledby="starred-h">
+      <h2 class="bh" id="starred-h">The starred kitchens</h2>
+      <p class="brule">Every San Francisco Michelin-starred kitchen, its cited arrivals and where the chefs came from.</p>
+      <table class="stab" id="stab" role="table">
+        <caption class="sr-only">The San Francisco Michelin-starred kitchens with their cited arrivals and the kitchens those chefs came from.</caption>
+        <thead role="rowgroup"><tr role="row">
+          <th scope="col" role="columnheader" class="sr-only">Rank</th>
+          <th scope="col" role="columnheader"><span class="h">Kitchen</span></th>
+          <th scope="col" role="columnheader"><span class="h">Cited arrivals</span><span class="def">Displayed moves of chefs into this kitchen, from the kitchens named beside it.</span></th>
+          <th scope="col" role="columnheader"><span class="h">Came from</span></th>
+          <th scope="col" role="columnheader"><span class="h">Alumni</span><span class="def">Named people with a displayed cited move out.</span></th>
+        </tr></thead>
+        <tbody id="sbody" role="rowgroup"><tr role="row"><td role="cell" colspan="5">&mdash;</td></tr></tbody>
+      </table>
+      <p class="trule">A starred kitchen with no arrivals row says &ldquo;no cited arrivals yet&rdquo;: no
+        displayed move of a chef into it is on record. Stars come from the San Francisco list of the Michelin Guide.</p>
+    </section>
+  </div>
+  <p class="lfoot" id="lfoot">Every figure here counts only the <b id="lfig">&mdash;</b> moves on display:
+    those whose quoted sentence states the move. Every count opens to the people, quotations and sources behind it.</p>
+  <div class="failmsg" id="fail" hidden>
+    <p>The figures could not be loaded. The request failed.</p>
+    <button type="button" class="retry" id="retry">Try again</button>
+  </div>
+</main>
+<!-- bf:footer -->
+<footer class="bf-foot">
+  <div class="footrow">
+    <span><b>Bone Fides</b> · the kitchen lineage of San Francisco</span>
+    <span><a href="/explorer">Explore</a> · <a href="/tree">Trees</a> · <a href="/connect">Connect</a> · <a href="/ledger">Ledger</a> · <a href="/method">Method</a></span>
+  </div>
+  <p class="footnote">Lineage is reconstructed from public reporting and can be incomplete or
+    contested. Every claim on this page links to the article behind it, so you can read the same
+    evidence we did. A line between two kitchens is a cited move by a named person, and nothing
+    more is claimed. Corrections and source tips welcome.</p>
+</footer>
+<!-- /bf:footer -->
+<!-- bf:chrome-js -->
+<script>
+(function () {
+  'use strict';
+  // Phone menu: fold the nav behind the Menu button. Without JavaScript the
+  // button stays hidden (the hidden attribute) and the links stay visible.
+  document.body.classList.add('bf-js');
+  var btn = document.querySelector('.bf-menu');
+  var nav = document.getElementById('bf-nav');
+  if (!btn || !nav) return;
+  btn.removeAttribute('hidden');
+  function setOpen(open) {
+    nav.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', String(open));
+    btn.textContent = open ? 'Close' : 'Menu';
+  }
+  btn.addEventListener('click', function () {
+    setOpen(!nav.classList.contains('open'));
+  });
+  btn.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Escape') { setOpen(false); }
+  });
+  document.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Escape' && nav.classList.contains('open')) {
+      setOpen(false);
+      btn.focus();
+    }
+  });
+  nav.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () { setOpen(false); });
+  });
+})();
+</script>
+<!-- /bf:chrome-js -->
+</div>
+<script src="/lineage.js"></script>
+<script>
+(function () {
+  'use strict';
+  var L = window.Lineage;
+  var data = null;
+
+  function $ (id) { return document.getElementById(id); }
+
+  function pad2 (n) { return n < 10 ? '0' + n : '' + n; }
+
+  function starBadge (k) {
+    return k.stars ? ' <span class="st" aria-label="' + L.esc(L.starsLabel(k.stars)) +
+      '">' + L.starsTxt(Math.min(k.stars, 3)) + '</span>' : '';
+  }
+
+  function setSort (key, push) {
+    if (!data) return;
+    var rows = data.kitchens.slice();
+    if (key === 'kitchen') { rows.sort(function (a, b) { return a.kitchen.name.localeCompare(b.kitchen.name); }); }
+    else { rows.sort(function (a, b) { return (b[key] - a[key]) || b.reach - a.reach ||
+      a.kitchen.name.localeCompare(b.kitchen.name); }); }
+    renderKitchens(rows);
+    document.querySelectorAll('.sortchips button').forEach(function (el) {
+      var mine = el.getAttribute('data-sort') === key;
+      el.setAttribute('aria-pressed', String(mine));
+    });
+    var ths = document.querySelectorAll('#ktab thead th');
+    ths.forEach(function (th) {
+      var btn = th.querySelector('[data-sort]');
+      th.removeAttribute('aria-sort');
+      if (btn && btn.getAttribute('data-sort') === key) {
+        th.setAttribute('aria-sort', key === 'kitchen' ? 'ascending' : 'descending');
+        var arr = th.querySelector('[data-arr]');
+        if (arr) { arr.textContent = key === 'kitchen' ? ' \u2191' : ' \u2193'; }
+      } else {
+        var a2 = th.querySelector('[data-arr]');
+        if (a2) { a2.textContent = ''; }
+      }
+    });
+    if (push !== false && history.replaceState) {
+      history.replaceState(null, '', key === 'alumni' ? '/ledger' : '/ledger?sort=' + key);
+    }
+  }
+
+  function renderKitchens (rows) {
+    var maxA = 1, maxR = 1;
+    rows.forEach(function (r) { maxA = Math.max(maxA, r.alumni); maxR = Math.max(maxR, r.reach); });
+    $('kbody').innerHTML = rows.map(function (r, i) {
+      var k = r.kitchen;
+      var sd;
+      if (r.starred > 0) {
+        sd = '<div class="sd"><span class="cnt"><i aria-hidden="true">\u2605</i>' + r.starred + '</span>' +
+          '<span class="names">' + L.esc(r.starred_names.join(', ')) + '</span></div>';
+      } else {
+        sd = '<div class="sd"><span class="cnt none">0</span>' +
+          '<span class="names">None within three moves</span></div>';
+      }
+      return '<tr role="row"><td role="cell" class="rk">' + pad2(i + 1) + '</td>' +
+        '<td role="cell" data-label="Kitchen" class="kn"><a href="/tree?k=' + encodeURIComponent(k.slug) + '">' + L.esc(k.name) + '</a>' +
+        starBadge(k) +
+        '<span class="lnk"><a href="/tree?k=' + encodeURIComponent(k.slug) + '">Tree \u2192</a>' +
+        '<a href="/explorer?q=' + encodeURIComponent(k.name) + '">Dossier \u2192</a></span></td>' +
+        '<td role="cell" data-label="Alumni" class="key"><span class="num">' + L.fmt(r.alumni) + '</span>' +
+        '<div class="pedbar" aria-hidden="true"><span style="width:' + (100 * r.alumni / maxA).toFixed(1) + '%"></span></div></td>' +
+        '<td role="cell" data-label="Within three moves"><span class="num">' + L.fmt(r.reach) + '</span>' +
+        '<div class="pedbar" aria-hidden="true"><span style="width:' + (100 * r.reach / maxR).toFixed(1) + '%"></span></div></td>' +
+        '<td role="cell" data-label="Starred within three moves">' + sd + '</td></tr>';
+    }).join('');
+  }
+
+  function renderMentors () {
+    var top = data.mentors[0] ? data.mentors[0].chefs : 1;
+    $('mlist').innerHTML = data.mentors.map(function (m, i) {
+      return '<li><details><summary aria-label="' + L.esc(m.mentor) + ', named as mentor by ' +
+        m.chefs + ' chefs. Show the quotations.">' +
+        '<span class="rk">' + pad2(i + 1) + '</span><span class="mn">' + L.esc(m.mentor) + '</span>' +
+        '<span class="mc">' + m.chefs + '</span><span class="tw" aria-hidden="true">\u25be</span></summary>' +
+        '<div class="mq">' + (m.sample || []).map(function (v) {
+          return '<div class="cite">' + L.citeCard(v) + '</div>';
+        }).join('') + '</div></details></li>';
+    }).join('');
+  }
+
+  function renderStarred () {
+    $('sbody').innerHTML = data.starred.map(function (r, i) {
+      var k = r.kitchen;
+      var name = k.slug
+        ? '<a href="/tree?k=' + encodeURIComponent(k.slug) + '&dir=up">' + L.esc(k.name) + '</a>'
+        : L.esc(k.name);
+      var links = k.slug
+        ? '<span class="lnk"><a href="/tree?k=' + encodeURIComponent(k.slug) + '&dir=up">Tree \u2191</a>' +
+          '<a href="/explorer?q=' + encodeURIComponent(k.name) + '">Dossier \u2192</a></span>'
+        : '';
+      var arrivals = r.arrivals > 0
+        ? '<span class="num">' + r.arrivals + '</span>'
+        : '<span class="nonote">no cited arrivals yet</span>';
+      var from = r.from && r.from.length
+        ? L.esc(r.from.join(', '))
+        : (r.status === 'none' ? '<span class="nonote">none on record</span>' : '&mdash;');
+      return '<tr role="row"><td role="cell" class="rk">' + pad2(i + 1) + '</td>' +
+        '<td role="cell" data-label="Kitchen" class="kn">' + name + starBadge(k) + links + '</td>' +
+        '<td role="cell" data-label="Cited arrivals">' + arrivals + '</td>' +
+        '<td role="cell" data-label="Came from" class="frm">' + from + '</td>' +
+        '<td role="cell" data-label="Alumni"><span class="num' + (r.alumni ? '' : ' none') + '">' + (r.alumni || 0) + '</span></td></tr>';
+    }).join('');
+    var joined = data.starred.filter(function (r) { return r.status === 'linked'; }).length;
+    $('joined').textContent = joined;
+    $('stotal').textContent = data.starred.length;
+  }
+
+  function render () {
+    var led = data.leaders || {};
+    function fill (id, lead) {
+      var el = $(id);
+      el.querySelector('b').textContent = lead && lead.value != null ? String(lead.value) : '\u2014';
+      el.querySelector('.who').textContent = lead && lead.name || '\u2014';
+    }
+    fill('lead-alumni', led.alumni);
+    fill('lead-reach', led.reach);
+    fill('lead-starred', led.starred_within);
+    fill('lead-mentor', led.mentor);
+    var rules = data.rules || {};
+    $('trule-min').textContent = rules.min_alumni;
+    $('trule-depth').textContent = rules.depth;
+    $('mfigure').textContent = L.fmt(rules.mentor_moves || 0);
+    $('lfig').textContent = L.fmt(data.moves_on_display || 0);
+    renderMentors();
+    renderStarred();
+    var raw = new URLSearchParams(location.search).get('sort');
+    var q = raw || 'alumni';
+    if (['alumni', 'reach', 'starred', 'kitchen'].indexOf(q) === -1) { q = 'alumni'; }
+    if (raw && q !== raw && history.replaceState) {
+      history.replaceState(null, '', '/ledger');
+    }
+    setSort(q, false);
+    $('fail').hidden = true;
+  }
+
+  function load () {
+    fetch('/api/ledger')
+      .then(function (r) { if (!r.ok) throw new Error('ledger request failed'); return r.json(); })
+      .then(function (d) { data = d; render(); })
+      .catch(function () {
+        $('fail').hidden = false;
+      });
+  }
+
+  document.querySelectorAll('.sortchips button, th .sortbtn').forEach(function (b) {
+    b.addEventListener('click', function () { setSort(b.getAttribute('data-sort')); });
+  });
+  $('retry').addEventListener('click', load);
+  load();
+})();
+</script>
+</body>
+</html>

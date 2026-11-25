@@ -233,7 +233,10 @@ def build(edges, starred_rows=None, alias_data=None, hood_maps=None):
             quote_score = ((1 if dossier._words_name_venue(qw, (fv,)) else 0)
                            + (1 if dossier._words_name_venue(qw, (tv,)) else 0))
         mentor = e.get("mentor")
-        if mentor and mentor.lower() not in ("null", "none"):
+        if mentor and mentor.lower() in ("null", "none"):
+            # a literal "null" from the corpus is no mentor at all
+            mentor = None
+        if mentor:
             surname = mentor.split()[-1].lower()
             if surname and surname in set(dossier._quote_words(ev)):
                 mentor_moves += 1

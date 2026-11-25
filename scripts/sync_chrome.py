@@ -29,6 +29,7 @@ PAGES = {
     "explorer.html": ("/explorer", ["chrome", "header", "footer", "chrome-js"]),
     "tree.html": ("/tree", ["chrome", "header", "footer", "chrome-js"]),
     "connect.html": ("/connect", ["chrome", "header", "footer", "chrome-js"]),
+    "ledger.html": ("/ledger", ["chrome", "header", "footer", "chrome-js"]),
     "method.html": ("/method", ["chrome", "header", "footer", "chrome-js"]),
 }
 

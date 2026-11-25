@@ -173,6 +173,18 @@ def test_mentor_credit_needs_the_surname_in_the_quote():
     assert g["summary"]["mentor_moves"] == 1
 
 
+def test_a_literal_null_mentor_is_no_mentor_at_all():
+    # the corpus carries "null" strings in the mentor field: they must not
+    # become a mentor named "null" on any row
+    moves = [_move(frm="A16", to="Benu", mentor="null",
+                   evidence="Alex Rivera joins Benu after A16"),
+             _move(frm="Coi", to="Delfina", mentor="none",
+                   evidence="Sam Chen joins Delfina after Coi")]
+    g = _build(moves)
+    assert all(row[8] is None for row in g["moves"]), \
+        "a literal null/none mentor string must be stored as no mentor"
+
+
 # ── Bay Area ─────────────────────────────────────────────────────────────────
 
 def test_oakland_counts_and_the_richmond_does_not():
