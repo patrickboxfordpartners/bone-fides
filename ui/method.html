@@ -137,6 +137,29 @@
     <p class="note" id="src-note">Measuring…</p>
   </section>
 
+  <section id="gate">
+    <h2>The display gate, measured</h2>
+    <p class="sub">Not every extracted move is shown. The quotation itself must state the career fact.</p>
+
+    <p>The citation gate reads the quotation of every move on record. A move is displayed only
+      when the sentence itself states a career fact: a join, a departure, a promotion the quote
+      names — and, since this measurement, also a tenure phrase such as "formerly of", "veteran
+      of" or "alum of", a parenthetical credential such as "(Chez Panisse, Oliveto)", a job title
+      joined to a kitchen such as "executive chef at", the taking or leaving of a kitchen's helm,
+      and an opening or a founding. A quotation that only names a guest dinner, a pop-up, a
+      supplier, a television show or an inspiration is never displayed, and the quotation must
+      name both a kitchen of the move and the person who moved.</p>
+
+    <div class="coverage" id="gate-grid">
+      <div class="cov"><b id="gate-displayed">—</b><span>Moves displayed</span><small id="gate-share">—</small></div>
+      <div class="cov"><b id="gate-precision">—</b><span>True in a labelled sample</span><small id="gate-sample">—</small></div>
+      <div class="cov"><b id="gate-baseline">—</b><span>True before the change</span><small id="gate-baseline-note">—</small></div>
+      <div class="cov"><b id="gate-both">—</b><span>Moves naming both kitchens</span><small id="gate-both-note">—</small></div>
+    </div>
+
+    <p class="note" id="gate-note">Reading the saved measurement…</p>
+  </section>
+
   <section id="lineage">
     <h2>The lineage score</h2>
     <p class="sub">Formerly called "pedigree". Renamed because the old name implied a judgement about
@@ -289,6 +312,29 @@
     set('cov-hood', pct(cov.venue_hoods, N));
     set('cov-action', pct(cov.action, N));
     set('cov-mentor', pct(cov.mentor, N));
+
+    // Display-gate measurement: precision of a hand-labelled sample, read
+    // from the stamped file (scripts/measure_gate.py --stamp), not computed
+    // live. Two independent labellers read each sampled quotation; a row
+    // counts as true only when both did.
+    const g = d.gate;
+    if (g) {
+      set('gate-displayed', fmt(g.displayed));
+      set('gate-share', 'of ' + fmt(g.on_record) + ' moves on record');
+      set('gate-precision', (g.precision * 100).toFixed(1) + '%');
+      set('gate-sample', g.sample_true + ' of ' + g.sample_n +
+          ' sampled moves true · lower bound ' + (g.precision_low * 100).toFixed(1) +
+          '% · measured ' + g.measured_at);
+      set('gate-baseline', (g.baseline_true / g.baseline_n * 100).toFixed(1) + '%');
+      set('gate-baseline-note', 'of ' + g.baseline_n + ' moves displayed before the change');
+      set('gate-both', (g.both_share * 100).toFixed(1) + '%');
+      set('gate-both-note', 'of moves that join two named kitchens');
+      set('gate-note', 'Each sampled quotation was read by two independent labellers. A row counts' +
+          ' as true only when both agreed. The sample is drawn by a seeded hash, so the same' +
+          ' corpus and seed draw the same rows again. Measured ' + g.measured_at + '.');
+    } else {
+      set('gate-note', 'The precision of the displayed moves has not been measured yet.');
+    }
 
     // tiers are a sibling of coverage in the payload, not a member of it
     const t = d.tiers || {};
