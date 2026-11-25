@@ -124,6 +124,7 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;appeara
 .legend ul{list-style:none}
 .legend li{display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:start;margin-top:6px}
 .legend svg{margin-top:5px}
+.legend svg .e.s{stroke-width:1.4}
 .legend b{color:var(--ink);font-weight:500;font-variant-numeric:tabular-nums}
 .share{position:absolute;right:24px;bottom:18px;display:flex;gap:8px;z-index:2}
 .graph{position:absolute;inset:0;width:100%;height:100%}
@@ -136,7 +137,9 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;appeara
 .e.g1{stroke-width:2.4}
 .e.g2{stroke-width:1.4}
 .e.g3{stroke-width:1}
-/* weight and gold always add, whatever the generation */
+/* weight and gold always add, whatever the generation; the legend's
+   bare sample carries w2 alone, so it keeps a default width too */
+.e.w2{stroke-width:2.2}
 .e.g1.w2{stroke-width:3.4}
 .e.g2.w2{stroke-width:2.6}
 .e.g3.w2{stroke-width:1.8}
