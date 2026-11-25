@@ -75,7 +75,7 @@ def test_touch_layout_enlarges_small_targets_without_overlap():
     assert int(rows.group(2)) >= 2 * grow
     # every container that wraps or stacks venue links, including the undated
     # timeline rows, must be in that rule or carry the clearance itself
-    for sel in (".chips", ".chain", ".tlvenues", ".tlundated .urow", ".tlundated .urowmain"):
+    for sel in (".chips", ".chain", ".tlvenues", ".tlundated .urow", ".tlundated .urowmain", ".treelist .trow"):
         assert sel in rows.group(1), sel
     assert int(re.search(r"\.tlbody \{ padding-bottom: (\d+)px; \}", css).group(1)) >= 2 * grow
     assert int(re.search(r"\.tlundated \.urow \{ margin-bottom: (\d+)px; \}", css).group(1)) >= 2 * grow
