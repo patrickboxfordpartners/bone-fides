@@ -162,6 +162,9 @@ td.key .num{color:var(--accent)}
 .lfoot{max-width:1288px;margin:28px auto 0;border-top:1px solid var(--faint);padding:16px 72px 0;font-size:12.5px;color:var(--dim);line-height:1.6}
 .lfoot b{color:var(--ink);font-weight:550;font-variant-numeric:tabular-nums}
 .failmsg{max-width:1288px;margin:34px auto 0;padding:0 72px;color:var(--dim);font-style:italic}
+.retry{font:500 12px/1 'Fraunces',Georgia,serif;letter-spacing:.2em;text-transform:uppercase;padding:0 18px;
+  background:transparent;color:var(--dim);border:1px solid var(--faint);border-radius:999px;cursor:pointer;min-height:44px}
+.retry:hover{color:var(--accent);border-color:var(--accent)}
 .failmsg .retry{margin-top:14px}
 /* phone: chips show, headers hide, rows stack but keep their table roles */
 @media (max-width:760px){
@@ -190,7 +193,6 @@ td.key .num{color:var(--accent)}
   .starline{margin:34px 20px 0;padding:16px 18px;flex-direction:column;align-items:flex-start;gap:10px}
   .sgrid,.lfoot,.failmsg{padding-left:20px;padding-right:20px}
   .lfoot{padding-bottom:0}
-  .stab .kn a{font-size:19px}
 }
 </style>
 </head>
@@ -244,8 +246,8 @@ td.key .num{color:var(--accent)}
         </tr></thead>
         <tbody id="kbody"><tr><td colspan="5">&mdash;</td></tr></tbody>
       </table>
-      <p class="trule" id="trule">The table holds the kitchens with <b>3</b> or more alumni. Reach follows
-        displayed cited moves up to <b>three</b>. Stars come from the San Francisco list.</p>
+      <p class="trule">The table holds the kitchens with <b id="trule-min">3</b> or more alumni.
+        Reach follows displayed cited moves up to <b id="trule-depth">three</b>. Stars come from the San Francisco list.</p>
     </section>
     <section id="mentors" aria-labelledby="mentors-h">
       <h2 class="bh" id="mentors-h">Named mentors</h2>
@@ -280,7 +282,7 @@ td.key .num{color:var(--accent)}
     those whose quoted sentence states the move. Every count opens to the people, quotations and sources behind it.</p>
   <div class="failmsg" id="fail" hidden>
     <p>The figures could not be loaded. The request failed.</p>
-    <button type="button" class="go retry" id="retry">Try again</button>
+    <button type="button" class="retry" id="retry">Try again</button>
   </div>
 </main>
 <!-- bf:footer -->
@@ -342,7 +344,10 @@ td.key .num{color:var(--accent)}
 
   function pad2 (n) { return n < 10 ? '0' + n : '' + n; }
 
-  function dash (n) { return n == null ? '\u2014' : L.fmt(n); }
+  function starBadge (k) {
+    return k.stars ? ' <span class="st" aria-label="' + L.esc(L.starsLabel(k.stars)) +
+      '">' + L.starsTxt(Math.min(k.stars, 3)) + '</span>' : '';
+  }
 
   function setSort (key, push) {
     if (!data) return;
@@ -352,9 +357,9 @@ td.key .num{color:var(--accent)}
     else { rows.sort(function (a, b) { return (b[key] - a[key]) || b.reach - a.reach ||
       a.kitchen.name.localeCompare(b.kitchen.name); }); }
     renderKitchens(rows);
-    document.querySelectorAll('[data-sort]').forEach(function (el) {
+    document.querySelectorAll('.sortchips button').forEach(function (el) {
       var mine = el.getAttribute('data-sort') === key;
-      if (el.tagName === 'BUTTON') el.setAttribute('aria-pressed', String(mine));
+      el.setAttribute('aria-pressed', String(mine));
     });
     var ths = document.querySelectorAll('#ktab thead th');
     ths.forEach(function (th) {
@@ -385,17 +390,17 @@ td.key .num{color:var(--accent)}
           ' starred within three moves"><i aria-hidden="true">\u2605</i>' + r.starred + '</span>' +
           '<span class="names">' + L.esc(r.starred_names.join(', ')) + '</span></div>';
       } else {
-        sd = '<div class="sd"><span class="cnt none">' + 0 + '</span>' +
+        sd = '<div class="sd"><span class="cnt none">0</span>' +
           '<span class="names">None within three moves</span></div>';
       }
       return '<tr><td class="rk">' + pad2(i + 1) + '</td>' +
         '<td class="kn"><a href="/tree?k=' + encodeURIComponent(k.slug) + '">' + L.esc(k.name) + '</a>' +
-        (k.stars ? ' <span class="st" aria-label="' + L.esc(L.starsLabel(k.stars)) + '">' + L.starsTxt(Math.min(k.stars, 3)) + '</span>' : '') +
+        starBadge(k) +
         '<span class="lnk"><a href="/tree?k=' + encodeURIComponent(k.slug) + '">Tree \u2192</a>' +
         '<a href="/explorer?q=' + encodeURIComponent(k.name) + '">Dossier \u2192</a></span></td>' +
-        '<td class="key"><span class="num">' + dash(r.alumni) + '</span>' +
+        '<td class="key"><span class="num">' + L.fmt(r.alumni) + '</span>' +
         '<div class="pedbar" aria-hidden="true"><span style="width:' + (100 * r.alumni / maxA).toFixed(1) + '%"></span></div></td>' +
-        '<td><span class="num">' + dash(r.reach) + '</span>' +
+        '<td><span class="num">' + L.fmt(r.reach) + '</span>' +
         '<div class="pedbar" aria-hidden="true"><span style="width:' + (100 * r.reach / maxR).toFixed(1) + '%"></span></div></td>' +
         '<td>' + sd + '</td></tr>';
     }).join('');
@@ -431,9 +436,7 @@ td.key .num{color:var(--accent)}
         ? L.esc(r.from.join(', '))
         : (r.status === 'none' ? '<span class="nonote">none on record</span>' : '&mdash;');
       return '<tr><td class="rk">' + pad2(i + 1) + '</td>' +
-        '<td class="kn">' + name +
-        (k.stars ? ' <span class="st" aria-label="' + L.esc(L.starsLabel(k.stars)) + '">' + L.starsTxt(Math.min(k.stars, 3)) + '</span>' : '') +
-        links + '</td><td>' + arrivals + '</td><td class="frm">' + from + '</td>' +
+        '<td class="kn">' + name + starBadge(k) + links + '</td><td>' + arrivals + '</td><td class="frm">' + from + '</td>' +
         '<td><span class="num' + (r.alumni ? '' : ' none') + '">' + (r.alumni || 0) + '</span></td></tr>';
     }).join('');
     var joined = data.starred.filter(function (r) { return r.status === 'linked'; }).length;
@@ -442,20 +445,18 @@ td.key .num{color:var(--accent)}
 
   function render () {
     var led = data.leaders || {};
-    function fill (id, who, v) {
+    function fill (id, lead) {
       var el = $(id);
-      el.querySelector('b').textContent = v == null ? '\u2014' : String(v);
-      el.querySelector('.who').textContent = who || '\u2014';
+      el.querySelector('b').textContent = lead && lead.value != null ? String(lead.value) : '\u2014';
+      el.querySelector('.who').textContent = lead && lead.name || '\u2014';
     }
-    fill('lead-alumni', led.alumni && led.alumni.name, led.alumni && led.alumni.value);
-    fill('lead-reach', led.reach && led.reach.name, led.reach && led.reach.value);
-    fill('lead-starred', led.starred_within && led.starred_within.name,
-         led.starred_within && led.starred_within.value);
-    fill('lead-mentor', led.mentor && led.mentor.name, led.mentor && led.mentor.value);
+    fill('lead-alumni', led.alumni);
+    fill('lead-reach', led.reach);
+    fill('lead-starred', led.starred_within);
+    fill('lead-mentor', led.mentor);
     var rules = data.rules || {};
-    $('trule').innerHTML = 'The table holds the kitchens with <b>' + (rules.min_alumni || 3) +
-      '</b> or more alumni. Reach follows displayed cited moves up to <b>' + (rules.depth || 3) +
-      '</b>. Stars come from the San Francisco list.';
+    $('trule-min').textContent = rules.min_alumni;
+    $('trule-depth').textContent = rules.depth;
     $('mfigure').textContent = L.fmt(rules.mentor_moves || 0);
     $('lfig').textContent = L.fmt(data.moves_on_display || 0);
     renderMentors();

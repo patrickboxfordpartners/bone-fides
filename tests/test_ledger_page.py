@@ -11,13 +11,11 @@ import re
 import sys
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.dirname(_HERE))
+_ROOT = os.path.dirname(_HERE)
+sys.path.insert(0, _ROOT)
 from src import dossier  # noqa: E402
 from src import graph  # noqa: E402
 from tests.test_graph_api import _get  # noqa: E402
-
-_HERE = os.path.dirname(os.path.abspath(__file__))
-_ROOT = os.path.dirname(_HERE)
 PAGE = os.path.join(_ROOT, "ui", "ledger.html")
 
 
@@ -64,7 +62,7 @@ def test_mentor_rows_open_in_details_elements():
     p = _page()
     assert "mlist" in p
     # the renderer builds one <details> per mentor with the sample quotations
-    assert "<details>" in p or "details" in p
+    assert "<li><details><summary" in p
 
 
 def test_kitchen_rows_link_to_the_tree_and_the_dossier():
