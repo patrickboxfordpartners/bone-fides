@@ -441,6 +441,9 @@
     .chip::before, .vchip::before, .flaglink::before, .viewtoggle button::before,
     .chef .src a::before, .imgcredit a::before, .pedmethod::before, .igbadge::before {
       content: ''; position: absolute; inset: -10px -3px; }
+    /* the Instagram badge sits on the name line, 12px above the first venue
+       link: its hit area grows upward only */
+    .igbadge::before { inset: -20px -8px 0; }
   }
 </style>
 </head>
