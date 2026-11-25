@@ -11,7 +11,9 @@ at a same-named restaurant in another city. The map must never offer a
   - its slug names the PIN's venue on a word boundary, and
   - every other slug word is neutral (platform path, "san-francisco", generic
     dining words). A leftover word such as a city or a second name means a
-    different restaurant, so the link is dropped.
+    different restaurant, so the link is dropped, and
+  - the URL names San Francisco, or the page itself does not name another
+    city (crawl/booking_cities.json, from scripts/check_booking_cities.py).
 
 The output maps each pin's exact name to {platform: url} (pins with a verified
 link only). build.sh ships it with the API, and src/dossier.venues_geo()
@@ -35,6 +37,8 @@ from src.venue_images import (  # noqa: E402
 )
 
 CACHE = os.path.join(BASE, "crawl", "venue_images.json")
+# url -> city read from the booking page itself (scripts/check_booking_cities.py)
+CITIES = os.path.join(BASE, "crawl", "booking_cities.json")
 OUT = os.path.join(BASE, "ui", "venue_booking.json")
 
 HOSTS = {"resy": "resy.com", "opentable": "opentable.com", "tock": "exploretock.com"}
@@ -116,26 +120,51 @@ def _names_sf(path, name):
 
 
 _SF = re.compile(r"san-francisco|sanfrancisco|(^|[^a-z])sf([^a-z]|$)")
+
+
 _STOP = {"the", "and", "of", "a", "an", "at", "by"}
 
 
-def verified(platform, url, pin_names):
+def load_cities():
+    try:
+        with open(CITIES) as f:
+            return json.load(f)
+    except (OSError, ValueError):
+        return {}
+
+
+def verified(platform, url, pin_names, cities=None, require_city=True):
     """The first cleaned pin name this booking URL provably belongs to, or None.
 
-    pin_names[0] is the pin's own (permit or curated) name. A URL with no city
-    (`opentable.com/kaya`, `/r/hearth`) is a guess unless that name has two or
-    more words and matches it: "Kaya", "Sasa" and "Hearth" are restaurants in
-    other towns too. Later entries, if a caller passes them, may only vouch
-    for a URL that names San Francisco."""
+    pin_names[0] is the pin's own (permit or curated) name. A URL whose path
+    names San Francisco may match it. For a URL with no city in it
+    (`opentable.com/black-cat`, `/r/hearth`) the page decides (`cities`, from
+    scripts/check_booking_cities.py): San Francisco accepts, any other city
+    rejects (name matching alone put a Longmont, Colorado "Black Cat" on an
+    SF pin). When the page could not be read, the pin's own name must have
+    two or more real words: "Kaya", "Sasa" and "Hearth" exist in other towns.
+    require_city=False skips the city step, for collecting URLs to check.
+    Later pin_names entries may only vouch for a URL that names San Francisco."""
     if platform not in HOSTS or not isinstance(url, str) or not _path_ok(platform, url):
         return None
     path = urllib.parse.unquote(urllib.parse.urlsplit(url).path)
     for i, name in enumerate(pin_names):
         if not name or not _slug_names_venue(path, name) or _leftover_words(path, name):
             continue
-        in_sf = _names_sf(path, name)
-        # single letters ("l" in L'Ardoise) do not make a name distinctive
-        if in_sf or (i == 0 and len({w for w in name.split() if len(w) > 1} - _STOP) >= 2):
+        if _names_sf(path, name):
+            return name
+        if i:
+            continue
+        if not require_city:
+            return name
+        city = (cities or {}).get(url)
+        if city == "San Francisco":
+            return name
+        if city:  # the page names another city: a different restaurant
+            continue
+        # page unreadable: fall back to a distinctive own name of two or more
+        # real words; single letters ("l" in L'Ardoise) do not count
+        if len({w for w in name.split() if len(w) > 1} - _STOP) >= 2:
             return name
     return None
 
@@ -156,7 +185,7 @@ def _cache_keys(pin):
     return list(dict.fromkeys(k for k in keys if k))
 
 
-def build():
+def build(cities=None, require_city=True):
     cache = json.load(open(CACHE))
     out, rejected = {}, []
     for pin in dossier.venues_geo():
@@ -168,7 +197,7 @@ def build():
             pin_names = [clean_name(pin.get("name"))]
             links = {}
             for platform, url in sorted((rec.get("booking") or {}).items()):
-                if verified(platform, url, pin_names):
+                if verified(platform, url, pin_names, cities, require_city):
                     links[platform] = url
                 else:
                     rejected.append((pin["name"], url))
@@ -180,7 +209,7 @@ def build():
 
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
-    out, rejected = build()
+    out, rejected = build(load_cities())
     with open(OUT + ".tmp", "w") as f:
         json.dump(out, f, indent=1, sort_keys=True)
         f.write("\n")
