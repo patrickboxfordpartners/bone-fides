@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "bash build.sh",
-  "outputDirectory": ".",
+  "outputDirectory": "public",
   "functions": {
     "api/search.py": {
       "includeFiles": "api/_lib/**"

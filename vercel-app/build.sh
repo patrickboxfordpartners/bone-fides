@@ -2,7 +2,8 @@
 # Vercel build step (vercel.json "buildCommand"). Assembles this deploy dir
 # from the sources of truth; none of the copied files are committed.
 #
-#   ui/*.html                      -> pages served by the vercel.json rewrites
+#   ui/*.html                      -> public/, the only static output (so no
+#                                     source file in this dir is ever served)
 #   src/{dossier,es_query,roles,venue_aliases}.py
 #                                  -> api/_lib/, the code api/search.py imports
 #   ui/{map.js,*.json data}        -> api/_lib/, the files dossier.data_path() reads
@@ -19,7 +20,9 @@ fi
 
 # The explorer ships as explorer.html, not index.html: a static index.html at
 # the output root would win over the "/" -> landing.html rewrite.
-cp ../ui/explorer.html ../ui/landing.html ../ui/method.html .
+rm -rf public
+mkdir -p public
+cp ../ui/explorer.html ../ui/landing.html ../ui/method.html public/
 
 rm -rf api/_lib
 mkdir -p api/_lib
