@@ -153,19 +153,28 @@ def test_ledger_holds_the_rankings():
 
 
 def test_ledger_mentor_samples_are_each_mentors_own():
-    """A mentor row opens ITS OWN cited moves, not one shared quotation."""
+    """A mentor row opens ITS OWN cited moves, not one shared quotation:
+    every sample matches a graph move that carries that mentor's credit."""
+    from src import graph
+    g = graph.load(dossier.data_path("graph.json"))
+    # mentor name -> set of (person, source_url) pairs on moves it credits
+    credited = {}
+    for row in g["moves"]:
+        m = row[8]
+        if not m:
+            continue
+        credited.setdefault(m, set()).add(
+            (g["by_pid"].get(row[0], [row[0]])[1], row[6]))
+
     status, _, body = _get("/api/ledger", "", "l-2")
     d = json.loads(body)
     assert status == 200 and len(d["mentors"]) > 1
-    seen = set()
     for m in d["mentors"]:
         assert m["sample"], m["mentor"]
         for s in m["sample"]:
-            # the sample must name the mentor's own move: the person of the
-            # sample is one of that mentor's chefs (all samples differ)
-            key = (m["mentor"], s["person"])
-            assert key not in seen or True
-        seen.add(m["mentor"])
+            pair = (s["person"], s["source_url"])
+            assert pair in credited.get(m["mentor"], set()), (
+                "sample does not belong to %s" % m["mentor"])
     # the stale-loop-variable bug made every mentor show the same citation
     people = [tuple(sorted(s["person"] for s in m["sample"]))
               for m in d["mentors"]]

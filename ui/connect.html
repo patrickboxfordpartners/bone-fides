@@ -126,7 +126,7 @@ li.hop .role .yr{font-style:normal;color:var(--gold);font-size:11.5px;letter-spa
 li.hop .ev{margin-top:10px;font-size:14px}
 li.hop .src{margin-top:6px}
 details.morecite{margin-top:10px}
-details.morecit summary{min-height:44px}
+details.morecite summary{min-height:44px}
 details.morecite summary{display:inline-flex;align-items:center;cursor:pointer;list-style:none;
   font-size:12.5px;color:var(--gold);border:0;background:none;padding:0}
 details.morecite summary::-webkit-details-marker{display:none}
@@ -234,10 +234,22 @@ window.addEventListener('DOMContentLoaded', function () {
   var fromEl = $('c-from'), toEl = $('c-to');
   var state = { a: null, b: null, req: 0, data: null };
 
+  // an endpoint travels as the string the user meant: a slug, a typed name,
+  // or chef:<id>. The URL, the copy button and the history keep it.
+  function endStr(x) {
+    if (x == null) return '';
+    if (typeof x === 'string') return x;
+    if (x.kind === 'chef') return 'chef:' + (x.id || x.name);
+    if (x.slug) return x.slug;
+    return x.name || '';
+  }
+  function setA(x) { state.a = x; fromEl.value = x && x.name ? x.name : endStr(x); }
+  function setB(x) { state.b = x; toEl.value = x && x.name ? x.name : endStr(x); }
+
   function nearA() { return state.a ? (state.a.slug || state.a.name) : ''; }
-  L.picker(fromEl, function (n) { state.a = n; maybeTrace(); },
+  L.picker(fromEl, function (n) { setA(n); maybeTrace(); },
            { kind: 'kitchen' });
-  L.picker(toEl, function (n) { state.b = n; maybeTrace(); },
+  L.picker(toEl, function (n) { setB(n); maybeTrace(); },
            { kind: 'kitchen', near: nearA });
 
   function maybeTrace() {
@@ -251,14 +263,25 @@ window.addEventListener('DOMContentLoaded', function () {
     var qs = 'a=' + encodeURIComponent(a.slug || a.name || a) +
              '&b=' + encodeURIComponent(b.slug || b.name || b);
     fetch('/api/connect?' + qs)
-      .then(function (r) { return r.json(); })
+      .then(function (r) {
+        if (!r.ok) throw new Error('Trace request failed');
+        return r.json();
+      })
       .then(function (d) {
         if (n !== state.req) return;
         state.data = d;
         render(d);
-        if (push !== false) {
-          var u = '/connect?a=' + encodeURIComponent(d.a && (d.a.slug || d.a.name) || a) +
-                  '&b=' + encodeURIComponent(d.b && (d.b.slug || d.b.name) || b);
+        if (push === 'replace') {
+          var rA = d.a ? (d.a.kind === 'chef' ? 'chef:' + d.a.id : d.a.slug || d.a.name) : endStr(a);
+          var rB = d.b ? (d.b.kind === 'chef' ? 'chef:' + d.b.id : d.b.slug || d.b.name) : endStr(b);
+          history.replaceState(state, '', '/connect?a=' + encodeURIComponent(rA) +
+            '&b=' + encodeURIComponent(rB));
+        }
+        if (push === true || push === undefined) {
+          var aStr = d.a ? (d.a.kind === 'chef' ? 'chef:' + d.a.id : d.a.slug || d.a.name) : endStr(a);
+          var bStr = d.b ? (d.b.kind === 'chef' ? 'chef:' + d.b.id : d.b.slug || d.b.name) : endStr(b);
+          var u = '/connect?a=' + encodeURIComponent(aStr) +
+                  '&b=' + encodeURIComponent(bStr);
           history.pushState(state, '', u);
         }
       })
@@ -285,8 +308,8 @@ window.addEventListener('DOMContentLoaded', function () {
         body.querySelectorAll('button[data-k]').forEach(function (b2) {
           b2.addEventListener('click', function () {
             var node = { slug: b2.dataset.k, name: b2.textContent };
-            if (d.reason === 'unknown_a') { state.a = node; fromEl.value = node.name; trace(state.a, state.b); }
-            else { state.b = node; toEl.value = node.name; trace(state.a, state.b); }
+            if (d.reason === 'unknown_a') { setA(node); if (state.b) trace(state.a, state.b); }
+            else { setB(node); if (state.a) trace(state.a, state.b); }
           });
         });
       } else if (d.reason === 'same') {
@@ -303,15 +326,15 @@ window.addEventListener('DOMContentLoaded', function () {
       }
       return;
     }
-    var people = {}, outlets = {};
+    var people = {}, articles = {};
     (d.hops || []).forEach(function (h) {
-      (h.via || []).forEach(function (v) {
+      (h.stint ? h.via.slice(0, 1) : h.via.slice(0, 1)).forEach(function (v) {
         people[v.person] = true;
-        outlets[v.outlet] = true;
+        if (v.source_url) articles[v.source_url] = true;
       });
     });
     var nPeople = Object.keys(people).length;
-    var nOut = Object.keys(outlets).length;
+    var nOut = Object.keys(articles).length;
     var html = '<p class="kicker">The shortest line we can cite</p>' +
       '<h1 id="line-title">' + L.esc(d.a.name) + ' to ' + L.esc(d.b.name) +
       ', in <em>' + (d.length === 1 ? 'one cited move' : L.fmt(d.length) + ' cited moves') + '</em>.</h1>' +
@@ -362,12 +385,13 @@ window.addEventListener('DOMContentLoaded', function () {
   $('trace-form').addEventListener('submit', function (ev) {
     ev.preventDefault();
     var a = fromEl.value.trim(), b = toEl.value.trim();
-    if (a && b) trace({ slug: a, name: a }, { slug: b, name: b });
+    if (a && b) { state.a = { slug: a, name: a }; state.b = { slug: b, name: b };
+      trace(state.a, state.b); }
   });
   $('c-swap').addEventListener('click', function () {
     var t = fromEl.value; fromEl.value = toEl.value; toEl.value = t;
     var s = state.a; state.a = state.b; state.b = s;
-    if (state.a && state.b) trace(state.a, state.b, false);
+    if (state.a && state.b) trace(state.a, state.b, 'replace');
   });
   $('c-copy').addEventListener('click', function () {
     var u = location.href;
@@ -388,6 +412,13 @@ window.addEventListener('DOMContentLoaded', function () {
       state.a = { slug: a, name: a }; state.b = { slug: b, name: b };
       trace(state.a, state.b, false);
     } else {
+      state.req++;                     // cancel any outstanding trace
+      state.a = null; state.b = null;
+      if (!a) fromEl.value = '';
+      if (!b) toEl.value = '';
+      $('body').hidden = true; $('body').innerHTML = '';
+      $('idle').hidden = false;
+      $('idle').textContent = 'Name two kitchens. The line between them is the shortest chain of cited moves the record can prove.';
       fetch('/api/ledger')
         .then(function (r) { return r.json(); })
         .then(function (led) { showPairs(led.featured); })

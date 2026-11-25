@@ -441,8 +441,7 @@ def connect(g, a, b):
     if eb is None:
         return {"resolved": True, "found": False, "reason": "unknown_b",
                 "query": b, "suggestions": unresolved(g, b)}
-    if ea["kind"] == "kitchen" and eb["kind"] == "kitchen" \
-            and ea["id"] == eb["id"]:
+    if ea["kind"] == eb["kind"] and ea["id"] == eb["id"]:
         return {"resolved": True, "found": False, "reason": "same",
                 "a": ea, "b": eb}
 
@@ -480,8 +479,8 @@ def connect(g, a, b):
         def set_of(i):
             return g["comps"][g["comp"].get(i)] if g["comp"].get(i) is not None else 0
         return {"resolved": True, "found": False, "reason": "no_chain",
-                "a": ea, "b": eb, "a_set": set_of(sa[0]), "b_set": set_of(sb[0]),
-                "also": also_a}
+                "a": ea, "b": eb, "a_set": set_of(sa[0]) if sa else 0,
+                "b_set": set_of(sb[0]) if sb else 0, "also": also_a}
 
     chain = [hit]
     cur = hit

@@ -160,7 +160,7 @@
           for (var j = stations.length - 1; j >= 0; j--) {
             if (!stations[j].hop) { last = stations[j]; break; }
           }
-          if (last) { last.person = h; }
+          if (last && !last.person) { last.person = h; }
           else { stations.push({ kitchen: h.kitchen, person: h }); }
         }
         return;
@@ -188,9 +188,13 @@
         sent.className = 'sent';
         var v0 = h.via && h.via[0];
         if (v0) {
+          // a reverse hop traces from -> to, but the cited person moved
+          // the other way: the sentence gives the true direction
+          var left = h.direction === 'reverse' ? h.to.name : h.from.name;
+          var right = h.direction === 'reverse' ? h.from.name : h.to.name;
           sent.innerHTML = '<a href="/explorer?q=' + encodeURIComponent(v0.person) +
-            '">' + esc(v0.person) + '</a> went from ' + esc(h.from.name) +
-            ' to ' + esc(h.to.name) + '.';
+            '">' + esc(v0.person) + '</a> went from ' + esc(left) +
+            ' to ' + esc(right) + '.';
         } else {
           sent.textContent = 'No citation recorded for this link.';
         }
@@ -265,6 +269,15 @@
             bev.className = 'ev';
             bev.textContent = '\u201c' + (sv.evidence || '') + '\u201d';
             st.appendChild(bev);
+            var su = safeUrl(sv.source_url);
+            var ssrc = document.createElement('div');
+            ssrc.className = 'src';
+            ssrc.innerHTML = '\u00a7 ' +
+              (su ? '<a href="' + esc(su) + '" target="_blank" rel="noopener">' +
+                  esc(hostOf(su)) + ' \u2197</a>' : esc(sv.outlet || '')) +
+              '<span class="srcbadge ' + esc(sv.outlet || 'other') + '">' +
+              esc(sv.outlet || 'source') + '</span>';
+            st.appendChild(ssrc);
           }
         }
         root.appendChild(st);
