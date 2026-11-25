@@ -14,7 +14,7 @@ _ROOT = os.path.dirname(_HERE)
 CHROME = os.path.join(_ROOT, "ui", "_chrome.html")
 
 PAGES = {
-    "landing.html": ("/", ["chrome", "header", "chrome-js"]),
+    "landing.html": ("/", ["chrome", "header", "footer", "chrome-js"]),
     "explorer.html": ("/explorer", ["chrome", "header", "footer", "chrome-js"]),
     "tree.html": ("/tree", ["chrome", "header", "footer", "chrome-js"]),
     "connect.html": ("/connect", ["chrome", "header", "footer", "chrome-js"]),

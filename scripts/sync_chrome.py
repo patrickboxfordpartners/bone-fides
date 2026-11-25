@@ -25,7 +25,7 @@ CHROME = os.path.join(BASE, "ui", "_chrome.html")
 
 # page file -> (own route, blocks it carries)
 PAGES = {
-    "landing.html": ("/", ["chrome", "header", "chrome-js"]),
+    "landing.html": ("/", ["chrome", "header", "footer", "chrome-js"]),
     "explorer.html": ("/explorer", ["chrome", "header", "footer", "chrome-js"]),
     "tree.html": ("/tree", ["chrome", "header", "footer", "chrome-js"]),
     "connect.html": ("/connect", ["chrome", "header", "footer", "chrome-js"]),
