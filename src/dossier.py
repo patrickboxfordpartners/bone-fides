@@ -63,6 +63,55 @@ _METHOD_CACHE = {"at": 0.0, "value": None}
 _COVERAGE_FIELDS = ("date", "era_bucket", "venue_hoods", "action", "mentor")
 
 
+def _json_count(name):
+    """Key count of one committed JSON file, or 0 when it is absent."""
+    try:
+        with open(data_path(name)) as f:
+            return len(json.load(f))
+    except (OSError, ValueError):
+        return 0
+
+
+def _booking_figures(g):
+    """Booking coverage for /numbers: verified links only, by file (section 11)."""
+    return {"map_pins": _json_count("venue_booking.json"),
+            "dossier_names": _json_count("dossier_booking.json"),
+            "graph_kitchens": sum(1 for k in g["kitchens"]
+                                  if dossier_booking(k[1]))}
+
+
+def _numbers(es):
+    """The whole record in one payload for /numbers (plan section 11).
+
+    `live` is measured from the index through the same 300 s cache the
+    method page uses, so the two pages can never disagree. When
+    Elasticsearch is unreachable `live` and `fresh` are null and the
+    handler must not cache the reply. Everything else reads the committed
+    files, so the page still states what it can prove.
+    """
+    g = _graph()
+    s = dict(g["raw"]["summary"])
+    s["built_at"] = g["raw"].get("built_at")
+    out = {"live": None, "fresh": None,
+           "graph": s,
+           "gate": gate_stamp(),
+           "booking": _booking_figures(g),
+           "map": {"pins": len(venues_geo())}}
+    try:
+        m = method(es)  # the only call that may fail: the index is down
+    except Exception:
+        return out
+    c = m["coverage"]
+    out["live"] = {
+        "edges": c["edges"], "people": c["people"],
+        "venues": c["venues"], "sources": c["sources"],
+        "coverage": {f: c[f] for f in _COVERAGE_FIELDS},
+        "tiers": m["tiers"],
+    }
+    out["fresh"] = c["edges"] == s["source_moves"]
+    return out
+
+
 def method(es):
     """Corpus composition for the /method page: coverage rates and outlet tiers.
 
@@ -1753,7 +1802,7 @@ def _tip(es, ip, body_bytes):
 _LIMITS = {"search": ("search", 30, 60), "suggest": ("suggest", 90, 60),
            "tip": ("tips", 5, 3600), "tree": ("graph", 60, 60),
            "connect": ("graph", 60, 60), "ledger": ("ledger", 12, 60),
-           "nodes": ("nodes", 120, 60)}
+           "nodes": ("nodes", 120, 60), "numbers": ("numbers", 30, 60)}
 
 
 def dispatch(path, query_string="", ip="", body_bytes=None, client=make_client):
@@ -1814,6 +1863,16 @@ def dispatch(path, query_string="", ip="", body_bytes=None, client=make_client):
             g = _graph()
             return _json_response(200, _graph_mod.ledger(g),
                                   {"Cache-Control": _GRAPH_CACHE_CONTROL})
+        if endpoint == "numbers":
+            out = _numbers(client())
+            # the live half may already be up to 300 s old in the shared
+            # cache, so a stored reply could outlive its measurement and
+            # disagree with /method. The browser and the edge revalidate
+            # every time; the in-process cache keeps the index safe.
+            # A dead index is never cached at all.
+            cache = ("public, max-age=0, must-revalidate"
+                     if out["live"] is not None else "no-store")
+            return _json_response(200, out, {"Cache-Control": cache})
         if endpoint == "nodes":
             q = (q1("q") or "").strip()[:MAX_QUERY_LEN]
             kind = (q1("kind") or "any").strip()

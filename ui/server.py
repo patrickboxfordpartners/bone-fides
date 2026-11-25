@@ -27,6 +27,7 @@ PAGES = {
     "/tree": "tree.html", "/tree.html": "tree.html",
     "/connect": "connect.html", "/connect.html": "connect.html",
     "/ledger": "ledger.html", "/ledger.html": "ledger.html",
+    "/numbers": "numbers.html", "/numbers.html": "numbers.html",
     "/explorer": "explorer.html", "/explorer/": "explorer.html",
     "/explorer.html": "explorer.html", "/explorer/index.html": "explorer.html",
     "/method": "method.html", "/method.html": "method.html",
