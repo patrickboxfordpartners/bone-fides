@@ -1,0 +1,610 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>By the numbers — Bone Fides</title>
+<meta name="description" content="The Bone Fides graph in figures, read live from the index: 9,312 chef moves on record, 3,388 displayed after the citation gate, the source mix, what is covered and what is missing, booking coverage, and what a second city takes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#171310; --bg2:#1f1a15; --ink:#efe6d3; --dim:#9b8f7c; --faint:rgba(239,230,211,.14);
+    --accent:#d08152; --gold:#c2a05a; --stargold:#efd9a0; --ok:#8fb996; --bad:#d9776b;
+    --sfgate:#6fa7ad; --chron:#b0685f;
+    --measure: 66ch;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-font-smoothing: antialiased; }
+  body { margin: 0; background: #171310; }
+  .frame { position: relative; overflow: hidden; background: var(--bg); color: var(--ink);
+           font-family: 'Fraunces', Georgia, serif; font-size: 17px; line-height: 1.6; font-weight: 350; }
+  .frame.desktop { --pad: 72px; --h1: 92px; --lede: 24px; --shead: 40px; --stat: 46px; --close: 62px;
+                   --cardh: 32px; --sec: 88px; }
+  .frame.phone   { --pad: 20px; --h1: 44px; --lede: 19px; --shead: 27px; --stat: 30px; --close: 34px;
+                   --cardh: 24px; --sec: 48px; }
+  ::selection { background: rgba(208,129,82,.35); }
+  a { color: var(--gold); text-decoration: none; border-bottom: 1px solid rgba(194,160,90,.35); }
+  a:hover { color: var(--ink); border-color: var(--ink); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+  button { font-family: inherit; }
+  ol, ul { list-style: none; }
+  .wrap { padding-left: var(--pad); padding-right: var(--pad); }
+  .num, .tn { font-variant-numeric: tabular-nums; }
+  .skip { position: absolute; left: 32px; top: -64px; z-index: 20; background: var(--gold); color: var(--bg);
+          border: 0; padding: 10px 16px; font-size: 13.5px; font-weight: 500; }
+  .skip:focus { top: 8px; color: var(--bg); }
+  .vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+  /* ── Shared site header (as designed in the views task): 60px bar, Menu button on phone ── */
+  .sitehead { height: 60px; display: flex; align-items: center; padding: 0 32px; border-bottom: 1px solid var(--faint);
+              background: var(--bg); position: relative; z-index: 5; }
+  .sitehead.phone { height: 56px; padding: 0 20px; justify-content: space-between; }
+  .wordmark { font-size: 19px; font-weight: 560; letter-spacing: .01em; color: var(--ink); border: 0;
+              display: inline-flex; align-items: baseline; gap: 7px; line-height: 1; }
+  .wordmark em { color: var(--accent); font-style: italic; font-weight: 500; }
+  .sitenav { display: flex; gap: 28px; margin-left: 44px; align-self: stretch; }
+  .sitenav.aux { margin-left: auto; gap: 24px; }
+  .sitenav a { font-size: 13.5px; font-weight: 400; color: var(--dim); border: 0; border-bottom: 1px solid transparent;
+               margin-bottom: -1px; display: flex; align-items: center; line-height: 1; }
+  .sitenav a:hover { color: var(--ink); }
+  .sitenav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); }
+  .menubtn { font: 500 12px/1 'Fraunces', Georgia, serif; letter-spacing: .2em; text-transform: uppercase; color: var(--dim);
+             background: transparent; border: 1px solid var(--faint); border-radius: 999px; padding: 0 18px; min-height: 44px; cursor: pointer; }
+  .menubtn:hover, .menubtn[aria-expanded="true"] { color: var(--accent); border-color: var(--accent); }
+
+  /* ── Shared type ─────────────────────────── */
+  .kicker { font-size: 11px; letter-spacing: .3em; text-transform: uppercase; color: var(--gold); margin-bottom: 22px; }
+  h1 { font-size: var(--h1); line-height: .98; font-weight: 380; letter-spacing: -.015em; text-wrap: balance; }
+  h1 em { color: var(--accent); font-style: italic; font-weight: 500; }
+  .lede { font-size: var(--lede); color: var(--dim); line-height: 1.55; font-weight: 350; max-width: 54ch; margin-top: 28px; }
+  .lede b { color: var(--ink); font-weight: 480; }
+  .lede em { color: var(--gold); font-style: italic; }
+  section { padding-top: var(--sec); }
+  .slabel { font-size: 10.5px; letter-spacing: .3em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+  .shead { font-size: var(--shead); font-weight: 380; line-height: 1.12; letter-spacing: -.01em; max-width: 22em; }
+  .shead em { color: var(--accent); font-style: italic; font-weight: 500; }
+  .sbody { color: var(--dim); max-width: var(--measure); margin-top: 18px; font-size: 16.5px; }
+  .sbody b { color: var(--ink); font-weight: 480; }
+  .cap { font-size: 13.5px; font-style: italic; color: var(--dim); line-height: 1.5; }
+  .micro { font-size: 10.5px; letter-spacing: .22em; text-transform: uppercase; color: var(--dim); }
+  .st { color: var(--stargold); font-size: .78em; letter-spacing: .12em; white-space: nowrap; }
+
+  /* ── CTA + search (landing .cta, explorer .searchbar) ── */
+  .cta { font: 500 13px/1 'Fraunces', Georgia, serif; letter-spacing: .2em; text-transform: uppercase;
+         padding: 15px 30px; border-radius: 999px; background: var(--gold); color: var(--bg);
+         border: 1px solid var(--gold); cursor: pointer; display: inline-flex; align-items: center; gap: 10px;
+         min-height: 44px; white-space: nowrap; }
+  .cta:hover { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+  .cta svg { width: 13px; height: 13px; }
+  .ctasecondary { font-size: 13.5px; color: var(--dim); border-bottom: 1px solid var(--faint); }
+  .ctasecondary:hover { color: var(--gold); border-color: var(--gold); }
+  .herocta { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; margin-top: 38px; }
+  .searchbar { display: flex; gap: 14px; align-items: stretch; margin-top: 30px; }
+  .searchbar input { flex: 1; min-width: 0; font: 350 19px/1 'Fraunces', Georgia, serif; padding: 13px 2px;
+                     border: 0; border-bottom: 1px solid var(--faint); background: transparent; color: var(--ink); }
+  .searchbar input::placeholder { color: var(--dim); font-style: italic; }
+  .searchbar input:focus { outline: none; border-bottom-color: var(--accent); }
+  .chips { display: flex; gap: 4px 16px; flex-wrap: wrap; margin-top: 16px; align-items: baseline; }
+  .chips .lbl { font-size: 10.5px; letter-spacing: .22em; text-transform: uppercase; color: var(--dim); margin-right: 4px; }
+  .chip { font: 400 14.5px 'Fraunces', Georgia, serif; border: 0; background: none; cursor: pointer; color: var(--dim);
+          border-bottom: 1px solid var(--faint); padding: 0; }
+  .chip:hover { color: var(--accent); border-bottom-color: var(--accent); }
+  .chips .chip:not(:last-of-type)::after { content: '·'; color: #54493a; margin-left: 16px; }
+  .phone .chip { min-height: 32px; }
+
+  /* ── Stat band (landing .stats) ──────────── */
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--faint);
+           border: 1px solid var(--faint); }
+  .stat { background: var(--bg); padding: 24px 22px 20px; }
+  .stat b { display: block; font-size: var(--stat); font-weight: 420; line-height: 1; color: var(--ink);
+            font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+  .stat span { display: block; font-size: 11px; letter-spacing: .18em; text-transform: uppercase;
+               color: var(--dim); margin-top: 10px; }
+  .stat small { display: block; font-size: 12.5px; color: var(--dim); font-style: italic; margin-top: 6px; line-height: 1.4; }
+  .phone .stats { grid-template-columns: repeat(2, 1fr); }
+  .phone .stat { padding: 20px 16px 16px; }
+
+  /* ── Cited move (landing .dossier/.move) ──── */
+  .dossier { border: 1px solid var(--faint); background: var(--bg2); }
+  .conf { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex: none; }
+  .conf.high { background: var(--ok); } .conf.medium { background: var(--gold); } .conf.low { background: var(--bad); }
+  .who { font-size: 17px; font-weight: 560; letter-spacing: .01em; }
+  .who .role { color: var(--dim); font-weight: 340; font-style: italic; font-size: 13.5px; margin-left: 8px; }
+  .chainline { font-size: 15px; color: var(--ink); font-weight: 380; }
+  .chainline .origin { color: var(--accent); font-weight: 560; }
+  .chainline .arr { color: var(--dim); font-size: 14px; margin: 0 8px; }
+  .evid { font-size: 13.5px; font-style: italic; color: var(--dim); line-height: 1.5; }
+  .evsrc { font-size: 12.5px; color: var(--dim); letter-spacing: .02em; }
+  .srcbadge { display: inline-block; font-size: 10px; font-weight: 560; letter-spacing: .08em; font-style: normal;
+              text-transform: uppercase; padding: 1px 7px 2px; border: 1px solid currentColor;
+              border-radius: 99px; margin-right: 8px; white-space: nowrap; }
+  .srcbadge.sfchronicle { color: var(--chron); } .srcbadge.sfgate { color: var(--sfgate); }
+  .srcbadge.eater { color: var(--gold); } .srcbadge.other { color: var(--dim); }
+  .src { font-size: 12.5px; }
+
+  /* ── Booking pills (explorer .bookrow) ───── */
+  .bookrow { display: flex; flex-wrap: wrap; gap: 6px 8px; }
+  .bookrow a { display: inline-flex; align-items: center; font-size: 13.5px; color: var(--gold);
+               border: 1px solid rgba(194,160,90,.45); border-radius: 999px; padding: 0 14px; min-height: 40px; }
+  .bookrow a:hover { background: var(--gold); color: var(--bg); }
+  .bookrow .res { background: var(--gold); color: var(--bg); border-color: var(--gold); font-weight: 600; }
+  .bookrow .res:hover { background: var(--ink); border-color: var(--ink); }
+  .phone .bookrow a { min-height: 44px; }
+
+  /* ── Closing CTA + footer (landing) ──────── */
+  .closecta { padding-top: 96px; padding-bottom: 110px; }
+  .phone .closecta { padding-top: 56px; padding-bottom: 64px; }
+  .closecta h2 { font-size: var(--close); font-weight: 380; line-height: 1.05; letter-spacing: -.012em; max-width: 14em; }
+  .closecta h2 em { color: var(--accent); font-style: italic; font-weight: 500; }
+  .closecta .sub { color: var(--dim); margin-top: 20px; font-size: 17px; max-width: 52ch; }
+  footer { border-top: 1px solid var(--faint); padding-top: 26px; padding-bottom: 44px; }
+  .footrow { display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap; color: var(--dim); font-size: 12.5px; }
+  .footrow b { color: var(--ink); font-weight: 550; }
+  .footnote { color: var(--dim); font-size: 12px; margin-top: 16px; max-width: 70ch; line-height: 1.6; }
+  .phone .footrow a { display: inline-flex; min-height: 32px; align-items: center; }
+
+  /* ── Motion: finite, plays once, ends on the drawn state ── */
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  @keyframes fade { to { opacity: 1; } }
+  @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .an-draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw .7s ease-out both; animation-fill-mode: forwards; }
+  .an-fade { opacity: 0; animation: fade .5s ease-out forwards; }
+  .an-rise { opacity: 0; animation: rise .5s ease-out forwards; }
+  @media (prefers-reduced-motion: reduce) {
+    .an-draw { animation: none; stroke-dashoffset: 0; }
+    .an-fade, .an-rise { animation: none; opacity: 1; transform: none; }
+  }
+
+  .nhero { padding-top: 72px; }
+  .nherogrid { display: grid; grid-template-columns: 1fr 340px; gap: 72px; align-items: end; }
+  .nhero h1 { max-width: 9.5em; }
+  .nhero .lede { font-size: 22px; max-width: 34em; }
+  .livecard { border: 1px solid var(--faint); background: var(--bg2); padding: 20px 22px 22px; }
+  .livecard .micro { color: var(--gold); display: inline-flex; align-items: center; gap: 9px; }
+  .livecard .micro i { width: 6px; height: 6px; border-radius: 50%; background: var(--ok); display: inline-block; }
+  .livecard p { font-size: 14.5px; color: var(--dim); margin-top: 10px; line-height: 1.55; }
+  .livecard p b { color: var(--ink); font-weight: 480; }
+  .livecard a { font-size: 13.5px; }
+  .nstats { margin-top: 56px; }
+
+  /* report section: numbered rail + content (extends landing .step) */
+  .rsec { display: grid; grid-template-columns: 232px 1fr; gap: 32px; margin-top: 88px; padding-top: 36px;
+          border-top: 1px solid var(--faint); }
+  .rail .n { display: block; font-size: 15px; color: var(--gold); letter-spacing: .1em; font-weight: 560; }
+  .rail .t { display: block; margin-top: 8px; font-size: 10.5px; letter-spacing: .3em; text-transform: uppercase; color: var(--dim); }
+  .rsec .shead { max-width: 20em; }
+  .rsec .sbody { max-width: 62ch; }
+  .figlabel { display: flex; align-items: baseline; gap: 14px; margin: 40px 0 18px; padding-bottom: 10px; border-bottom: 1px solid var(--faint); }
+  .figlabel .f { font-size: 10.5px; letter-spacing: .3em; text-transform: uppercase; color: var(--gold); white-space: nowrap; }
+  .figlabel .ft { font-size: 15.5px; font-weight: 480; }
+  .figcap { margin-top: 14px; max-width: 72ch; }
+  .twocol { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 64px; align-items: start; }
+  .rsec > *, .twocol > *, .gategrid > * { min-width: 0; }
+  .callout { border-left: 2px solid var(--accent); padding: 4px 0 4px 18px; }
+  .callout + .callout { margin-top: 26px; }
+  .callout h4 { font-size: 17px; font-weight: 480; }
+  .callout p { font-size: 15px; color: var(--dim); margin-top: 6px; }
+  .callout p b { color: var(--ink); font-weight: 480; }
+
+  /* Fig. 1: the gate */
+  .flowsvg { display: block; }
+  .flowsvg .ln { stroke: rgba(239,230,211,.5); stroke-width: 1.2; fill: none; }
+  .flowsvg .ln.kept { stroke: var(--accent); stroke-width: 1.8; }
+  .flowsvg .ln.drop { stroke: var(--bad); stroke-width: 1.2; stroke-dasharray: 2 4; }
+  .flowsvg .gatebar { stroke: var(--ink); stroke-width: 2; }
+  .flowsvg .nd { fill: var(--bg); stroke: var(--ink); stroke-width: 1.2; }
+  .flowsvg .nd.kept { fill: var(--accent); stroke: var(--accent); }
+  .flowsvg text { font-family: 'Fraunces', Georgia, serif; font-size: 12px; font-style: italic; fill: var(--bad); }
+  .flow { display: grid; grid-template-columns: repeat(4, 1fr); }
+  .station { padding: 6px 28px 0 0; }
+  .station .micro { color: var(--gold); }
+  .station h4 { font-size: 21px; font-weight: 480; margin-top: 6px; letter-spacing: -.005em; }
+  .station .fg { font-size: 30px; font-weight: 420; line-height: 1.1; margin-top: 10px; font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+  .station .fg small { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--dim); font-weight: 350; margin-left: 8px; }
+  .station p.tx { font-size: 14.5px; color: var(--dim); margin-top: 10px; line-height: 1.55; }
+  .station p.tx b { color: var(--ink); font-weight: 480; }
+  .checks { margin-top: 10px; font-size: 14.5px; }
+  .checks li { position: relative; padding-left: 22px; line-height: 1.5; margin-top: 6px; }
+  .checks li::before { content: "✓"; position: absolute; left: 0; color: var(--ok); }
+  .drops { margin-top: 12px; font-size: 13.5px; color: var(--dim); font-style: italic; }
+  .drops li { position: relative; padding-left: 22px; line-height: 1.5; margin-top: 3px; }
+  .drops li::before { content: "✕"; position: absolute; left: 1px; color: var(--bad); font-style: normal; font-size: 12px; top: 1px; }
+  .drops .dl { font-style: normal; font-size: 10.5px; letter-spacing: .22em; text-transform: uppercase; color: var(--bad); padding-left: 0; }
+  .drops .dl::before { content: none; }
+  .gategrid { display: grid; grid-template-columns: 1fr 440px; gap: 64px; margin-top: 56px; align-items: start; }
+  .anat .anathead { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 20px 26px 16px; border-bottom: 1px solid var(--faint); }
+  .anat .vk { font-size: 10.5px; letter-spacing: .3em; text-transform: uppercase; color: var(--gold); }
+  .anat h3 { font-size: 24px; font-weight: 400; margin-top: 6px; }
+  .anat h3 .arr { color: var(--dim); margin: 0 10px; }
+  .anat .corr { font-size: 12.5px; color: var(--ok); display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+  .arow { display: grid; grid-template-columns: 112px 1fr; gap: 18px; padding: 14px 26px; border-top: 1px solid var(--faint); align-items: baseline; }
+  .arow:first-of-type { border-top: 0; }
+  .arow .lab { font-size: 10.5px; letter-spacing: .22em; text-transform: uppercase; color: var(--dim); }
+  .arow .evid { font-size: 15px; color: var(--ink); }
+  .arow .evsrc { margin-top: 6px; }
+  .why { border-top: 2px solid var(--ink); }
+  .why .step { display: grid; grid-template-columns: 44px 1fr; gap: 12px; padding: 20px 0; border-top: 1px solid var(--faint); }
+  .why .step:first-child { border-top: 0; }
+  .why .step .sn { font-size: 15px; color: var(--gold); letter-spacing: .1em; font-weight: 560; padding-top: 3px; }
+  .why .step h4 { font-size: 19px; font-weight: 480; }
+  .why .step p { font-size: 15px; color: var(--dim); margin-top: 6px; }
+  .why .step p b { color: var(--ink); font-weight: 480; }
+  .whyhead { font-size: 10.5px; letter-spacing: .3em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+
+  /* Fig. 2: source mix */
+  .mixbar { display: flex; height: 34px; gap: 2px; }
+  .mixbar span { display: block; min-width: 2px; }
+  .mixbar .eater { background: var(--gold); } .mixbar .sfgate { background: var(--sfgate); }
+  .mixbar .chron { background: var(--chron); } .mixbar .other { background: var(--dim); }
+  .mixleg { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 20px; }
+  .mixleg li { padding: 0 20px 0 0; }
+  .mixleg .sw { display: inline-block; width: 10px; height: 10px; margin-right: 9px; }
+  .mixleg .nm { font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--dim); }
+  .mixleg b { display: block; font-size: 34px; font-weight: 420; line-height: 1.15; margin-top: 6px; font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+  .mixleg small { display: block; font-size: 13px; font-style: italic; color: var(--dim); margin-top: 2px; }
+
+  /* Fig. 3: coverage */
+  .covrow { padding: 16px 0 18px; border-top: 1px solid var(--faint); }
+  .covrow:first-child { border-top: 0; padding-top: 4px; }
+  .covtop { display: flex; align-items: baseline; justify-content: space-between; gap: 18px; }
+  .covtop .cl { font-size: 16.5px; font-weight: 480; }
+  .covtop .cl .tag { font-size: 10.5px; letter-spacing: .22em; text-transform: uppercase; margin-left: 12px; font-weight: 400; }
+  .tag.thin { color: var(--bad); } .tag.solid { color: var(--ok); }
+  .covtop .cv { font-size: 26px; font-weight: 420; font-variant-numeric: tabular-nums; letter-spacing: -.01em; white-space: nowrap; line-height: 1; }
+  .covtop .cv small { font-size: 14px; color: var(--dim); font-weight: 350; letter-spacing: 0; margin: 0 5px; }
+  .covtop .cv .of { color: var(--dim); font-size: 17px; }
+  .track { position: relative; height: 12px; margin-top: 12px; background: rgba(239,230,211,.07); box-shadow: inset 0 0 0 1px var(--faint); }
+  .track i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--ink); display: block; }
+  .track i.acc { background: var(--accent); }
+  .covnote { font-size: 13.5px; font-style: italic; color: var(--dim); margin-top: 8px; }
+
+  /* Fig. 4: depth */
+  .scatter { display: block; }
+  .scatter text { font-family: 'Fraunces', Georgia, serif; fill: var(--ink); }
+  .scatter .ax { stroke: var(--faint); stroke-width: 1; }
+  .scatter .axs { stroke: rgba(239,230,211,.5); stroke-width: 1; }
+  .scatter .tk { font-size: 12px; fill: var(--dim); font-variant-numeric: tabular-nums; }
+  .scatter .axl { font-size: 10.5px; letter-spacing: .2em; text-transform: uppercase; fill: var(--gold); }
+  .scatter .pt { fill: var(--bg); stroke: var(--ink); stroke-width: 1.3; }
+  .scatter .pt.hi { fill: var(--accent); stroke: var(--accent); }
+  .scatter .pl { font-size: 14px; font-weight: 480; }
+  .scatter .ps { font-size: 12px; fill: var(--stargold); }
+  .mentors li { display: grid; grid-template-columns: 1fr 150px 30px; gap: 12px; align-items: center; padding: 8px 0; border-top: 1px solid var(--faint); font-size: 15px; }
+  .mentors li:first-child { border-top: 0; }
+  .mentors .mb { height: 3px; background: var(--accent); }
+  .mentors b { text-align: right; font-weight: 420; font-variant-numeric: tabular-nums; }
+  .colhead { font-size: 10.5px; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); padding-bottom: 8px; border-bottom: 1px solid var(--faint); margin-bottom: 4px; }
+  table.led { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+  table.led th, table.led td { text-align: left; padding: 11px 8px 11px 0; border-bottom: 1px solid var(--faint); vertical-align: baseline; }
+  table.led th { font-weight: 500; font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--gold); }
+  table.led .r { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  table.led td.kn { font-weight: 480; }
+  table.led tbody tr:last-child td { border-bottom: 0; }
+
+  /* Fig. 5: booking */
+  .bigfig { font-size: 92px; font-weight: 380; line-height: .95; letter-spacing: -.02em; color: var(--accent); font-variant-numeric: tabular-nums; }
+  .bigsub { font-size: 17px; color: var(--ink); margin-top: 10px; max-width: 26em; }
+  .plat { margin-top: 22px; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+  .plat .micro { margin-right: 6px; }
+  .plat span.p { font-size: 15.5px; font-weight: 480; }
+  .plat span.p + span.p::before { content: "·"; color: #54493a; margin-right: 10px; }
+  .bookspec { margin-top: 26px; padding: 16px 20px 18px; border: 1px solid var(--faint); background: var(--bg2); }
+  .bookspec .vk { font-size: 10.5px; letter-spacing: .3em; text-transform: uppercase; color: var(--gold); }
+  .bookspec h4 { font-size: 21px; font-weight: 400; margin: 4px 0 12px; }
+
+  /* next city */
+  table.city { width: 100%; border-collapse: collapse; font-size: 15px; margin-top: 4px; }
+  table.city th, table.city td { text-align: left; padding: 14px 24px 14px 0; border-bottom: 1px solid var(--faint); vertical-align: top; }
+  table.city th { font-weight: 500; font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); }
+  table.city td:first-child { font-weight: 480; font-size: 16px; width: 250px; }
+  table.city td:nth-child(2) { color: var(--dim); width: 360px; }
+  table.city td b { color: var(--ink); font-weight: 480; font-variant-numeric: tabular-nums; }
+  table.city tbody tr:last-child td { border-bottom: 0; }
+  .ct { display: inline-block; font-size: 10px; font-weight: 560; letter-spacing: .08em; text-transform: uppercase;
+        padding: 1px 8px 2px; border: 1px solid currentColor; border-radius: 99px; margin-right: 10px; white-space: nowrap; }
+  .ct.same { color: var(--ok); } .ct.local { color: var(--gold); }
+  .citycards { display: none; }
+
+  /* uses */
+  .uses { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 36px; border-top: 2px solid var(--ink); }
+  .use { padding: 24px 32px 4px 0; }
+  .use + .use { padding-left: 32px; border-left: 1px solid var(--faint); }
+  .use .micro { color: var(--gold); }
+  .use .q { font-size: 21px; font-style: italic; font-weight: 380; line-height: 1.35; margin-top: 12px; color: var(--ink); }
+  .use .al { margin-top: 20px; font-size: 10.5px; letter-spacing: .22em; text-transform: uppercase; color: var(--dim); }
+  .use .a { font-size: 15px; color: var(--dim); margin-top: 6px; }
+  .use .a b { color: var(--accent); font-weight: 420; font-variant-numeric: tabular-nums; }
+  .use .a i { color: var(--ink); font-style: normal; font-weight: 480; }
+  .disclaim { margin-top: 26px; font-size: 14.5px; color: var(--dim); font-style: italic; }
+
+  .ncontact { margin-top: 88px; border-top: 1px solid var(--faint); padding-top: 80px; padding-bottom: 104px; }
+  .ncontact h2 { font-size: var(--close); font-weight: 380; line-height: 1.05; letter-spacing: -.012em; max-width: 15em; }
+  .ncontact h2 em { color: var(--accent); font-style: italic; font-weight: 500; }
+  .ncontact .sub { color: var(--dim); margin-top: 20px; font-size: 17px; max-width: 54ch; }
+
+  /* ── Phone ───────────────────────────────── */
+  .phone .nhero { padding-top: 34px; }
+  .phone .nherogrid { grid-template-columns: 1fr; gap: 26px; }
+  .phone .nhero .lede { font-size: 17.5px; margin-top: 18px; }
+  .phone .nhero .kicker { margin-bottom: 16px; letter-spacing: .24em; }
+  .phone .nstats { margin-top: 30px; }
+  .phone .rsec { grid-template-columns: 1fr; gap: 16px; margin-top: 52px; padding-top: 22px; }
+  .phone .rail { display: flex; align-items: baseline; gap: 14px; }
+  .phone .rail .t { margin-top: 0; }
+  .phone .figlabel { margin: 28px 0 16px; flex-direction: column; gap: 4px; }
+  .phone .twocol, .phone .gategrid { grid-template-columns: 1fr; gap: 32px; }
+  .phone .gategrid { margin-top: 36px; }
+  .phone .flow { grid-template-columns: 1fr; position: relative; margin-left: 6px; border-left: 1.2px solid rgba(239,230,211,.5); }
+  .phone .station { position: relative; padding: 0 0 26px 24px; }
+  .phone .station::before { content: ""; position: absolute; left: -7px; top: 3px; width: 12px; height: 12px; border-radius: 50%;
+                            background: var(--bg); border: 1.2px solid var(--ink); }
+  .phone .station.gate::before { border-radius: 0; width: 14px; height: 8px; left: -8px; top: 5px; border: 0;
+                                 border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); background: var(--bg); }
+  .phone .station.kept::before { background: var(--accent); border-color: var(--accent); }
+  .phone .station.kept { padding-bottom: 0; }
+  .phone .anat .anathead { padding: 16px 16px 14px; flex-direction: column; gap: 8px; }
+  .phone .anat h3 { font-size: 21px; }
+  .phone .arow { grid-template-columns: 1fr; gap: 6px; padding: 13px 16px; }
+  .phone .mixleg { grid-template-columns: 1fr 1fr; gap: 20px 0; }
+  .phone .mixleg b { font-size: 28px; }
+  .phone .covtop { flex-direction: column; gap: 6px; }
+  .phone .covtop .cl .tag { display: inline-block; }
+  .phone .bigfig { font-size: 72px; }
+  .phone table.city { display: none; }
+  .phone .citycards { display: block; }
+  .citycards li { padding: 16px 0; border-top: 1px solid var(--faint); }
+  .citycards li:first-child { border-top: 0; padding-top: 4px; }
+  .citycards h4 { font-size: 17px; font-weight: 480; }
+  .citycards .sf { font-size: 14.5px; color: var(--dim); margin-top: 4px; }
+  .citycards .sf b { color: var(--ink); font-weight: 480; }
+  .citycards .nx { font-size: 14.5px; margin-top: 8px; line-height: 1.6; }
+  .phone .uses { grid-template-columns: 1fr; }
+  .phone .use { padding: 22px 0 22px; }
+  .phone .use + .use { padding-left: 0; border-left: 0; border-top: 1px solid var(--faint); }
+  .phone .use .q { font-size: 19px; }
+  .phone .ncontact { margin-top: 52px; padding-top: 52px; padding-bottom: 64px; }
+  .phone .mentors li { grid-template-columns: 1fr 96px 26px; }
+  .phone .herocta .ctasecondary { display: inline-flex; min-height: 44px; align-items: center; }
+  /* Fig. 1: the funnel */
+  .funnel { border-top: 2px solid var(--ink); }
+  .frow { display: grid; grid-template-columns: 250px 1fr; gap: 32px; padding: 22px 0 22px; border-top: 1px solid var(--faint); align-items: start; }
+  .frow:first-child { border-top: 0; }
+  .frow .fn b { display: block; font-size: 54px; font-weight: 400; line-height: 1; letter-spacing: -.015em; font-variant-numeric: tabular-nums; }
+  .frow.kept .fn b { color: var(--accent); }
+  .frow .fn span { display: block; margin-top: 10px; font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--dim); }
+  .fbar { height: 22px; background: var(--ink); opacity: .9; transform-origin: left center; }
+  .frow.kept .fbar { background: var(--accent); opacity: 1; }
+  .frow.link .fbar { background: var(--gold); opacity: 1; }
+  .frow .ft { font-size: 15px; color: var(--dim); margin-top: 12px; max-width: 62ch; }
+  .frow .ft b { color: var(--ink); font-weight: 480; }
+  .frow .drop { font-size: 13.5px; font-style: italic; color: var(--dim); margin-top: 6px; }
+  .frow .drop::before { content: "✕"; color: var(--bad); font-style: normal; font-size: 12px; margin-right: 9px; }
+  @keyframes grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  .an-grow { animation: grow .8s ease-out both; }
+  @media (prefers-reduced-motion: reduce) { .an-grow { animation: none; } }
+  .linkfigs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--faint); border: 1px solid var(--faint); margin-top: 26px; }
+  .cov2 { background: var(--bg); padding: 18px 20px; }
+  .cov2 b { display: block; font-size: 26px; font-weight: 420; color: var(--ink); font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+  .cov2 span { font-size: 12.5px; color: var(--dim); display: block; margin-top: 4px; line-height: 1.45; }
+  .whygate { margin-top: 30px; }
+  .tag.part { color: var(--gold); }
+  table.rank { width: 100%; border-collapse: collapse; font-size: 15px; }
+  table.rank th, table.rank td { text-align: left; padding: 9px 12px 9px 0; border-bottom: 1px solid var(--faint); vertical-align: baseline; }
+  table.rank th { font-weight: 500; font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); }
+  table.rank td.rk { color: var(--dim); font-variant-numeric: tabular-nums; width: 26px; }
+  table.rank td.kn { font-weight: 480; }
+  table.rank .r { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  table.rank tbody tr:last-child td { border-bottom: 0; }
+  table.rank tr.hi td.kn { color: var(--accent); }
+  .barcell { display: flex; align-items: center; gap: 10px; }
+  .barcell .bar { height: 3px; background: var(--ink); opacity: .8; flex: none; }
+  .barcell .bar.acc { background: var(--accent); opacity: 1; }
+  .barcell b { font-weight: 420; font-variant-numeric: tabular-nums; min-width: 24px; }
+  .phone .frow { grid-template-columns: 1fr; gap: 12px; padding: 20px 0; }
+  .phone .frow .fn b { font-size: 44px; }
+  .phone .linkfigs { grid-template-columns: 1fr 1fr; }
+  .phone table.rank { font-size: 14.5px; }
+  .phone table.rank th { letter-spacing: .08em; }
+  .phone table.rank th, .phone table.rank td { padding: 11px 8px 11px 0; }
+  .phone .barcell .bar { display: none; }
+  .phone .barcell { justify-content: flex-end; }
+  .maillink { font-size: 17px; }
+  .contactalso { margin-top: 30px; display: flex; gap: 26px; flex-wrap: wrap; }
+  .phone .maillink, .phone .contactalso a { display: inline-flex; min-height: 44px; align-items: center; }
+  .phone .contactalso { gap: 4px 24px; margin-top: 18px; }
+</style>
+</head>
+<body>
+<div class="frame phone" style="width:390px;height:13248px">
+<a class="skip" href="#main" data-component-id="skip-link">Skip to content</a>
+<header class="sitehead phone" data-component-id="site-header"><a class="wordmark" href="/" data-component-id="site-wordmark" aria-label="Bone Fides home">Bone <em>Fides</em></a><button type="button" class="menubtn" aria-expanded="false" aria-controls="sitemenu" data-component-id="site-menu-button">Menu</button></header>
+<main id="main">
+  <div class="wrap nhero">
+    <div class="nherogrid">
+      <div>
+        <p class="kicker">By the numbers · San Francisco</p>
+        <h1><em class="tn">9,312</em> moves on record. <em class="tn">3,388</em> pass the gate.</h1>
+        <p class="lede">Bone Fides is a graph of who cooked where in San Francisco, built from public food
+           journalism. <b>It shows a move only when the quoted sentence itself states it.</b> This page reports
+           what is on record, what passes that gate, and what is still missing.</p>
+      </div>
+      <div class="livecard">
+        <span class="micro"><i></i>Live figures</span>
+        <p>Every number on this page is <b>read from the graph when the page loads</b>, and each can be checked
+           on the site. Nothing is projected or estimated.</p>
+        <p><a href="/method" data-component-id="numbers-method-link">How each figure is counted →</a></p>
+      </div>
+    </div>
+    <div class="stats nstats" aria-label="The graph in figures, live">
+      <div class="stat"><b>9,312</b><span>Moves on record</span><small>extracted, each quote found word for word in its article</small></div>
+      <div class="stat"><b>3,388</b><span>Displayed</span><small>pass the citation gate: the quote states a career move</small></div>
+      <div class="stat"><b>1,595</b><span>Between two named kitchens</span><small>the moves that draw trees, lines and ranks</small></div>
+      <div class="stat"><b>2,221</b><span>Source articles</span><small>each one linked from the moves it supports</small></div>
+    </div>
+  </div><section class="wrap" id="gate" style="padding-top:0"><div class="rsec"><div class="rail"><span class="n">01</span><span class="t">The gate</span></div><div class="rc">
+      <h2 class="shead">9,312 moves are on record. The site shows <em>3,388</em>.</h2>
+      <p class="sbody">Each step below holds back moves the evidence does not fully support. The smaller number
+         is the one a reader can check on the site today.</p>
+      <p class="figlabel"><span class="f">Fig. 1</span><span class="ft">From article to graph</span></p>
+      <div class="funnel">
+        <div class="frow "><div class="fn"><b>9,312</b><span>Moves on record</span></div><div><div class="fbar an-grow" style="width:100.00%;animation-delay:0.1s" role="img" aria-label="9,312 of 9,312 moves on record"></div><p class="ft">Extracted from <b>2,221 articles</b> of public food journalism. Each has a person, a kitchen, a role and a quoted sentence, and <b>the quote was found word for word in its article</b>.</p></div></div>
+        <div class="frow kept"><div class="fn"><b>3,388</b><span>Displayed after the citation gate</span></div><div><div class="fbar an-grow" style="width:36.38%;animation-delay:0.5s" role="img" aria-label="3,388 of 9,312 moves on record"></div><p class="ft"><b>The quote itself must state a career move.</b> Only these moves appear anywhere on the site.</p><p class="drop">Held back: guest shifts, pop-ups, supplier credits, and quotes that set a name beside a kitchen without saying the person worked there.</p></div></div>
+        <div class="frow link"><div class="fn"><b>1,595</b><span>Between two named kitchens</span></div><div><div class="fbar an-grow" style="width:17.13%;animation-delay:0.9s" role="img" aria-label="1,595 of 9,312 moves on record"></div><p class="ft">Displayed moves that state both the kitchen left and the kitchen joined. <b>These draw every tree, every line and every rank.</b></p><p class="drop">The rest state one kitchen only. They appear on a dossier and draw no line.</p></div></div>
+      </div>
+      <div class="linkfigs" aria-label="What the displayed moves connect">
+        <div class="cov2"><b>1,575</b><span>kitchens linked by at least one such move</span></div>
+        <div class="cov2"><b>618</b><span>kitchens in the largest connected set: any two can be joined by a chain</span></div>
+        <div class="cov2"><b>3,119</b><span>chefs on record; same-name people are flagged, not merged</span></div>
+        <div class="cov2"><b>4,412</b><span>kitchens on record: distinct names, not a count of restaurants</span></div>
+      </div>
+      <div class="gategrid">
+        <div><div class="dossier anat" aria-label="One cited move, as displayed">
+        <div class="anathead">
+          <div><div class="vk">One move, as displayed</div><h3>The French Laundry<span class="arr">→</span>Benu</h3></div>
+          <span class="corr"><span class="conf high"></span>Corroborated: 2 articles</span>
+        </div>
+        <div class="arow"><span class="lab">Who</span><p class="who">Corey Lee<span class="role">chef de cuisine · 2010</span></p></div>
+        <div class="arow"><span class="lab">The sentence</span><div>
+          <p class="evid">“Corey Lee, former chef de cuisine at the French Laundry, finally has the space for his own restaurant.”</p>
+          <p class="evsrc"><span class="srcbadge sfgate">SFGATE</span><a class="src" href="https://www.sfgate.com/restaurants/article/Former-French-Laundry-chef-to-open-Benu-3283156.php" data-component-id="gate-source-1">read the article ↗</a></p></div></div>
+        <div class="arow"><span class="lab">Second article</span><div>
+          <p class="evid">“Corey Lee, who was Keller’s chef de cuisine before leaving to open his own top-rated spot, Benu, in San Francisco, says watching Keller transition out of the kitchen was illuminating.”</p>
+          <p class="evsrc"><span class="srcbadge sfgate">SFGATE</span><a class="src" href="https://www.sfgate.com/restaurants/article/french-laundry-chef-thomas-keller-s-recipe-for-5536678.php" data-component-id="gate-source-2">read the article ↗</a></p></div></div>
+      </div>
+          <p class="cap figcap">A displayed move. Two articles report it, so it shows a green dot. One strong
+             source shows gold; a thin record shows red.</p></div>
+        <div>
+          <p class="whyhead">Why the gate exists, and why it is hard to copy</p>
+          <div class="why">
+            <div class="step"><span class="sn">i</span><div><h4>The bigger number would be easy.</h4>
+              <p>Showing all 9,312 would make every figure on this page larger. Some of those quotes are
+                 real and still do not say what a line on a tree would claim. <b>The gate keeps the site to what
+                 a sentence in print states.</b></p></div></div>
+            <div class="step"><span class="sn">ii</span><div><h4>It can be audited by a stranger.</h4>
+              <p>Every displayed move is one click from its sentence. A buyer does not have to trust the graph.
+                 They can read it.</p></div></div>
+            <div class="step"><span class="sn">iii</span><div><h4>The work is in the refusals, and it compounds.</h4>
+              <p>A list of chef names is easy to scrape. A graph that holds back what its sources do not state,
+                 merges a kitchen’s aliases and flags two people who share a name is built move by move. New
+                 articles attach to people and kitchens already there.</p></div></div>
+          </div>
+        </div>
+      </div></div></div></section><section class="wrap" id="sources" style="padding-top:0"><div class="rsec"><div class="rail"><span class="n">02</span><span class="t">Sources</span></div><div class="rc">
+      <h2 class="shead">Two outlets carry <em>almost all</em> of the record.</h2>
+      <p class="sbody">Displayed moves, counted by the outlet of the article that cites them. The four figures
+         sum to the 3,388 on display.</p>
+      <p class="figlabel"><span class="f">Fig. 2</span><span class="ft">Displayed moves by outlet</span></p>
+      <div class="mixbar" role="img" aria-label="SFGATE 1,876, Eater SF 1,499, SF Chronicle 4, Other outlets 9"><span class="sfgate" style="flex:1876 1 0" title="SFGATE: 1,876 displayed moves"></span><span class="eater" style="flex:1499 1 0" title="Eater SF: 1,499 displayed moves"></span><span class="chron" style="flex:4 1 0" title="SF Chronicle: 4 displayed moves"></span><span class="other" style="flex:9 1 0" title="Other outlets: 9 displayed moves"></span></div>
+      <ul class="mixleg"><li><span class="nm"><span class="sw" style="background:var(--sfgate)"></span>SFGATE</span><b>1,876</b><small>the largest share of displayed moves</small></li><li><span class="nm"><span class="sw" style="background:var(--gold)"></span>Eater SF</span><b>1,499</b><small>close behind</small></li><li><span class="nm"><span class="sw" style="background:var(--chron)"></span>SF Chronicle</span><b>4</b><small>in the pipeline, thin in the graph</small></li><li><span class="nm"><span class="sw" style="background:var(--dim)"></span>Other outlets</span><b>9</b><small>independent writers and chef-profile sites</small></li></ul>
+      <p class="cap figcap">The Chronicle and the other outlets are the two hairlines at the right edge of the bar.
+         That concentration is a known limit of the record, stated here rather than left for a reader to find.</p></div></div></section><section class="wrap" id="coverage" style="padding-top:0"><div class="rsec"><div class="rail"><span class="n">03</span><span class="t">Coverage</span></div><div class="rc">
+      <h2 class="shead">What the record holds, and <em>what it is missing</em>.</h2>
+      <p class="sbody">Coverage is uneven, and a reader should know where. These are measured rates, not targets.</p>
+      <p class="figlabel"><span class="f">Fig. 3</span><span class="ft">Coverage of the graph, measured</span></p>
+      <div class="twocol">
+        <div class="cov"><div class="covrow"><div class="covtop"><span class="cl">Displayed moves with a quoted sentence and a source link<span class="tag solid">all</span></span><span class="cv">3,388<small>of</small><span class="of">3,388</span></span></div><div class="track" role="img" aria-label="3,388 of 3,388"><i class="" style="width:100.00%"></i></div><p class="covnote">The gate guarantees this one. A move without its sentence is not displayed.</p></div><div class="covrow"><div class="covtop"><span class="cl">Displayed moves that carry a year<span class="tag thin">thin</span></span><span class="cv">720<small>of</small><span class="of">3,388</span></span></div><div class="track" role="img" aria-label="720 of 3,388"><i class="acc" style="width:21.25%"></i></div><p class="covnote">A move gets a year only when the article states one.</p></div><div class="covrow"><div class="covtop"><span class="cl">Moves on record that carry a year<span class="tag thin">thin</span></span><span class="cv">1,454<small>of</small><span class="of">9,312</span></span></div><div class="track" role="img" aria-label="1,454 of 9,312"><i class="acc" style="width:15.61%"></i></div><p class="covnote">The same gap, before the gate.</p></div><div class="covrow"><div class="covtop"><span class="cl">Kitchens on record that a displayed move links<span class="tag part">partial</span></span><span class="cv">1,575<small>of</small><span class="of">4,412</span></span></div><div class="track" role="img" aria-label="1,575 of 4,412"><i class="acc" style="width:35.70%"></i></div><p class="covnote">The others appear on dossiers and are not yet joined to another kitchen.</p></div><div class="covrow"><div class="covtop"><span class="cl">Linked kitchens in the largest connected set<span class="tag part">partial</span></span><span class="cv">618<small>of</small><span class="of">1,575</span></span></div><div class="track" role="img" aria-label="618 of 1,575"><i class="acc" style="width:39.24%"></i></div><p class="covnote">Connect can join any two of these. The rest sit in smaller sets.</p></div><div class="covrow"><div class="covtop"><span class="cl">Michelin-starred San Francisco kitchens linked in the graph<span class="tag part">partial</span></span><span class="cv">19<small>of</small><span class="of">26</span></span></div><div class="track" role="img" aria-label="19 of 26"><i class="acc" style="width:73.08%"></i></div><p class="covnote">The others have no displayed move joining them to another kitchen yet.</p></div></div>
+        <div>
+          <div class="callout"><h4>Worked at. Nothing more is claimed.</h4>
+            <p>A displayed move says a named person worked at a kitchen in a stated role, or moved from one to
+               another. The site says “worked at” and “moved to”, and stops there.</p></div>
+          <div class="callout"><h4>Dates are the thinnest field.</h4>
+            <p>Timelines and era filters see only the <b>720</b> dated moves on display, and say so when
+               they are on. A tree or a line does not need a year.</p></div>
+          <div class="callout"><h4>A line needs a connected pair.</h4>
+            <p>Between two kitchens outside the same connected set there is no chain on record, and Connect
+               says so instead of guessing.</p></div>
+        </div>
+      </div></div></div></section><section class="wrap" id="depth" style="padding-top:0"><div class="rsec"><div class="rail"><span class="n">04</span><span class="t">Depth</span></div><div class="rc">
+      <h2 class="shead">Fifteen kitchens, ranked by <em>what the record shows</em>.</h2>
+      <p class="sbody">The Ledger counts displayed moves only. The French Laundry has <b>15 alumni</b> and
+         reaches <b>61 kitchens within three moves</b>, 6 of them Michelin-starred:
+         Angler, Benu, Mister Jiu’s, Quince, San Ho Won and Ssal. Chez Panisse has the most alumni, 21, and a shorter reach, 36.</p>
+      <p class="figlabel"><span class="f">Fig. 4</span><span class="ft">Alumni and reach, top alumni kitchens</span></p>
+      <div class="twocol">
+        <div><table class="rank"><thead><tr><th scope="col"><span class="vh">Rank</span></th><th scope="col">Kitchen</th>
+            <th scope="col">Alumni</th><th scope="col">Within three moves</th><th scope="col" class="r">Starred</th></tr></thead>
+            <tbody><tr><td class="rk">1</td><td class="kn">Chez Panisse</td><td><span class="barcell"><b>21</b><span class="bar acc" style="width:110px"></span></span></td><td><span class="barcell"><b>36</b><span class="bar" style="width:76px"></span></span></td><td class="r"><span class="st" aria-hidden="true">★</span> 0</td></tr><tr class=hi><td class="rk">2</td><td class="kn">The French Laundry</td><td><span class="barcell"><b>15</b><span class="bar acc" style="width:79px"></span></span></td><td><span class="barcell"><b>61</b><span class="bar" style="width:129px"></span></span></td><td class="r"><span class="st" aria-hidden="true">★</span> 6</td></tr><tr><td class="rk">3</td><td class="kn">Aqua</td><td><span class="barcell"><b>14</b><span class="bar acc" style="width:73px"></span></span></td><td><span class="barcell"><b>71</b><span class="bar" style="width:150px"></span></span></td><td class="r"><span class="st" aria-hidden="true">★</span> 0</td></tr><tr><td class="rk">4</td><td class="kn">Campton Place</td><td><span class="barcell"><b>10</b><span class="bar acc" style="width:52px"></span></span></td><td><span class="barcell"><b>71</b><span class="bar" style="width:150px"></span></span></td><td class="r"><span class="st" aria-hidden="true">★</span> 1</td></tr><tr><td class="rk">5</td><td class="kn">Boulevard</td><td><span class="barcell"><b>10</b><span class="bar acc" style="width:52px"></span></span></td><td><span class="barcell"><b>24</b><span class="bar" style="width:51px"></span></span></td><td class="r"><span class="st" aria-hidden="true">★</span> 1</td></tr><tr><td class="rk">6</td><td class="kn">Per Se</td><td><span class="barcell"><b>9</b><span class="bar acc" style="width:47px"></span></span></td><td><span class="barcell"><b>64</b><span class="bar" style="width:135px"></span></span></td><td class="r"><span class="st" aria-hidden="true">★</span> 5</td></tr><tr><td class="rk">7</td><td class="kn">Quince</td><td><span class="barcell"><b>9</b><span class="bar acc" style="width:47px"></span></span></td><td><span class="barcell"><b>32</b><span class="bar" style="width:68px"></span></span></td><td class="r"><span class="st" aria-hidden="true">★</span> 3</td></tr><tr><td class="rk">8</td><td class="kn">Coi</td><td><span class="barcell"><b>9</b><span class="bar acc" style="width:47px"></span></span></td><td><span class="barcell"><b>17</b><span class="bar" style="width:36px"></span></span></td><td class="r"><span class="st" aria-hidden="true">★</span> 0</td></tr><tr><td class="rk">9</td><td class="kn">Fifth Floor</td><td><span class="barcell"><b>9</b><span class="bar acc" style="width:47px"></span></span></td><td><span class="barcell"><b>11</b><span class="bar" style="width:23px"></span></span></td><td class="r"><span class="st" aria-hidden="true">★</span> 0</td></tr><tr><td class="rk">10</td><td class="kn">Manresa</td><td><span class="barcell"><b>8</b><span class="bar acc" style="width:42px"></span></span></td><td><span class="barcell"><b>36</b><span class="bar" style="width:76px"></span></span></td><td class="r"><span class="st" aria-hidden="true">★</span> 4</td></tr><tr><td class="rk">11</td><td class="kn">Michael Mina</td><td><span class="barcell"><b>8</b><span class="bar acc" style="width:42px"></span></span></td><td><span class="barcell"><b>24</b><span class="bar" style="width:51px"></span></span></td><td class="r"><span class="st" aria-hidden="true">★</span> 0</td></tr><tr><td class="rk">12</td><td class="kn">Postrio</td><td><span class="barcell"><b>7</b><span class="bar acc" style="width:37px"></span></span></td><td><span class="barcell"><b>8</b><span class="bar" style="width:17px"></span></span></td><td class="r"><span class="st" aria-hidden="true">★</span> 0</td></tr><tr><td class="rk">13</td><td class="kn">Gary Danko</td><td><span class="barcell"><b>7</b><span class="bar acc" style="width:37px"></span></span></td><td><span class="barcell"><b>38</b><span class="bar" style="width:80px"></span></span></td><td class="r"><span class="st" aria-hidden="true">★</span> 4</td></tr><tr><td class="rk">14</td><td class="kn">Benu</td><td><span class="barcell"><b>7</b><span class="bar acc" style="width:37px"></span></span></td><td><span class="barcell"><b>9</b><span class="bar" style="width:19px"></span></span></td><td class="r"><span class="st" aria-hidden="true">★</span> 1</td></tr><tr><td class="rk">15</td><td class="kn">La Folie</td><td><span class="barcell"><b>7</b><span class="bar acc" style="width:37px"></span></span></td><td><span class="barcell"><b>14</b><span class="bar" style="width:30px"></span></span></td><td class="r"><span class="st" aria-hidden="true">★</span> 1</td></tr></tbody></table>
+          <p class="cap figcap">Alumni are named people with a displayed cited move out of that kitchen. Starred is
+             the count of Michelin-starred kitchens within three moves.
+             <a href="/ledger" data-component-id="numbers-ledger-link">Read the full Ledger →</a></p></div>
+        <div><p class="colhead">Mentors named in print, by chefs</p>
+          <ol class="mentors"><li><span>Thomas Keller</span><span class="mb" style="width:100%"></span><b>5</b></li><li><span>George Morrone</span><span class="mb" style="width:60%"></span><b>3</b></li><li><span>Roland Passot</span><span class="mb" style="width:60%"></span><b>3</b></li><li><span>Wolfgang Puck</span><span class="mb" style="width:60%"></span><b>3</b></li><li><span>Michael Mina</span><span class="mb" style="width:60%"></span><b>3</b></li><li><span>David Kinch</span><span class="mb" style="width:40%"></span><b>2</b></li><li><span>Bernard Loiseau</span><span class="mb" style="width:40%"></span><b>2</b></li><li><span>Craig Stoll</span><span class="mb" style="width:40%"></span><b>2</b></li><li><span>Michael Tusk</span><span class="mb" style="width:40%"></span><b>2</b></li><li><span>Jeremiah Tower</span><span class="mb" style="width:40%"></span><b>2</b></li></ol>
+          <p class="covnote" style="margin-top:14px">Counted only where an article names the mentor.</p></div>
+      </div></div></div></section><section class="wrap" id="booking" style="padding-top:0"><div class="rsec"><div class="rail"><span class="n">05</span><span class="t">Booking</span></div><div class="rc">
+      <h2 class="shead">From lineage to a table, <em>only where verified</em>.</h2>
+      <p class="sbody">The consumer loop is explore, trust, book. A booking button appears on a kitchen only when
+         its page on Resy, OpenTable or Tock has been checked against that exact restaurant.</p>
+      <p class="figlabel"><span class="f">Fig. 5</span><span class="ft">Booking coverage</span></p>
+      <div class="twocol">
+        <div>
+          <p class="bigfig">222</p>
+          <p class="bigsub">venues carry a verified booking link.</p>
+          <div class="plat"><span class="micro">Platforms</span><span class="p">Resy</span><span class="p">OpenTable</span><span class="p">Tock</span></div>
+          <div class="bookspec"><p class="vk">As it appears on a dossier</p><h4>Benu <span class="st" aria-label="3 Michelin stars">★★★</span></h4>
+            <div class="bookrow"><a class="res" href="#" data-component-id="numbers-book-opentable">Book on OpenTable</a><a href="#" data-component-id="numbers-book-tock">Book on Tock</a></div></div>
+        </div>
+        <div>
+          <p class="colhead">A link is kept only when</p>
+          <ul class="checks" style="margin-top:14px">
+            <li>the booking page’s address names this restaurant, on a word boundary;</li>
+            <li>no leftover word points to a second name or another branch;</li>
+            <li>the page names San Francisco, or names no other city;</li>
+            <li>the dossier’s name is the exact name the page was verified for.</li>
+          </ul>
+          <p class="covnote" style="margin-top:18px">A same-named restaurant in another city fails the third check. No match, no button.</p>
+        </div>
+      </div></div></div></section><section class="wrap" id="next-market" style="padding-top:0"><div class="rsec"><div class="rail"><span class="n">06</span><span class="t">The next market</span></div><div class="rc">
+      <h2 class="shead">The record already reaches <em>the wider Bay Area</em>.</h2>
+      <p class="sbody"><b>The French Laundry in Yountville, Chez Panisse in Berkeley and Manresa in Los Gatos</b> are
+         in the graph today, because San Francisco’s reporting follows its cooks there. The Bay Area is the next step.</p>
+      <div class="callout" style="margin-top:26px"><h4>What this page does not count.</h4>
+        <p>How many kitchens on record sit outside San Francisco is not given here. The record holds no location
+           per kitchen, so that number cannot be read from it, and none is offered.</p></div>
+      <p class="figlabel"><span class="f">Fig. 6</span><span class="ft">What the next step takes</span></p>
+      <table class="city"><thead><tr><th scope="col">Piece</th><th scope="col">Today</th><th scope="col">For the Bay Area</th></tr></thead>
+        <tbody><tr><td>A reading list</td><td>Eater SF, SFGATE and the Chronicle: <b>2,221</b> articles read.</td><td><span class="ct local">per market</span>Reporting from the rest of the Bay Area, planned outlet by outlet.</td></tr><tr><td>Extraction and quote check</td><td><b>9,312</b> moves on record, each quote found in its article.</td><td><span class="ct same">carries over</span>The same code and the same check.</td></tr><tr><td>The citation gate</td><td><b>3,388</b> moves displayed.</td><td><span class="ct same">carries over</span>The same rule: the quote must state a career move.</td></tr><tr><td>Kitchen and people identity</td><td>Aliases and branches merged; same-name people flagged, never merged silently.</td><td><span class="ct local">per market</span>The rules carry over. The alias list is local work.</td></tr><tr><td>A location for each kitchen</td><td>Not on record. The graph knows a kitchen by its name, not by where it is.</td><td><span class="ct local">per market</span>Needed before any market can be counted or mapped.</td></tr><tr><td>The starred roster</td><td><b>19</b> of 26 starred San Francisco kitchens linked in the graph.</td><td><span class="ct local">per market</span>The guide list for the wider area, matched to kitchen names.</td></tr><tr><td>Booking links</td><td><b>222</b> venues verified on Resy, OpenTable and Tock.</td><td><span class="ct same">carries over</span>The same verification, with the city check widened.</td></tr><tr><td>Tree, Connect, Ledger, Explorer</td><td>All four read from the same graph.</td><td><span class="ct same">carries over</span>Work as the graph grows. Neighborhood labels and the map are local.</td></tr></tbody></table>
+      <ol class="citycards"><li><h4>A reading list</h4><p class="sf">Today: Eater SF, SFGATE and the Chronicle: <b>2,221</b> articles read.</p><p class="nx"><span class="ct local">per market</span>Reporting from the rest of the Bay Area, planned outlet by outlet.</p></li><li><h4>Extraction and quote check</h4><p class="sf">Today: <b>9,312</b> moves on record, each quote found in its article.</p><p class="nx"><span class="ct same">carries over</span>The same code and the same check.</p></li><li><h4>The citation gate</h4><p class="sf">Today: <b>3,388</b> moves displayed.</p><p class="nx"><span class="ct same">carries over</span>The same rule: the quote must state a career move.</p></li><li><h4>Kitchen and people identity</h4><p class="sf">Today: Aliases and branches merged; same-name people flagged, never merged silently.</p><p class="nx"><span class="ct local">per market</span>The rules carry over. The alias list is local work.</p></li><li><h4>A location for each kitchen</h4><p class="sf">Today: Not on record. The graph knows a kitchen by its name, not by where it is.</p><p class="nx"><span class="ct local">per market</span>Needed before any market can be counted or mapped.</p></li><li><h4>The starred roster</h4><p class="sf">Today: <b>19</b> of 26 starred San Francisco kitchens linked in the graph.</p><p class="nx"><span class="ct local">per market</span>The guide list for the wider area, matched to kitchen names.</p></li><li><h4>Booking links</h4><p class="sf">Today: <b>222</b> venues verified on Resy, OpenTable and Tock.</p><p class="nx"><span class="ct same">carries over</span>The same verification, with the city check widened.</p></li><li><h4>Tree, Connect, Ledger, Explorer</h4><p class="sf">Today: All four read from the same graph.</p><p class="nx"><span class="ct same">carries over</span>Work as the graph grows. Neighborhood labels and the map are local.</p></li></ol>
+      <p class="cap figcap">No timeline or cost for the next step is stated here, because neither has been measured.</p></div></div></section><section class="wrap" id="uses" style="padding-top:0"><div class="rsec"><div class="rail"><span class="n">07</span><span class="t">Uses</span></div><div class="rc">
+      <h2 class="shead">Three questions the graph <em>already answers</em>.</h2>
+      <p class="sbody">Who would use cited talent data, and what it returns today. Each answer below is read from
+         the graph and can be checked on the site.</p>
+      <div class="uses">
+        <div class="use"><p class="micro">Restaurant groups</p>
+          <p class="q">“Which kitchens sit within three moves of the city’s starred rooms?”</p>
+          <p class="al">The graph returns</p>
+          <p class="a"><i>The French Laundry</i>: <b>6</b> starred kitchens within three moves. <i>Per Se</i>: <b>5</b>. <i>Manresa</i> and <i>Gary Danko</i>: <b>4</b> each.</p></div>
+        <div class="use"><p class="micro">Landlords and developers</p>
+          <p class="q">“Who is this operator, on the record?”</p>
+          <p class="al">The graph returns</p>
+          <p class="a"><i>Thomas McNaughton</i>: Quince, then Flour + Water; from Flour + Water, Central Kitchen in <b>2012</b>. Each move cited.</p></div>
+        <div class="use"><p class="micro">Media and guides</p>
+          <p class="q">“Which chefs does the press name as mentors?”</p>
+          <p class="al">The graph returns</p>
+          <p class="a"><i>Thomas Keller</i>, named by <b>5</b> chefs. <i>George Morrone</i>, <i>Roland Passot</i>, <i>Wolfgang Puck</i> and <i>Michael Mina</i>: <b>3</b> each.</p></div>
+      </div>
+      <p class="disclaim">These are use cases, not customers. This page claims no customers and no revenue.</p></div></div></section>
+  <section class="wrap" style="padding-top:0"><div class="ncontact" id="contact">
+    <p class="kicker">Contact</p>
+    <h2>Ask for the data, or <em>check ours</em>.</h2>
+    <p class="sub">Investors, press and restaurant groups: write for a walkthrough of the graph or a sample
+       export. Every row comes with its sentence and its source.</p>
+    <div class="herocta">
+      <a class="cta" href="mailto:patrick@boxfordpartners.com" data-component-id="numbers-contact">Write to us <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h9M8 3.5 12.5 8 8 12.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a class="maillink" href="mailto:patrick@boxfordpartners.com" data-component-id="numbers-contact-address">patrick@boxfordpartners.com</a>
+    </div>
+    <p class="contactalso"><a class="ctasecondary" href="/explorer" data-component-id="numbers-explore-link">Open the explorer →</a>
+      <a class="ctasecondary" href="/method" data-component-id="numbers-method-link-2">Read the method →</a></p>
+  </div></section>
+</main>
+<footer class="wrap">
+  <div class="footrow">
+    <span><b>Bone Fides</b> · the kitchen lineage of San Francisco</span>
+    <span><a href="/explorer">Explore</a> · <a href="/trees">Trees</a> · <a href="/connect">Connect</a> · <a href="/ledger">Ledger</a> · <a href="/method">Method</a> · <a href="/numbers">Numbers</a></span>
+  </div>
+  <p class="footnote">Lineage is reconstructed from public reporting and can be incomplete or contested. Every claim on this page links to the article behind it, so you can read the same evidence we did. A line between two kitchens is a cited move by a named person, and nothing more is claimed. Corrections and source tips welcome.</p>
+</footer>
+</div>
+</body>
+</html>

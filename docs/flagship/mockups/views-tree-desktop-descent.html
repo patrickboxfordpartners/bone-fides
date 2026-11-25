@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bone Fides — The Tree: The French Laundry (descent)</title>
+<meta name="description" content="Desktop mockup of The French Laundry family tree drawn as left-to-right generations with every name upright.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#171310;--bg2:#1f1a15;--ink:#efe6d3;--dim:#9b8f7c;--faint:rgba(239,230,211,.14);
+  --accent:#d08152;--gold:#c2a05a;--stargold:#efd9a0;--ok:#8fb996;--bad:#d9776b;}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Fraunces',Georgia,serif;font-size:17px;line-height:1.6;font-weight:350}
+.frame{position:relative;overflow:hidden;background:var(--bg)}
+a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(194,160,90,.35)}
+a:hover{color:var(--ink);border-color:var(--ink)}
+button{font-family:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+::selection{background:rgba(208,129,82,.35)}
+/* bf:chrome — shared header: skip link, wordmark, six links; wraps to two rows when narrow */
+.bf-skip{position:absolute;left:12px;top:-60px;z-index:20;background:var(--bg2);color:var(--ink);border:1px solid var(--accent);border-radius:999px;
+  padding:0 18px;min-height:44px;display:inline-flex;align-items:center;font-size:13.5px}
+.bf-skip:focus,.bf-skip.is-focused{top:8px;left:168px;outline:2px solid var(--accent);outline-offset:3px}
+.bf-skip.narrow:focus{top:6px;left:132px}
+.bf-top{min-height:60px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:0 28px;padding:0 32px;
+  border-bottom:1px solid var(--faint);background:var(--bg);position:relative;z-index:5}
+.wordmark{font-size:19px;font-weight:560;letter-spacing:.01em;color:var(--ink);border:0;display:inline-flex;align-items:baseline;gap:7px;line-height:1}
+.wordmark em{color:var(--accent);font-style:italic;font-weight:500}
+.bf-nav{display:flex;gap:28px;align-self:stretch}
+.bf-nav a{font-size:13.5px;font-weight:400;color:var(--dim);border:0;border-bottom:1px solid transparent;margin-bottom:-1px;display:flex;align-items:center;line-height:1;min-height:59px}
+.bf-nav a:hover{color:var(--ink)}
+.bf-nav a[aria-current=page]{color:var(--ink);border-bottom-color:var(--accent)}
+.bf-top.narrow{min-height:56px;padding:0 20px}
+.bf-menu{font:500 12px/1 'Fraunces',Georgia,serif;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);background:transparent;
+  border:1px solid var(--faint);border-radius:999px;padding:0 18px;min-height:44px;cursor:pointer}
+.bf-menu:hover,.bf-menu[aria-expanded=true]{color:var(--accent);border-color:var(--accent)}
+/* /bf:chrome */
+.kicker{font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);line-height:1.4}
+.st{color:var(--stargold);letter-spacing:.1em;font-style:normal}
+.srcbadge{display:inline-block;font-size:10.5px;font-weight:560;letter-spacing:.08em;text-transform:uppercase;padding:1px 7px 2px;
+  border:1px solid currentColor;border-radius:99px;margin-left:8px;vertical-align:1px;line-height:1.4}
+.srcbadge.sfgate{color:#7dcec8}.srcbadge.eater{color:var(--gold)}.srcbadge.sfchronicle{color:#e7b0a4}.srcbadge.other{color:var(--dim)}
+.src{font-size:12.5px;color:var(--dim);letter-spacing:.04em;line-height:1.5}
+.src a{color:var(--gold);border-bottom:1px solid rgba(194,160,90,.35)}
+blockquote.ev{font-size:14.5px;line-height:1.5;color:var(--dim);font-weight:350;font-style:italic}
+.pill,.res{display:inline-flex;align-items:center;font-size:13.5px;color:var(--gold);text-decoration:none;border:1px solid rgba(194,160,90,.45);
+  border-radius:999px;padding:0 14px;min-height:40px;line-height:1}
+.res{background:var(--gold);color:var(--bg);border-color:var(--gold);font-weight:600}
+.copybtn{font:400 12px 'Fraunces',Georgia,serif;letter-spacing:.06em;border:1px solid var(--faint);background:none;color:var(--dim);
+  border-radius:999px;padding:4px 12px;cursor:pointer;line-height:1.5}
+.copybtn:hover{color:var(--accent);border-color:var(--accent)}
+.go{font:500 12px/1 'Fraunces',Georgia,serif;padding:0 24px;background:transparent;color:var(--dim);border:1px solid var(--faint);
+  border-radius:999px;cursor:pointer;letter-spacing:.2em;text-transform:uppercase;min-height:46px}
+.go:hover{color:var(--accent);border-color:var(--accent)}
+.textlink{font-size:13.5px;color:var(--gold);border-bottom:1px solid rgba(194,160,90,.35)}
+.morecite{font:400 12.5px 'Fraunces',Georgia,serif;color:var(--gold);background:none;border:0;border-bottom:1px solid rgba(194,160,90,.35);padding:0;cursor:pointer;margin-top:8px}
+.flaglink{background:none;border:0;padding:2px 0;color:var(--dim);font:italic 350 12.5px 'Fraunces',Georgia,serif;cursor:pointer;
+  text-decoration:underline;text-decoration-color:rgba(155,143,124,.4);text-underline-offset:3px}
+.viewtoggle{display:flex;align-items:baseline;gap:14px}
+.viewtoggle button{font:400 12.5px 'Fraunces',Georgia,serif;letter-spacing:.08em;background:none;border:0;cursor:pointer;color:var(--dim);
+  border-bottom:1px solid transparent;padding:0 0 1px;text-transform:uppercase}
+.viewtoggle button[aria-pressed=true]{color:var(--accent);border-bottom-color:var(--accent)}
+input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none;width:14px;height:14px;margin-left:10px;cursor:pointer;background:var(--dim);
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M2 2l10 10M12 2L2 12' stroke='black' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M2 2l10 10M12 2L2 12' stroke='black' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat}
+input[type=search]:focus{outline:none;border-bottom-color:var(--accent)}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+
+.frame{width:1440px;height:900px}
+
+.treepage{display:grid;grid-template-columns:1040px 400px;height:840px}
+.treepage.wide{grid-template-columns:1440px}
+.stage{position:relative;height:840px}
+.side{position:absolute;left:32px;top:30px;width:236px;z-index:2}
+.side h1{font-size:38px;line-height:1;font-weight:380;letter-spacing:-.01em;margin:10px 0 0;white-space:nowrap}
+.side .sub{font-size:14px;color:var(--dim);font-style:italic;font-weight:340;line-height:1.45;margin-top:12px;width:228px}
+.grow{display:flex;gap:10px;margin-top:18px;align-items:center;width:214px}
+.grow input{flex:1;min-width:0;font:350 15px/1 'Fraunces',Georgia,serif;padding:9px 2px;border:0;border-bottom:1px solid var(--faint);background:transparent;color:var(--ink)}
+.grow input::placeholder{color:#7d7361;font-style:italic}
+.grow .go{min-height:36px;padding:0 14px;font-size:11px}
+.tstats{margin-top:26px;border-top:1px solid var(--faint);width:164px}
+.tstat{padding:12px 0 11px;border-bottom:1px solid var(--faint)}
+.tstat b{display:block;font-size:40px;font-weight:420;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.01em;color:var(--ink)}
+.tstat.key b{color:var(--accent)}
+.tstat.star b{color:var(--stargold)}
+.tstat span{display:block;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin-top:8px;line-height:1.5}
+.side .viewtoggle{margin-top:20px}
+.share{position:absolute;right:24px;bottom:22px;display:flex;gap:8px;z-index:2}
+.chip rect{fill:var(--bg2);stroke:var(--dim);stroke-width:1}
+.chip.star rect{stroke:var(--gold)}
+.chip.on rect{stroke:var(--ink);stroke-width:1.6}
+.chip text{font-size:12.5px;fill:var(--ink);font-weight:420}
+.chip.star text{fill:var(--stargold);font-weight:560}
+.graph a:focus-visible .chip rect,.graph a:focus-visible rect{stroke:var(--accent);stroke-width:2px}
+.legend{position:absolute;left:32px;bottom:22px;width:240px;z-index:2;font-size:12.5px;color:var(--dim);line-height:1.45}
+.legend li{list-style:none;display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:start;margin-top:6px}
+.legend svg{margin-top:5px}
+.legend .st{font-size:12px}
+.legend b{color:var(--ink);font-weight:500;font-variant-numeric:tabular-nums}
+.graph{position:absolute;inset:0}
+.graph text{font-family:'Fraunces',Georgia,serif}
+.graph a{cursor:pointer}
+.guide{fill:none;stroke:var(--faint)}
+.cap{font-size:9.5px;letter-spacing:.22em;fill:var(--dim);paint-order:stroke;stroke:var(--bg);stroke-width:8px}
+.e{fill:none;stroke:var(--dim);stroke-width:1;stroke-linecap:round}
+.e.w2{stroke-width:2.2}
+.e.s{stroke:var(--gold);stroke-width:1.3}
+.e.s.w2{stroke-width:2.4}
+.e.sel{stroke:var(--ink);stroke-width:2.8}
+.dot{fill:var(--accent)}
+.lab{font-size:12.5px;fill:var(--ink);font-weight:380;paint-order:stroke;stroke:var(--bg);stroke-width:4px;stroke-linejoin:round}
+.lab.star{fill:var(--stargold);font-weight:560}
+.lab.on{fill:var(--ink);font-weight:600}
+.starglyph{fill:var(--stargold);font-size:13px;paint-order:stroke;stroke:var(--bg);stroke-width:3px}
+.rootdisc{fill:var(--bg2);stroke:var(--accent);stroke-width:1.4}
+.rootname{fill:var(--accent);font-size:12.5px;font-weight:600}
+.selring{fill:none;stroke:var(--ink);stroke-width:1.4}
+.graph a:focus-visible{outline:none}
+.graph a:focus-visible .dot,.graph a:focus-visible .starglyph{stroke:var(--accent);stroke-width:2px}
+.graph a:hover .lab{fill:var(--accent)}
+.lab.tip{opacity:0;pointer-events:none}
+.graph a:hover .lab.tip,.graph a:focus .lab.tip{opacity:1;fill:var(--ink);font-weight:600}
+.graph a:focus .dot{stroke:var(--accent);stroke-width:2px}
+.g1{stroke-dasharray:1;stroke-dashoffset:1;animation:draw .22s ease-out forwards}
+.g2{stroke-dasharray:1;stroke-dashoffset:1;animation:draw .22s ease-out .14s forwards}
+.g3{stroke-dasharray:1;stroke-dashoffset:1;animation:draw .22s ease-out .28s forwards}
+.f1{opacity:0;animation:fadein .3s ease-out .1s forwards}
+.f2{opacity:0;animation:fadein .3s ease-out .2s forwards}
+.f3{opacity:0;animation:fadein .3s ease-out .3s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes fadein{to{opacity:1}}
+@media (prefers-reduced-motion: reduce){.g1,.g2,.g3{stroke-dashoffset:0}.f1,.f2,.f3{opacity:1}}
+/* citation panel */
+.panel{border-left:1px solid var(--faint);padding:28px 34px 0 32px;height:840px;position:relative;
+  background:linear-gradient(180deg,rgba(208,129,82,.05),transparent 320px)}
+.panel h2{font-size:34px;font-weight:380;line-height:1.05;letter-spacing:-.01em;margin-top:8px}
+.panel h2 .st{font-size:15px;margin-left:8px;vertical-align:6px}
+.panel .psub{color:var(--dim);font-size:14px;margin-top:8px;font-style:italic;font-weight:340;line-height:1.45}
+.panel .psub b{color:var(--ink);font-style:normal;font-weight:500}
+.bookrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.hops{margin-top:20px;border-top:2px solid var(--ink)}
+.stop{display:grid;grid-template-columns:14px 1fr;gap:0 12px;align-items:center;padding-top:14px}
+.stop .d{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px var(--bg);justify-self:center;position:relative;z-index:1}
+.stop .d.star{background:var(--stargold)}
+.stop .nm{font:420 16px/1.3 'Fraunces',Georgia,serif;color:var(--ink);border:0;background:none;padding:0;text-align:left;cursor:pointer}
+.stop .nm.origin{color:var(--accent);font-weight:640}
+.stop .nm .st{font-size:11px;margin-left:6px}
+.hop{display:grid;grid-template-columns:14px 1fr;gap:0 12px;position:relative}
+.hop::before{content:'';position:absolute;left:6.5px;top:-6px;bottom:-20px;width:1px;background:var(--dim)}
+.hop .body{grid-column:2;padding:8px 0 4px}
+.hop .who{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.hop .pname{font-size:21px;font-weight:560;letter-spacing:.01em;line-height:1.2;color:var(--ink);border:0}
+.hop .role{color:var(--dim);font-size:13.5px;font-style:italic;font-weight:340}
+.hop .yr{font:340 11.5px Fraunces,Georgia,serif;color:var(--gold);letter-spacing:.06em;font-variant-numeric:tabular-nums}
+.hop .ev{margin-top:8px}
+.hop .src{margin-top:6px}
+.beyond{margin-top:18px;font-size:13.5px;color:var(--dim);line-height:1.5}
+.beyond a{font-size:13.5px}
+.pactions{position:absolute;left:32px;right:34px;bottom:22px;border-top:1px solid var(--faint);padding-top:13px;display:flex;flex-wrap:wrap;gap:6px 20px;align-items:baseline}
+.closex{position:absolute;right:26px;top:22px;width:40px;height:40px;border-radius:999px;border:1px solid var(--faint);background:none;color:var(--dim);cursor:pointer;font-size:15px;line-height:1}
+.closex:hover{color:var(--accent);border-color:var(--accent)}
+.idle{position:absolute;right:24px;bottom:70px;width:300px;font-size:15px;color:var(--dim);font-style:italic;line-height:1.5;text-align:right}
+</style>
+</head>
+<body>
+<div class="frame" data-frame="1440x900">
+<a class="bf-skip" href="#main" data-component-id="site-skip-link">Skip to content</a><header class="bf-top" data-component-id="site-header"><a class="wordmark" href="#" data-component-id="site-wordmark" aria-label="Bone Fides, home">Bone <em>Fides</em></a><nav class="bf-nav" id="bf-nav" aria-label="Primary"><a href="#" data-component-id="nav-explore">Explore</a><a href="#" data-component-id="nav-trees" aria-current="page">Trees</a><a href="#" data-component-id="nav-connect">Connect</a><a href="#" data-component-id="nav-ledger">Ledger</a><a href="#" data-component-id="nav-method">Method</a><a href="#" data-component-id="nav-numbers">Numbers</a></nav></header><main id="main" class="treepage"><section class="stage" aria-label="Family tree">
+<div class="side">
+  <p class="kicker">Family tree</p>
+  <h1>The French Laundry</h1>
+  <p class="sub">Where its alumni went next, and where their alumni went after that.</p>
+  <form class="grow" role="search" onsubmit="return false">
+    <label for="grow-q" class="sr-only">Grow a tree from another kitchen</label>
+    <input id="grow-q" type="search" placeholder="A kitchen…" autocomplete="off" data-component-id="tree-kitchen-input">
+    <button class="go" type="submit" data-component-id="tree-grow-button">Grow</button>
+  </form>
+  <div class="tstats" aria-live="polite" aria-label="Summary">
+    <div class="tstat key"><b>61</b><span>Kitchens within three cited moves</span></div>
+    <div class="tstat star"><b>6</b><span>Michelin-starred among them</span></div>
+    <div class="tstat"><b>15</b><span>Cited alumni</span></div>
+  </div>
+  <div class="viewtoggle" role="group" aria-label="View">
+    <button type="button" aria-pressed="true" data-component-id="tree-view-graph">Tree</button>
+    <button type="button" aria-pressed="false" data-component-id="tree-view-list">List</button>
+  </div>
+</div><svg class="graph" viewBox="0 0 1040 840" width="1040" height="840" role="group" aria-label="Family tree of The French Laundry: 61 kitchens within three cited moves, 6 Michelin-starred. The same branches are in the list view."><g><path class="e s g1" pathLength="1" d="M370.9 444.0C420.5 444.0 410.6 212.0 470 212.0"/><path class="e s g2" pathLength="1" d="M568.2 212.0C611.6 212.0 602.9 78.9 655 78.9"/><path class="e w2 g3" pathLength="1" d="M761.0 78.9C795.5 78.9 788.6 71.4 830 71.4"/><path class="e w2 g3" pathLength="1" d="M761.0 78.9C795.5 78.9 788.6 86.3 830 86.3"/><path class="e s g2" pathLength="1" d="M568.2 212.0C611.6 212.0 602.9 101.2 655 101.2"/><path class="e w2 g2" pathLength="1" d="M568.2 212.0C611.6 212.0 602.9 160.7 655 160.7"/><path class="e w2 g3" pathLength="1" d="M693.1 160.7C761.5 160.7 747.9 116.0 830 116.0"/><path class="e g3" pathLength="1" d="M693.1 160.7C761.5 160.7 747.9 130.9 830 130.9"/><path class="e g3" pathLength="1" d="M693.1 160.7C761.5 160.7 747.9 145.8 830 145.8"/><path class="e g3" pathLength="1" d="M693.1 160.7C761.5 160.7 747.9 160.7 830 160.7"/><path class="e g3" pathLength="1" d="M693.1 160.7C761.5 160.7 747.9 175.5 830 175.5"/><path class="e g3" pathLength="1" d="M693.1 160.7C761.5 160.7 747.9 190.4 830 190.4"/><path class="e g3" pathLength="1" d="M693.1 160.7C761.5 160.7 747.9 205.3 830 205.3"/><path class="e w2 g2" pathLength="1" d="M568.2 212.0C611.6 212.0 602.9 235.0 655 235.0"/><path class="e w2 g3" pathLength="1" d="M752.8 235.0C791.4 235.0 783.7 220.1 830 220.1"/><path class="e g3" pathLength="1" d="M752.8 235.0C791.4 235.0 783.7 235.0 830 235.0"/><path class="e g3" pathLength="1" d="M752.8 235.0C791.4 235.0 783.7 249.9 830 249.9"/><path class="e w2 g2" pathLength="1" d="M568.2 212.0C611.6 212.0 602.9 279.6 655 279.6"/><path class="e g3" pathLength="1" d="M737.4 279.6C783.7 279.6 774.4 264.8 830 264.8"/><path class="e g3" pathLength="1" d="M737.4 279.6C783.7 279.6 774.4 279.6 830 279.6"/><path class="e g3" pathLength="1" d="M737.4 279.6C783.7 279.6 774.4 294.5 830 294.5"/><path class="e w2 g2" pathLength="1" d="M568.2 212.0C611.6 212.0 602.9 312.3 655 312.3"/><path class="e g3" pathLength="1" d="M741.7 312.3C785.9 312.3 777.0 312.3 830 312.3"/><path class="e g2" pathLength="1" d="M568.2 212.0C611.6 212.0 602.9 330.2 655 330.2"/><path class="e g2" pathLength="1" d="M568.2 212.0C611.6 212.0 602.9 345.1 655 345.1"/><path class="e w2 s g1" pathLength="1" d="M370.9 444.0C420.5 444.0 410.6 402.1 470 402.1"/><path class="e s g2" pathLength="1" d="M557.0 402.1C606.0 402.1 596.2 364.9 655 364.9"/><path class="e g2" pathLength="1" d="M557.0 402.1C606.0 402.1 596.2 387.2 655 387.2"/><path class="e g3" pathLength="1" d="M707.0 387.2C768.5 387.2 756.2 379.8 830 379.8"/><path class="e g3" pathLength="1" d="M707.0 387.2C768.5 387.2 756.2 394.7 830 394.7"/><path class="e w2 g2" pathLength="1" d="M557.0 402.1C606.0 402.1 596.2 409.5 655 409.5"/><path class="e g2" pathLength="1" d="M557.0 402.1C606.0 402.1 596.2 424.4 655 424.4"/><path class="e g2" pathLength="1" d="M557.0 402.1C606.0 402.1 596.2 439.3 655 439.3"/><path class="e w2 s g1" pathLength="1" d="M370.9 444.0C420.5 444.0 410.6 501.5 470 501.5"/><path class="e w2 s g2" pathLength="1" d="M538.8 501.5C596.9 501.5 585.3 481.5 655 481.5"/><path class="e s g3" pathLength="1" d="M744.0 481.5C787.0 481.5 778.4 459.2 830 459.2"/><path class="e g3" pathLength="1" d="M744.0 481.5C787.0 481.5 778.4 474.0 830 474.0"/><path class="e w2 g3" pathLength="1" d="M744.0 481.5C787.0 481.5 778.4 488.9 830 488.9"/><path class="e g3" pathLength="1" d="M744.0 481.5C787.0 481.5 778.4 503.8 830 503.8"/><path class="e g2" pathLength="1" d="M538.8 501.5C596.9 501.5 585.3 521.6 655 521.6"/><path class="e g3" pathLength="1" d="M713.9 521.6C771.9 521.6 760.3 521.6 830 521.6"/><path class="e g1" pathLength="1" d="M370.9 444.0C420.5 444.0 410.6 563.8 470 563.8"/><path class="e g2" pathLength="1" d="M529.0 563.8C592.0 563.8 579.4 547.4 655 547.4"/><path class="e g3" pathLength="1" d="M718.2 547.4C774.1 547.4 762.9 547.4 830 547.4"/><path class="e g2" pathLength="1" d="M529.0 563.8C592.0 563.8 579.4 565.3 655 565.3"/><path class="e w2 g2" pathLength="1" d="M529.0 563.8C592.0 563.8 579.4 580.1 655 580.1"/><path class="e g1" pathLength="1" d="M370.9 444.0C420.5 444.0 410.6 603.0 470 603.0"/><path class="e g2" pathLength="1" d="M535.9 603.0C595.5 603.0 583.5 603.0 655 603.0"/><path class="e g1" pathLength="1" d="M370.9 444.0C420.5 444.0 410.6 628.8 470 628.8"/><path class="e g2" pathLength="1" d="M594.1 628.8C624.5 628.8 618.4 628.8 655 628.8"/><path class="e g1" pathLength="1" d="M370.9 444.0C420.5 444.0 410.6 654.6 470 654.6"/><path class="e g2" pathLength="1" d="M544.1 654.6C599.5 654.6 588.5 654.6 655 654.6"/><path class="e g1" pathLength="1" d="M370.9 444.0C420.5 444.0 410.6 677.5 470 677.5"/><path class="e w2 g1" pathLength="1" d="M370.9 444.0C420.5 444.0 410.6 697.3 470 697.3"/><path class="e g1" pathLength="1" d="M370.9 444.0C420.5 444.0 410.6 717.2 470 717.2"/><path class="e g1" pathLength="1" d="M370.9 444.0C420.5 444.0 410.6 737.1 470 737.1"/><path class="e g1" pathLength="1" d="M370.9 444.0C420.5 444.0 410.6 757.0 470 757.0"/><path class="e g1" pathLength="1" d="M370.9 444.0C420.5 444.0 410.6 776.8 470 776.8"/><path class="e g1" pathLength="1" d="M370.9 444.0C420.5 444.0 410.6 796.7 470 796.7"/><path class="e g1" pathLength="1" d="M370.9 444.0C420.5 444.0 410.6 816.6 470 816.6"/><path class="e sel g1" pathLength="1" d="M370.9 444.0C420.5 444.0 410.6 402.1 470 402.1"/><path class="e sel g2" pathLength="1" d="M557.0 402.1C606.0 402.1 596.2 364.9 655 364.9"/></g><text class="cap" x="222" y="418.0">ORIGIN</text><text class="cap" x="470" y="44">1ST MOVE · 15</text><text class="cap" x="655" y="44">2ND MOVE · 22</text><text class="cap" x="830" y="44">3RD MOVE · 24</text><g><a href="#" class="f1" aria-label="Quince, 3 Michelin stars, via Devin McDavid, 1 cited move" data-component-id="tree-node-quince"><title>Quince</title><g class="chip star"><rect x="470" y="202.0" width="98.2" height="20" rx="6"/><text x="479" y="216.3">Quince ★★★</text></g></a><a href="#" class="f2" aria-label="Mister Jiu&#x27;s, 1 Michelin star, via Brandon Jew, 1 cited move" data-component-id="tree-node-mister-jiu-s"><title>Mister Jiu&#x27;s</title><g class="chip star"><rect x="655" y="68.9" width="106.0" height="20" rx="6"/><text x="664" y="83.2">Mister Jiu&#x27;s ★</text></g></a><a href="#" class="f3" aria-label="Four Kings, via Franky Ho, Mike Long, 2 cited moves" data-component-id="tree-node-four-kings"><title>Four Kings</title><circle class="dot" cx="834" cy="71.4" r="2.8"/><text class="lab" x="845" y="75.7">Four Kings</text></a><a href="#" class="f3" aria-label="Soon and Soon Souvenir Shop, via Brandon Jew, 2 cited moves" data-component-id="tree-node-soon-and-soon-souvenir-shop"><title>Soon and Soon Souvenir Shop</title><circle class="dot" cx="834" cy="86.3" r="2.8"/><text class="lab" x="845" y="90.6">Soon and Soon Souvenir Shop</text></a><a href="#" class="f2" aria-label="Angler, 1 Michelin star, via Brian Limoges, 1 cited move" data-component-id="tree-node-angler"><title>Angler</title><text class="starglyph" x="659" y="105.8" text-anchor="middle">★</text><text class="lab star" x="670" y="105.5">Angler ★</text></a><a href="#" class="f2" aria-label="Coi, via Evan Rich, 2 cited moves" data-component-id="tree-node-coi"><title>Coi</title><g class="chip"><rect x="655" y="150.7" width="38.1" height="20" rx="6"/><text x="664" y="165.0">Coi</text></g></a><a href="#" class="f3" aria-label="Aster, via Daniel Patterson, Brett Cooper, 2 cited moves" data-component-id="tree-node-aster"><title>Aster</title><circle class="dot" cx="834" cy="116.0" r="2.8"/><text class="lab" x="845" y="120.3">Aster</text></a><a href="#" class="f3" aria-label="Bump Bar, via Nate Tauer, 1 cited move" data-component-id="tree-node-bump-bar"><title>Bump Bar</title><circle class="dot" cx="834" cy="130.9" r="2.8"/><text class="lab" x="845" y="135.2">Bump Bar</text></a><a href="#" class="f3" aria-label="Firebrand Artisan Breads, via Tommy Schnell, 1 cited move" data-component-id="tree-node-firebrand-artisan-breads"><title>Firebrand Artisan Breads</title><circle class="dot" cx="834" cy="145.8" r="2.8"/><text class="lab" x="845" y="150.1">Firebrand Artisan Breads</text></a><a href="#" class="f3" aria-label="Mission Bowling Club, via Chris Kiyuna, 1 cited move" data-component-id="tree-node-mission-bowling-club"><title>Mission Bowling Club</title><circle class="dot" cx="834" cy="160.7" r="2.8"/><text class="lab" x="845" y="165.0">Mission Bowling Club</text></a><a href="#" class="f3" aria-label="Outerlands, via Brett Cooper, 1 cited move" data-component-id="tree-node-outerlands"><title>Outerlands</title><circle class="dot" cx="834" cy="175.5" r="2.8"/><text class="lab" x="845" y="179.8">Outerlands</text></a><a href="#" class="f3" aria-label="The Morris, via Gavin Schmidt, 1 cited move" data-component-id="tree-node-the-morris"><title>The Morris</title><circle class="dot" cx="834" cy="190.4" r="2.8"/><text class="lab" x="845" y="194.7">The Morris</text></a><a href="#" class="f3" aria-label="Truss Restaurant + Bar, via Erik Anderson, 1 cited move" data-component-id="tree-node-truss-restaurant-bar"><title>Truss Restaurant + Bar</title><circle class="dot" cx="834" cy="205.3" r="2.8"/><text class="lab" x="845" y="209.6">Truss Restaurant + Bar</text></a><a href="#" class="f2" aria-label="Flour + Water, via Thomas McNaughton, 2 cited moves" data-component-id="tree-node-flour-water"><title>Flour + Water</title><g class="chip"><rect x="655" y="225.0" width="97.8" height="20" rx="6"/><text x="664" y="239.3">Flour + Water</text></g></a><a href="#" class="f3" aria-label="Central Kitchen, via Thomas McNaughton, 2 cited moves" data-component-id="tree-node-central-kitchen"><title>Central Kitchen</title><circle class="dot" cx="834" cy="220.1" r="2.8"/><text class="lab" x="845" y="224.4">Central Kitchen</text></a><a href="#" class="f3" aria-label="Central Kitchen/Salumeria, via Flour + Water team, 1 cited move" data-component-id="tree-node-central-kitchen-salumeria"><title>Central Kitchen/Salumeria</title><circle class="dot" cx="834" cy="235.0" r="2.8"/><text class="lab" x="845" y="239.3">Central Kitchen/Salumeria</text></a><a href="#" class="f3" aria-label="Great Gold, via Brandon Kirksey, 1 cited move" data-component-id="tree-node-great-gold"><title>Great Gold</title><circle class="dot" cx="834" cy="249.9" r="2.8"/><text class="lab" x="845" y="254.2">Great Gold</text></a><a href="#" class="f2" aria-label="Rich Table, via Sarah Rich, Evan Rich, 2 cited moves" data-component-id="tree-node-rich-table"><title>Rich Table</title><g class="chip"><rect x="655" y="269.6" width="82.4" height="20" rx="6"/><text x="664" y="283.9">Rich Table</text></g></a><a href="#" class="f3" aria-label="Ernest, via Brandon Rice, 1 cited move" data-component-id="tree-node-ernest"><title>Ernest</title><circle class="dot" cx="834" cy="264.8" r="2.8"/><text class="lab" x="845" y="269.1">Ernest</text></a><a href="#" class="f3" aria-label="Ox &amp; Tiger, via EJ Macayan, 1 cited move" data-component-id="tree-node-ox-tiger"><title>Ox &amp; Tiger</title><circle class="dot" cx="834" cy="279.6" r="2.8"/><text class="lab" x="845" y="283.9">Ox &amp; Tiger</text></a><a href="#" class="f3" aria-label="Viridian, via William Tsui, 1 cited move" data-component-id="tree-node-viridian"><title>Viridian</title><circle class="dot" cx="834" cy="294.5" r="2.8"/><text class="lab" x="845" y="298.8">Viridian</text></a><a href="#" class="f2" aria-label="Seven Hills, via Anthony Florian, 2 cited moves" data-component-id="tree-node-seven-hills"><title>Seven Hills</title><g class="chip"><rect x="655" y="302.3" width="86.7" height="20" rx="6"/><text x="664" y="316.6">Seven Hills</text></g></a><a href="#" class="f3" aria-label="Plin, via Alexander Alioto, 1 cited move" data-component-id="tree-node-plin"><title>Plin</title><circle class="dot" cx="834" cy="312.3" r="2.8"/><text class="lab" x="845" y="316.6">Plin</text></a><a href="#" class="f2" aria-label="Chez Noir, via Jonny Black, 1 cited move" data-component-id="tree-node-chez-noir"><title>Chez Noir</title><circle class="dot" cx="659" cy="330.2" r="2.8"/><text class="lab" x="670" y="334.5">Chez Noir</text></a><a href="#" class="f2" aria-label="Osteria Coppa, via Chanan Kamen, 1 cited move" data-component-id="tree-node-osteria-coppa"><title>Osteria Coppa</title><circle class="dot" cx="659" cy="345.1" r="2.8"/><text class="lab" x="670" y="349.4">Osteria Coppa</text></a><a href="#" class="f1" aria-label="Benu, 3 Michelin stars, via Corey Lee, 2 cited moves" data-component-id="tree-node-benu"><title>Benu</title><g class="chip star on"><rect x="470" y="392.1" width="87.0" height="20" rx="6"/><text x="479" y="406.4">Benu ★★★</text></g></a><a href="#" class="f2" aria-label="San Ho Won, 1 Michelin star, via Jeong-In Hwang, 1 cited move" data-component-id="tree-node-san-ho-won" aria-current="true"><title>San Ho Won</title><circle class="selring" cx="659" cy="364.9" r="8.5"/><text class="starglyph" x="659" y="369.5" text-anchor="middle">★</text><text class="lab star on" x="670" y="369.2">San Ho Won ★</text></a><a href="#" class="f2" aria-label="Avery, via Matthew Mako, 1 cited move" data-component-id="tree-node-avery"><title>Avery</title><g class="chip"><rect x="655" y="377.2" width="52.0" height="20" rx="6"/><text x="664" y="391.5">Avery</text></g></a><a href="#" class="f3" aria-label="Avery Edinburgh, via Rodney Wages, 1 cited move" data-component-id="tree-node-avery-edinburgh"><title>Avery Edinburgh</title><circle class="dot" cx="834" cy="379.8" r="2.8"/><text class="lab" x="845" y="384.1">Avery Edinburgh</text></a><a href="#" class="f3" aria-label="new casual concept, via Rodney Wages, 1 cited move" data-component-id="tree-node-new-casual-concept"><title>new casual concept</title><circle class="dot" cx="834" cy="394.7" r="2.8"/><text class="lab" x="845" y="399.0">new casual concept</text></a><a href="#" class="f2" aria-label="Happy Crane, via James Parry, 2 cited moves" data-component-id="tree-node-happy-crane"><title>Happy Crane</title><circle class="dot" cx="659" cy="409.5" r="2.8"/><text class="lab" x="670" y="413.8">Happy Crane</text></a><a href="#" class="f2" aria-label="OK&#x27;s Deli, via Karis Kochi, 1 cited move" data-component-id="tree-node-ok-s-deli"><title>OK&#x27;s Deli</title><circle class="dot" cx="659" cy="424.4" r="2.8"/><text class="lab" x="670" y="428.7">OK&#x27;s Deli</text></a><a href="#" class="f2" aria-label="The Snug, via Brian Shin, 1 cited move" data-component-id="tree-node-the-snug"><title>The Snug</title><circle class="dot" cx="659" cy="439.3" r="2.8"/><text class="lab" x="670" y="443.6">The Snug</text></a><a href="#" class="f1" aria-label="Chez TJ, via Scott Nishiyama, 2 cited moves" data-component-id="tree-node-chez-tj"><title>Chez TJ</title><g class="chip"><rect x="470" y="491.5" width="68.8" height="20" rx="6"/><text x="479" y="505.8">Chez TJ</text></g></a><a href="#" class="f2" aria-label="Meadowood, via Christopher Kostow, 2 cited moves" data-component-id="tree-node-meadowood"><title>Meadowood</title><g class="chip"><rect x="655" y="471.5" width="89.0" height="20" rx="6"/><text x="664" y="485.8">Meadowood</text></g></a><a href="#" class="f3" aria-label="Ssal, 1 Michelin star, via Junsoo Bae, 1 cited move" data-component-id="tree-node-ssal"><title>Ssal</title><text class="starglyph" x="834" y="463.8" text-anchor="middle">★</text><text class="lab star" x="845" y="463.5">Ssal ★</text></a><a href="#" class="f3" aria-label="Cavallo Point resort, via Joseph Humphrey, 1 cited move" data-component-id="tree-node-cavallo-point-resort"><title>Cavallo Point resort</title><circle class="dot" cx="834" cy="474.0" r="2.8"/><text class="lab" x="845" y="478.3">Cavallo Point resort</text></a><a href="#" class="f3" aria-label="Dixie, via Joseph Humphrey, 2 cited moves" data-component-id="tree-node-dixie"><title>Dixie</title><circle class="dot" cx="834" cy="488.9" r="2.8"/><text class="lab" x="845" y="493.2">Dixie</text></a><a href="#" class="f3" aria-label="Murray Circle, via Joseph Humphrey, 1 cited move" data-component-id="tree-node-murray-circle"><title>Murray Circle</title><circle class="dot" cx="834" cy="503.8" r="2.8"/><text class="lab" x="845" y="508.1">Murray Circle</text></a><a href="#" class="f2" aria-label="Baume, via Bruno Chemel, 1 cited move" data-component-id="tree-node-baume"><title>Baume</title><g class="chip"><rect x="655" y="511.6" width="58.9" height="20" rx="6"/><text x="664" y="525.9">Baume</text></g></a><a href="#" class="f3" aria-label="Palo Alto Grill, via Ryan Shelton, 1 cited move" data-component-id="tree-node-palo-alto-grill"><title>Palo Alto Grill</title><circle class="dot" cx="834" cy="521.6" r="2.8"/><text class="lab" x="845" y="525.9">Palo Alto Grill</text></a><a href="#" class="f1" aria-label="Spruce, via Walter Abrams, 1 cited move" data-component-id="tree-node-spruce"><title>Spruce</title><g class="chip"><rect x="470" y="553.8" width="59.0" height="20" rx="6"/><text x="479" y="568.1">Spruce</text></g></a><a href="#" class="f2" aria-label="Piccino, via Jason Wittek, 1 cited move" data-component-id="tree-node-piccino"><title>Piccino</title><g class="chip"><rect x="655" y="537.4" width="63.2" height="20" rx="6"/><text x="664" y="551.7">Piccino</text></g></a><a href="#" class="f3" aria-label="NOON All Day, via Sarah Hipwell, 1 cited move" data-component-id="tree-node-noon-all-day"><title>NOON All Day</title><circle class="dot" cx="834" cy="547.4" r="2.8"/><text class="lab" x="845" y="551.7">NOON All Day</text></a><a href="#" class="f2" aria-label="Anomaly, via Mike Lanham, 1 cited move" data-component-id="tree-node-anomaly"><title>Anomaly</title><circle class="dot" cx="659" cy="565.3" r="2.8"/><text class="lab" x="670" y="569.6">Anomaly</text></a><a href="#" class="f2" aria-label="Auro, via Rogelio Garcia, Elijah Cortez, 2 cited moves" data-component-id="tree-node-auro"><title>Auro</title><circle class="dot" cx="659" cy="580.1" r="2.8"/><text class="lab" x="670" y="584.4">Auro</text></a><a href="#" class="f1" aria-label="Cotogna, via Devin McDavid, 1 cited move" data-component-id="tree-node-cotogna"><title>Cotogna</title><g class="chip"><rect x="470" y="593.0" width="65.9" height="20" rx="6"/><text x="479" y="607.3">Cotogna</text></g></a><a href="#" class="f2" aria-label="Petit Crenn, via Ellie Estrada-Londo, 1 cited move" data-component-id="tree-node-petit-crenn"><title>Petit Crenn</title><circle class="dot" cx="659" cy="603.0" r="2.8"/><text class="lab" x="670" y="607.3">Petit Crenn</text></a><a href="#" class="f1" aria-label="El Dorado Kitchen, via Ryan Fancher, 1 cited move" data-component-id="tree-node-el-dorado-kitchen"><title>El Dorado Kitchen</title><g class="chip"><rect x="470" y="618.8" width="124.1" height="20" rx="6"/><text x="479" y="633.1">El Dorado Kitchen</text></g></a><a href="#" class="f2" aria-label="Murray Circle at Cavallo Point, via Justin Everett, 1 cited move" data-component-id="tree-node-murray-circle-at-cavallo-point"><title>Murray Circle at Cavallo Point</title><circle class="dot" cx="659" cy="628.8" r="2.8"/><text class="lab" x="670" y="633.1">Murray Circle at Cavallo Point</text></a><a href="#" class="f1" aria-label="Morimoto, via Nai Kang Kuan, 1 cited move" data-component-id="tree-node-morimoto"><title>Morimoto</title><g class="chip"><rect x="470" y="644.6" width="74.1" height="20" rx="6"/><text x="479" y="658.9">Morimoto</text></g></a><a href="#" class="f2" aria-label="The Shota, via Ingi “Shota” Son, 1 cited move" data-component-id="tree-node-the-shota"><title>The Shota</title><circle class="dot" cx="659" cy="654.6" r="2.8"/><text class="lab" x="670" y="658.9">The Shota</text></a><a href="#" class="f1" aria-label="Broad Museum restaurant, via Timothy Hollingsworth, 1 cited move" data-component-id="tree-node-broad-museum-restaurant"><title>Broad Museum restaurant</title><circle class="dot" cx="474" cy="677.5" r="2.8"/><text class="lab" x="485" y="681.8">Broad Museum restaurant</text></a><a href="#" class="f1" aria-label="Charlie&#x27;s, via Eliott Bell, Elliot Bell, 2 cited moves" data-component-id="tree-node-charlie-s"><title>Charlie&#x27;s</title><circle class="dot" cx="474" cy="697.3" r="2.8"/><text class="lab" x="485" y="701.6">Charlie&#x27;s</text></a><a href="#" class="f1" aria-label="Chicken Fried Palace, via Gabrielle Pabonan, 1 cited move" data-component-id="tree-node-chicken-fried-palace"><title>Chicken Fried Palace</title><circle class="dot" cx="474" cy="717.2" r="2.8"/><text class="lab" x="485" y="721.5">Chicken Fried Palace</text></a><a href="#" class="f1" aria-label="Monsieur Benjamin, via Jason Berthold, 1 cited move" data-component-id="tree-node-monsieur-benjamin"><title>Monsieur Benjamin</title><circle class="dot" cx="474" cy="737.1" r="2.8"/><text class="lab" x="485" y="741.4">Monsieur Benjamin</text></a><a href="#" class="f1" aria-label="Mosu, via Sung Anh, 1 cited move" data-component-id="tree-node-mosu"><title>Mosu</title><circle class="dot" cx="474" cy="757.0" r="2.8"/><text class="lab" x="485" y="761.3">Mosu</text></a><a href="#" class="f1" aria-label="Old Post Office, via Jonathan Granada, 1 cited move" data-component-id="tree-node-old-post-office"><title>Old Post Office</title><circle class="dot" cx="474" cy="776.8" r="2.8"/><text class="lab" x="485" y="781.1">Old Post Office</text></a><a href="#" class="f1" aria-label="PlumpJack Group&#x27;s Farm, via Ryan Jetté, 1 cited move" data-component-id="tree-node-plumpjack-group-s-farm"><title>PlumpJack Group&#x27;s Farm</title><circle class="dot" cx="474" cy="796.7" r="2.8"/><text class="lab" x="485" y="801.0">PlumpJack Group&#x27;s Farm</text></a><a href="#" class="f1" aria-label="Spice Kit, via William Pacio, 1 cited move" data-component-id="tree-node-spice-kit"><title>Spice Kit</title><circle class="dot" cx="474" cy="816.6" r="2.8"/><text class="lab" x="485" y="820.9">Spice Kit</text></a></g><rect x="222" y="429.0" width="148.9" height="30" rx="7" class="rootdisc"/><text class="rootname" style="font-size:13.5px" x="296.5" y="448.6" text-anchor="middle">The French Laundry</text></svg>
+<ul class="legend" aria-label="How to read the tree">
+  <li><svg width="30" height="8" aria-hidden="true"><path d="M1 4h28" class="e"/></svg><span>A cited move by a named person.</span></li>
+  <li><svg width="30" height="8" aria-hidden="true"><path d="M1 4h28" class="e w2"/></svg><span>Heavier: two or more cited moves join the two kitchens.</span></li>
+  <li><svg width="30" height="8" aria-hidden="true"><path d="M1 4h28" class="e s"/></svg><span>Gold: leads to a starred kitchen. <span class="st">★</span> Stars: Michelin Guide 2026, San Francisco kitchens only.</span></li>
+  <li><span></span><span>Columns follow cited moves, not dates: <b>720</b> of <b>3,388</b> displayed moves carry a year.</span></li>
+</ul><div class="share"><button type="button" class="copybtn" data-component-id="tree-copy-link">copy link</button><button type="button" class="copybtn" data-component-id="tree-save-image">save image</button></div></section>
+<aside class="panel" aria-label="Open branch" data-component-id="tree-branch-panel">
+  <button type="button" class="closex" aria-label="Close the branch" data-component-id="branch-close">✕</button>
+  <p class="kicker">Open branch</p>
+  <h2>San Ho Won<span class="st" aria-label="1 Michelin star">★</span></h2>
+  <p class="psub"><b>Two moves</b> from The French Laundry, on three cited sentences.</p>
+  <div class="bookrow"><a class="res" href="#" data-component-id="branch-book-tock">Book on Tock</a></div>
+  <div class="hops"><div class="stop"><span class="d" aria-hidden="true"></span><button type="button" class="nm origin" data-component-id="branch-stop-origin">The French Laundry</button></div><div class="hop"><div class="body"><div class="who"><a class="pname" href="#" data-component-id="branch-move1-person">Corey Lee</a><span class="role">chef de cuisine</span><span class="yr">2010</span></div><blockquote class="ev">“Corey Lee, former chef de cuisine at the French Laundry, finally has the space for his own restaurant. He&#x27;s taking over the Two space in San Francisco&#x27;s SoMa (22 Hawthorne St.) for a restaurant he plans to open in the sp…”</blockquote><div class="src">§ <a href="https://www.sfgate.com/restaurants/article/Former-French-Laundry-chef-to-open-Benu-3283156.php" target="_blank" rel="noopener" data-component-id="branch-move1-source1" aria-label="Read the source article on sfgate.com">sfgate.com</a><span class="srcbadge sfgate">SFGate</span></div><button type="button" class="morecite" aria-expanded="false" data-component-id="branch-move1-more-citations">+1 more citation</button></div></div><div class="stop"><span class="d star" aria-hidden="true"></span><button type="button" class="nm" data-component-id="branch-stop-1">Benu<span class="st" aria-label="3 Michelin stars">★★★</span></button></div><div class="hop"><div class="body"><div class="who"><a class="pname" href="#" data-component-id="branch-move2-person">Jeong-In Hwang</a><span class="role">chef</span></div><blockquote class="ev">“Jeong-In Hwang... has spent the past five years... leading the kitchen at Benu. Together, they’re opening the Korean restaurant San Ho Won”</blockquote><div class="src">§ <a href="https://sf.eater.com/2021/11/1/22756844/corey-lee-san-ho-won-opening-menu" target="_blank" rel="noopener" data-component-id="branch-move2-source1" aria-label="Read the source article on sf.eater.com">sf.eater.com</a><span class="srcbadge eater">Eater</span></div></div></div><div class="stop"><span class="d star" aria-hidden="true"></span><button type="button" class="nm" data-component-id="branch-stop-2">San Ho Won<span class="st" aria-label="1 Michelin star">★</span></button></div></div>
+  <div class="pactions">
+    <a class="textlink" href="#" data-component-id="branch-open-dossier">Open dossier →</a>
+    <a class="textlink" href="#" data-component-id="branch-grow-tree">Grow the tree from here →</a>
+    <a class="textlink" href="#" data-component-id="branch-trace-line">Trace a line from The French Laundry →</a>
+    <button type="button" class="flaglink" data-component-id="branch-flag">flag or add</button>
+  </div>
+</aside></main>
+</div>
+</body>
+</html>

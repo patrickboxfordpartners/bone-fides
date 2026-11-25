@@ -1,0 +1,103 @@
+{
+  "title": "Bone Fides flagship views: The Tree, Connect, The Ledger and the shared header (gated figures)",
+  "summary": "Three graph views on the existing warm-dark Fraunces identity, using only the tokens, type and components already in explorer.html, landing.html and method.html. Every name, figure, quote and source link comes from the gated data brief (moves that pass the display gate); booking pills appear only for exact names in ui/dossier_booking.json. The Tree has two directions. Rings (recommended): The French Laundry at the centre, first and second moves named on two rings, and each third-move kitchen as a mark on the outer ring, attached to its real parent, starred where it holds a star, and named on hover and on keyboard focus; ring captions carry the count for each move, so the size is seen before it is read. Descent: the same tree as left-to-right columns with every name upright; easier to read at rest, less of an image, and it grows tall rather than staying one picture. Rings is recommended because it shows the whole lineage as one shape, doubles as the share image, and the list view carries full legibility. Scale rule for Rings: a named kitchen gets a fixed slot of arc, a third-move mark gets 0.45 of a slot, and the radius grows when the slots outrun the circumference, so type never shrinks; shown at 61 kitchens (The French Laundry) and at 71 (Aqua, the largest tree in the brief). Branch lines are --dim, --gold where the branch leads to a starred kitchen, and heavier where two or more distinct cited moves join the same two kitchens; --faint is used for hairlines and guide rings only. The list view and the phone view are the same tree as nested lists: kitchen, the named person, and the quoted sentence with its source link. Connect uses The French Laundry to Mister Jiu's, two cited moves; each hop is a sentence that gives the true direction of the person's move, then the quote and source. The Ledger ranks the 15 kitchens with the most cited alumni and states under each column heading exactly what is counted. The shared header is a skip link, the wordmark and six links; at 760px and narrower the links fold behind a Menu button.",
+  "sections": [
+    {
+      "title": "The Tree, desktop",
+      "key": "views-tree-desktop",
+      "description": "The French Laundry family tree, 61 kitchens within three cited moves, with the branch to San Ho Won open.",
+      "variations": [
+        {"title": "Rings: two named rings and an outer ring of marks", "key": "rings", "html_link": "views-tree-desktop-rings.html", "is_recommended": true},
+        {"title": "Descent: generations as columns, every name upright", "key": "descent", "html_link": "views-tree-desktop-descent.html", "is_recommended": false}
+      ]
+    },
+    {
+      "title": "The Tree at its largest today, desktop",
+      "key": "views-tree-large-desktop",
+      "description": "The ring tree for Aqua, 71 kitchens, with no branch open: the idle state and the size check.",
+      "variations": [
+        {"title": "Rings at 71 kitchens, no branch open", "key": "rings", "html_link": "views-tree-large-desktop-rings.html", "is_recommended": true}
+      ]
+    },
+    {
+      "title": "The Tree, list form, desktop",
+      "key": "views-tree-list-desktop",
+      "description": "The same tree as a nested list: kitchen, the named person, and the quoted sentence with its source.",
+      "variations": [
+        {"title": "Nested list with the San Ho Won branch open", "key": "outline", "html_link": "views-tree-list-desktop-outline.html", "is_recommended": true}
+      ]
+    },
+    {
+      "title": "The Tree, phone",
+      "key": "views-tree-phone",
+      "description": "The figures, the size of each generation, then every branch as a nested list with one citation open.",
+      "variations": [
+        {"title": "Nested list with a generation bar", "key": "rings", "html_link": "views-tree-phone-rings.html", "is_recommended": true}
+      ]
+    },
+    {
+      "title": "The Tree, share image",
+      "key": "views-tree-share",
+      "description": "The 1200 by 630 link preview that a copied tree link unfurls to.",
+      "variations": [
+        {"title": "Ring drawing with name and gated reach", "key": "card", "html_link": "views-tree-share-card.html", "is_recommended": true}
+      ]
+    },
+    {
+      "title": "Connect, picking state, desktop",
+      "key": "views-connect-pick-desktop",
+      "description": "One end chosen, the second being typed with suggestions open, and four real lines to try.",
+      "variations": [
+        {"title": "Two ends and lines to try", "key": "two-ends", "html_link": "views-connect-pick-desktop-two-ends.html", "is_recommended": true}
+      ]
+    },
+    {
+      "title": "Connect, result, desktop",
+      "key": "views-connect-result-desktop",
+      "description": "The French Laundry to Mister Jiu's in two cited moves, each with person, quote and source.",
+      "variations": [
+        {"title": "One line, a hop card under every link", "key": "line", "html_link": "views-connect-result-desktop-line.html", "is_recommended": true}
+      ]
+    },
+    {
+      "title": "Connect, result, phone",
+      "key": "views-connect-result-phone",
+      "description": "The same two moves read top to bottom on a vertical line.",
+      "variations": [
+        {"title": "Vertical line of stations and hops", "key": "line", "html_link": "views-connect-result-phone-line.html", "is_recommended": true}
+      ]
+    },
+    {
+      "title": "The Ledger, desktop",
+      "key": "views-ledger-desktop",
+      "description": "Leaders, the 15 kitchens with the most cited alumni with each column defined, and the named mentors.",
+      "variations": [
+        {"title": "Leaders, alumni board and mentor board", "key": "rankings", "html_link": "views-ledger-desktop-rankings.html", "is_recommended": true}
+      ]
+    },
+    {
+      "title": "The Ledger, phone",
+      "key": "views-ledger-phone",
+      "description": "Leaders, the column definitions, the alumni board as stacked rows, then mentors.",
+      "variations": [
+        {"title": "Stacked rankings", "key": "rankings", "html_link": "views-ledger-phone-rankings.html", "is_recommended": true}
+      ]
+    },
+    {
+      "title": "Shared header, desktop",
+      "key": "views-nav-desktop",
+      "description": "The header module on first Tab: skip link, wordmark and six links; it is shown in place on every desktop mockup.",
+      "variations": [
+        {"title": "Skip link focused", "key": "skip-link", "html_link": "views-nav-desktop-skip-link.html", "is_recommended": true}
+      ]
+    },
+    {
+      "title": "Shared header, phone menu",
+      "key": "views-nav-phone",
+      "description": "The header at 390px with its Menu open.",
+      "variations": [
+        {"title": "Menu open on the Trees page", "key": "menu-open", "html_link": "views-nav-phone-menu-open.html", "is_recommended": true}
+      ]
+    }
+  ]
+}

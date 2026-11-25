@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bone Fides — The Ledger</title>
+<meta name="description" content="Desktop mockup of the Ledger: the 15 kitchens with the most cited alumni, their reach within three cited moves and the starred kitchens among them, beside the named mentors.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#171310;--bg2:#1f1a15;--ink:#efe6d3;--dim:#9b8f7c;--faint:rgba(239,230,211,.14);
+  --accent:#d08152;--gold:#c2a05a;--stargold:#efd9a0;--ok:#8fb996;--bad:#d9776b;}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Fraunces',Georgia,serif;font-size:17px;line-height:1.6;font-weight:350}
+.frame{position:relative;overflow:hidden;background:var(--bg)}
+a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(194,160,90,.35)}
+a:hover{color:var(--ink);border-color:var(--ink)}
+button{font-family:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+::selection{background:rgba(208,129,82,.35)}
+/* bf:chrome — shared header: skip link, wordmark, six links; wraps to two rows when narrow */
+.bf-skip{position:absolute;left:12px;top:-60px;z-index:20;background:var(--bg2);color:var(--ink);border:1px solid var(--accent);border-radius:999px;
+  padding:0 18px;min-height:44px;display:inline-flex;align-items:center;font-size:13.5px}
+.bf-skip:focus,.bf-skip.is-focused{top:8px;left:168px;outline:2px solid var(--accent);outline-offset:3px}
+.bf-skip.narrow:focus{top:6px;left:132px}
+.bf-top{min-height:60px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:0 28px;padding:0 32px;
+  border-bottom:1px solid var(--faint);background:var(--bg);position:relative;z-index:5}
+.wordmark{font-size:19px;font-weight:560;letter-spacing:.01em;color:var(--ink);border:0;display:inline-flex;align-items:baseline;gap:7px;line-height:1}
+.wordmark em{color:var(--accent);font-style:italic;font-weight:500}
+.bf-nav{display:flex;gap:28px;align-self:stretch}
+.bf-nav a{font-size:13.5px;font-weight:400;color:var(--dim);border:0;border-bottom:1px solid transparent;margin-bottom:-1px;display:flex;align-items:center;line-height:1;min-height:59px}
+.bf-nav a:hover{color:var(--ink)}
+.bf-nav a[aria-current=page]{color:var(--ink);border-bottom-color:var(--accent)}
+.bf-top.narrow{min-height:56px;padding:0 20px}
+.bf-menu{font:500 12px/1 'Fraunces',Georgia,serif;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);background:transparent;
+  border:1px solid var(--faint);border-radius:999px;padding:0 18px;min-height:44px;cursor:pointer}
+.bf-menu:hover,.bf-menu[aria-expanded=true]{color:var(--accent);border-color:var(--accent)}
+/* /bf:chrome */
+.kicker{font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);line-height:1.4}
+.st{color:var(--stargold);letter-spacing:.1em;font-style:normal}
+.srcbadge{display:inline-block;font-size:10.5px;font-weight:560;letter-spacing:.08em;text-transform:uppercase;padding:1px 7px 2px;
+  border:1px solid currentColor;border-radius:99px;margin-left:8px;vertical-align:1px;line-height:1.4}
+.srcbadge.sfgate{color:#7dcec8}.srcbadge.eater{color:var(--gold)}.srcbadge.sfchronicle{color:#e7b0a4}.srcbadge.other{color:var(--dim)}
+.src{font-size:12.5px;color:var(--dim);letter-spacing:.04em;line-height:1.5}
+.src a{color:var(--gold);border-bottom:1px solid rgba(194,160,90,.35)}
+blockquote.ev{font-size:14.5px;line-height:1.5;color:var(--dim);font-weight:350;font-style:italic}
+.pill,.res{display:inline-flex;align-items:center;font-size:13.5px;color:var(--gold);text-decoration:none;border:1px solid rgba(194,160,90,.45);
+  border-radius:999px;padding:0 14px;min-height:40px;line-height:1}
+.res{background:var(--gold);color:var(--bg);border-color:var(--gold);font-weight:600}
+.copybtn{font:400 12px 'Fraunces',Georgia,serif;letter-spacing:.06em;border:1px solid var(--faint);background:none;color:var(--dim);
+  border-radius:999px;padding:4px 12px;cursor:pointer;line-height:1.5}
+.copybtn:hover{color:var(--accent);border-color:var(--accent)}
+.go{font:500 12px/1 'Fraunces',Georgia,serif;padding:0 24px;background:transparent;color:var(--dim);border:1px solid var(--faint);
+  border-radius:999px;cursor:pointer;letter-spacing:.2em;text-transform:uppercase;min-height:46px}
+.go:hover{color:var(--accent);border-color:var(--accent)}
+.textlink{font-size:13.5px;color:var(--gold);border-bottom:1px solid rgba(194,160,90,.35)}
+.morecite{font:400 12.5px 'Fraunces',Georgia,serif;color:var(--gold);background:none;border:0;border-bottom:1px solid rgba(194,160,90,.35);padding:0;cursor:pointer;margin-top:8px}
+.flaglink{background:none;border:0;padding:2px 0;color:var(--dim);font:italic 350 12.5px 'Fraunces',Georgia,serif;cursor:pointer;
+  text-decoration:underline;text-decoration-color:rgba(155,143,124,.4);text-underline-offset:3px}
+.viewtoggle{display:flex;align-items:baseline;gap:14px}
+.viewtoggle button{font:400 12.5px 'Fraunces',Georgia,serif;letter-spacing:.08em;background:none;border:0;cursor:pointer;color:var(--dim);
+  border-bottom:1px solid transparent;padding:0 0 1px;text-transform:uppercase}
+.viewtoggle button[aria-pressed=true]{color:var(--accent);border-bottom-color:var(--accent)}
+input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none;width:14px;height:14px;margin-left:10px;cursor:pointer;background:var(--dim);
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M2 2l10 10M12 2L2 12' stroke='black' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M2 2l10 10M12 2L2 12' stroke='black' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat}
+input[type=search]:focus{outline:none;border-bottom-color:var(--accent)}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+
+.frame{width:1440px;height:2150px}
+
+.lh{padding:48px 72px 0}
+.lh h1{font-size:56px;line-height:1;font-weight:380;letter-spacing:-.015em;margin-top:18px}
+.lh h1 em{color:var(--accent);font-style:italic;font-weight:500}
+.lede{font-size:18px;color:var(--dim);line-height:1.55;font-weight:350;max-width:66ch;margin-top:18px}
+.lede b{color:var(--ink);font-weight:480;font-variant-numeric:tabular-nums}
+.leaders{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--faint);border:1px solid var(--faint);margin:34px 72px 0}
+.leader{background:var(--bg);padding:22px 22px 18px;border:0;color:var(--ink);display:block}
+.leader .lk{display:block;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);line-height:1.5}
+.leader b{display:block;font-size:46px;font-weight:420;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.01em;margin-top:12px;color:var(--accent)}
+.leader.star b{color:var(--stargold)}
+.leader .who{display:block;font-size:19px;font-weight:420;margin-top:10px;line-height:1.25}
+.leader .unit{display:block;font-size:12.5px;color:var(--dim);font-style:italic;line-height:1.4;margin-top:2px}
+.leader:hover .who{color:var(--accent)}
+.lgrid{display:grid;grid-template-columns:912px 328px;gap:56px;padding:44px 72px 0}
+.bh{font-size:30px;font-weight:380;line-height:1.15;letter-spacing:-.01em}
+.brule{font-size:14px;color:var(--dim);font-style:italic;line-height:1.45;margin-top:6px}
+table{width:100%;border-collapse:collapse;margin-top:18px}
+thead th{text-align:left;vertical-align:top;padding:12px 18px 12px 0;border-top:2px solid var(--ink);border-bottom:1px solid var(--faint);font-weight:400}
+thead .h{display:block;font-weight:500;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);line-height:1.5}
+thead .def{display:block;font-size:12.5px;color:var(--dim);font-style:italic;line-height:1.4;margin-top:4px}
+tbody td{padding:15px 18px 14px 0;border-bottom:1px solid var(--faint);vertical-align:top}
+.rk{font-size:13.5px;color:var(--gold);letter-spacing:.1em;font-weight:560;font-variant-numeric:tabular-nums;width:44px;padding-top:19px}
+.kn a{font-size:21px;font-weight:420;color:var(--ink);border:0;line-height:1.25}
+.kn a:hover{color:var(--accent)}
+.kn .lnk{display:flex;gap:16px;margin-top:4px}
+.kn .lnk a{font-size:12.5px;font-weight:400;color:var(--gold);border-bottom:1px solid rgba(194,160,90,.35);line-height:1.5}
+.num{display:block;font-size:24px;font-weight:420;line-height:1.1;font-variant-numeric:tabular-nums;letter-spacing:-.01em;color:var(--ink)}
+td.key .num{color:var(--accent)}
+.pedbar{height:5px;border-radius:3px;background:var(--faint);overflow:hidden;margin-top:9px}
+.pedbar span{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,var(--accent),var(--gold))}
+.sd{display:grid;grid-template-columns:50px 1fr;gap:0 6px;align-items:start}
+.sd .cnt{font-size:24px;font-weight:420;line-height:1.1;color:var(--stargold);font-variant-numeric:tabular-nums;white-space:nowrap}
+.sd .cnt i{font-style:normal;font-size:14px;vertical-align:3px;margin-right:5px}
+.sd .cnt.none{color:var(--dim)}
+.sd .names{font-size:12.5px;color:var(--dim);font-style:italic;font-weight:340;line-height:1.5;padding-top:5px}
+.mlist{list-style:none;margin-top:18px;border-top:2px solid var(--ink)}
+.mrow{display:grid;grid-template-columns:34px 1fr auto 18px;gap:0 8px;align-items:baseline;padding:13px 0 12px;border-bottom:1px solid var(--faint);color:var(--ink);cursor:pointer;
+  background:none;border-left:0;border-right:0;border-top:0;width:100%;text-align:left;font:inherit}
+.mrow .rk{padding:0;width:auto}
+.mrow .mn{font-size:18px;font-weight:420;line-height:1.25}
+.mrow .mc{font-size:18px;font-weight:420;font-variant-numeric:tabular-nums;color:var(--accent)}
+.mrow .tw{font-size:11px;color:var(--dim)}
+.mrow .pedbar{grid-column:2 / 4;margin-top:8px}
+.mrow:hover .mn{color:var(--accent)}
+.mnote{font-size:12.5px;color:var(--dim);line-height:1.6;margin-top:14px}
+.starline{margin:40px 72px 0;border:1px solid var(--faint);background:var(--bg2);padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.starline p{font-size:19px;font-weight:380;line-height:1.35}
+.starline p b{color:var(--stargold);font-weight:480;font-variant-numeric:tabular-nums}
+.lfoot{margin:28px 72px 0;border-top:1px solid var(--faint);padding:16px 0 0;font-size:12.5px;color:var(--dim);line-height:1.6}
+.lfoot b{color:var(--ink);font-weight:550;font-variant-numeric:tabular-nums}
+</style>
+</head>
+<body>
+<div class="frame" data-frame="1440x2150">
+<a class="bf-skip" href="#main" data-component-id="site-skip-link">Skip to content</a><header class="bf-top" data-component-id="site-header"><a class="wordmark" href="#" data-component-id="site-wordmark" aria-label="Bone Fides, home">Bone <em>Fides</em></a><nav class="bf-nav" id="bf-nav" aria-label="Primary"><a href="#" data-component-id="nav-explore">Explore</a><a href="#" data-component-id="nav-trees">Trees</a><a href="#" data-component-id="nav-connect">Connect</a><a href="#" data-component-id="nav-ledger" aria-current="page">Ledger</a><a href="#" data-component-id="nav-method">Method</a><a href="#" data-component-id="nav-numbers">Numbers</a></nav></header>
+<main id="main">
+  <div class="lh">
+    <p class="kicker">The Ledger</p>
+    <h1>The kitchens San Francisco’s chefs <em>came from</em>.</h1>
+    <p class="lede">Ranked from the record, by moves you can read on this site. These are counts of what has been reported and cited, not of everyone who ever worked the line.</p>
+  </div>
+  <div class="leaders" aria-label="Leaders"><a class="leader" href="#alumni" data-component-id="ledger-leader-alumni"><span class="lk">Most cited alumni</span><b>21</b><span class="who">Chez Panisse</span><span class="unit">named people with a displayed cited move out</span></a><a class="leader" href="#reach" data-component-id="ledger-leader-reach"><span class="lk">Widest reach of these 15</span><b>71</b><span class="who">Aqua and Campton Place</span><span class="unit">kitchens within three moves, each</span></a><a class="leader star" href="#starred-within" data-component-id="ledger-leader-starred-within"><span class="lk">Most starred within three moves, of these 15</span><b>6</b><span class="who">The French Laundry</span><span class="unit">Michelin-starred kitchens within three moves</span></a><a class="leader" href="#mentors" data-component-id="ledger-leader-mentors"><span class="lk">Most-named mentor</span><b>5</b><span class="who">Thomas Keller</span><span class="unit">chefs whose quoted sentence names him</span></a></div>
+  <div class="lgrid">
+    <section id="alumni" aria-labelledby="alumni-h">
+      <h2 class="bh" id="alumni-h">Most cited alumni</h2>
+      <p class="brule">The 15 kitchens with the most named people who have a displayed cited move out.</p>
+      <table data-component-id="ledger-alumni-board">
+        <thead><tr>
+          <th scope="col"><span class="sr-only">Rank</span></th>
+          <th scope="col" style="width:206px"><span class="h">Kitchen</span></th>
+          <th scope="col" style="width:196px"><span class="h">Alumni</span><span class="def">Named people with a displayed cited move out of the kitchen.</span></th>
+          <th scope="col" style="width:206px"><span class="h">Within three moves</span><span class="def">Kitchens reachable by following displayed cited moves, up to three.</span></th>
+          <th scope="col"><span class="h">Starred within three moves</span><span class="def">Of those kitchens, the ones with San Francisco stars in the Michelin Guide 2026.</span></th>
+        </tr></thead>
+        <tbody><tr><td class="rk">01</td><td class="kn"><a href="#" data-component-id="ledger-kitchen-chez-panisse">Chez Panisse</a><span class="lnk"><a href="#" data-component-id="ledger-chez-panisse-tree">Tree →</a><a href="#" data-component-id="ledger-chez-panisse-dossier">Dossier →</a></span></td><td class="key"><span class="num">21</span><div class="pedbar" aria-hidden="true"><span style="width:100.0%"></span></div></td><td><span class="num">36</span><div class="pedbar" aria-hidden="true"><span style="width:50.7%"></span></div></td><td><div class="sd"><span class="cnt none" aria-label="No starred kitchen within three moves">0</span><span class="names">None within three moves</span></div></td></tr><tr><td class="rk">02</td><td class="kn"><a href="#" data-component-id="ledger-kitchen-the-french-laundry">The French Laundry</a><span class="lnk"><a href="#" data-component-id="ledger-the-french-laundry-tree">Tree →</a><a href="#" data-component-id="ledger-the-french-laundry-dossier">Dossier →</a></span></td><td class="key"><span class="num">15</span><div class="pedbar" aria-hidden="true"><span style="width:71.4%"></span></div></td><td><span class="num">61</span><div class="pedbar" aria-hidden="true"><span style="width:85.9%"></span></div></td><td><div class="sd"><span class="cnt" aria-label="6 starred within three moves"><i aria-hidden="true">★</i>6</span><span class="names">Angler, Benu, Mister Jiu&#x27;s, Quince, San Ho Won, Ssal</span></div></td></tr><tr><td class="rk">03</td><td class="kn"><a href="#" data-component-id="ledger-kitchen-aqua">Aqua</a><span class="lnk"><a href="#" data-component-id="ledger-aqua-tree">Tree →</a><a href="#" data-component-id="ledger-aqua-dossier">Dossier →</a></span></td><td class="key"><span class="num">14</span><div class="pedbar" aria-hidden="true"><span style="width:66.7%"></span></div></td><td><span class="num">71</span><div class="pedbar" aria-hidden="true"><span style="width:100.0%"></span></div></td><td><div class="sd"><span class="cnt none" aria-label="No starred kitchen within three moves">0</span><span class="names">None within three moves</span></div></td></tr><tr><td class="rk">04</td><td class="kn"><a href="#" data-component-id="ledger-kitchen-campton-place">Campton Place</a><span class="lnk"><a href="#" data-component-id="ledger-campton-place-tree">Tree →</a><a href="#" data-component-id="ledger-campton-place-dossier">Dossier →</a></span></td><td class="key"><span class="num">10</span><div class="pedbar" aria-hidden="true"><span style="width:47.6%"></span></div></td><td><span class="num">71</span><div class="pedbar" aria-hidden="true"><span style="width:100.0%"></span></div></td><td><div class="sd"><span class="cnt" aria-label="1 starred within three moves"><i aria-hidden="true">★</i>1</span><span class="names">Ssal</span></div></td></tr><tr><td class="rk">05</td><td class="kn"><a href="#" data-component-id="ledger-kitchen-boulevard">Boulevard</a><span class="lnk"><a href="#" data-component-id="ledger-boulevard-tree">Tree →</a><a href="#" data-component-id="ledger-boulevard-dossier">Dossier →</a></span></td><td class="key"><span class="num">10</span><div class="pedbar" aria-hidden="true"><span style="width:47.6%"></span></div></td><td><span class="num">24</span><div class="pedbar" aria-hidden="true"><span style="width:33.8%"></span></div></td><td><div class="sd"><span class="cnt" aria-label="1 starred within three moves"><i aria-hidden="true">★</i>1</span><span class="names">Niku Steakhouse</span></div></td></tr><tr><td class="rk">06</td><td class="kn"><a href="#" data-component-id="ledger-kitchen-per-se">Per Se</a><span class="lnk"><a href="#" data-component-id="ledger-per-se-tree">Tree →</a><a href="#" data-component-id="ledger-per-se-dossier">Dossier →</a></span></td><td class="key"><span class="num">9</span><div class="pedbar" aria-hidden="true"><span style="width:42.9%"></span></div></td><td><span class="num">64</span><div class="pedbar" aria-hidden="true"><span style="width:90.1%"></span></div></td><td><div class="sd"><span class="cnt" aria-label="5 starred within three moves"><i aria-hidden="true">★</i>5</span><span class="names">Angler, Benu, Mister Jiu&#x27;s, Quince, San Ho Won</span></div></td></tr><tr><td class="rk">07</td><td class="kn"><a href="#" data-component-id="ledger-kitchen-quince">Quince</a><span class="lnk"><a href="#" data-component-id="ledger-quince-tree">Tree →</a><a href="#" data-component-id="ledger-quince-dossier">Dossier →</a></span></td><td class="key"><span class="num">9</span><div class="pedbar" aria-hidden="true"><span style="width:42.9%"></span></div></td><td><span class="num">32</span><div class="pedbar" aria-hidden="true"><span style="width:45.1%"></span></div></td><td><div class="sd"><span class="cnt" aria-label="3 starred within three moves"><i aria-hidden="true">★</i>3</span><span class="names">Angler, Kin Khao, Mister Jiu&#x27;s</span></div></td></tr><tr><td class="rk">08</td><td class="kn"><a href="#" data-component-id="ledger-kitchen-coi">Coi</a><span class="lnk"><a href="#" data-component-id="ledger-coi-tree">Tree →</a><a href="#" data-component-id="ledger-coi-dossier">Dossier →</a></span></td><td class="key"><span class="num">9</span><div class="pedbar" aria-hidden="true"><span style="width:42.9%"></span></div></td><td><span class="num">17</span><div class="pedbar" aria-hidden="true"><span style="width:23.9%"></span></div></td><td><div class="sd"><span class="cnt none" aria-label="No starred kitchen within three moves">0</span><span class="names">None within three moves</span></div></td></tr><tr><td class="rk">09</td><td class="kn"><a href="#" data-component-id="ledger-kitchen-fifth-floor">Fifth Floor</a><span class="lnk"><a href="#" data-component-id="ledger-fifth-floor-tree">Tree →</a><a href="#" data-component-id="ledger-fifth-floor-dossier">Dossier →</a></span></td><td class="key"><span class="num">9</span><div class="pedbar" aria-hidden="true"><span style="width:42.9%"></span></div></td><td><span class="num">11</span><div class="pedbar" aria-hidden="true"><span style="width:15.5%"></span></div></td><td><div class="sd"><span class="cnt none" aria-label="No starred kitchen within three moves">0</span><span class="names">None within three moves</span></div></td></tr><tr><td class="rk">10</td><td class="kn"><a href="#" data-component-id="ledger-kitchen-manresa">Manresa</a><span class="lnk"><a href="#" data-component-id="ledger-manresa-tree">Tree →</a><a href="#" data-component-id="ledger-manresa-dossier">Dossier →</a></span></td><td class="key"><span class="num">8</span><div class="pedbar" aria-hidden="true"><span style="width:38.1%"></span></div></td><td><span class="num">36</span><div class="pedbar" aria-hidden="true"><span style="width:50.7%"></span></div></td><td><div class="sd"><span class="cnt" aria-label="4 starred within three moves"><i aria-hidden="true">★</i>4</span><span class="names">Californios, Kin Khao, Nari, Sons &amp; Daughters</span></div></td></tr><tr><td class="rk">11</td><td class="kn"><a href="#" data-component-id="ledger-kitchen-michael-mina">Michael Mina</a><span class="lnk"><a href="#" data-component-id="ledger-michael-mina-tree">Tree →</a><a href="#" data-component-id="ledger-michael-mina-dossier">Dossier →</a></span></td><td class="key"><span class="num">8</span><div class="pedbar" aria-hidden="true"><span style="width:38.1%"></span></div></td><td><span class="num">24</span><div class="pedbar" aria-hidden="true"><span style="width:33.8%"></span></div></td><td><div class="sd"><span class="cnt none" aria-label="No starred kitchen within three moves">0</span><span class="names">None within three moves</span></div></td></tr><tr><td class="rk">12</td><td class="kn"><a href="#" data-component-id="ledger-kitchen-postrio">Postrio</a><span class="lnk"><a href="#" data-component-id="ledger-postrio-tree">Tree →</a><a href="#" data-component-id="ledger-postrio-dossier">Dossier →</a></span></td><td class="key"><span class="num">7</span><div class="pedbar" aria-hidden="true"><span style="width:33.3%"></span></div></td><td><span class="num">8</span><div class="pedbar" aria-hidden="true"><span style="width:11.3%"></span></div></td><td><div class="sd"><span class="cnt none" aria-label="No starred kitchen within three moves">0</span><span class="names">None within three moves</span></div></td></tr><tr><td class="rk">13</td><td class="kn"><a href="#" data-component-id="ledger-kitchen-gary-danko">Gary Danko</a><span class="lnk"><a href="#" data-component-id="ledger-gary-danko-tree">Tree →</a><a href="#" data-component-id="ledger-gary-danko-dossier">Dossier →</a></span></td><td class="key"><span class="num">7</span><div class="pedbar" aria-hidden="true"><span style="width:33.3%"></span></div></td><td><span class="num">38</span><div class="pedbar" aria-hidden="true"><span style="width:53.5%"></span></div></td><td><div class="sd"><span class="cnt" aria-label="4 starred within three moves"><i aria-hidden="true">★</i>4</span><span class="names">Californios, Kin Khao, Nari, Sons &amp; Daughters</span></div></td></tr><tr><td class="rk">14</td><td class="kn"><a href="#" data-component-id="ledger-kitchen-benu">Benu</a><span class="lnk"><a href="#" data-component-id="ledger-benu-tree">Tree →</a><a href="#" data-component-id="ledger-benu-dossier">Dossier →</a></span></td><td class="key"><span class="num">7</span><div class="pedbar" aria-hidden="true"><span style="width:33.3%"></span></div></td><td><span class="num">9</span><div class="pedbar" aria-hidden="true"><span style="width:12.7%"></span></div></td><td><div class="sd"><span class="cnt" aria-label="1 starred within three moves"><i aria-hidden="true">★</i>1</span><span class="names">San Ho Won</span></div></td></tr><tr><td class="rk">15</td><td class="kn"><a href="#" data-component-id="ledger-kitchen-la-folie">La Folie</a><span class="lnk"><a href="#" data-component-id="ledger-la-folie-tree">Tree →</a><a href="#" data-component-id="ledger-la-folie-dossier">Dossier →</a></span></td><td class="key"><span class="num">7</span><div class="pedbar" aria-hidden="true"><span style="width:33.3%"></span></div></td><td><span class="num">14</span><div class="pedbar" aria-hidden="true"><span style="width:19.7%"></span></div></td><td><div class="sd"><span class="cnt" aria-label="1 starred within three moves"><i aria-hidden="true">★</i>1</span><span class="names">Kin Khao</span></div></td></tr></tbody>
+      </table>
+    </section>
+    <section id="mentors" aria-labelledby="mentors-h">
+      <h2 class="bh" id="mentors-h">Named mentors</h2>
+      <p class="brule">Chefs whose quoted sentence names this person as their mentor.</p>
+      <ol class="mlist"><li><button type="button" class="mrow" aria-expanded="false" data-component-id="ledger-mentor-thomas-keller" aria-label="Thomas Keller, named as mentor by 5 chefs. Show the quotations."><span class="rk">01</span><span class="mn">Thomas Keller</span><span class="mc">5</span><span class="tw" aria-hidden="true">▾</span><span class="pedbar" aria-hidden="true"><span style="width:100.0%"></span></span></button></li><li><button type="button" class="mrow" aria-expanded="false" data-component-id="ledger-mentor-george-morrone" aria-label="George Morrone, named as mentor by 3 chefs. Show the quotations."><span class="rk">02</span><span class="mn">George Morrone</span><span class="mc">3</span><span class="tw" aria-hidden="true">▾</span><span class="pedbar" aria-hidden="true"><span style="width:60.0%"></span></span></button></li><li><button type="button" class="mrow" aria-expanded="false" data-component-id="ledger-mentor-roland-passot" aria-label="Roland Passot, named as mentor by 3 chefs. Show the quotations."><span class="rk">03</span><span class="mn">Roland Passot</span><span class="mc">3</span><span class="tw" aria-hidden="true">▾</span><span class="pedbar" aria-hidden="true"><span style="width:60.0%"></span></span></button></li><li><button type="button" class="mrow" aria-expanded="false" data-component-id="ledger-mentor-wolfgang-puck" aria-label="Wolfgang Puck, named as mentor by 3 chefs. Show the quotations."><span class="rk">04</span><span class="mn">Wolfgang Puck</span><span class="mc">3</span><span class="tw" aria-hidden="true">▾</span><span class="pedbar" aria-hidden="true"><span style="width:60.0%"></span></span></button></li><li><button type="button" class="mrow" aria-expanded="false" data-component-id="ledger-mentor-michael-mina" aria-label="Michael Mina, named as mentor by 3 chefs. Show the quotations."><span class="rk">05</span><span class="mn">Michael Mina</span><span class="mc">3</span><span class="tw" aria-hidden="true">▾</span><span class="pedbar" aria-hidden="true"><span style="width:60.0%"></span></span></button></li><li><button type="button" class="mrow" aria-expanded="false" data-component-id="ledger-mentor-david-kinch" aria-label="David Kinch, named as mentor by 2 chefs. Show the quotations."><span class="rk">06</span><span class="mn">David Kinch</span><span class="mc">2</span><span class="tw" aria-hidden="true">▾</span><span class="pedbar" aria-hidden="true"><span style="width:40.0%"></span></span></button></li><li><button type="button" class="mrow" aria-expanded="false" data-component-id="ledger-mentor-bernard-loiseau" aria-label="Bernard Loiseau, named as mentor by 2 chefs. Show the quotations."><span class="rk">07</span><span class="mn">Bernard Loiseau</span><span class="mc">2</span><span class="tw" aria-hidden="true">▾</span><span class="pedbar" aria-hidden="true"><span style="width:40.0%"></span></span></button></li><li><button type="button" class="mrow" aria-expanded="false" data-component-id="ledger-mentor-craig-stoll" aria-label="Craig Stoll, named as mentor by 2 chefs. Show the quotations."><span class="rk">08</span><span class="mn">Craig Stoll</span><span class="mc">2</span><span class="tw" aria-hidden="true">▾</span><span class="pedbar" aria-hidden="true"><span style="width:40.0%"></span></span></button></li><li><button type="button" class="mrow" aria-expanded="false" data-component-id="ledger-mentor-michael-tusk" aria-label="Michael Tusk, named as mentor by 2 chefs. Show the quotations."><span class="rk">09</span><span class="mn">Michael Tusk</span><span class="mc">2</span><span class="tw" aria-hidden="true">▾</span><span class="pedbar" aria-hidden="true"><span style="width:40.0%"></span></span></button></li><li><button type="button" class="mrow" aria-expanded="false" data-component-id="ledger-mentor-jeremiah-tower" aria-label="Jeremiah Tower, named as mentor by 2 chefs. Show the quotations."><span class="rk">10</span><span class="mn">Jeremiah Tower</span><span class="mc">2</span><span class="tw" aria-hidden="true">▾</span><span class="pedbar" aria-hidden="true"><span style="width:40.0%"></span></span></button></li></ol>
+      <p class="mnote">A mentor is counted only where the quotation names one, so this list is a floor, not a census. Open a row for the quotations.</p>
+    </section>
+  </div>
+  <div class="starline"><p><b>19</b> of San Francisco’s <b>26</b> Michelin-starred kitchens are joined to the graph by a displayed cited move.</p><a class="textlink" href="#starred" data-component-id="ledger-starred-board">The starred kitchens →</a></div>
+  <p class="lfoot" data-end>Every figure here counts only the <b>3,388</b> moves on display: those whose quoted sentence states the move. Every count opens to the people, quotations and sources behind it.</p>
+</main>
+</div>
+</body>
+</html>
