@@ -1,4 +1,7 @@
 {
+ "15 Romolo": {
+  "opentable": "https://www.opentable.com/r/15-romolo-sf-san-francisco"
+ },
  "1601 Bar & Kitchen": {
   "opentable": "https://www.opentable.com/r/1601-bar-and-kitchen"
  },
@@ -11,6 +14,10 @@
  "7 Adams": {
   "resy": "https://resy.com/cities/san-francisco-ca/venues/7-adams"
  },
+ "A16": {
+  "opentable": "https://www.opentable.com/r/a16-san-francisco",
+  "tock": "https://www.exploretock.com/a16sf"
+ },
  "Acquerello": {
   "tock": "https://www.exploretock.com/acquerellosf/"
  },
@@ -19,6 +26,9 @@
  },
  "Alembic, Sf": {
   "opentable": "https://www.opentable.com/r/the-alembic-san-francisco"
+ },
+ "Amber India Restaurant": {
+  "opentable": "https://www.opentable.com/r/amber-india-san-francisco"
  },
  "Angie's Pizza": {
   "resy": "https://resy.com/cities/san-francisco-ca/venues/angies-pizza"
@@ -44,6 +54,9 @@
  "Aziza": {
   "opentable": "https://www.opentable.com/r/aziza-san-francisco"
  },
+ "B-Side": {
+  "opentable": "https://www.opentable.com/r/b-side-san-francisco"
+ },
  "Back To Back": {
   "opentable": "https://www.opentable.com/r/back-to-back-san-francisco"
  },
@@ -57,7 +70,11 @@
  "Bar Gemini": {
   "resy": "https://resy.com/cities/san-francisco-ca/venues/bar-gemini"
  },
+ "Bar Sprezzatura": {
+  "resy": "https://resy.com/cities/san-francisco-ca/venues/bar-sprezzatura"
+ },
  "Barcha": {
+  "opentable": "https://www.opentable.com/barcha",
   "tock": "https://www.exploretock.com/barcha-sf"
  },
  "Bartlett Hall": {
@@ -67,7 +84,8 @@
   "opentable": "https://www.opentable.com/r/bellota-san-francisco"
  },
  "Benu": {
-  "opentable": "https://www.opentable.com/r/benu-san-francisco"
+  "opentable": "https://www.opentable.com/r/benu-san-francisco",
+  "tock": "https://www.exploretock.com/benu"
  },
  "Beretta": {
   "opentable": "https://www.opentable.com/r/beretta-san-francisco"
@@ -83,6 +101,9 @@
  },
  "Blue Bottle Coffee": {
   "tock": "https://www.exploretock.com/blue-bottle-coffee"
+ },
+ "Bodega Sf": {
+  "opentable": "https://www.opentable.com/r/bodega-sf-san-francisco"
  },
  "Boulevard": {
   "opentable": "https://www.opentable.com/r/boulevard-san-francisco",
@@ -109,6 +130,12 @@
  "Camino Alto": {
   "resy": "https://resy.com/cities/san-francisco-ca/venues/camino-alto"
  },
+ "Cassava Provisions": {
+  "opentable": "https://www.opentable.com/r/cassava-provisions-san-francisco"
+ },
+ "Catch French Bistro": {
+  "opentable": "https://www.opentable.com/r/catch-french-bistro-san-francisco"
+ },
  "Causwells": {
   "opentable": "https://www.opentable.com/r/causwells-san-francisco",
   "resy": "https://resy.com/cities/san-francisco-ca/venues/causwells"
@@ -128,8 +155,21 @@
  "Citrus Club The": {
   "opentable": "https://www.opentable.com/r/the-citrus-club-san-francisco"
  },
+ "Cole Valley Tavern": {
+  "opentable": "https://www.opentable.com/r/cole-valley-tavern-san-francisco"
+ },
  "Comstock Saloon": {
   "opentable": "https://www.opentable.com/r/comstock-saloon"
+ },
+ "Copra": {
+  "opentable": "https://www.opentable.com/r/copra-san-francisco"
+ },
+ "Coqueta": {
+  "opentable": "https://www.opentable.com/r/coqueta-san-francisco"
+ },
+ "Cotogna": {
+  "opentable": "https://opentable.com/r/cotogna-san-francisco",
+  "tock": "https://www.exploretock.com/cotogna"
  },
  "Cuisine Of Nepal": {
   "opentable": "https://www.opentable.com/r/cuisine-of-nepal-restaurant-san-francisco"
@@ -146,6 +186,9 @@
  "Dandelion Chocolate": {
   "tock": "https://www.exploretock.com/dandelionchocolate/"
  },
+ "Delancey Street Restaurant": {
+  "opentable": "https://www.opentable.com/r/delancey-street-restaurant-san-francisco"
+ },
  "Delfina Restaurant": {
   "opentable": "https://www.opentable.com/r/delfina-restaurant-san-francisco"
  },
@@ -157,6 +200,9 @@
  },
  "Early To Rise": {
   "opentable": "https://www.opentable.com/r/early-to-rise-san-francisco"
+ },
+ "El Buen Comer Llc": {
+  "opentable": "https://www.opentable.com/r/el-buen-comer-san-francisco"
  },
  "El Lopo": {
   "opentable": "https://www.opentable.com/r/bar-el-lopo-san-francisco"
@@ -179,6 +225,9 @@
  "Fior D'Italia": {
   "opentable": "https://www.opentable.com/fior-d-italia-san-francisco"
  },
+ "Fiorella": {
+  "opentable": "https://www.opentable.com/r/fiorella-san-francisco"
+ },
  "Fish & Farm": {
   "opentable": "https://www.opentable.com/r/fish-and-farm-san-francisco"
  },
@@ -192,6 +241,9 @@
   "opentable": "https://www.opentable.com/r/flour-and-water-san-francisco",
   "resy": "https://resy.com/cities/san-francisco-ca/venues/flour-and-water"
  },
+ "Flour + Water Pizzeria": {
+  "tock": "https://www.exploretock.com/flour--water-pizzeria-san-francisco"
+ },
  "Foreign Cinema": {
   "opentable": "https://www.opentable.com/r/foreign-cinema-san-francisco"
  },
@@ -200,6 +252,9 @@
  },
  "Frascati": {
   "opentable": "https://www.opentable.com/r/frascati-san-francisco"
+ },
+ "Garibaldis On Presidio": {
+  "opentable": "https://www.opentable.com/r/garibaldis-on-presidio-san-francisco-2"
  },
  "Gary Danko": {
   "opentable": "https://www.opentable.com/gary-danko",
@@ -234,6 +289,9 @@
  "House Of Prime Rib": {
   "opentable": "https://www.opentable.com/house-of-prime-rib"
  },
+ "Indigo": {
+  "resy": "https://resy.com/cities/san-francisco-ca/venues/indigo-ca"
+ },
  "International Smoke": {
   "tock": "https://www.exploretock.com/internationalsmoke/"
  },
@@ -256,10 +314,23 @@
   "resy": "https://resy.com/cities/san-francisco-ca/venues/jules"
  },
  "Kiln": {
-  "opentable": "https://www.opentable.com/r/kiln-san-francisco"
+  "opentable": "https://www.opentable.com/r/kiln-san-francisco",
+  "tock": "https://www.exploretock.com/kiln"
  },
  "Kokkari Estiatorio": {
   "opentable": "https://www.opentable.com/kokkari-estiatorio"
+ },
+ "Kusakabe": {
+  "tock": "https://www.exploretock.com/kusakabe/"
+ },
+ "L'Ardoise": {
+  "opentable": "https://www.opentable.com/lardoise-reservations-san-francisco"
+ },
+ "La Mar Cebicheria Peruana": {
+  "opentable": "https://www.opentable.com/r/la-mar-cebicheria-peruana-san-francisco"
+ },
+ "Laguna Cafe": {
+  "opentable": "https://www.opentable.com/r/laguna-cafe"
  },
  "Lazy Bear": {
   "opentable": "https://www.opentable.com/r/lazy-bear-san-francisco",
@@ -268,6 +339,12 @@
  "Leopold's": {
   "opentable": "https://www.opentable.com/r/leopolds-sf-san-francisco",
   "resy": "https://resy.com/cities/san-francisco-ca/venues/leopolds"
+ },
+ "Liholiho Yacht Club": {
+  "resy": "https://resy.com/cities/san-francisco-ca/venues/liholiho-yacht-club"
+ },
+ "Local Kitchen & Wine Merchant": {
+  "opentable": "https://www.opentable.com/r/local-kitchen-and-wine-merchant-san-francisco"
  },
  "Lolinda": {
   "opentable": "https://www.opentable.com/r/lolinda-san-francisco"
@@ -320,6 +397,12 @@
  "Mister Jiu's": {
   "tock": "https://www.exploretock.com/mister-jius"
  },
+ "Mochica": {
+  "opentable": "https://www.opentable.com/r/mochica-san-francisco"
+ },
+ "Modernist": {
+  "opentable": "https://www.opentable.com/r/modernist-san-francisco"
+ },
  "Momo's": {
   "opentable": "https://www.opentable.com/r/momos-san-francisco"
  },
@@ -340,6 +423,7 @@
   "opentable": "https://www.opentable.com/r/nob-hill-cafe-san-francisco"
  },
  "Octavia": {
+  "opentable": "https://www.opentable.com/octavia",
   "resy": "https://resy.com/cities/san-francisco-ca/venues/octavia"
  },
  "Onsen": {
@@ -348,8 +432,17 @@
  "Original Joe's": {
   "opentable": "https://www.opentable.com/r/original-joes-san-francisco"
  },
+ "Outerlands": {
+  "opentable": "https://www.opentable.com/r/outerlands-san-francisco"
+ },
  "Ozumo Restaurant": {
   "opentable": "https://www.opentable.com/r/ozumo-san-francisco"
+ },
+ "Pabu": {
+  "opentable": "https://www.opentable.com/pabu-san-francisco"
+ },
+ "Palette Tea House": {
+  "opentable": "https://www.opentable.com/r/palette-tea-house-san-francisco"
  },
  "Papito": {
   "opentable": "https://www.opentable.com/r/papito-san-francisco"
@@ -357,6 +450,9 @@
  "Penny Roma/Flour+Water Pasta Shop": {
   "opentable": "https://www.opentable.com/r/penny-roma-san-francisco",
   "resy": "https://resy.com/cities/san-francisco-ca/venues/penny-roma"
+ },
+ "Per Diem": {
+  "opentable": "https://www.opentable.com/r/per-diem-san-francisco"
  },
  "Perbacco": {
   "opentable": "https://www.opentable.com/r/perbacco-san-francisco-2",
@@ -381,11 +477,18 @@
   "opentable": "https://www.opentable.com/r/popis-oysterette-san-francisco",
   "resy": "https://resy.com/cities/san-francisco-ca/venues/popis-oysterette"
  },
+ "Prospect": {
+  "opentable": "https://www.opentable.com/prospect"
+ },
  "Prubechu": {
-  "resy": "https://resy.com/cities/san-francisco-ca/venues/prubechu"
+  "resy": "https://resy.com/cities/san-francisco-ca/venues/prubechu",
+  "tock": "https://www.exploretock.com/prubechu/"
  },
  "Quince Restaurant": {
   "opentable": "https://www.opentable.com/r/quince-san-francisco"
+ },
+ "R & G Lounge": {
+  "opentable": "https://www.opentable.com/r/r-and-g-lounge-san-francisco"
  },
  "Red Dog": {
   "opentable": "https://www.opentable.com/r/red-dog-restaurant-and-bar-san-francisco"
@@ -441,6 +544,9 @@
  "San Ho Won": {
   "tock": "https://www.exploretock.com/sanhowon"
  },
+ "Sasa Japanese Restaurant": {
+  "resy": "https://resy.com/cities/san-francisco-ca/venues/sasa-japanese-restaurant"
+ },
  "Schroeder's": {
   "resy": "https://resy.com/cities/san-francisco-ca/venues/schroeders-restaurant"
  },
@@ -457,8 +563,14 @@
  "Sorella": {
   "opentable": "https://www.opentable.com/r/sorella-san-francisco"
  },
+ "Sorrel Restaurant": {
+  "opentable": "https://www.opentable.com/r/sorrel-restaurant-san-francisco"
+ },
  "Spruce": {
   "opentable": "https://www.opentable.com/r/spruce-san-francisco"
+ },
+ "Square Pie Guys": {
+  "tock": "https://www.exploretock.com/squarepieguys"
  },
  "State Bird Provisions": {
   "opentable": "https://www.opentable.com/r/state-bird-provisions-san-francisco",
@@ -472,6 +584,9 @@
  },
  "Sushi Hon": {
   "opentable": "https://www.opentable.com/r/sushi-hon-san-francisco"
+ },
+ "Sushi On North Beach - Katsu": {
+  "opentable": "https://www.opentable.com/r/sushi-on-north-beach-katsu-san-francisco"
  },
  "Sushi Sato": {
   "opentable": "https://www.opentable.com/r/sushi-sato-san-francisco"
@@ -508,11 +623,17 @@
   "opentable": "https://www.opentable.com/r/the-morris-san-francisco",
   "resy": "https://resy.com/cities/san-francisco-ca/venues/the-morris"
  },
+ "The Old Clam House": {
+  "opentable": "https://www.opentable.com/the-old-clam-house"
+ },
  "The Sentinel Restaurant": {
   "opentable": "https://www.opentable.com/r/the-sentinel-san-francisco"
  },
  "The Snug": {
   "tock": "https://www.exploretock.com/the-snug-san-francisco"
+ },
+ "The Vault Restaurant": {
+  "opentable": "https://www.opentable.com/r/the-vault-restaurant-san-francisco"
  },
  "Tilak Indian Cuisine": {
   "opentable": "https://www.opentable.com/r/tilak-indian-cuisine-san-francisco"
@@ -540,6 +661,10 @@
  "True Laurel": {
   "tock": "https://www.exploretock.com/truelaurelsf"
  },
+ "Ungrafted": {
+  "resy": "https://resy.com/cities/san-francisco-ca/venues/ungrafted",
+  "tock": "https://www.exploretock.com/ungrafted"
+ },
  "Uva Enoteca": {
   "opentable": "https://www.opentable.com/r/uva-enoteca-san-francisco"
  },
@@ -549,6 +674,9 @@
  },
  "Waterbar": {
   "opentable": "https://www.opentable.com/r/waterbar-san-francisco"
+ },
+ "Wayfare Tavern": {
+  "opentable": "https://www.opentable.com/wayfare-tavern"
  },
  "Wildseed": {
   "opentable": "https://www.opentable.com/r/wildseed-san-francisco",
@@ -566,5 +694,8 @@
  "Zuni Cafe": {
   "opentable": "https://www.opentable.com/zuni-cafe",
   "tock": "https://www.exploretock.com/zunicafe/"
+ },
+ "Zushi Puzzle Inc": {
+  "opentable": "https://www.opentable.com/r/zushi-puzzle-san-francisco"
  }
 }

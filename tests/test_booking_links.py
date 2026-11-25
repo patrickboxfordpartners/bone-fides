@@ -76,6 +76,89 @@ def test_lineage_name_cannot_vouch_for_the_pin():
     assert not bvb.verified("opentable", "https://www.opentable.com/balboa-cafe-sf", ["balboa produce"])
 
 
+def test_the_page_city_decides_for_a_city_less_url():
+    url = "https://www.opentable.com/black-cat"
+    assert not bvb.verified("opentable", url, ["black cat"], {url: "Longmont, CO"})
+    assert bvb.verified("opentable", url, ["black cat"], {url: "San Francisco"})
+    # a one-word name needs the page to confirm San Francisco
+    hearth = "https://www.opentable.com/r/hearth"
+    assert not bvb.verified("opentable", hearth, ["hearth"], {})
+    assert bvb.verified("opentable", hearth, ["hearth"], {hearth: "San Francisco"})
+
+
+def test_city_of_reads_the_restaurant_address_not_reviewers():
+    spec = importlib.util.spec_from_file_location(
+        "check_booking_cities", os.path.join(_ROOT, "scripts", "check_booking_cities.py"))
+    cbc = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(cbc)
+    assert cbc.city_of("123 51st St, Longmont, CO 80302 ... San Francisco12 reviews") == "Longmont, CO"
+    assert cbc.city_of("1 Main St, San Francisco, CA 94124") == "San Francisco"
+    assert cbc.city_of("Reviewer from San Francisco3 reviews") is None
+    assert cbc.city_of("200 Linden Ave, South San Francisco, CA 94080") == "South San Francisco, CA"
+    assert cbc.city_of("Best tacos in South San Francisco") is None
+    assert cbc.city_of("200 Linden Ave, South  San Francisco, CA 94080") == "South San Francisco, CA"
+    assert cbc.city_of("200 Linden Ave, South\nSan Francisco, CA 94080") == "South San Francisco, CA"
+    assert cbc.city_of("Best tacos in South \n San Francisco") is None
+
+
+def test_pending_includes_city_less_urls_the_name_fallback_would_accept(monkeypatch):
+    spec = importlib.util.spec_from_file_location(
+        "check_booking_cities_p", os.path.join(_ROOT, "scripts", "check_booking_cities.py"))
+    cbc = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(cbc)
+    links = {"Black Cat": {"opentable": "https://www.opentable.com/black-cat"},
+             "Tosca Cafe": {"opentable": "https://www.opentable.com/r/tosca-cafe-san-francisco"}}
+    monkeypatch.setattr(cbc.bvb, "build", lambda **kw: (links, []))
+    assert cbc.pending({}) == ["https://www.opentable.com/black-cat"]
+    assert cbc.pending({"https://www.opentable.com/black-cat": "Longmont, CO"}) == []
+
+
+def test_shipped_file_has_no_link_the_page_places_elsewhere():
+    cities = bvb.load_cities()
+    booking = json.load(open(os.path.join(_ROOT, "ui", "venue_booking.json")))
+    elsewhere = [u for links in booking.values() for u in links.values()
+                 if cities.get(u) not in (None, "San Francisco")]
+    assert not elsewhere, elsewhere
+
+
+def test_tavily_accept_prefers_an_sf_url_over_a_city_less_one():
+    spec = importlib.util.spec_from_file_location(
+        "find_booking_tavily_t", os.path.join(_ROOT, "scripts", "find_booking_tavily.py"))
+    fbt = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(fbt)
+    urls = ["https://www.opentable.com/black-cat",
+            "https://www.opentable.com/r/black-cat-san-francisco?lang=es"]
+    assert fbt.accept(urls, {"name": "Black Cat"}) == {
+        "opentable": "https://www.opentable.com/r/black-cat-san-francisco"}
+    assert fbt.accept(urls[:1], {"name": "Black Cat"}) == {"opentable": urls[0]}
+
+
+def test_city_checker_saves_after_every_batch(monkeypatch, tmp_path):
+    spec = importlib.util.spec_from_file_location(
+        "check_booking_cities_s", os.path.join(_ROOT, "scripts", "check_booking_cities.py"))
+    cbc = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(cbc)
+    out = tmp_path / "cities.json"
+    monkeypatch.setattr(cbc.bvb, "CITIES", str(out))
+    monkeypatch.setattr(cbc.bvb, "load_cities", lambda: {})
+    monkeypatch.setattr(cbc.tavily, "_load_key", lambda: "k")
+    monkeypatch.setattr(cbc, "pending", lambda c: [f"https://www.opentable.com/x{i}" for i in range(7)])
+    calls = []
+
+    def fake_extract(key, urls, depth="basic"):
+        calls.append(urls)
+        if len(calls) > 1:
+            raise TimeoutError("second batch fails")
+        return {u: "San Francisco" for u in urls}
+
+    monkeypatch.setattr(cbc, "extract", fake_extract)
+    try:
+        cbc.main()
+    except TimeoutError:
+        pass
+    assert len(json.loads(out.read_text())) == 5, "the finished first batch must be on disk"
+
+
 def test_rejects_search_and_directory_pages():
     assert not bvb.verified("resy", "https://resy.com/city/san-francisco?query=Rich%20Table", ["rich table"])
     assert not bvb.verified("opentable", "https://www.opentable.com/metro/san-francisco-restaurants", ["san francisco"])
