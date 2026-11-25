@@ -18,19 +18,49 @@ button{font-family:inherit}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 ::selection{background:rgba(208,129,82,.35)}
-/* shared header: skip link, wordmark, the links of pages that exist today */
-.bf-skip{position:absolute;left:12px;top:-60px;z-index:20;background:var(--bg2);color:var(--ink);border:1px solid var(--accent);border-radius:999px;
-  padding:0 18px;min-height:44px;display:inline-flex;align-items:center;font-size:13.5px}
+/* bf:chrome */
+/* Shared header, phone menu and footer. Tokens from docs/DESIGN.md only. */
+.bf-skip{position:absolute;left:12px;top:-60px;z-index:20;background:var(--bg2);color:var(--ink);
+  border:1px solid var(--accent);border-radius:999px;padding:0 18px;min-height:44px;
+  display:inline-flex;align-items:center;font-size:13.5px}
 .bf-skip:focus{top:8px;left:12px}
-.bf-top{min-height:60px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:0 28px;padding:0 32px;
-  border-bottom:1px solid var(--faint);background:var(--bg);position:relative;z-index:5}
-.wordmark{font-size:19px;font-weight:560;letter-spacing:.01em;color:var(--ink);border:0;display:inline-flex;align-items:baseline;gap:7px;line-height:1}
+.bf-top{min-height:60px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
+  gap:0 28px;padding:0 32px;border-bottom:1px solid var(--faint);background:var(--bg);
+  position:relative;z-index:5}
+.wordmark{font-size:19px;font-weight:560;letter-spacing:.01em;color:var(--ink);border:0;
+  display:inline-flex;align-items:baseline;gap:7px;line-height:1}
 .wordmark em{color:var(--accent);font-style:italic;font-weight:500}
 .bf-nav{display:flex;gap:28px;align-self:stretch}
-.bf-nav a{font-size:13.5px;font-weight:400;color:var(--dim);border:0;border-bottom:1px solid transparent;margin-bottom:-1px;display:flex;align-items:center;line-height:1;min-height:59px}
+.bf-nav a{font-size:13.5px;font-weight:400;color:var(--dim);border:0;border-bottom:1px solid transparent;
+  margin-bottom:-1px;display:flex;align-items:center;line-height:1;min-height:59px}
 .bf-nav a:hover{color:var(--ink)}
 .bf-nav a[aria-current=page]{color:var(--ink);border-bottom-color:var(--accent)}
-@media (max-width:760px){.bf-top{padding:0 20px;min-height:56px}.bf-nav a{min-height:44px}}
+.bf-menu{font:500 12px/1 'Fraunces',Georgia,serif;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--dim);background:transparent;border:1px solid var(--faint);border-radius:999px;
+  padding:0 18px;min-height:44px;cursor:pointer;display:none}
+.bf-menu:hover,.bf-menu[aria-expanded=true]{color:var(--accent);border-color:var(--accent)}
+/* JavaScript folds the nav behind the Menu button at 760 px and narrower.
+   Without JavaScript the button stays hidden and the links show as a
+   wrapped block under the wordmark, so every link stays reachable. */
+@media (max-width:760px){
+  .bf-top{min-height:56px;padding:0 20px}
+  .bf-nav a{min-height:44px}
+  body.bf-js .bf-nav{display:none;flex-direction:column;gap:0;position:absolute;top:100%;
+    left:0;right:0;background:var(--bg2);border-bottom:1px solid var(--faint);
+    padding:0 20px 10px;z-index:6}
+  body.bf-js .bf-nav.open{display:flex}
+  body.bf-js .bf-menu{display:inline-flex;align-items:center}
+  .bf-nav a{min-height:44px}
+}
+/* Shared footer */
+.bf-foot{border-top:1px solid var(--faint);padding:26px 32px 44px;margin-top:56px}
+.bf-foot .footrow{display:flex;flex-wrap:wrap;gap:10px 28px;justify-content:space-between;
+  font-size:13.5px;color:var(--dim)}
+.bf-foot .footrow b{color:var(--ink);font-weight:560}
+.bf-foot .footrow a{color:var(--gold);border-bottom:1px solid rgba(194,160,90,.35)}
+.bf-foot .footrow a:hover{color:var(--ink);border-color:var(--ink)}
+.bf-foot .footnote{font-size:12.5px;color:var(--dim);line-height:1.6;margin-top:14px;max-width:72ch}
+/* /bf:chrome */
 /* tree page */
 .kicker{font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);line-height:1.4}
 .st{color:var(--stargold);letter-spacing:.1em;font-style:normal}
@@ -229,15 +259,19 @@ details.cite[open] summary::after{content:'▴';color:var(--accent)}
 </style>
 </head>
 <body>
+<!-- bf:header -->
 <a class="bf-skip" href="#main">Skip to content</a>
 <header class="bf-top">
   <a class="wordmark" href="/" aria-label="Bone Fides, home">Bone <em>Fides</em></a>
-  <nav class="bf-nav" aria-label="Site">
-    <a href="/explorer">Explorer</a>
-    <a href="/tree" aria-current="page">Tree</a>
+  <button type="button" class="bf-menu" hidden aria-expanded="false" aria-controls="bf-nav">Menu</button>
+  <nav class="bf-nav" id="bf-nav" aria-label="Site">
+    <a href="/explorer">Explore</a>
+    <a href="/tree" aria-current="page">Trees</a>
+    <a href="/connect">Connect</a>
     <a href="/method">Method</a>
   </nav>
 </header>
+<!-- /bf:header -->
 
 <main id="main" class="treepage">
   <section class="stage" aria-label="Family tree">
@@ -286,9 +320,11 @@ details.cite[open] summary::after{content:'▴';color:var(--accent)}
 <section class="ph listwrap" id="phone-list" aria-label="Every branch, as a list"></section>
 <section class="desk-only listwrap" id="desk-list" hidden aria-label="Every branch, as a list"></section>
 
+<script src="/lineage.js"></script>
 <script>
 (function () {
   'use strict';
+  var L = window.Lineage;
   var SVG_NS = 'http://www.w3.org/2000/svg';
   var CX = 560, CY = 384, R1 = 168, R2 = 280, R3 = 330;
   var state = { k: null, dir: 'down', view: 'graph', tree: null, req: 0,
@@ -296,15 +332,9 @@ details.cite[open] summary::after{content:'▴';color:var(--accent)}
   var $ = function (id) { return document.getElementById(id); };
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  function esc(s) {
-    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
-      return '&#' + c.charCodeAt(0) + ';';
-    });
-  }
-  function starsTxt(n) { return n > 0 ? new Array(n + 1).join('★') : ''; }
-  function safeUrl(u) { return /^https?:\/\//.test(u || '') ? u : null; }
-  function starsLabel(n) { return n === 1 ? '1 Michelin star' : n + ' Michelin stars'; }
-  function fmt(n) { return Number(n).toLocaleString('en-US'); }
+  // shared helpers come from lineage.js
+  var esc = L.esc, starsTxt = L.starsTxt, safeUrl = L.safeUrl,
+      starsLabel = L.starsLabel, fmt = L.fmt, hostOf = L.hostOf;
 
   // ── data ────────────────────────────────────────────────────────────
   function fetchTree(k, dir, n) {
@@ -407,8 +437,8 @@ details.cite[open] summary::after{content:'▴';color:var(--accent)}
     setStats(t);
     var flat = collect(t);
     renderRings(t, flat);
-    renderList($('phone-list'), t, flat, true);
-    renderList($('desk-list'), t, flat, false);
+    L.renderTreeList($('phone-list'), t, { phone: true });
+    L.renderTreeList($('desk-list'), t, { phone: false });
     applyView();
   }
 
@@ -552,103 +582,6 @@ details.cite[open] summary::after{content:'▴';color:var(--accent)}
     return s.length > n ? s.slice(0, n - 1) + '…' : s;
   }
 
-  // list rendering (phone and desktop list view)
-  function renderList(root, t, flat, phone) {
-    root.innerHTML = '';
-    var head = document.createElement('div');
-    head.className = 'listhead';
-    var s = t.summary;
-    head.innerHTML = '<p>Every branch of the <b>' + esc(t.root.name) + '</b> tree, as a list: ' +
-      fmt(s.reach) + ' kitchens within three cited moves, each branch a quoted move by a named person. ' +
-      'Open a row for its sentence and its article.</p>';
-    root.appendChild(head);
-    var ul = document.createElement('ul');
-    ul.className = 'tl';
-    ul.appendChild(listNode(t.root, t.children, 0, phone, true));
-    root.appendChild(ul);
-    var foot = document.createElement('p');
-    foot.className = 'lfoot';
-    foot.innerHTML = 'Stars: Michelin Guide 2026, San Francisco kitchens only. Generations follow cited moves, not dates: ' +
-      '<b>' + fmt(t.corpus.moves_with_year) + '</b> of <b>' + fmt(t.corpus.moves_displayed) +
-      '</b> displayed moves carry a year. Built from the record on ' + esc(t.built_at || '') + '.';
-    root.appendChild(foot);
-  }
-
-  function listNode(node, children, depth, phone, isRoot) {
-    var li = document.createElement('li');
-    if (node.stars) li.className = 'star';
-    var row = document.createElement('div');
-    row.className = 'row';
-    var k = document.createElement('a');
-    k.className = 'k';
-    k.href = '/tree?k=' + encodeURIComponent(node.slug || node.name);
-    k.innerHTML = esc(node.name) + (node.stars ? '<span class="st" aria-label="' + starsLabel(node.stars) + '">' + starsTxt(Math.min(node.stars, 3)) + '</span>' : '');
-    row.appendChild(k);
-    if (!isRoot && node.via && node.via.length) {
-      var v0 = node.via[0];
-      var via = document.createElement('span');
-      via.className = 'via';
-      var person = '<a href="/explorer?q=' + encodeURIComponent(v0.person) + '">' + esc(v0.person) + '</a>';
-      if (v0.homonym) via.innerHTML = 'via ' + person + '<span class="hom"> possibly two people</span>';
-      else via.innerHTML = 'via ' + person;
-      if (v0.role) via.appendChild(document.createTextNode(', ' + v0.role));
-      if (v0.year) via.insertAdjacentHTML('beforeend', ' <span class="yr">' + esc(v0.year) + '</span>');
-      row.appendChild(via);
-    }
-    li.appendChild(row);
-    if (phone && !isRoot && children.length) {
-      var more = document.createElement('button');
-      more.type = 'button';
-      more.className = 'more';
-      more.setAttribute('aria-expanded', 'false');
-      more.setAttribute('aria-label', 'Show the ' + children.length + ' kitchens beyond ' + node.name);
-      more.textContent = '+' + children.length;
-      li.appendChild(more);
-      var sub = document.createElement('ul');
-      sub.hidden = true;
-      more.addEventListener('click', function () {
-        var open = !sub.hidden;
-        sub.hidden = open;
-        more.setAttribute('aria-expanded', String(!open));
-        more.textContent = open ? '+' + children.length : '▴';
-        more.setAttribute('aria-label', (open ? 'Show' : 'Hide') + ' the ' + children.length + ' kitchens beyond ' + node.name);
-      });
-      children.forEach(function (c) { sub.appendChild(listNode(c, c.children || [], depth + 1, phone, false)); });
-      li.appendChild(sub);
-    } else if (children.length) {
-      var sub2 = document.createElement('ul');
-      children.forEach(function (c) { sub2.appendChild(listNode(c, c.children || [], depth + 1, phone, false)); });
-      li.appendChild(sub2);
-    }
-    if (!isRoot && node.via && node.via.length) {
-      var det = document.createElement('details');
-      det.className = 'cite';
-      var sum = document.createElement('summary');
-      sum.textContent = 'the citation';
-      det.appendChild(sum);
-      var body = document.createElement('div');
-      body.className = 'citebody';
-      var html = '';
-      node.via.forEach(function (v) {
-        var u = safeUrl(v.source_url);
-        html += '<blockquote class="ev">\u201c' + esc(v.evidence) + '\u201d</blockquote>' +
-          '<div class="src">\u00a7 ' + (u ? '<a href="' + esc(u) + '" target="_blank" rel="noopener">' + esc(hostOf(u)) + ' \u2197</a>' : esc(v.outlet || '')) +
-          '<span class="srcbadge ' + esc(v.outlet || 'other') + '">' + esc(v.outlet || 'source') + '</span></div>';
-        if (v.homonym) html += '<p class="src">possibly two people</p>';
-      });
-      if (node.more_via) html += '<p class="src">' + node.more_via + ' more citation' + (node.more_via > 1 ? 's' : '') + ' on the record.</p>';
-      html += '<div class="rowlinks"><a class="textlink" href="/explorer?q=' + encodeURIComponent(node.name) + '">Open dossier \u2192</a>' +
-        '<a class="textlink" href="/tree?k=' + encodeURIComponent(node.slug || node.name) + '">Grow the tree from here \u2192</a></div>';
-      body.innerHTML = html;
-      det.appendChild(body);
-      li.appendChild(det);
-    }
-    return li;
-  }
-
-  function hostOf(u) {
-    try { return new URL(u).host; } catch (e) { return u; }
-  }
 
   // ── citation panel ──────────────────────────────────────────────────
   function select(node, el) {
@@ -903,5 +836,51 @@ details.cite[open] summary::after{content:'▴';color:var(--accent)}
   fromUrl();
 })();
 </script>
+<!-- bf:footer -->
+<footer class="bf-foot">
+  <div class="footrow">
+    <span><b>Bone Fides</b> · the kitchen lineage of San Francisco</span>
+    <span><a href="/explorer">Explore</a> · <a href="/tree">Trees</a> · <a href="/connect">Connect</a> · <a href="/method">Method</a></span>
+  </div>
+  <p class="footnote">Lineage is reconstructed from public reporting and can be incomplete or
+    contested. Every claim on this page links to the article behind it, so you can read the same
+    evidence we did. A line between two kitchens is a cited move by a named person, and nothing
+    more is claimed. Corrections and source tips welcome.</p>
+</footer>
+<!-- /bf:footer -->
+<!-- bf:chrome-js -->
+<script>
+(function () {
+  'use strict';
+  // Phone menu: fold the nav behind the Menu button. Without JavaScript the
+  // button stays hidden (the hidden attribute) and the links stay visible.
+  document.body.classList.add('bf-js');
+  var btn = document.querySelector('.bf-menu');
+  var nav = document.getElementById('bf-nav');
+  if (!btn || !nav) return;
+  btn.removeAttribute('hidden');
+  function setOpen(open) {
+    nav.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', String(open));
+    btn.textContent = open ? 'Close' : 'Menu';
+  }
+  btn.addEventListener('click', function () {
+    setOpen(!nav.classList.contains('open'));
+  });
+  btn.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Escape') { setOpen(false); }
+  });
+  document.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Escape' && nav.classList.contains('open')) {
+      setOpen(false);
+      btn.focus();
+    }
+  });
+  nav.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () { setOpen(false); });
+  });
+})();
+</script>
+<!-- /bf:chrome-js -->
 </body>
 </html>

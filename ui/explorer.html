@@ -8,6 +8,49 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&display=swap" rel="stylesheet">
 <style>
+/* bf:chrome */
+/* Shared header, phone menu and footer. Tokens from docs/DESIGN.md only. */
+.bf-skip{position:absolute;left:12px;top:-60px;z-index:20;background:var(--bg2);color:var(--ink);
+  border:1px solid var(--accent);border-radius:999px;padding:0 18px;min-height:44px;
+  display:inline-flex;align-items:center;font-size:13.5px}
+.bf-skip:focus{top:8px;left:12px}
+.bf-top{min-height:60px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
+  gap:0 28px;padding:0 32px;border-bottom:1px solid var(--faint);background:var(--bg);
+  position:relative;z-index:5}
+.wordmark{font-size:19px;font-weight:560;letter-spacing:.01em;color:var(--ink);border:0;
+  display:inline-flex;align-items:baseline;gap:7px;line-height:1}
+.wordmark em{color:var(--accent);font-style:italic;font-weight:500}
+.bf-nav{display:flex;gap:28px;align-self:stretch}
+.bf-nav a{font-size:13.5px;font-weight:400;color:var(--dim);border:0;border-bottom:1px solid transparent;
+  margin-bottom:-1px;display:flex;align-items:center;line-height:1;min-height:59px}
+.bf-nav a:hover{color:var(--ink)}
+.bf-nav a[aria-current=page]{color:var(--ink);border-bottom-color:var(--accent)}
+.bf-menu{font:500 12px/1 'Fraunces',Georgia,serif;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--dim);background:transparent;border:1px solid var(--faint);border-radius:999px;
+  padding:0 18px;min-height:44px;cursor:pointer;display:none}
+.bf-menu:hover,.bf-menu[aria-expanded=true]{color:var(--accent);border-color:var(--accent)}
+/* JavaScript folds the nav behind the Menu button at 760 px and narrower.
+   Without JavaScript the button stays hidden and the links show as a
+   wrapped block under the wordmark, so every link stays reachable. */
+@media (max-width:760px){
+  .bf-top{min-height:56px;padding:0 20px}
+  .bf-nav a{min-height:44px}
+  body.bf-js .bf-nav{display:none;flex-direction:column;gap:0;position:absolute;top:100%;
+    left:0;right:0;background:var(--bg2);border-bottom:1px solid var(--faint);
+    padding:0 20px 10px;z-index:6}
+  body.bf-js .bf-nav.open{display:flex}
+  body.bf-js .bf-menu{display:inline-flex;align-items:center}
+  .bf-nav a{min-height:44px}
+}
+/* Shared footer */
+.bf-foot{border-top:1px solid var(--faint);padding:26px 32px 44px;margin-top:56px}
+.bf-foot .footrow{display:flex;flex-wrap:wrap;gap:10px 28px;justify-content:space-between;
+  font-size:13.5px;color:var(--dim)}
+.bf-foot .footrow b{color:var(--ink);font-weight:560}
+.bf-foot .footrow a{color:var(--gold);border-bottom:1px solid rgba(194,160,90,.35)}
+.bf-foot .footrow a:hover{color:var(--ink);border-color:var(--ink)}
+.bf-foot .footnote{font-size:12.5px;color:var(--dim);line-height:1.6;margin-top:14px;max-width:72ch}
+/* /bf:chrome */
   :root {
     --bg:#171310; --bg2:#1f1a15; --ink:#efe6d3; --dim:#9b8f7c; --faint:rgba(239,230,211,.14);
     --accent:#d08152; --gold:#c2a05a; --stargold:#efd9a0; --ok:#8fb996; --bad:#d9776b;
@@ -19,7 +62,7 @@
   /* ── App shell: dossier rail | map stage ──── */
   /* The dossier is the product: the rail may grow to a full reading measure
      (about 66ch at body size) before the map takes the rest. */
-  .app { display: grid; grid-template-columns: clamp(400px, 40vw, 600px) 1fr; height: 100dvh; }
+  .app { display: grid; grid-template-columns: clamp(400px, 40vw, 600px) 1fr; height: calc(100dvh - 60px); }
   .rail { overflow-y: auto; border-right: 1px solid var(--faint); padding: 26px 36px 30px;
           background: linear-gradient(180deg, rgba(208,129,82,.05), transparent 320px); }
   .stage { position: relative; }
@@ -40,6 +83,7 @@
               letter-spacing: .2em; text-transform: uppercase; }
   .railmeta .stats b { color: var(--gold); font-weight: 600; }
   h1 { font-size: 42px; line-height: 1; font-weight: 380; letter-spacing: -.01em; margin: 22px 0 10px; }
+  h1.vh, .vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   h1 em { color: var(--accent); font-style: italic; font-weight: 500; }
   .tagline { font-size: 15px; color: var(--dim); line-height: 1.5; font-weight: 350; }
   .tagline b { color: var(--ink); font-weight: 480; }
@@ -360,6 +404,10 @@
   .facetbar .rchip { cursor: pointer; }
   .facetbar .rchip.on b { color: var(--accent); }
   .rolebar .rchip.on b { color: var(--accent); }
+  .graphlinks { margin-top: 14px; display: flex; gap: 18px; }
+  .graphlinks a { font-size: 13.5px; color: var(--gold); text-decoration: none;
+    border-bottom: 1px solid rgba(194,160,90,.35); }
+  .graphlinks a:hover { color: var(--ink); border-color: var(--ink); }
   .pedigree { margin-top: 18px; padding: 14px 16px 12px; border: 1px solid var(--faint); border-radius: 8px;
               background: rgba(208,129,82,.05); }
   .pedbar { height: 5px; border-radius: 3px; background: var(--faint); overflow: hidden; }
@@ -448,7 +496,20 @@
 </style>
 </head>
 <body>
-<div class="app">
+<!-- bf:header -->
+<a class="bf-skip" href="#main">Skip to content</a>
+<header class="bf-top">
+  <a class="wordmark" href="/" aria-label="Bone Fides, home">Bone <em>Fides</em></a>
+  <button type="button" class="bf-menu" hidden aria-expanded="false" aria-controls="bf-nav">Menu</button>
+  <nav class="bf-nav" id="bf-nav" aria-label="Site">
+    <a href="/explorer" aria-current="page">Explore</a>
+    <a href="/tree">Trees</a>
+    <a href="/connect">Connect</a>
+    <a href="/method">Method</a>
+  </nav>
+</header>
+<!-- /bf:header -->
+<div class="app" id="main" tabindex="-1">
   <aside class="rail">
     <div class="railmeta">
       <span id="dateline"></span>
@@ -458,7 +519,7 @@
       <button type="button" id="seg-list" aria-pressed="true">List</button>
       <button type="button" id="seg-map" aria-pressed="false">Map</button>
     </div>
-    <h1>Bone <em>Fides</em></h1>
+    <h1 class="vh">Explorer</h1>
     <p class="tagline">The kitchen lineage of San Francisco. Every chef move — founded, hired, departed —
        <b>cited to the article that reported it</b>. Type a kitchen; get its papers.</p>
 
@@ -870,11 +931,12 @@ async function run(opts){
     scrollResultIntoView();
     return;
   }
-  lastDossier = { q, lineage: d.lineage, ms: performance.now() - t0, ped: d.pedigree, identity: d.identity };
+  lastDossier = { q, lineage: d.lineage, ms: performance.now() - t0, ped: d.pedigree, identity: d.identity, graph: d.graph || null };
   dossierBooking = d.booking || null;
   render(q, d.lineage, performance.now() - t0, d.pedigree, d.identity, null,
          { role: d.role_filter || null, era: d.era_filter || null, hood: d.hood_filter || null,
-           eraCoverage: d.era_coverage || null, hoodCoverage: d.hood_coverage || null });
+           eraCoverage: d.era_coverage || null, hoodCoverage: d.hood_coverage || null },
+         d.graph || null);
   if(window.__bfHighlight) window.__bfHighlight(q);
   else window.__bfPendingHighlight = q;
   scrollResultIntoView();
@@ -920,7 +982,8 @@ document.addEventListener('click', e => {
     const d = lastDossier;
     render(d.q, d.lineage, d.ms, d.ped, d.identity, b,
            { role: null, era: serverEra, hood: serverHood,
-             eraCoverage: ERA_COVERAGE, hoodCoverage: HOOD_COVERAGE });
+             eraCoverage: ERA_COVERAGE, hoodCoverage: HOOD_COVERAGE },
+           d.graph || null);
     return;
   }
   // era/hood facets (roadmap 4.4): server-side filters — clearing one re-runs
@@ -1272,7 +1335,7 @@ function timelineHTML(tl, ql, chipFor, uid){
   return `<div class="tl" role="list" aria-label="Career timeline">${rows}${und}</div>`;
 }
 
-function render(q, edges, ms, ped, identity, roleFilter, serverFilter){
+function render(q, edges, ms, ped, identity, roleFilter, serverFilter, graph){
   // serverFilter is now the object {role, era, hood} of active server-side
   // facet filters (roadmap 4.4); null when none are active
   const sv = serverFilter || null;
@@ -1297,6 +1360,15 @@ function render(q, edges, ms, ped, identity, roleFilter, serverFilter){
       || sameLoose(e.from_venue, ql) || sameLoose(e.to_venue, ql))).length;
   const isPersonQuery = selfEdges > 0 && selfEdges >= venueFlips;
 
+  // lineage links from the committed graph (plan section 13): shown only
+  // when the payload carries the kitchen's place in the graph
+  let graphLinks = '';
+  if(graph && graph.has_tree){
+    graphLinks = '<div class="graphlinks">' +
+      '<a class="textlink" href="/tree?k=' + encodeURIComponent(graph.slug) + '">Family tree →</a>' +
+      ' <a class="textlink" href="/connect?a=' + encodeURIComponent(graph.slug) + '">Trace a line →</a></div>';
+  }
+
   // pedigree dial: weighted credibility from source tiers + corroboration
   let pedHTML = '';
   if(ped){
@@ -1310,6 +1382,7 @@ function render(q, edges, ms, ped, identity, roleFilter, serverFilter){
       '<div class="pedlbl"><a class="pedmethod" href="/method" title="How this score is calculated"><b>Lineage score '+ped.score+'</b>/100</a> — '+ped.moves+' move'+(ped.moves===1?'':'s')+', cited in '+ped.sources+' article'+(ped.sources===1?'':'s')+' · '+tierBits.join(' · ')+'</div>'+
       '<div class="pednote">How well documented this kitchen is, not how good it is.</div></div>';
   }
+  pedHTML += graphLinks;
 
   // one card per identity cluster (server-side people disambiguation).
   // each card carries the pivot's role bucket so the role chips can filter
@@ -1848,5 +1921,51 @@ if(initQ){ Q.value = initQ; run({ role: initRole, era: initEra, hood: initHood }
   });
 }
 </script>
+<!-- bf:footer -->
+<footer class="bf-foot">
+  <div class="footrow">
+    <span><b>Bone Fides</b> · the kitchen lineage of San Francisco</span>
+    <span><a href="/explorer">Explore</a> · <a href="/tree">Trees</a> · <a href="/connect">Connect</a> · <a href="/method">Method</a></span>
+  </div>
+  <p class="footnote">Lineage is reconstructed from public reporting and can be incomplete or
+    contested. Every claim on this page links to the article behind it, so you can read the same
+    evidence we did. A line between two kitchens is a cited move by a named person, and nothing
+    more is claimed. Corrections and source tips welcome.</p>
+</footer>
+<!-- /bf:footer -->
+<!-- bf:chrome-js -->
+<script>
+(function () {
+  'use strict';
+  // Phone menu: fold the nav behind the Menu button. Without JavaScript the
+  // button stays hidden (the hidden attribute) and the links stay visible.
+  document.body.classList.add('bf-js');
+  var btn = document.querySelector('.bf-menu');
+  var nav = document.getElementById('bf-nav');
+  if (!btn || !nav) return;
+  btn.removeAttribute('hidden');
+  function setOpen(open) {
+    nav.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', String(open));
+    btn.textContent = open ? 'Close' : 'Menu';
+  }
+  btn.addEventListener('click', function () {
+    setOpen(!nav.classList.contains('open'));
+  });
+  btn.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Escape') { setOpen(false); }
+  });
+  document.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Escape' && nav.classList.contains('open')) {
+      setOpen(false);
+      btn.focus();
+    }
+  });
+  nav.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () { setOpen(false); });
+  });
+})();
+</script>
+<!-- /bf:chrome-js -->
 </body>
 </html>

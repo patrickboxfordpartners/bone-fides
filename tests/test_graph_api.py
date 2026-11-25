@@ -9,6 +9,7 @@ import sys
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(_HERE))
+import json  # noqa: E402
 from src import dossier  # noqa: E402
 
 
@@ -90,3 +91,91 @@ def test_tree_booking_comes_from_dossier_booking_by_display_name():
     t = json.loads(body)
     want = dossier.dossier_booking(t["root"]["name"])
     assert (t["root"]["booking"] or None) == (want or None)
+
+
+def _get(path, query, ip):
+    return dossier.dispatch(path, query, ip, client=lambda: Down())
+
+
+def test_connect_returns_the_shortest_chain():
+    status, _, body = _get("/api/connect", "a=french-laundry&b=mister-jius", "c-1")
+    assert status == 200
+    d = json.loads(body)
+    assert d["resolved"] and d["found"] and d["length"] == 2
+    assert len(d["hops"]) == 2
+    for hop in d["hops"]:
+        assert hop["via"], "every hop carries its citation"
+        assert hop["direction"] in ("forward", "reverse")
+
+
+def test_connect_states_its_reasons():
+    cases = [
+        ("a=french-laundry&b=zzzqx", "unknown_b"),
+        ("a=zzzqx&b=french-laundry", "unknown_a"),
+        ("a=french-laundry&b=french-laundry", "same"),
+    ]
+    for i, (q, reason) in enumerate(cases):
+        status, _, body = _get("/api/connect", q, "c-2-%d" % i)
+        d = json.loads(body)
+        assert status == 200 and d["resolved"] and not d["found"]
+        assert d["reason"] == reason
+
+
+def test_connect_with_no_params_returns_featured_pairs():
+    status, _, body = _get("/api/connect", "", "c-3")
+    d = json.loads(body)
+    assert status == 200 and d["resolved"] is False
+    pairs = d["featured"]["pairs"]
+    assert pairs and all(2 <= p["length"] <= 4 for p in pairs)
+    assert d["featured"]["tree"]
+
+
+def test_connect_supports_chef_end_points():
+    status, _, body = _get("/api/connect", "a=chef:brandon-jew&b=benu", "c-4")
+    d = json.loads(body)
+    assert d["resolved"] and d["found"]
+    stint = [h for h in d["hops"] if h.get("stint")]
+    assert stint, "a chef end point starts with a stint row"
+    assert stint[0]["kitchen"]["name"]
+
+
+def test_ledger_holds_the_rankings():
+    status, _, body = _get("/api/ledger", "", "l-1")
+    d = json.loads(body)
+    assert status == 200
+    assert len(d["kitchens"]) > 100
+    assert all(r["alumni"] >= 3 for r in d["kitchens"])
+    assert d["leaders"]["alumni"]["value"] >= d["kitchens"][0]["alumni"]
+    assert d["featured"]["pairs"]
+    assert len(d["starred"]) == 26   # every Michelin row, linked or not
+    assert {r["status"] for r in d["starred"]} <= {"linked", "move_only", "none"}
+    assert d["rules"]["min_alumni"] == 3
+
+
+def test_ledger_mentor_samples_are_each_mentors_own():
+    """A mentor row opens ITS OWN cited moves, not one shared quotation:
+    every sample matches a graph move that carries that mentor's credit."""
+    from src import graph
+    g = graph.load(dossier.data_path("graph.json"))
+    # mentor name -> set of (person, source_url) pairs on moves it credits
+    credited = {}
+    for row in g["moves"]:
+        m = row[8]
+        if not m:
+            continue
+        credited.setdefault(m, set()).add(
+            (g["by_pid"].get(row[0], [row[0]])[1], row[6]))
+
+    status, _, body = _get("/api/ledger", "", "l-2")
+    d = json.loads(body)
+    assert status == 200 and len(d["mentors"]) > 1
+    for m in d["mentors"]:
+        assert m["sample"], m["mentor"]
+        for s in m["sample"]:
+            pair = (s["person"], s["source_url"])
+            assert pair in credited.get(m["mentor"], set()), (
+                "sample does not belong to %s" % m["mentor"])
+    # the stale-loop-variable bug made every mentor show the same citation
+    people = [tuple(sorted(s["person"] for s in m["sample"]))
+              for m in d["mentors"]]
+    assert len(set(people)) == len(people), "mentor samples are all the same"

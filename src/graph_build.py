@@ -60,6 +60,9 @@ def _venue_is_kind(v):
 def _slug(s):
     s = unicodedata.normalize("NFKD", s or "")
     s = "".join(c for c in s if not unicodedata.combining(c))
+    # an apostrophe is part of the name, not a separator: "Mister Jiu's"
+    # slugs to "mister-jius", not "mister-jiu-s"
+    s = s.replace("'", "").replace("\u2019", "")
     s = re.sub(r"[^a-z0-9]+", "-", s.lower()).strip("-")
     return s
 
@@ -316,6 +319,7 @@ def build(edges, starred_rows=None, alias_data=None, hood_maps=None):
     missing_rows = [r for r in star_rows
                     if not any(k in kindex for k in r["keys"])]
     missing = sorted(sorted(r["keys"])[0] for r in missing_rows)
+    missing_names = sorted((r["name"], max(r["stars"] for _ in [0])) for r in missing_rows)
 
     largest = max((len(c) for c in comps), default=0)
 
@@ -347,6 +351,8 @@ def build(edges, starred_rows=None, alias_data=None, hood_maps=None):
                 "with_move": matched_rows,
                 "linked": matched_rows,
                 "missing": missing,
+                "missing_rows": [{"name": n, "stars": st}
+                                 for n, st in missing_names],
             },
             "bay_area": {
                 "moves": ba_moves,

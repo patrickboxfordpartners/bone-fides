@@ -1163,7 +1163,8 @@ def assemble_dossier(q, lin, role=None, era=None, hood=None, es=None):
     cl2 = identity(scoped) if scoped else []
     out = {"query": q, "resolved": True, "lineage": scoped,
            "identity": [_public_cluster(c) for c in cl2],
-           "pedigree": pedigree(scoped) if scoped else None}
+           "pedigree": pedigree(scoped) if scoped else None,
+           "graph": _graph_kitchen_block(q)}
     if role:
         # the facet note travels with the payload so the UI can say what the
         # filter did without a second request
@@ -1179,6 +1180,25 @@ def assemble_dossier(q, lin, role=None, era=None, hood=None, es=None):
         # edge docs — so the filter discloses partial coverage
         out["hood_coverage"] = _HOOD_COVERAGE
     return out
+
+def _graph_kitchen_block(name):
+    """The kitchen's place in the committed graph, so the explorer can offer
+    the two lineage links. Read from the file with no Elasticsearch call;
+    None when the file or the kitchen is absent (plan section 13)."""
+    try:
+        g = _graph()
+    except Exception:
+        return None
+    try:
+        i = _graph_mod._resolve(g, name)
+    except Exception:
+        return None
+    if i is None:
+        return None
+    k = g["kitchens"][i]
+    return {"id": k[0], "slug": k[2],
+            "has_tree": g["degree"].get(i, 0) > 0}
+
 
 def _cited_moves_exist(es, q):
     """Does the ungated record hold query-scoped, citation-passing moves?
@@ -1732,6 +1752,7 @@ def _tip(es, ip, body_bytes):
 # endpoint -> (rate-limit bucket, limit, window seconds)
 _LIMITS = {"search": ("search", 30, 60), "suggest": ("suggest", 90, 60),
            "tip": ("tips", 5, 3600), "tree": ("graph", 60, 60),
+           "connect": ("graph", 60, 60), "ledger": ("ledger", 12, 60),
            "nodes": ("nodes", 120, 60)}
 
 
@@ -1777,6 +1798,22 @@ def dispatch(path, query_string="", ip="", body_bytes=None, client=make_client):
                                             "suggestions": _graph_mod.unresolved(g, k)},
                                        {"Cache-Control": _GRAPH_CACHE_CONTROL})
             return _json_response(200, t, {"Cache-Control": _GRAPH_CACHE_CONTROL})
+        if endpoint == "connect":
+            a = (q1("a") or "").strip()[:MAX_QUERY_LEN]
+            b = (q1("b") or "").strip()[:MAX_QUERY_LEN]
+            g = _graph()
+            if not a or not b:
+                led = _graph_mod.ledger(g)
+                return _json_response(200,
+                                      {"resolved": False, "featured": led["featured"]},
+                                      {"Cache-Control": _GRAPH_CACHE_CONTROL})
+            out = _graph_mod.connect(g, a, b)
+            return _json_response(200, out,
+                                  {"Cache-Control": _GRAPH_CACHE_CONTROL})
+        if endpoint == "ledger":
+            g = _graph()
+            return _json_response(200, _graph_mod.ledger(g),
+                                  {"Cache-Control": _GRAPH_CACHE_CONTROL})
         if endpoint == "nodes":
             q = (q1("q") or "").strip()[:MAX_QUERY_LEN]
             kind = (q1("kind") or "any").strip()

@@ -9,6 +9,49 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&display=swap" rel="stylesheet">
 <style>
+/* bf:chrome */
+/* Shared header, phone menu and footer. Tokens from docs/DESIGN.md only. */
+.bf-skip{position:absolute;left:12px;top:-60px;z-index:20;background:var(--bg2);color:var(--ink);
+  border:1px solid var(--accent);border-radius:999px;padding:0 18px;min-height:44px;
+  display:inline-flex;align-items:center;font-size:13.5px}
+.bf-skip:focus{top:8px;left:12px}
+.bf-top{min-height:60px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
+  gap:0 28px;padding:0 32px;border-bottom:1px solid var(--faint);background:var(--bg);
+  position:relative;z-index:5}
+.wordmark{font-size:19px;font-weight:560;letter-spacing:.01em;color:var(--ink);border:0;
+  display:inline-flex;align-items:baseline;gap:7px;line-height:1}
+.wordmark em{color:var(--accent);font-style:italic;font-weight:500}
+.bf-nav{display:flex;gap:28px;align-self:stretch}
+.bf-nav a{font-size:13.5px;font-weight:400;color:var(--dim);border:0;border-bottom:1px solid transparent;
+  margin-bottom:-1px;display:flex;align-items:center;line-height:1;min-height:59px}
+.bf-nav a:hover{color:var(--ink)}
+.bf-nav a[aria-current=page]{color:var(--ink);border-bottom-color:var(--accent)}
+.bf-menu{font:500 12px/1 'Fraunces',Georgia,serif;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--dim);background:transparent;border:1px solid var(--faint);border-radius:999px;
+  padding:0 18px;min-height:44px;cursor:pointer;display:none}
+.bf-menu:hover,.bf-menu[aria-expanded=true]{color:var(--accent);border-color:var(--accent)}
+/* JavaScript folds the nav behind the Menu button at 760 px and narrower.
+   Without JavaScript the button stays hidden and the links show as a
+   wrapped block under the wordmark, so every link stays reachable. */
+@media (max-width:760px){
+  .bf-top{min-height:56px;padding:0 20px}
+  .bf-nav a{min-height:44px}
+  body.bf-js .bf-nav{display:none;flex-direction:column;gap:0;position:absolute;top:100%;
+    left:0;right:0;background:var(--bg2);border-bottom:1px solid var(--faint);
+    padding:0 20px 10px;z-index:6}
+  body.bf-js .bf-nav.open{display:flex}
+  body.bf-js .bf-menu{display:inline-flex;align-items:center}
+  .bf-nav a{min-height:44px}
+}
+/* Shared footer */
+.bf-foot{border-top:1px solid var(--faint);padding:26px 32px 44px;margin-top:56px}
+.bf-foot .footrow{display:flex;flex-wrap:wrap;gap:10px 28px;justify-content:space-between;
+  font-size:13.5px;color:var(--dim)}
+.bf-foot .footrow b{color:var(--ink);font-weight:560}
+.bf-foot .footrow a{color:var(--gold);border-bottom:1px solid rgba(194,160,90,.35)}
+.bf-foot .footrow a:hover{color:var(--ink);border-color:var(--ink)}
+.bf-foot .footnote{font-size:12.5px;color:var(--dim);line-height:1.6;margin-top:14px;max-width:72ch}
+/* /bf:chrome */
   :root {
     --bg:#171310; --bg2:#1f1a15; --ink:#efe6d3; --dim:#9b8f7c; --faint:rgba(239,230,211,.14);
     --accent:#d08152; --gold:#c2a05a; --ok:#8fb996; --bad:#d9776b;
@@ -239,14 +282,21 @@
 </head>
 <body>
 
-<header class="wrap">
-  <div class="mast">
-    <a class="wordmark" href="/explorer">Bone <em>Fides</em></a>
-    <span class="live" id="livelink"><a href="/explorer">Open the explorer</a> · <a href="/method">Method</a></span>
-  </div>
+<!-- bf:header -->
+<a class="bf-skip" href="#main">Skip to content</a>
+<header class="bf-top">
+  <a class="wordmark" href="/" aria-label="Bone Fides, home">Bone <em>Fides</em></a>
+  <button type="button" class="bf-menu" hidden aria-expanded="false" aria-controls="bf-nav">Menu</button>
+  <nav class="bf-nav" id="bf-nav" aria-label="Site">
+    <a href="/explorer">Explore</a>
+    <a href="/tree">Trees</a>
+    <a href="/connect">Connect</a>
+    <a href="/method">Method</a>
+  </nav>
 </header>
+<!-- /bf:header -->
 
-<main>
+<main id="main">
   <!-- ── Hero ─────────────────────────────────── -->
   <div class="wrap hero">
     <p class="kicker">The kitchen lineage of San Francisco</p>
@@ -661,5 +711,39 @@ window.Pretext = {walkLineRanges: $1, setLocale: D1, profilePrepare: V1, prepare
   }).catch(() => { /* baked-in numbers stay */ });
 })();
 </script>
+<!-- bf:chrome-js -->
+<script>
+(function () {
+  'use strict';
+  // Phone menu: fold the nav behind the Menu button. Without JavaScript the
+  // button stays hidden (the hidden attribute) and the links stay visible.
+  document.body.classList.add('bf-js');
+  var btn = document.querySelector('.bf-menu');
+  var nav = document.getElementById('bf-nav');
+  if (!btn || !nav) return;
+  btn.removeAttribute('hidden');
+  function setOpen(open) {
+    nav.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', String(open));
+    btn.textContent = open ? 'Close' : 'Menu';
+  }
+  btn.addEventListener('click', function () {
+    setOpen(!nav.classList.contains('open'));
+  });
+  btn.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Escape') { setOpen(false); }
+  });
+  document.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Escape' && nav.classList.contains('open')) {
+      setOpen(false);
+      btn.focus();
+    }
+  });
+  nav.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () { setOpen(false); });
+  });
+})();
+</script>
+<!-- /bf:chrome-js -->
 </body>
 </html>

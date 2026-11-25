@@ -17,8 +17,11 @@
     { "source": "/api/method", "destination": "/api/search" },
     { "source": "/api/tree", "destination": "/api/search" },
     { "source": "/api/nodes", "destination": "/api/search" },
+    { "source": "/api/connect", "destination": "/api/search" },
+    { "source": "/api/ledger", "destination": "/api/search" },
     { "source": "/", "destination": "/landing.html" },
     { "source": "/tree", "destination": "/tree.html" },
+    { "source": "/connect", "destination": "/connect.html" },
     { "source": "/explorer", "destination": "/explorer.html" },
     { "source": "/method", "destination": "/method.html" },
     { "source": "/landing", "destination": "/landing.html" }
