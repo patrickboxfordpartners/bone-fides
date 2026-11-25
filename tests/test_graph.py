@@ -79,6 +79,24 @@ def test_dir_up_is_the_mirror():
     assert t["children"][0]["children"][0]["name"] == "Root Kitchen"
 
 
+def test_up_branches_cite_the_move_into_the_parent():
+    """An upstream branch cites the recorded move, which ran child -> parent:
+    the Alpha branch under Beta names Person Two, who moved Alpha -> Beta."""
+    t = graph.tree(_load(_g()), "beta", direction="up")
+    alpha = t["children"][0]
+    assert alpha["via"] and alpha["via"][0]["person"] == "Person Two"
+    root_stop = alpha["children"][0]
+    assert root_stop["via"] and root_stop["via"][0]["person"] == "Person One"
+
+
+def test_down_branches_still_cite_parent_to_child():
+    t = graph.tree(_load(_g()), "root")
+    a = t["children"][0]
+    assert a["via"] and a["via"][0]["person"] == "Person One"
+    b = a["children"][0]
+    assert b["via"] and b["via"][0]["person"] == "Person Two"
+
+
 def test_a_cycle_ends_at_the_smallest_depth():
     raw = _g()
     raw["moves"].append(_m("p1", 2, 0, quote="cycle"))

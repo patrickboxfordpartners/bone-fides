@@ -221,7 +221,14 @@ def tree(g, name, depth=MAX_DEPTH, direction="down", booking=None):
             n["booking"] = booking(g["kitchens"][i][1])
         else:
             n["booking"] = None
-        via, more = _citations_for(g, parent[i], i) if parent[i] is not None else ([], 0)
+        if parent[i] is None:
+            via, more = [], 0
+        elif direction == "down":
+            # the branch ran parent -> child
+            via, more = _citations_for(g, parent[i], i)
+        else:
+            # an upstream branch cites the move that ran child -> parent
+            via, more = _citations_for(g, i, parent[i])
         n["via"] = via
         n["more_via"] = more
         return n
