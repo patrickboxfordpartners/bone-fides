@@ -431,15 +431,19 @@
      so one link's area never covers the link on the next line. */
   @media (max-width: 900px), (pointer: coarse) {
     .watchbtn, .copybtn, .rolebar .rchip { display: inline-flex; align-items: center; min-height: 40px; padding-block: 0; }
-    .chips, .chain, .tlvenues, .tlundated .urow, .tlundated .urowmain { row-gap: 20px; }
+    .chips, .chain, .tlvenues, .tlundated .urow, .tlundated .urowmain, .treelist .trow { row-gap: 20px; }
     /* stacked rows need the same clearance as wrapped lines */
     .tlbody { padding-bottom: 20px; }
     .tlundated .urow { margin-bottom: 20px; }
+    .treelist .trow { padding-block: 10px; }
     .flaglink { margin-top: 22px; }
     .chip, .vchip, .flaglink, .viewtoggle button, .chef .src a, .imgcredit a, .pedmethod, .igbadge { position: relative; }
     .chip::before, .vchip::before, .flaglink::before, .viewtoggle button::before,
     .chef .src a::before, .imgcredit a::before, .pedmethod::before, .igbadge::before {
       content: ''; position: absolute; inset: -10px -3px; }
+    /* the Instagram badge sits on the name line, 12px above the first venue
+       link: its hit area grows upward only */
+    .igbadge::before { inset: -20px -8px 0; }
   }
 </style>
 </head>
