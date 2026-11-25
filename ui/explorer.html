@@ -1608,14 +1608,18 @@ function buildTreeToggle(q, edges, isPersonQuery){
 }
 
 // ── autosuggest ──
-let sugTimer;
+// sugSeq: a suggestion response that lands after the reader pressed Enter (or
+// typed on) must not reopen the list over the dossier it would cover.
+let sugTimer, sugSeq = 0;
 Q.addEventListener('input', () => {
   clearTimeout(sugTimer);
   const v = Q.value.trim();
   if(v.length < 2){ hideSugg(); return; }
+  const mine = ++sugSeq;
   sugTimer = setTimeout(async () => {
     const r = await fetch('/api/suggest?q=' + encodeURIComponent(v));
     const d = await r.json();
+    if(mine !== sugSeq) return;
     if(d.suggestions && d.suggestions.length){
       SUGG.innerHTML = d.suggestions.map((s,i) => `<div role="option" id="sg${i}" aria-selected="false" data-pick="${esc(s)}">${esc(s)}</div>`).join('');
       SUGG.style.display = 'block'; Q.setAttribute('aria-expanded','true'); sugIdx = -1;
@@ -1624,7 +1628,7 @@ Q.addEventListener('input', () => {
 });
 document.addEventListener('click', e => { if(!SUGG.contains(e.target) && e.target !== Q) SUGG.style.display='none'; });
 let sugIdx = -1;
-function hideSugg(){ SUGG.style.display='none'; Q.setAttribute('aria-expanded','false'); Q.removeAttribute('aria-activedescendant'); sugIdx=-1; }
+function hideSugg(){ clearTimeout(sugTimer); sugSeq++; SUGG.style.display='none'; Q.setAttribute('aria-expanded','false'); Q.removeAttribute('aria-activedescendant'); sugIdx=-1; }
 Q.addEventListener('keydown', e => {
   const opts = [...SUGG.querySelectorAll('[role=option]')];
   if(e.key === 'Escape'){ hideSugg(); return; }

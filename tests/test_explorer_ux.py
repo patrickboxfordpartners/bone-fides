@@ -111,3 +111,11 @@ def test_touch_layout_enlarges_small_targets():
 def test_small_labels_meet_the_design_floor():
     sizes = [float(x) for x in re.findall(r"font-size: ?([\d.]+)px", HTML.split("@media print", 1)[0])]
     assert min(sizes) >= 10.5, "docs/DESIGN.md: labels are 10.5px or larger"
+
+
+def test_a_late_suggestion_cannot_reopen_over_the_dossier():
+    """Typing a name and pressing Enter before the suggest call returned left
+    the suggestion list open on top of the dossier header."""
+    hide = re.search(r"function hideSugg\(\)\{(.*?)\}", HTML).group(1)
+    assert "clearTimeout(sugTimer)" in hide and "sugSeq++" in hide
+    assert "if(mine !== sugSeq) return;" in HTML
