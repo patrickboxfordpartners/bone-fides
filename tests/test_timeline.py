@@ -528,8 +528,7 @@ def test_era_order_is_the_shared_vocabulary():
 
 def test_timeline_payload_carries_era_mentor_and_published_at():
     """The UI can only sequence what the server sends — in BOTH twins."""
-    for path in (os.path.join(_ROOT, "ui", "server.py"),
-                 os.path.join(_ROOT, "vercel-app", "api", "search.py")):
+    for path in (os.path.join(_ROOT, "src", "dossier.py"),):
         src = open(path).read()
         m = re.search(r"def lineage\(.*?\n    return edges", src, re.S)
         assert m, f"{path}: lineage() not found"
@@ -541,8 +540,7 @@ def test_timeline_payload_carries_era_mentor_and_published_at():
 def test_completion_fetch_carries_mentor():
     """fetch_person_edges feeds the same timeline; omitting mentor there drops
     the 'under …' line from rows whose stored edge names one."""
-    for path in (os.path.join(_ROOT, "ui", "server.py"),
-                 os.path.join(_ROOT, "vercel-app", "api", "search.py")):
+    for path in (os.path.join(_ROOT, "src", "dossier.py"),):
         src = open(path).read()
         m = re.search(r"def fetch_person_edges\(.*?\n    return out", src, re.S)
         assert m, f"{path}: fetch_person_edges() not found"

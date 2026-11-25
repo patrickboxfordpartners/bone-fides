@@ -3,7 +3,7 @@
 The tips index is a queue, not the corpus — these tests hold the intake
 validator to the citation-first standard the corpus itself is held to.
 """
-from ui.server import accept_tip
+from src.dossier import accept_tip
 
 
 def _good(**over):

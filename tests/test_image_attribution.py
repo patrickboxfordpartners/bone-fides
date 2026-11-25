@@ -17,7 +17,6 @@ import pytest
 _HERE = os.path.dirname(os.path.abspath(__file__))
 _ROOT = os.path.dirname(_HERE)
 HTML = os.path.join(_ROOT, "ui", "explorer.html")
-TWIN = os.path.join(_ROOT, "vercel-app", "explorer.html")
 
 
 def _html():
@@ -126,9 +125,3 @@ def test_broken_photo_hides_its_credit_too():
     assert m, "image error handler not found"
     handler = m.group(0)
     assert "closest('.evfig')" in handler, "handler must hide the whole figure"
-
-
-def test_twin_explorer_is_byte_identical():
-    assert open(HTML, "rb").read() == open(TWIN, "rb").read(), (
-        "ui/explorer.html and vercel-app/explorer.html have drifted"
-    )

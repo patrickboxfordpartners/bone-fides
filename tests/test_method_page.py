@@ -15,8 +15,7 @@ _ROOT = os.path.dirname(_HERE)
 if _ROOT not in sys.path:
     sys.path.insert(0, _ROOT)
 
-_UI_PATH = os.path.join(_ROOT, "ui", "server.py")
-_VERCEL_PATH = os.path.join(_ROOT, "vercel-app", "api", "search.py")
+_DOSSIER_PATH = os.path.join(_ROOT, "src", "dossier.py")
 _METHOD_HTML = os.path.join(_ROOT, "ui", "method.html")
 
 
@@ -32,8 +31,8 @@ def _funcs(path):
     return {n.name: n for n in tree.body if isinstance(n, ast.FunctionDef)}
 
 
-def test_method_endpoint_exists_in_both_twins():
-    for path in (_UI_PATH, _VERCEL_PATH):
+def test_method_endpoint_exists():
+    for path in (_DOSSIER_PATH,):
         assert "method" in _funcs(path), f"{path}: no method() endpoint"
 
 
@@ -41,7 +40,7 @@ def test_method_covers_every_field_the_page_displays():
     """The page shows these coverage rates; the endpoint must return them all,
     or the page renders a dash where a number should be. The field list lives
     in a module constant, so check the constant and the loop that uses it."""
-    for path in (_UI_PATH, _VERCEL_PATH):
+    for path in (_DOSSIER_PATH,):
         tree = ast.parse(open(path).read())
         consts = {t.id: n.value for n in tree.body if isinstance(n, ast.Assign)
                   for t in n.targets if isinstance(t, ast.Name)}
@@ -56,7 +55,7 @@ def test_method_covers_every_field_the_page_displays():
 def test_method_reuses_stats_for_shared_counts():
     """The counts that also appear on the landing page must come from stats(),
     not a second computation — two code paths can disagree."""
-    for path in (_UI_PATH, _VERCEL_PATH):
+    for path in (_DOSSIER_PATH,):
         src = ast.unparse(_funcs(path)["method"])
         assert "stats(es)" in src, (
             f"{path}: method() recomputes shared counts instead of reusing "
@@ -64,7 +63,7 @@ def test_method_reuses_stats_for_shared_counts():
 
 
 def test_method_reports_outlet_tiers():
-    for path in (_UI_PATH, _VERCEL_PATH):
+    for path in (_DOSSIER_PATH,):
         src = ast.unparse(_funcs(path)["method"])
         for tier in ("sfchronicle", "sfgate", "eater"):
             assert tier in src, f"{path}: method() omits the {tier} tier"
@@ -131,7 +130,7 @@ def test_method_counts_outlets_with_the_score_s_own_rule():
     host and called them Eater. Two different answers to "how many Eater
     moves" on a page whose job is being the one that is right.
     """
-    for path in (_UI_PATH, _VERCEL_PATH):
+    for path in (_DOSSIER_PATH,):
         src = ast.unparse(_funcs(path)["method"])
         assert "outlet_tier" in src, (
             f"{path}: method() no longer classifies source-less edges by host, "
@@ -162,7 +161,7 @@ def test_score_sample_uses_the_explorer_scoping_path():
     wrong, Tartine by 10 points and Atelier Crenn by 21. A methodology page
     whose own sample does not match its own dossiers is self-refuting.
     """
-    for path in (_UI_PATH, _VERCEL_PATH):
+    for path in (_DOSSIER_PATH,):
         src = ast.unparse(_funcs(path)["measure_score_sample"])
         assert "assemble_dossier" in src, (
             f"{path}: measure_score_sample() no longer scores through "
@@ -176,7 +175,7 @@ def test_score_sample_refuses_to_publish_a_partial_sample():
     Silently skipping a kitchen lets one timeout redefine the "fixed" sample
     and overwrite the saved range with a different one.
     """
-    for path in (_UI_PATH, _VERCEL_PATH):
+    for path in (_DOSSIER_PATH,):
         src = ast.unparse(_funcs(path)["measure_score_sample"])
         assert "return None" in src, (
             f"{path}: measure_score_sample() can still complete with a "

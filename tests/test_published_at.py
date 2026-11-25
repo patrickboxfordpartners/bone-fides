@@ -69,11 +69,7 @@ def test_measure_and_read_are_separate_functions():
     the reader, which called open() on it and raised TypeError. The refresh
     command is documented in that script, so it has to actually run.
     """
-    import importlib.util
-    spec = importlib.util.spec_from_file_location(
-        "ui_server_measure", os.path.join(_ROOT, "ui", "server.py"))
-    ui = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(ui)
+    from src import dossier as ui
     assert callable(getattr(ui, "measure_score_sample", None)), (
         "measure_score_sample() is gone — the offline refresh cannot compute")
     # the reader must take a path, not a client

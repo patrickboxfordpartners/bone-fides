@@ -4,20 +4,53 @@
   "outputDirectory": ".",
   "functions": {
     "api/search.py": {
-      "includeFiles": "city_venues.json, venues_geo.json, _map.js, score_sample.json"
+      "includeFiles": "api/_lib/**"
     }
   },
   "rewrites": [
-    { "source": "/api/search", "destination": "/api/search" },
-    { "source": "/api/venues", "destination": "/api/search" },
-    { "source": "/api/stats", "destination": "/api/search" },
-    { "source": "/api/map.js", "destination": "/api/search" },
-    { "source": "/api/suggest", "destination": "/api/search" },
-    { "source": "/api/tip", "destination": "/api/search" },
-    { "source": "/api/method", "destination": "/api/search" },
-    { "source": "/", "destination": "/landing.html" },
-    { "source": "/explorer", "destination": "/explorer.html" },
-    { "source": "/method", "destination": "/method.html" },
-    { "source": "/landing", "destination": "/landing.html" }
+    {
+      "source": "/api/search",
+      "destination": "/api/search"
+    },
+    {
+      "source": "/api/venues",
+      "destination": "/api/search"
+    },
+    {
+      "source": "/api/stats",
+      "destination": "/api/search"
+    },
+    {
+      "source": "/api/map.js",
+      "destination": "/api/search"
+    },
+    {
+      "source": "/api/suggest",
+      "destination": "/api/search"
+    },
+    {
+      "source": "/api/tip",
+      "destination": "/api/search"
+    },
+    {
+      "source": "/api/method",
+      "destination": "/api/search"
+    },
+    {
+      "source": "/",
+      "destination": "/landing.html"
+    },
+    {
+      "source": "/explorer",
+      "destination": "/explorer.html"
+    },
+    {
+      "source": "/method",
+      "destination": "/method.html"
+    },
+    {
+      "source": "/landing",
+      "destination": "/landing.html"
+    }
   ]
 }

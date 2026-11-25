@@ -3,7 +3,7 @@
 These lock the post-resolution bugs: a search page is not a kitchen's
 record, Dan is not Danielle, and joecontent.net is not Eater.
 """
-from ui.server import (
+from src.dossier import (
     _fuzzy_sibling, _venue_touch, allow_request, assemble_dossier,
     citation_supported, clamp_size, identity, outlet_tier,
 )
@@ -107,7 +107,7 @@ def test_facet_emptying_the_window_reports_facet_empty():
         def __init__(self, rows):
             self.rows = rows
 
-    import ui.server as srv
+    import src.dossier as srv
 
     real_lineage = srv.lineage
 
