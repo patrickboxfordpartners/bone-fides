@@ -137,14 +137,22 @@ def _cite(g, i):
 def _citations_for(g, a, b, limit=MAX_VIA):
     """The best citations for a hop, in the plan's order: quote names both
     kitchens, then one; then outlet weight; then a move with a year; then the
-    source URL as the stable tie-break."""
-    pair = (a, b) if (a, b) in g["hop_moves"] else (b, a)
-    idxs = g["hop_moves"].get(pair) or g["hop_moves"].get((b, a)) or []
+    source URL as the stable tie-break.
+
+    Only moves that ran from `a` to `b` are candidates: a branch that says
+    'where the parent's alumni went' must not cite someone who moved the
+    other way."""
+    idxs = []
+    for pair in ((a, b), (b, a)):
+        for i in g["hop_moves"].get(pair) or ():
+            row = g["moves"][i]
+            if (row[1], row[2]) == (a, b):
+                idxs.append(i)
     ranked = sorted(
         idxs,
         key=lambda i: (-(g["moves"][i][11] or 0),
                        -TIER_WEIGHT.get(g["moves"][i][5], 0),
-                       1 if g["moves"][i][4] else 0,
+                       0 if g["moves"][i][4] else 1,
                        g["moves"][i][6]))
     return [_cite(g, i) for i in ranked[:limit]], max(0, len(ranked) - limit)
 
@@ -241,7 +249,7 @@ def tree(g, name, depth=MAX_DEPTH, direction="down", booking=None):
     children = [build(c) for c in _sort_indexes(kids.get(root, []))]
 
     starred_names = []
-    for i in kept:
+    for i in order:                      # before the cut: totals stay whole
         if g["kitchens"][i][3] > 0 and i != root:
             starred_names.append(g["kitchens"][i][1])
     starred_names.sort()

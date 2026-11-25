@@ -107,7 +107,9 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;appeara
 .rootdisc{fill:var(--bg2);stroke:var(--accent);stroke-width:1.4}
 .rootname{fill:var(--accent);font-size:12.5px;font-weight:600}
 .graph a:focus-visible{outline:none}
-.graph a:focus-visible .dot{stroke:var(--accent);stroke-width:2px}
+.graph a:focus-visible .dot,.graph a:focus-visible .mark3{stroke:var(--accent);stroke-width:2px}
+.graph a.on .lab{fill:var(--ink);font-weight:600}
+.graph a.on .mark3{fill:var(--ink)}
 .graph a:hover .lab{fill:var(--accent)}
 .graph a:hover .lab.star{fill:var(--accent)}
 .mark3{fill:var(--dim)}
@@ -317,6 +319,12 @@ details.cite[open] summary::after{content:'▴';color:var(--accent)}
     var old = $('graph'); var g = old.cloneNode(false); old.parentNode.replaceChild(g, old);
     $('panel-idle').hidden = false; $('panel-body').hidden = true;
     $('truncnote').hidden = true;
+    // clear the previous tree's results: an unresolved or failed load must
+    // not leave old branches under a new kitchen name
+    $('phone-list').innerHTML = '';
+    $('desk-list').innerHTML = '';
+    ['t-reach', 't-starred', 't-alumni'].forEach(function (id) { $(id).textContent = '\u2014'; });
+    $('gens').innerHTML = '';
     fetchTree(k, dir, n).then(function (t) {
       if (n !== state.req) return;   // a newer request superseded this one
       state.tree = t; state.selected = null;
@@ -337,6 +345,7 @@ details.cite[open] summary::after{content:'▴';color:var(--accent)}
 
   function showUnresolved(t) {
     $('tree-name').textContent = t.query || '';
+    $('leg-year').textContent = '\u2014'; $('leg-displayed').textContent = '\u2014';
     var s = (t.suggestions || []).map(function (s) {
       return '<button type="button" data-k="' + esc(s.slug) + '">' + esc(s.name) + '</button>';
     }).join('');
@@ -359,7 +368,7 @@ details.cite[open] summary::after{content:'▴';color:var(--accent)}
     if (t.summary.truncated) {
       var tn = $('truncnote');
       tn.hidden = false;
-      tn.textContent = 'The drawing holds the first ' + fmt(300) + ' kitchens; the list below holds all ' + fmt(s.reach) + '.';
+      tn.textContent = 'This tree holds ' + fmt(s.reach) + ' kitchens; the drawing and the list each show the first ' + fmt(300) + '.';
     }
     var sub = $('tree-sub');
     sub.textContent = t.direction === 'up'
@@ -480,6 +489,8 @@ details.cite[open] summary::after{content:'▴';color:var(--accent)}
       var cls = 'e g' + n.gen + (n.stars > 0 ? ' s' : '') + (n.via.length + n.more_via > 1 ? ' w2' : '');
       edge.setAttribute('class', cls);
       edge.setAttribute('pathLength', '1');
+      edge.dataset.from = p.id;
+      edge.dataset.to = n.id;
       svg.appendChild(edge);
     });
 
@@ -494,10 +505,12 @@ details.cite[open] summary::after{content:'▴';color:var(--accent)}
       a.setAttribute('aria-label', n.name + (n.stars ? ', ' + starsLabel(n.stars) : '') +
         ', via ' + moved + role + ', ' + n.gen + (n.gen === 1 ? ' cited move' : ' cited moves') + ' from the root');
       var p = pos[n.id];
-      if (n.gen === 3) {
+      var crowded2 = n.gen === 2 && !label2 && !n.stars;
+      if (n.gen === 3 || crowded2) {
         var d = document.createElementNS(SVG_NS, 'circle');
         d.setAttribute('cx', p.x); d.setAttribute('cy', p.y); d.setAttribute('r', 3.2);
         d.setAttribute('class', 'mark3' + (n.stars ? ' star' : ''));
+        d.setAttribute('r', n.gen === 2 ? 2.9 : 3.2);
         var title = document.createElementNS(SVG_NS, 'title');
         title.textContent = n.name + (n.stars ? ' ' + starsTxt(n.stars) : '');
         a.appendChild(d); a.appendChild(title);
@@ -677,8 +690,8 @@ details.cite[open] summary::after{content:'▴';color:var(--accent)}
           '<div class="src">\u00a7 ' + (u ? '<a href="' + esc(u) + '" target="_blank" rel="noopener">' + esc(hostOf(u)) + ' \u2197</a>' : esc(v.outlet || '')) +
           '<span class="srcbadge ' + esc(v.outlet || 'other') + '">' + esc(v.outlet || 'source') + '</span></div>';
         if (j === 0 && c.more_via) {
-          html += '<button type="button" class="copybtn" data-more="' + c.id + '" style="min-height:34px;margin-top:8px">+' +
-            c.more_via + ' more citation' + (c.more_via > 1 ? 's' : '') + '</button>';
+          html += '<p class="src" style="margin-top:8px">+' + c.more_via +
+            ' more citation' + (c.more_via > 1 ? 's' : '') + ' on the record.</p>';
         }
         html += '</div></div>';
       });
@@ -720,14 +733,20 @@ details.cite[open] summary::after{content:'▴';color:var(--accent)}
     var svg = $('graph');
     svg.querySelectorAll('.e.sel').forEach(function (e) { e.classList.remove('sel'); });
     svg.querySelectorAll('a').forEach(function (a) { a.classList.remove('on'); });
+    // the selected path: every edge from the root down to the open branch
+    var path = {};
     var cur = id;
     while (cur && state.parents[cur]) {
       var parent = state.parents[cur];
-      // edges are appended in flat order; re-find by geometry is costly, use data
+      path[parent.id + '>' + cur] = true;
       cur = parent.id;
     }
-    // mark the nodes on the selected path
+    svg.querySelectorAll('.e').forEach(function (e) {
+      if (path[e.dataset.from + '>' + e.dataset.to]) { e.classList.add('sel'); }
+    });
+    // and the nodes on it
     svg.querySelectorAll('a').forEach(function (a) {
+      if (a.dataset.id === id || path[a.dataset.id + '>' + (state.parents[id] ? id : '')]) { }
       var n = id;
       while (n) {
         if (a.dataset.id === n) { a.classList.add('on'); }
@@ -755,28 +774,40 @@ details.cite[open] summary::after{content:'▴';color:var(--accent)}
     $('view-list').setAttribute('aria-pressed', String(list));
     if (phone) {
       graph.classList.add('desk-only');
+      graph.hidden = true;
       $('phone-list').hidden = false;
       dl.hidden = true;
       return;
     }
-    graph.classList.toggle('desk-only', list);
+    graph.classList.remove('desk-only');
+    graph.hidden = list;
     dl.hidden = !list;
     $('phone-list').hidden = true;
   }
 
   // ── picker ──────────────────────────────────────────────────────────
-  var picker = { items: [], active: -1 };
+  var picker = { items: [], active: -1, req: 0 };
   var suggEl = $('grow-sugg'), inputEl = $('grow-q');
   var pickerTimer = null;
 
   inputEl.addEventListener('input', function () {
     clearTimeout(pickerTimer);
     var q = inputEl.value.trim();
-    if (q.length < 2) { suggEl.hidden = true; inputEl.setAttribute('aria-expanded', 'false'); return; }
+    if (q.length < 2) {
+      picker.req++;                    // invalidate any in-flight request
+      suggEl.hidden = true;
+      inputEl.setAttribute('aria-expanded', 'false');
+      return;
+    }
+    var myReq = ++picker.req;
     pickerTimer = setTimeout(function () {
       fetch('/api/nodes?kind=kitchen&q=' + encodeURIComponent(q) + '&limit=8')
         .then(function (r) { return r.json(); })
-        .then(function (d) { showSugg(d.nodes || []); })
+        .then(function (d) {
+          if (myReq !== picker.req) return;   // the input changed meanwhile
+          if (inputEl.value.trim() !== q) return;
+          showSugg(d.nodes || []);
+        })
         .catch(function () {});
     }, 120);
   });
