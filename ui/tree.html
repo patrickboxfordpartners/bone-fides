@@ -34,7 +34,7 @@ button{font-family:inherit}
 .wordmark{font-size:19px;font-weight:560;letter-spacing:.01em;color:var(--ink);border:0;
   display:inline-flex;align-items:baseline;gap:7px;line-height:1}
 .wordmark em{color:var(--accent);font-style:italic;font-weight:500}
-.bf-nav{display:flex;gap:28px;align-self:stretch}
+.bf-nav{display:flex;flex-wrap:wrap;gap:28px;align-self:stretch}
 .bf-nav a{font-size:13.5px;font-weight:400;color:var(--dim);border:0;border-bottom:1px solid transparent;
   margin-bottom:-1px;display:flex;align-items:center;line-height:1;min-height:59px}
 .bf-nav a:hover{color:var(--ink)}
@@ -120,7 +120,7 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;appeara
 .tstat.star b{color:var(--stargold)}
 .tstat span{display:block;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin-top:7px;line-height:1.5}
 .side .viewtoggle{margin-top:18px}
-.legend{position:absolute;left:32px;bottom:18px;width:290px;z-index:2;font-size:12.5px;color:var(--dim);line-height:1.45}
+.legend{margin-top:24px;font-size:12.5px;color:var(--dim);line-height:1.45}
 .legend ul{list-style:none}
 .legend li{display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:start;margin-top:6px}
 .legend svg{margin-top:5px}
@@ -232,7 +232,7 @@ details.cite[open] summary::after{content:'▴';color:var(--accent)}
   .gens{display:flex;gap:3px;margin-top:14px}
   .gens div{min-width:0}
   .gens i{display:block;height:5px;border-radius:3px;background:linear-gradient(90deg,var(--accent),var(--gold))}
-  .gens span{display:block;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-top:7px;line-height:1.4;white-space:nowrap}
+  .gens span{display:block;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-top:7px;line-height:1.4;white-space:normal}
   .gens b{color:var(--ink);font-weight:550;font-variant-numeric:tabular-nums}
   .dirtoggle{margin-top:16px}
   .ptools{display:flex;justify-content:space-between;align-items:center;margin-top:18px;padding-bottom:12px;border-bottom:2px solid var(--ink)}
@@ -247,7 +247,7 @@ details.cite[open] summary::after{content:'▴';color:var(--accent)}
   .ph .more{position:absolute;right:0;top:6px;min-width:52px;height:44px;border:1px solid var(--faint);border-radius:999px;background:none;color:var(--dim);
     font:400 13px 'Fraunces',Georgia,serif;font-variant-numeric:tabular-nums;cursor:pointer}
   .ph .more[aria-expanded=true]{color:var(--accent);border-color:var(--accent)}
-  .legend{position:static;width:auto;padding:0 20px 24px}
+  .legend{margin-top:18px}
   .panel{border-left:0;border-top:1px solid var(--faint);padding:22px 20px 32px}
   .share{display:none}
 }
@@ -305,9 +305,6 @@ details.cite[open] summary::after{content:'▴';color:var(--accent)}
         <button type="button" id="view-graph" aria-pressed="true">Tree</button>
         <button type="button" id="view-list" aria-pressed="false">List</button>
       </div>
-    </div>
-    <svg class="graph desk-only" id="graph" viewBox="0 0 1040 760" role="group" aria-label="Family tree drawing"></svg>
-    <p class="truncnote" id="truncnote" hidden></p>
     <ul class="legend" aria-label="How to read the tree">
       <li><svg width="30" height="8" aria-hidden="true"><path d="M1 4h28" class="e"/></svg><span>A cited move by a named person.</span></li>
       <li><svg width="30" height="8" aria-hidden="true"><path d="M1 4h28" class="e w2"/></svg><span>Heavier: two or more cited moves join the two kitchens.</span></li>
@@ -315,6 +312,9 @@ details.cite[open] summary::after{content:'▴';color:var(--accent)}
       <li><svg width="30" height="8" aria-hidden="true"><circle cx="6" cy="4" r="2.4" class="mark3"/><circle cx="15" cy="4" r="2.4" class="mark3"/><circle cx="24" cy="4" r="2.4" class="mark3"/></svg><span>Outer ring: one mark for each third-move kitchen. Point at a mark, or tab to it, for its name.</span></li>
       <li><span></span><span>Rings follow cited moves, not dates: <b id="leg-year">—</b> of <b id="leg-displayed">—</b> displayed moves carry a year.</span></li>
     </ul>
+    </div>
+    <svg class="graph desk-only" id="graph" viewBox="0 0 1040 760" role="group" aria-label="Family tree drawing"></svg>
+    <p class="truncnote" id="truncnote" hidden></p>
     <div class="share"><button type="button" class="copybtn" id="copy-link">copy link</button></div>
   </section>
   <aside class="panel" id="panel" aria-label="Open branch">

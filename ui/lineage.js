@@ -439,7 +439,6 @@
     rname.setAttribute('text-anchor', 'middle');
     rname.textContent = clip(t.root.name, 16);
     g0.appendChild(disc); g0.appendChild(rname);
-    svg.appendChild(g0);
 
     var pos = {};
     pos[t.root.id] = { x: CX, y: CY };
@@ -498,6 +497,9 @@
       svg.appendChild(edge);
     });
 
+    /* the root disc and its name draw above the spokes, not under them */
+    svg.appendChild(g0);
+
     flat.forEach(function (n) {
       var a = document.createElementNS(SVG_NS, 'a');
       if (opts.onSelect) {
@@ -507,8 +509,13 @@
       var via0 = (n.via && n.via[0]) || null;
       var moved = via0 ? via0.person : 'a cited move';
       var role = via0 && via0.role ? ', ' + via0.role : '';
-      a.setAttribute('aria-label', n.name + (n.stars ? ', ' + starsLabel(n.stars) : '') +
-        ', via ' + moved + role + ', ' + n.gen + (n.gen === 1 ? ' cited move' : ' cited moves') + ' from the root');
+      /* the accessible name must contain the visible label (clipped text
+       * and star glyphs included), so it starts with exactly what shows */
+      var visible = (n.stars ? starsTxt(Math.min(n.stars, 3)) + ' ' : '') +
+        String(n.name).slice(0, 25) + (String(n.name).length > 26 ? '\u2026' : '');
+      var full = n.name + (n.stars ? ', ' + starsLabel(n.stars) : '') +
+        ', via ' + moved + role + ', ' + n.gen + (n.gen === 1 ? ' cited move' : ' cited moves') + ' from the root';
+      a.setAttribute('aria-label', visible === n.name ? full : visible + ' \u2014 ' + full);
       var p = pos[n.id];
       var crowded2 = n.gen === 2 && !label2 && !n.stars;
       if (n.gen === 3 || crowded2) {

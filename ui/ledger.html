@@ -24,7 +24,7 @@
 .wordmark{font-size:19px;font-weight:560;letter-spacing:.01em;color:var(--ink);border:0;
   display:inline-flex;align-items:baseline;gap:7px;line-height:1}
 .wordmark em{color:var(--accent);font-style:italic;font-weight:500}
-.bf-nav{display:flex;gap:28px;align-self:stretch}
+.bf-nav{display:flex;flex-wrap:wrap;gap:28px;align-self:stretch}
 .bf-nav a{font-size:13.5px;font-weight:400;color:var(--dim);border:0;border-bottom:1px solid transparent;
   margin-bottom:-1px;display:flex;align-items:center;line-height:1;min-height:59px}
 .bf-nav a:hover{color:var(--ink)}
@@ -417,10 +417,10 @@ td.key .num{color:var(--accent)}
   function renderMentors () {
     var top = data.mentors[0] ? data.mentors[0].chefs : 1;
     $('mlist').innerHTML = data.mentors.map(function (m, i) {
-      return '<li><details><summary aria-label="' + L.esc(m.mentor) + ', named as mentor by ' +
-        m.chefs + ' chefs. Show the quotations.">' +
+      return '<li><details><summary>' +
         '<span class="rk">' + pad2(i + 1) + '</span><span class="mn">' + L.esc(m.mentor) + '</span>' +
-        '<span class="mc">' + m.chefs + '</span><span class="tw" aria-hidden="true">\u25be</span></summary>' +
+        '<span class="mc">' + m.chefs + '<span class="sr-only"> chefs</span></span>' +
+        '<span class="tw" aria-hidden="true">\u25be</span></summary>' +
         '<div class="mq">' + (m.sample || []).map(function (v) {
           return '<div class="cite">' + L.citeCard(v) + '</div>';
         }).join('') + '</div></details></li>';
