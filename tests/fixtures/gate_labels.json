@@ -1,12 +1,12 @@
 {
  "corpus": {
-  "displayed": 4991,
+  "displayed": 4989,
   "displayed_before": 3388,
   "lost": 0,
-  "newly_displayed": 1603,
+  "newly_displayed": 1601,
   "on_record": 9312
  },
- "cue_hash": "7480e194abac68580ab698455ea53238be3cc710011e99ca8808d944ea57b841",
+ "cue_hash": "39df9220758e132197336324f5212706110693abb0981ec589de2f2094408925",
  "measured_at": "2026-11-25",
  "old_pattern_hash": "bfae395d42ef21cb28cb349555d01b26dbb65a606d07d16915576f471835f68e",
  "protocol": 1,
@@ -19,7 +19,7 @@
    "true": 374
   },
   {
-   "cue_hash": "7480e194abac68580ab698455ea53238be3cc710011e99ca8808d944ea57b841",
+   "cue_hash": "39df9220758e132197336324f5212706110693abb0981ec589de2f2094408925",
    "n": 400,
    "result": "pass",
    "seed": "acc-2",
@@ -9185,40 +9185,6 @@
     "year": null
    },
    {
-    "action": "JOINED",
-    "both": false,
-    "confidence": "high",
-    "counted_true": true,
-    "date": null,
-    "disputed": "no",
-    "era_bucket": null,
-    "evidence": "The replacement co-chefs are husband and wife John Clark and Gail Pirie, she most recently of Stars and he of the Faz organization.",
-    "family": "tenure",
-    "from_venue": "Stars (Gail Pirie) and Faz organization (John Clark)",
-    "from_venue_key": "starsgailpirieandfazorganizationjohnclark",
-    "id": "a8dcf8cd489bc30b2e5e9eafa0f6dd245e33a413a5a5a85c318951aeefcf2159",
-    "label": "true",
-    "mentor": null,
-    "note": "replacement co-chefs; she of Stars, he of Faz",
-    "person": "John Clark and Gail Pirie",
-    "person_text": "John Clark and Gail Pirie",
-    "role": "co-chefs",
-    "role_bucket": "chef",
-    "second_label": "true",
-    "second_note": "Article: the replacement co-chefs at Foreign Cinema are Clark and Pirie, 'she most recently of Stars and he of the Faz organization' \u2014 supports all three venues.",
-    "seed": "acc-2",
-    "source": "sfgate",
-    "source_image": "https://s.hdnux.com/photos/01/34/02/57/24128448/3/rawImage.jpg",
-    "source_url": "https://www.sfgate.com/food/insidescoop/article/How-one-prolific-restaurateur-copes-with-the-2892481.php",
-    "to_venue": "Foreign Cinema",
-    "to_venue_key": "foreigncinema",
-    "venue_hoods": [
-     "Mission"
-    ],
-    "venue_text": "Stars (Gail Pirie) and Faz organization (John Clark) Foreign Cinema",
-    "year": null
-   },
-   {
     "action": "DEPARTED",
     "both": false,
     "confidence": "high",
@@ -10232,6 +10198,40 @@
     "to_venue_key": "",
     "venue_hoods": [],
     "venue_text": "Manresa",
+    "year": null
+   },
+   {
+    "action": "JOINED",
+    "both": false,
+    "confidence": "high",
+    "counted_true": true,
+    "date": null,
+    "disputed": "no",
+    "era_bucket": null,
+    "evidence": "Meanwhile, over at Waterfront, the new chef is Farallon vet Fred Sassen",
+    "family": "tenure",
+    "from_venue": "Farallon",
+    "from_venue_key": "farallon",
+    "id": "bf3489030f72d35983d5e0189e1c9b22bfba4f16a24adee3a172a33e053168aa",
+    "label": "true",
+    "mentor": null,
+    "note": "the quote states the person's role at a named venue of the row",
+    "person": "Fred Sassen",
+    "person_text": "Fred Sassen",
+    "role": "chef",
+    "role_bucket": "chef",
+    "second_label": "true",
+    "second_note": "over at Waterfront, the new chef is Farallon vet Fred Sassen",
+    "seed": "acc-2",
+    "source": "sfgate",
+    "source_image": "https://s.hdnux.com/photos/06/71/60/1809409/13/rawImage.jpg",
+    "source_url": "https://www.sfgate.com/food/insidescoop/article/Taste-for-Tequila-fuels-Copita-to-open-in-spring-2303608.php",
+    "to_venue": "Waterfront Restaurant",
+    "to_venue_key": "waterfrontrestaurant",
+    "venue_hoods": [
+     "Financial District/South Beach"
+    ],
+    "venue_text": "Farallon Waterfront Restaurant",
     "year": null
    },
    {

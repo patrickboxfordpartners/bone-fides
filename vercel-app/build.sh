@@ -22,14 +22,14 @@ fi
 # the output root would win over the "/" -> landing.html rewrite.
 rm -rf public
 mkdir -p public
-cp ../ui/explorer.html ../ui/landing.html ../ui/method.html public/
+cp ../ui/explorer.html ../ui/landing.html ../ui/method.html ../ui/tree.html public/
 
 rm -rf api/_lib
 mkdir -p api/_lib
 touch api/_lib/__init__.py
-cp ../src/dossier.py ../src/es_query.py ../src/roles.py ../src/venue_aliases.py api/_lib/
+cp ../src/dossier.py ../src/es_query.py ../src/roles.py ../src/venue_aliases.py ../src/graph.py api/_lib/
 cp ../ui/map.js ../ui/city_venues.json ../ui/venues_geo.json ../ui/score_sample.json \
    ../ui/venue_aliases.json ../ui/venue_booking.json ../ui/dossier_booking.json \
-   ../ui/gate_stamp.json api/_lib/
+   ../ui/gate_stamp.json ../ui/graph.json api/_lib/
 
 echo "vercel-app build: pages and api/_lib assembled from ui/ and src/"

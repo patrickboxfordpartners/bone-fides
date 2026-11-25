@@ -178,6 +178,26 @@ def test_partial_venue_name_anchors():
     assert dossier._quote_names_venue(e2) is False
 
 
+def test_common_head_words_do_not_anchor():
+    # a single common word is not a kitchen mention: "French" does not name
+    # "French Laundry", and "Stars" cannot cross city branches
+    e = _edge(person="Alex Rivera", from_venue="French Laundry", to_venue=None,
+              evidence="A French chef, Alex Rivera is a veteran of Paris kitchens")
+    assert dossier.citation_reason(e) is None
+
+def test_stars_prefix_does_not_cross_branches():
+    e = _edge(person="Alex Rivera", from_venue=None, to_venue="Stars (San Francisco)",
+              evidence="Alex Rivera parted ways with Stars in Seattle")
+    assert dossier.citation_reason(e) is None
+
+def test_distinctive_head_words_still_anchor():
+    e = _edge(person="Alex Rivera", from_venue="Alfred's Steakhouse", to_venue=None,
+              evidence="Alex Rivera, former Alfred's sous chef, pours wine")
+    assert dossier.citation_reason(e) is not None
+    e2 = _edge(person="Jamie Lauren", from_venue=None, to_venue="Absinthe Brasserie and Bar",
+               evidence="Jamie works as the Executive Chef at Absinthe")
+    assert dossier.citation_reason(e2) is not None
+
 def test_new_cue_rejects_a_show_as_venue():
     e = _edge(person="Mattin Noblia", from_venue="Top Chef", to_venue="Bento",
               evidence="prepared daily by a kitchen managed by Top Chef alum Mattin Noblia")

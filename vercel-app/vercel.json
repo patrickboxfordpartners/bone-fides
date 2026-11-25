@@ -15,7 +15,10 @@
     { "source": "/api/suggest", "destination": "/api/search" },
     { "source": "/api/tip", "destination": "/api/search" },
     { "source": "/api/method", "destination": "/api/search" },
+    { "source": "/api/tree", "destination": "/api/search" },
+    { "source": "/api/nodes", "destination": "/api/search" },
     { "source": "/", "destination": "/landing.html" },
+    { "source": "/tree", "destination": "/tree.html" },
     { "source": "/explorer", "destination": "/explorer.html" },
     { "source": "/method", "destination": "/method.html" },
     { "source": "/landing", "destination": "/landing.html" }

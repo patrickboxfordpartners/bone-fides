@@ -1,0 +1,2203 @@
+[
+ {
+  "base_key": "100brannanst",
+  "same_node": true,
+  "spellings": [
+   "100 Brannan St. (Slanted Door)"
+  ]
+ },
+ {
+  "base_key": "1300onfillmore",
+  "same_node": true,
+  "spellings": [
+   "1300 on Fillmore (SFO outpost)"
+  ]
+ },
+ {
+  "base_key": "1600marketst",
+  "same_node": true,
+  "spellings": [
+   "1600 Market St. (unnamed restaurant)"
+  ]
+ },
+ {
+  "base_key": "2223marketstreet",
+  "same_node": true,
+  "spellings": [
+   "2223 Market Street (unnamed)"
+  ]
+ },
+ {
+  "base_key": "231ellsworth",
+  "same_node": true,
+  "spellings": [
+   "231 Ellsworth (San Mateo)"
+  ]
+ },
+ {
+  "base_key": "41degrees",
+  "same_node": true,
+  "spellings": [
+   "41 Degrees (Barcelona)"
+  ]
+ },
+ {
+  "base_key": "4505burgersbbq",
+  "same_node": false,
+  "spellings": [
+   "4505 Burgers & BBQ (Divisadero location)",
+   "4505 Burgers & BBQ (Oakland location)"
+  ]
+ },
+ {
+  "base_key": "455marketst",
+  "same_node": true,
+  "spellings": [
+   "455 Market St. (Momo Noodle stand-alone restaurant)"
+  ]
+ },
+ {
+  "base_key": "abaca",
+  "same_node": false,
+  "spellings": [
+   "Abaca (bare name)",
+   "Abacá (Fisherman’s Wharf)",
+   "Abacá (as pastry chef)"
+  ]
+ },
+ {
+  "base_key": "acadia",
+  "same_node": true,
+  "spellings": [
+   "Acadia (Chicago)"
+  ]
+ },
+ {
+  "base_key": "adc",
+  "same_node": true,
+  "spellings": [
+   "ADC (Aqua Development Corp.)"
+  ]
+ },
+ {
+  "base_key": "alborz",
+  "same_node": false,
+  "spellings": [
+   "Alborz (Fremont)",
+   "Alborz (San Francisco)"
+  ]
+ },
+ {
+  "base_key": "alborzrestaurant",
+  "same_node": true,
+  "spellings": [
+   "Alborz Restaurant (San Rafael)"
+  ]
+ },
+ {
+  "base_key": "amantes",
+  "same_node": true,
+  "spellings": [
+   "Amante’s (as a pop-up)"
+  ]
+ },
+ {
+  "base_key": "andina",
+  "same_node": true,
+  "spellings": [
+   "Andina (201 Franklin Street)"
+  ]
+ },
+ {
+  "base_key": "argentina",
+  "same_node": true,
+  "spellings": [
+   "Argentina (Francis Mallmann's restaurants)"
+  ]
+ },
+ {
+  "base_key": "arinellpizza",
+  "same_node": true,
+  "spellings": [
+   "Arinell Pizza (Berkeley)"
+  ]
+ },
+ {
+  "base_key": "arizona",
+  "same_node": true,
+  "spellings": [
+   "Arizona (unspecified venue)"
+  ]
+ },
+ {
+  "base_key": "asianbox",
+  "same_node": false,
+  "spellings": [
+   "Asian Box (Mountain View)",
+   "Asian Box (Palo Alto)"
+  ]
+ },
+ {
+  "base_key": "aureole",
+  "same_node": true,
+  "spellings": [
+   "Aureole (New York and Las Vegas)"
+  ]
+ },
+ {
+  "base_key": "avery",
+  "same_node": false,
+  "spellings": [
+   "Avery (Edinburgh)",
+   "Avery (San Francisco)"
+  ]
+ },
+ {
+  "base_key": "babuji",
+  "same_node": false,
+  "spellings": [
+   "Babu Ji (Australia)",
+   "Babu Ji (New York City)",
+   "Babu Ji (New York)",
+   "Babu Ji (San Francisco)"
+  ]
+ },
+ {
+  "base_key": "balis",
+  "same_node": false,
+  "spellings": [
+   "Bali's (Pacific and Battery)",
+   "Bali's (Sansome Street)",
+   "Bali's (bare name)"
+  ]
+ },
+ {
+  "base_key": "banhmijoint",
+  "same_node": true,
+  "spellings": [
+   "Banh Mi Joint (later renamed Monster Pho 2)"
+  ]
+ },
+ {
+  "base_key": "baragricole",
+  "same_node": true,
+  "spellings": [
+   "Bar Agricole (1540 Mission St.)",
+   "Bar Agricole (355 11th St.)"
+  ]
+ },
+ {
+  "base_key": "baronsmeatpoultry",
+  "same_node": true,
+  "spellings": [
+   "Barons Meat & Poultry (Brooklyn)"
+  ]
+ },
+ {
+  "base_key": "baronsmeats",
+  "same_node": false,
+  "spellings": [
+   "Barons Meats (Alameda)",
+   "Barons Meats (Noe Valley)"
+  ]
+ },
+ {
+  "base_key": "battery",
+  "same_node": true,
+  "spellings": [
+   "The Battery (717B)"
+  ]
+ },
+ {
+  "base_key": "baywolfspace",
+  "same_node": true,
+  "spellings": [
+   "Bay Wolf space (unnamed)"
+  ]
+ },
+ {
+  "base_key": "bearvsbull",
+  "same_node": true,
+  "spellings": [
+   "Bear Vs Bull (New Mission Alamo Drafthouse)"
+  ]
+ },
+ {
+  "base_key": "beitrima",
+  "same_node": true,
+  "spellings": [
+   "Beit Rima (Cole Valley location)",
+   "Beit Rima (Cole Valley)",
+   "Beit Rima (Daly City location)",
+   "Beit Rima (Daly City)"
+  ]
+ },
+ {
+  "base_key": "benchmarkpizzeria",
+  "same_node": true,
+  "spellings": [
+   "Benchmark Pizzeria (Kensington)"
+  ]
+ },
+ {
+  "base_key": "bestia",
+  "same_node": true,
+  "spellings": [
+   "Bestia (Los Angeles)"
+  ]
+ },
+ {
+  "base_key": "betelnut",
+  "same_node": true,
+  "spellings": [
+   "Betelnut Pejiu Wu (San Francisco)"
+  ]
+ },
+ {
+  "base_key": "bishop",
+  "same_node": true,
+  "spellings": [
+   "Bishop (planned venue)"
+  ]
+ },
+ {
+  "base_key": "bittersweetcafe",
+  "same_node": true,
+  "spellings": [
+   "Bittersweet Cafe (Oakland)"
+  ]
+ },
+ {
+  "base_key": "bluebarngourmet",
+  "same_node": true,
+  "spellings": [
+   "Blue Barn Gourmet (2105 Chestnut St.)"
+  ]
+ },
+ {
+  "base_key": "bobsdonuts",
+  "same_node": true,
+  "spellings": [
+   "Bob’s Donuts (601 Baker Street)"
+  ]
+ },
+ {
+  "base_key": "bonitataqueriayrotisserie",
+  "same_node": true,
+  "spellings": [
+   "Bonita Taqueria y Rotisserie (Castro location)"
+  ]
+ },
+ {
+  "base_key": "bouchon",
+  "same_node": false,
+  "spellings": [
+   "Bouchon (Beverly Hills)",
+   "Bouchon (Yountville)"
+  ]
+ },
+ {
+  "base_key": "bourbonsteak",
+  "same_node": false,
+  "spellings": [
+   "Bourbon Steak (Westin St. Francis, 2010–2016)",
+   "Bourbon Steak (Westin St. Francis, 2025)",
+   "Bourbon Steak (bare name)",
+   "Bourbon Steak (current iteration)"
+  ]
+ },
+ {
+  "base_key": "bravaterrace",
+  "same_node": false,
+  "spellings": [
+   "Brava Terrace (Danville)",
+   "Brava Terrace (St. Helena)"
+  ]
+ },
+ {
+  "base_key": "brendas",
+  "same_node": true,
+  "spellings": [
+   "Brenda’s (Oakland)"
+  ]
+ },
+ {
+  "base_key": "brownsugarkitchencounter",
+  "same_node": true,
+  "spellings": [
+   "Brown Sugar Kitchen Counter (Uptown Oakland)"
+  ]
+ },
+ {
+  "base_key": "burgerbar",
+  "same_node": false,
+  "spellings": [
+   "Burger Bar (Macy's Union Square, 6th Floor)",
+   "Burger Bar (St. Louis location)"
+  ]
+ },
+ {
+  "base_key": "burgermeister",
+  "same_node": true,
+  "spellings": [
+   "Burgermeister (Cole Valley location)",
+   "Burgermeister (Cole Valley)",
+   "Burgermeister (Daly City)"
+  ]
+ },
+ {
+  "base_key": "caesarspalace",
+  "same_node": true,
+  "spellings": [
+   "Caesar's Palace (Las Vegas)"
+  ]
+ },
+ {
+  "base_key": "cafeandre",
+  "same_node": true,
+  "spellings": [
+   "Cafe Andre (Hotel Rex)"
+  ]
+ },
+ {
+  "base_key": "cafeandrotisserie",
+  "same_node": true,
+  "spellings": [
+   "cafe and rotisserie (101 California St.)"
+  ]
+ },
+ {
+  "base_key": "cafebarcelona",
+  "same_node": true,
+  "spellings": [
+   "Cafe Barcelona (Miami)"
+  ]
+ },
+ {
+  "base_key": "cafeohlone",
+  "same_node": true,
+  "spellings": [
+   "Cafe Ohlone (Phoebe A. Hearst Museum of Anthropology courtyard)",
+   "Cafe Ohlone (Phoebe A. Hearst Museum of Anthropology)"
+  ]
+ },
+ {
+  "base_key": "californios",
+  "same_node": true,
+  "spellings": [
+   "Californios (Mission District and SoMa locations)"
+  ]
+ },
+ {
+  "base_key": "casaborinquena",
+  "same_node": false,
+  "spellings": [
+   "Casa Borinqueña (6211 Shattuck Avenue, Oakland)",
+   "Casa Borinqueña (catering business)"
+  ]
+ },
+ {
+  "base_key": "catahoularestaurantsaloon",
+  "same_node": true,
+  "spellings": [
+   "Catahoula Restaurant & Saloon (Calistoga)"
+  ]
+ },
+ {
+  "base_key": "chayabrasseries",
+  "same_node": true,
+  "spellings": [
+   "Chaya Brasseries (Venice and Los Angeles)"
+  ]
+ },
+ {
+  "base_key": "chefico",
+  "same_node": false,
+  "spellings": [
+   "Che Fico (Menlo Park)",
+   "Che Fico (San Francisco)"
+  ]
+ },
+ {
+  "base_key": "cheficopizzeria",
+  "same_node": true,
+  "spellings": [
+   "Che Fico Pizzeria (Thrive City)"
+  ]
+ },
+ {
+  "base_key": "chefsmellys",
+  "same_node": true,
+  "spellings": [
+   "Chef Smelly’s (pop-up at a downtown Oakland nightclub)"
+  ]
+ },
+ {
+  "base_key": "chefsmellyspopup",
+  "same_node": true,
+  "spellings": [
+   "Chef Smelly’s pop-up (at a downtown Oakland nightclub)"
+  ]
+ },
+ {
+  "base_key": "chezpapa",
+  "same_node": true,
+  "spellings": [
+   "Chez Papa (Potrero Hill)"
+  ]
+ },
+ {
+  "base_key": "chicago",
+  "same_node": true,
+  "spellings": [
+   "Chicago (Lettuce Entertain You restaurant empire)"
+  ]
+ },
+ {
+  "base_key": "chico",
+  "same_node": true,
+  "spellings": [
+   "Chico (formerly Chicomecóatl)"
+  ]
+ },
+ {
+  "base_key": "choy",
+  "same_node": true,
+  "spellings": [
+   "Choy (Nashville)"
+  ]
+ },
+ {
+  "base_key": "chuckstakeaway",
+  "same_node": true,
+  "spellings": [
+   "Chuck’s Takeaway (Valencia Street, San Francisco)"
+  ]
+ },
+ {
+  "base_key": "coddamn",
+  "same_node": true,
+  "spellings": [
+   "Cod Damn (pop-up)"
+  ]
+ },
+ {
+  "base_key": "commanderspalace",
+  "same_node": true,
+  "spellings": [
+   "Commander's Palace (Las Vegas)"
+  ]
+ },
+ {
+  "base_key": "craft",
+  "same_node": true,
+  "spellings": [
+   "Craft (Los Angeles)",
+   "Craft (New York)"
+  ]
+ },
+ {
+  "base_key": "craftsmanandwolves",
+  "same_node": false,
+  "spellings": [
+   "Craftsman and Wolves (Pacific Avenue, Russian Hill)",
+   "Craftsman and Wolves (bare name)"
+  ]
+ },
+ {
+  "base_key": "cucinaparadiso",
+  "same_node": false,
+  "spellings": [
+   "Cucina Paradiso (Petaluma)",
+   "Cucina Paradiso (Santa Rosa)"
+  ]
+ },
+ {
+  "base_key": "culinaryinstituteofamerica",
+  "same_node": true,
+  "spellings": [
+   "The Culinary Institute of America (CIA)"
+  ]
+ },
+ {
+  "base_key": "cupcakinbakeshop",
+  "same_node": true,
+  "spellings": [
+   "Cupcakin’ Bakeshop (Berkeley)"
+  ]
+ },
+ {
+  "base_key": "customburger",
+  "same_node": true,
+  "spellings": [
+   "Custom Burger (Seventh and Mission streets)"
+  ]
+ },
+ {
+  "base_key": "dabba",
+  "same_node": true,
+  "spellings": [
+   "Dabba (R.T.B. Fillmore Pop Up)"
+  ]
+ },
+ {
+  "base_key": "daffodil",
+  "same_node": true,
+  "spellings": [
+   "Daffodil (formerly Vignette at the Orchard Hotel)"
+  ]
+ },
+ {
+  "base_key": "daniel",
+  "same_node": false,
+  "spellings": [
+   "Daniel (Manhattan)",
+   "Daniel (bare name)"
+  ]
+ },
+ {
+  "base_key": "danielpattersonville",
+  "same_node": true,
+  "spellings": [
+   "Daniel Pattersonville (Haven, Plum)"
+  ]
+ },
+ {
+  "base_key": "dasaro",
+  "same_node": false,
+  "spellings": [
+   "D'Asaro (Redwood City)",
+   "D'Asaro (bare name)"
+  ]
+ },
+ {
+  "base_key": "delfinapizzeria",
+  "same_node": false,
+  "spellings": [
+   "Delfina Pizzeria (18th Street and California Street)",
+   "Delfina Pizzeria (adjacent pizzeria)"
+  ]
+ },
+ {
+  "base_key": "deliboard",
+  "same_node": true,
+  "spellings": [
+   "Deli Board (1058 Folsom St.)",
+   "Deli Board (original location)"
+  ]
+ },
+ {
+  "base_key": "delpopolo",
+  "same_node": true,
+  "spellings": [
+   "Del Popolo (brick-and-mortar)",
+   "Del Popolo (truck)"
+  ]
+ },
+ {
+  "base_key": "district",
+  "same_node": false,
+  "spellings": [
+   "District (bare name)",
+   "District (formerly Pasta Opera)"
+  ]
+ },
+ {
+  "base_key": "dosa",
+  "same_node": false,
+  "spellings": [
+   "DOSA (Fillmore)",
+   "DOSA (Valencia and Fillmore locations)",
+   "DOSA (Valencia)",
+   "DOSA (bare name)"
+  ]
+ },
+ {
+  "base_key": "draegers",
+  "same_node": true,
+  "spellings": [
+   "Draeger's (Culinary Centers in San Mateo and Menlo Park)"
+  ]
+ },
+ {
+  "base_key": "dragoneye",
+  "same_node": true,
+  "spellings": [
+   "DragonEye (101 California St.)"
+  ]
+ },
+ {
+  "base_key": "elevenmadisonpark",
+  "same_node": false,
+  "spellings": [
+   "Eleven Madison Park (New York City)",
+   "Eleven Madison Park (bare name)"
+  ]
+ },
+ {
+  "base_key": "elhuaracheloco",
+  "same_node": true,
+  "spellings": [
+   "El Huarache Loco (food truck and farmers markets)"
+  ]
+ },
+ {
+  "base_key": "elizas",
+  "same_node": true,
+  "spellings": [
+   "Eliza's (18th Street, Potrero Hill location)",
+   "Eliza's (Oak Street location)",
+   "Eliza's (Potrero Hill location)"
+  ]
+ },
+ {
+  "base_key": "emporiorulli",
+  "same_node": true,
+  "spellings": [
+   "Emporio Rulli (Marina district)"
+  ]
+ },
+ {
+  "base_key": "fairmontplaza",
+  "same_node": true,
+  "spellings": [
+   "Fairmont Plaza (Manhattan)"
+  ]
+ },
+ {
+  "base_key": "farmerbrown",
+  "same_node": true,
+  "spellings": [
+   "Farmerbrown (SFO outpost)",
+   "Farmerbrown (San Francisco International Airport)",
+   "Farmerbrown (Tenderloin)"
+  ]
+ },
+ {
+  "base_key": "farmhouse",
+  "same_node": true,
+  "spellings": [
+   "Farmhouse (formerly Brava Terrace)"
+  ]
+ },
+ {
+  "base_key": "farmshop",
+  "same_node": true,
+  "spellings": [
+   "Farmshop (Larkspur)"
+  ]
+ },
+ {
+  "base_key": "ferrybuilding",
+  "same_node": false,
+  "spellings": [
+   "Ferry Building (Mastrelli's Delicatessen)",
+   "Ferry Building (Slanted Door)"
+  ]
+ },
+ {
+  "base_key": "fiorella",
+  "same_node": true,
+  "spellings": [
+   "Fiorella (Clement and Polk Streets locations)",
+   "Fiorella (Inner Sunset location)"
+  ]
+ },
+ {
+  "base_key": "five",
+  "same_node": true,
+  "spellings": [
+   "Five (Hotel Shattuck Plaza)"
+  ]
+ },
+ {
+  "base_key": "flora",
+  "same_node": true,
+  "spellings": [
+   "Flora (reopening under new concept)"
+  ]
+ },
+ {
+  "base_key": "flores",
+  "same_node": false,
+  "spellings": [
+   "Flores (Corte Madera)",
+   "Flores (bare name)"
+  ]
+ },
+ {
+  "base_key": "fogodechao",
+  "same_node": false,
+  "spellings": [
+   "Fogo de Chão (Las Vegas location)",
+   "Fogo de Chão (San Francisco location)"
+  ]
+ },
+ {
+  "base_key": "fredsegal",
+  "same_node": true,
+  "spellings": [
+   "Fred Segal (Santa Monica)"
+  ]
+ },
+ {
+  "base_key": "fredygirardetsrestaurant",
+  "same_node": true,
+  "spellings": [
+   "Fredy Girardet's restaurant (Switzerland)"
+  ]
+ },
+ {
+  "base_key": "frenchlaundry",
+  "same_node": true,
+  "spellings": [
+   "French Laundry (Yountville)"
+  ]
+ },
+ {
+  "base_key": "frenchlaundryandgrill23",
+  "same_node": true,
+  "spellings": [
+   "French Laundry and Grill 23 (Boston)"
+  ]
+ },
+ {
+  "base_key": "frogandthepeach",
+  "same_node": true,
+  "spellings": [
+   "The Frog and the Peach (space)"
+  ]
+ },
+ {
+  "base_key": "futurebarsgroup",
+  "same_node": true,
+  "spellings": [
+   "Future Bars group (Bourbon and Branch, Zombie Village)"
+  ]
+ },
+ {
+  "base_key": "gaetanos",
+  "same_node": true,
+  "spellings": [
+   "Gaetano’s (at 1257 Taylor Street)"
+  ]
+ },
+ {
+  "base_key": "gingerisland",
+  "same_node": false,
+  "spellings": [
+   "Ginger Island (Eccolo)",
+   "Ginger Island (bare name)"
+  ]
+ },
+ {
+  "base_key": "gordonbiersch",
+  "same_node": true,
+  "spellings": [
+   "Gordon Biersch (San Jose)"
+  ]
+ },
+ {
+  "base_key": "guerillacafe",
+  "same_node": false,
+  "spellings": [
+   "Guerilla Cafe (after Kontes sold their portion)",
+   "Guerilla Cafe (bare name)"
+  ]
+ },
+ {
+  "base_key": "hadeem",
+  "same_node": true,
+  "spellings": [
+   "Hadeem (pop-up)"
+  ]
+ },
+ {
+  "base_key": "hakkasan",
+  "same_node": false,
+  "spellings": [
+   "Hakkasan (SF location)",
+   "Hakkasan (bare name)"
+  ]
+ },
+ {
+  "base_key": "henryshunan",
+  "same_node": true,
+  "spellings": [
+   "Henry’s Hunan (Sansome Street location)"
+  ]
+ },
+ {
+  "base_key": "herebefore",
+  "same_node": true,
+  "spellings": [
+   "Here Before (pop-up)"
+  ]
+ },
+ {
+  "base_key": "home",
+  "same_node": true,
+  "spellings": [
+   "Home (2100 Market St.)",
+   "Home (2100 Market St., at Church)"
+  ]
+ },
+ {
+  "base_key": "ikeasnewsanfranciscofoodhall",
+  "same_node": true,
+  "spellings": [
+   "IKEA’s new San Francisco food hall (Market Street)"
+  ]
+ },
+ {
+  "base_key": "ikeslovesandwiches",
+  "same_node": false,
+  "spellings": [
+   "Ike's Love & Sandwiches (Castro location)",
+   "Ike's Love & Sandwiches (Mission Rock location)"
+  ]
+ },
+ {
+  "base_key": "ilunabasquespace",
+  "same_node": true,
+  "spellings": [
+   "Iluna Basque space (Campaluna Kitchen & Bar)"
+  ]
+ },
+ {
+  "base_key": "incontro",
+  "same_node": true,
+  "spellings": [
+   "Incontro (or Pensiero)"
+  ]
+ },
+ {
+  "base_key": "innmarin",
+  "same_node": true,
+  "spellings": [
+   "Inn Marin (formerly Alvarado Garden Inn)"
+  ]
+ },
+ {
+  "base_key": "internationalsmoke",
+  "same_node": true,
+  "spellings": [
+   "International Smoke (San Francisco)"
+  ]
+ },
+ {
+  "base_key": "ivanramen",
+  "same_node": true,
+  "spellings": [
+   "Ivan Ramen (New York)"
+  ]
+ },
+ {
+  "base_key": "jacksonfamilywines",
+  "same_node": true,
+  "spellings": [
+   "Jackson Family Wines (Kendall-Jackson Wine Estate and Gardens)"
+  ]
+ },
+ {
+  "base_key": "jadechocolates",
+  "same_node": true,
+  "spellings": [
+   "Jade Chocolates (Geary and 6th location)"
+  ]
+ },
+ {
+  "base_key": "joelrobuchon",
+  "same_node": true,
+  "spellings": [
+   "Joel Robuchon (Las Vegas)",
+   "Joël Robuchon (Las Vegas)"
+  ]
+ },
+ {
+  "base_key": "johnnyloves",
+  "same_node": true,
+  "spellings": [
+   "Johnny Love's (all locations)"
+  ]
+ },
+ {
+  "base_key": "jonsstreeteats",
+  "same_node": false,
+  "spellings": [
+   "Jon's Street Eats (Emeryville and Alameda locations)",
+   "Jon's Street Eats (bare name)"
+  ]
+ },
+ {
+  "base_key": "jules",
+  "same_node": true,
+  "spellings": [
+   "Jules (pop-up)",
+   "Jules (restaurant)"
+  ]
+ },
+ {
+  "base_key": "kanda",
+  "same_node": true,
+  "spellings": [
+   "Kanda (eponymous restaurant in Japan)"
+  ]
+ },
+ {
+  "base_key": "kimptongroupshotelcalifornian",
+  "same_node": true,
+  "spellings": [
+   "Kimpton Group's Hotel Californian (unnamed Asian-focused restaurant)"
+  ]
+ },
+ {
+  "base_key": "kinkhao",
+  "same_node": true,
+  "spellings": [
+   "Kin Khao (Dogpatch location)"
+  ]
+ },
+ {
+  "base_key": "kozykar",
+  "same_node": false,
+  "spellings": [
+   "Kozy Kar (Santa Rosa offshoot)",
+   "Kozy Kar (bare name)"
+  ]
+ },
+ {
+  "base_key": "laboucane",
+  "same_node": true,
+  "spellings": [
+   "La Boucane (San Francisco)"
+  ]
+ },
+ {
+  "base_key": "lacondesa",
+  "same_node": false,
+  "spellings": [
+   "La Condesa (Austin)",
+   "La Condesa (Napa Valley)"
+  ]
+ },
+ {
+  "base_key": "lacotedor",
+  "same_node": false,
+  "spellings": [
+   "La Cote d'Or (bare name)",
+   "La Côte d'Or (Relais Bernard Loiseau)"
+  ]
+ },
+ {
+  "base_key": "laguerreraskitchen",
+  "same_node": false,
+  "spellings": [
+   "La Guerrera’s Kitchen (Fruitvale)",
+   "La Guerrera’s Kitchen (Old Oakland)"
+  ]
+ },
+ {
+  "base_key": "lamar",
+  "same_node": false,
+  "spellings": [
+   "La Mar (Lima)",
+   "La Mar (San Francisco)"
+  ]
+ },
+ {
+  "base_key": "lamarcebicheriaperuana",
+  "same_node": true,
+  "spellings": [
+   "La Mar Cebicheria Peruana (San Francisco)"
+  ]
+ },
+ {
+  "base_key": "larkcreekinn",
+  "same_node": false,
+  "spellings": [
+   "Lark Creek Inn (bare name)",
+   "The Lark Creek Inn (now the Tavern at Lark Creek)"
+  ]
+ },
+ {
+  "base_key": "larkspur",
+  "same_node": true,
+  "spellings": [
+   "Larkspur (unnamed restaurant, former Roxanne's)"
+  ]
+ },
+ {
+  "base_key": "lasantatortarestaurant",
+  "same_node": true,
+  "spellings": [
+   "La Santa Torta restaurant (95 Linden St, Oakland)"
+  ]
+ },
+ {
+  "base_key": "lavenganza",
+  "same_node": true,
+  "spellings": [
+   "La Venganza (North Oakland)"
+  ]
+ },
+ {
+  "base_key": "lecolonial",
+  "same_node": true,
+  "spellings": [
+   "Le Colonial (Los Angeles)",
+   "Le Colonial (San Francisco)"
+  ]
+ },
+ {
+  "base_key": "ledixsept",
+  "same_node": true,
+  "spellings": [
+   "Le Dix-Sept (Potrero Hill)",
+   "Le Dix-Sept (commercial kitchen in the Dogpatch)"
+  ]
+ },
+ {
+  "base_key": "ledixseptpatisserie",
+  "same_node": false,
+  "spellings": [
+   "Le Dix-Sept Patisserie (3376 18th Street, Mission District)",
+   "Le Dix-Sept Patisserie (Mission)",
+   "Le Dix-Sept Patisserie (Potrero Hill)",
+   "Le Dix-Sept Patisserie (original location)"
+  ]
+ },
+ {
+  "base_key": "lemaraisbakery",
+  "same_node": true,
+  "spellings": [
+   "Le Marais Bakery (Ghirardelli Square pop-up)"
+  ]
+ },
+ {
+  "base_key": "levisplaza",
+  "same_node": true,
+  "spellings": [
+   "Levi’s Plaza (pop-up)"
+  ]
+ },
+ {
+  "base_key": "littlejoes",
+  "same_node": true,
+  "spellings": [
+   "Little Joe's (2550 Van Ness)",
+   "Little Joe's (Eddy Street near Market)"
+  ]
+ },
+ {
+  "base_key": "livefire",
+  "same_node": true,
+  "spellings": [
+   "LiveFire (Yountville)"
+  ]
+ },
+ {
+  "base_key": "locol",
+  "same_node": false,
+  "spellings": [
+   "Locol (Watts)",
+   "Locol (bare name)"
+  ]
+ },
+ {
+  "base_key": "longlife",
+  "same_node": false,
+  "spellings": [
+   "LongLife (Berkeley)",
+   "LongLife (Metreon)"
+  ]
+ },
+ {
+  "base_key": "lospinos",
+  "same_node": true,
+  "spellings": [
+   "Los Pinos (Mexico's White House)"
+  ]
+ },
+ {
+  "base_key": "macrobioticpersonalchefservice",
+  "same_node": true,
+  "spellings": [
+   "macrobiotic personal chef service (San Diego)"
+  ]
+ },
+ {
+  "base_key": "magnolia",
+  "same_node": false,
+  "spellings": [
+   "Magnolia (Dogpatch location, Smokestack restaurant)",
+   "Magnolia (Haight Street location)",
+   "Magnolia (bare name)"
+  ]
+ },
+ {
+  "base_key": "magpie",
+  "same_node": true,
+  "spellings": [
+   "Magpie (Sacramento)"
+  ]
+ },
+ {
+  "base_key": "mandarin",
+  "same_node": false,
+  "spellings": [
+   "The Mandarin (bare name)",
+   "the Mandarin (Beverly Hills)",
+   "the Mandarin (Ghirardelli Square)",
+   "the Mandarin (Polk Street)"
+  ]
+ },
+ {
+  "base_key": "manosnouveau",
+  "same_node": true,
+  "spellings": [
+   "Manos Nouveau (Castro location, former Pica Pica Maize Kitchen)",
+   "Manos Nouveau (Mission location)"
+  ]
+ },
+ {
+  "base_key": "manresabread",
+  "same_node": false,
+  "spellings": [
+   "Manresa Bread (Campbell location)",
+   "Manresa Bread (Los Gatos and Los Altos locations)",
+   "Manresa Bread (bare name)"
+  ]
+ },
+ {
+  "base_key": "march",
+  "same_node": true,
+  "spellings": [
+   "March (Manhattan)"
+  ]
+ },
+ {
+  "base_key": "marina",
+  "same_node": true,
+  "spellings": [
+   "Marina (Tacolicious)"
+  ]
+ },
+ {
+  "base_key": "marlabakery",
+  "same_node": false,
+  "spellings": [
+   "Marla Bakery (San Francisco)",
+   "Marla Bakery (Santa Rosa)"
+  ]
+ },
+ {
+  "base_key": "marlowe",
+  "same_node": false,
+  "spellings": [
+   "Marlowe (bare name)",
+   "Marlowe (new location on Brannan)",
+   "Marlowe (original location on Townsend)"
+  ]
+ },
+ {
+  "base_key": "mayarestaurant",
+  "same_node": false,
+  "spellings": [
+   "Maya Restaurant (Manhattan)",
+   "Maya Restaurant (San Francisco)"
+  ]
+ },
+ {
+  "base_key": "mccradys",
+  "same_node": false,
+  "spellings": [
+   "McCrady's (Charleston)",
+   "McCrady’s (bare name)"
+  ]
+ },
+ {
+  "base_key": "merchantroots",
+  "same_node": false,
+  "spellings": [
+   "Merchant Roots (as a fine dining restaurant)",
+   "Merchant Roots (as an artisan food shop)",
+   "Merchant Roots (bare name)"
+  ]
+ },
+ {
+  "base_key": "michaelwarring",
+  "same_node": true,
+  "spellings": [
+   "Michael Warring (restaurant)"
+  ]
+ },
+ {
+  "base_key": "michelinstarredrestaurantsinparis",
+  "same_node": true,
+  "spellings": [
+   "Michelin-starred restaurants in Paris (under Joel Robuchon)"
+  ]
+ },
+ {
+  "base_key": "middleeasternrestaurant",
+  "same_node": true,
+  "spellings": [
+   "Middle Eastern restaurant (unnamed)"
+  ]
+ },
+ {
+  "base_key": "millvalleylocation",
+  "same_node": true,
+  "spellings": [
+   "Mill Valley location (242 Redwood Highway Frontage Road)"
+  ]
+ },
+ {
+  "base_key": "missionchinesefood",
+  "same_node": false,
+  "spellings": [
+   "Mission Chinese Food (New York)",
+   "Mission Chinese Food (bare name)"
+  ]
+ },
+ {
+  "base_key": "monsterpho",
+  "same_node": true,
+  "spellings": [
+   "Monster Pho (Oakland)"
+  ]
+ },
+ {
+  "base_key": "montereybayaquarium",
+  "same_node": true,
+  "spellings": [
+   "Monterey Bay Aquarium (Portola)"
+  ]
+ },
+ {
+  "base_key": "mychina",
+  "same_node": false,
+  "spellings": [
+   "M.Y. China (Graton Resort & Casino)",
+   "M.Y. China (Westfield San Francisco Centre)",
+   "MY China (bare name)"
+  ]
+ },
+ {
+  "base_key": "mygoodpie",
+  "same_node": true,
+  "spellings": [
+   "My Good Pie (300 De Haro, Potrero Hill)"
+  ]
+ },
+ {
+  "base_key": "nabe",
+  "same_node": true,
+  "spellings": [
+   "Nabe (Inner Sunset)",
+   "Nabe (Marina)"
+  ]
+ },
+ {
+  "base_key": "napaly",
+  "same_node": true,
+  "spellings": [
+   "Napaly (Walnut Creek)"
+  ]
+ },
+ {
+  "base_key": "napavalleygrille",
+  "same_node": false,
+  "spellings": [
+   "Napa Valley Grille (Yountville space)",
+   "Napa Valley Grille (bare name)"
+  ]
+ },
+ {
+  "base_key": "nepaleserestaurant",
+  "same_node": true,
+  "spellings": [
+   "Nepalese restaurant (Petaluma)"
+  ]
+ },
+ {
+  "base_key": "newcasualconcept",
+  "same_node": true,
+  "spellings": [
+   "new casual concept (San Francisco)"
+  ]
+ },
+ {
+  "base_key": "newyork",
+  "same_node": false,
+  "spellings": [
+   "New York (bare name)",
+   "New York (under Rocco DiSpirito)"
+  ]
+ },
+ {
+  "base_key": "nico",
+  "same_node": true,
+  "spellings": [
+   "Nico (Jackson Square)"
+  ]
+ },
+ {
+  "base_key": "nobu",
+  "same_node": false,
+  "spellings": [
+   "Nobu (Palo Alto and Las Vegas locations)",
+   "Nobu (Palo Alto)"
+  ]
+ },
+ {
+  "base_key": "nocode",
+  "same_node": true,
+  "spellings": [
+   "No Code (Tokyo and Taipei)"
+  ]
+ },
+ {
+  "base_key": "nusaraandledu",
+  "same_node": true,
+  "spellings": [
+   "Nusara and Le Du (Bangkok)"
+  ]
+ },
+ {
+  "base_key": "obyclaudeletohic",
+  "same_node": true,
+  "spellings": [
+   "O’ by Claude Le Tohic (ONE65)"
+  ]
+ },
+ {
+  "base_key": "oliveto",
+  "same_node": false,
+  "spellings": [
+   "Oliveto (bare name)",
+   "Oliveto (downstairs cafe)",
+   "Oliveto (upstairs)"
+  ]
+ },
+ {
+  "base_key": "omakase",
+  "same_node": true,
+  "spellings": [
+   "Omakase (San Francisco)"
+  ]
+ },
+ {
+  "base_key": "onosnax",
+  "same_node": true,
+  "spellings": [
+   "Ono Snax (pop-up)"
+  ]
+ },
+ {
+  "base_key": "orpheumtheatrerestaurant",
+  "same_node": true,
+  "spellings": [
+   "Orpheum Theatre restaurant (unnamed)"
+  ]
+ },
+ {
+  "base_key": "oxbowpublicmarket",
+  "same_node": true,
+  "spellings": [
+   "Oxbow Public Market (space formerly occupied by Oxbow Wine and Cheese Merchant)"
+  ]
+ },
+ {
+  "base_key": "pabuandramenmarket",
+  "same_node": true,
+  "spellings": [
+   "Pabu and Ramen Market (FiDi, San Francisco)"
+  ]
+ },
+ {
+  "base_key": "pacificcatch",
+  "same_node": false,
+  "spellings": [
+   "Pacific Catch (1200 Ninth Ave.)",
+   "Pacific Catch (Marin branch)",
+   "Pacific Catch (Ninth Ave. location)"
+  ]
+ },
+ {
+  "base_key": "padovanisrestaurantandwinebar",
+  "same_node": false,
+  "spellings": [
+   "Padovani's Restaurant and Wine Bar (Honolulu)",
+   "Padovani's Restaurant and Wine Bar (San Francisco)"
+  ]
+ },
+ {
+  "base_key": "paragonrestaurantbar",
+  "same_node": true,
+  "spellings": [
+   "Paragon Restaurant & Bar (701 Second St.)"
+  ]
+ },
+ {
+  "base_key": "penrose",
+  "same_node": false,
+  "spellings": [
+   "Penrose (bare name)",
+   "Penrose (rebranded as Almond & Oak)"
+  ]
+ },
+ {
+  "base_key": "peruvianstyleseafoodrestaurant",
+  "same_node": true,
+  "spellings": [
+   "Peruvian-style seafood restaurant (737 Irving St.)"
+  ]
+ },
+ {
+  "base_key": "petiscos",
+  "same_node": true,
+  "spellings": [
+   "Petiscos (Alum Rock Avenue location)"
+  ]
+ },
+ {
+  "base_key": "pfchangschinabistro",
+  "same_node": true,
+  "spellings": [
+   "P.F. Chang's China Bistro (Walnut Creek)"
+  ]
+ },
+ {
+  "base_key": "picassoatthebellagiohotelandresort",
+  "same_node": true,
+  "spellings": [
+   "Picasso at the Bellagio Hotel and Resort (Las Vegas)"
+  ]
+ },
+ {
+  "base_key": "piccino",
+  "same_node": true,
+  "spellings": [
+   "Piccino (Dogpatch)"
+  ]
+ },
+ {
+  "base_key": "pier5",
+  "same_node": true,
+  "spellings": [
+   "Pier 5 (Spanish-inspired restaurant)"
+  ]
+ },
+ {
+  "base_key": "pierreinlemeridienhotel",
+  "same_node": true,
+  "spellings": [
+   "Pierre in Le Meridien Hotel (now the Argent)"
+  ]
+ },
+ {
+  "base_key": "pietros",
+  "same_node": false,
+  "spellings": [
+   "Pietro’s (Lodi)",
+   "Pietro’s (Vacaville)"
+  ]
+ },
+ {
+  "base_key": "pinoyheritage",
+  "same_node": true,
+  "spellings": [
+   "Pinoy Heritage (pop-up)"
+  ]
+ },
+ {
+  "base_key": "pixlcatcoffee",
+  "same_node": true,
+  "spellings": [
+   "Pixlcat Coffee (Clement Street location)",
+   "Pixlcat Coffee (Ninth Street location)"
+  ]
+ },
+ {
+  "base_key": "pizzaantica",
+  "same_node": false,
+  "spellings": [
+   "Pizza Antica (Lafayette)",
+   "Pizza Antica (Santana Row)",
+   "Pizza Antica (bare name)"
+  ]
+ },
+ {
+  "base_key": "pizzeriadelfina",
+  "same_node": false,
+  "spellings": [
+   "Pizzeria Delfina (2405 California St.)",
+   "Pizzeria Delfina (3611 18th St.)",
+   "Pizzeria Delfina (Burlingame)",
+   "Pizzeria Delfina (San Francisco)",
+   "Pizzeria Delfina (downtown San Francisco)"
+  ]
+ },
+ {
+  "base_key": "plouf",
+  "same_node": false,
+  "spellings": [
+   "Plouf (Financial District)",
+   "Plouf (bare name)"
+  ]
+ },
+ {
+  "base_key": "plumedhorse",
+  "same_node": false,
+  "spellings": [
+   "Plumed Horse (Saratoga)",
+   "Plumed Horse (bare name)"
+  ]
+ },
+ {
+  "base_key": "plumpjackcafe",
+  "same_node": false,
+  "spellings": [
+   "PlumpJack (Squaw Valley)",
+   "PlumpJack Cafe (San Francisco)"
+  ]
+ },
+ {
+  "base_key": "pokeworks",
+  "same_node": true,
+  "spellings": [
+   "Pokéworks (SoMa location)"
+  ]
+ },
+ {
+  "base_key": "portmanhotel",
+  "same_node": true,
+  "spellings": [
+   "Portman Hotel (now the Pan Pacific Hotel)"
+  ]
+ },
+ {
+  "base_key": "postmeridian",
+  "same_node": true,
+  "spellings": [
+   "Post Meridian (at Naked Kitchen)"
+  ]
+ },
+ {
+  "base_key": "pratherranch",
+  "same_node": true,
+  "spellings": [
+   "Prather Ranch (Ferry Building)"
+  ]
+ },
+ {
+  "base_key": "quince",
+  "same_node": true,
+  "spellings": [
+   "Quince (Octavia Street)",
+   "Quince (current location)",
+   "Quince (original location)",
+   "Quince (original location, now occupied by Baker and Banker)"
+  ]
+ },
+ {
+  "base_key": "raineslawroom",
+  "same_node": true,
+  "spellings": [
+   "Raines Law Room (NYC)"
+  ]
+ },
+ {
+  "base_key": "rakiraki",
+  "same_node": false,
+  "spellings": [
+   "RakiRaki (San Diego-based chain)",
+   "RakiRaki (San Francisco outpost at 3282 Mission Street)",
+   "RakiRaki (bare name)"
+  ]
+ },
+ {
+  "base_key": "rasoi",
+  "same_node": true,
+  "spellings": [
+   "Rasoi (Ferry Building)"
+  ]
+ },
+ {
+  "base_key": "ravintolademo",
+  "same_node": true,
+  "spellings": [
+   "Ravintola Demo (Helsinki)"
+  ]
+ },
+ {
+  "base_key": "reems",
+  "same_node": false,
+  "spellings": [
+   "Reem's (bare name)",
+   "Reem's (formerly Mission Pie space)"
+  ]
+ },
+ {
+  "base_key": "reemscalifornia",
+  "same_node": true,
+  "spellings": [
+   "Reem’s California (Sunday farmers markets outside of the Ferry Building)"
+  ]
+ },
+ {
+  "base_key": "rickeys",
+  "same_node": true,
+  "spellings": [
+   "Rickey's (Inn Marin)"
+  ]
+ },
+ {
+  "base_key": "ristoranteilcartoccio",
+  "same_node": true,
+  "spellings": [
+   "Ristorante Il Cartoccio (835 Hyde St.)",
+   "Ristorante Il Cartoccio (York Hotel)"
+  ]
+ },
+ {
+  "base_key": "ritzcarlton",
+  "same_node": false,
+  "spellings": [
+   "Ritz Carlton (Phoenix)",
+   "Ritz Carlton (San Francisco)",
+   "Ritz-Carlton (San Francisco)",
+   "Ritz-Carlton (bare name)"
+  ]
+ },
+ {
+  "base_key": "ritzcarltonhotel",
+  "same_node": true,
+  "spellings": [
+   "Ritz-Carlton Hotel (San Francisco)"
+  ]
+ },
+ {
+  "base_key": "rn74",
+  "same_node": true,
+  "spellings": [
+   "RN74 (restaurant and wine bar in Millennium Tower)"
+  ]
+ },
+ {
+  "base_key": "roastshop",
+  "same_node": true,
+  "spellings": [
+   "Roastshop (Palo Alto)"
+  ]
+ },
+ {
+  "base_key": "saha",
+  "same_node": false,
+  "spellings": [
+   "Saha (Hotel Carlton location)",
+   "Saha (Hotel Carlton, Lower Nob Hill)",
+   "Saha (downtown Berkeley)"
+  ]
+ },
+ {
+  "base_key": "saison",
+  "same_node": false,
+  "spellings": [
+   "Saison (178 Townsend, SoMa location)",
+   "Saison (Folsom Street location)"
+  ]
+ },
+ {
+  "base_key": "saltstraw",
+  "same_node": false,
+  "spellings": [
+   "Salt & Straw (Burlingame)",
+   "Salt & Straw (Hayes Valley, San Francisco)",
+   "Salt & Straw (Pac Heights, San Francisco)",
+   "Salt & Straw (original Portland location)"
+  ]
+ },
+ {
+  "base_key": "sanaacafe",
+  "same_node": false,
+  "spellings": [
+   "Sana’a Cafe (San Rafael location)",
+   "Sana’a Cafe (bare name)"
+  ]
+ },
+ {
+  "base_key": "sanfrancisco",
+  "same_node": false,
+  "spellings": [
+   "San Francisco (bare name)",
+   "San Francisco (unspecified location)"
+  ]
+ },
+ {
+  "base_key": "sanfranciscoferrybuilding",
+  "same_node": true,
+  "spellings": [
+   "San Francisco Ferry Building (food stall)"
+  ]
+ },
+ {
+  "base_key": "santamonicarestaurant",
+  "same_node": true,
+  "spellings": [
+   "Santa Monica restaurant (Farmshop)"
+  ]
+ },
+ {
+  "base_key": "schatsbakkerij",
+  "same_node": true,
+  "spellings": [
+   "Schat's Bakkerij (formerly Napa Valley Ovens)"
+  ]
+ },
+ {
+  "base_key": "scotthoward",
+  "same_node": false,
+  "spellings": [
+   "Scott Howard (bare name)",
+   "Scott Howard (eponymous restaurant)"
+  ]
+ },
+ {
+  "base_key": "senorsisig",
+  "same_node": true,
+  "spellings": [
+   "Señor Sisig (food truck business)"
+  ]
+ },
+ {
+  "base_key": "serranos",
+  "same_node": true,
+  "spellings": [
+   "Serrano's (proposed)"
+  ]
+ },
+ {
+  "base_key": "servinoristorante",
+  "same_node": true,
+  "spellings": [
+   "Servino Ristorante (Tiburon)"
+  ]
+ },
+ {
+  "base_key": "sevenhills",
+  "same_node": true,
+  "spellings": [
+   "Seven Hills (new location)"
+  ]
+ },
+ {
+  "base_key": "sevenstills",
+  "same_node": false,
+  "spellings": [
+   "Seven Stills (Bayview location)",
+   "Seven Stills (Mission Bay flagship)"
+  ]
+ },
+ {
+  "base_key": "shawarmaji",
+  "same_node": false,
+  "spellings": [
+   "Shawarmaji (Oakland)",
+   "Shawarmaji (Santa Clara)"
+  ]
+ },
+ {
+  "base_key": "silks",
+  "same_node": true,
+  "spellings": [
+   "Silks (Mandarin Oriental Hotel)"
+  ]
+ },
+ {
+  "base_key": "skal",
+  "same_node": true,
+  "spellings": [
+   "Skal (NY)"
+  ]
+ },
+ {
+  "base_key": "slanteddoor",
+  "same_node": false,
+  "spellings": [
+   "Slanted Door (Ferry Building Marketplace)",
+   "Slanted Door (Napa)",
+   "Slanted Door (San Francisco)",
+   "Slanted Door (Valencia Street)"
+  ]
+ },
+ {
+  "base_key": "sobysnewsouthcuisine",
+  "same_node": true,
+  "spellings": [
+   "Soby’s New South Cuisine (Greenville, SC)"
+  ]
+ },
+ {
+  "base_key": "southfoodwinebar",
+  "same_node": true,
+  "spellings": [
+   "South Food + Wine Bar (LA expansion)"
+  ]
+ },
+ {
+  "base_key": "squatgobble",
+  "same_node": false,
+  "spellings": [
+   "Squat & Gobble (Castro location)",
+   "Squat & Gobble (Marina location)"
+  ]
+ },
+ {
+  "base_key": "stars",
+  "same_node": false,
+  "spellings": [
+   "Stars (San Francisco and Seattle)",
+   "Stars (San Francisco)",
+   "Stars (bare name)"
+  ]
+ },
+ {
+  "base_key": "starterbakery",
+  "same_node": true,
+  "spellings": [
+   "Starter Bakery (brick-and-mortar)"
+  ]
+ },
+ {
+  "base_key": "stepsofrome",
+  "same_node": true,
+  "spellings": [
+   "Steps of Rome (new venture at 362 Columbus)"
+  ]
+ },
+ {
+  "base_key": "stepsofromesnewventure",
+  "same_node": true,
+  "spellings": [
+   "Steps of Rome's new venture (former Cafe Europa)"
+  ]
+ },
+ {
+  "base_key": "straits",
+  "same_node": true,
+  "spellings": [
+   "Straits (San Francisco Centre)"
+  ]
+ },
+ {
+  "base_key": "straitscafe",
+  "same_node": true,
+  "spellings": [
+   "Straits Cafe (Palo Alto)",
+   "Straits Cafe (San Francisco)"
+  ]
+ },
+ {
+  "base_key": "stregis",
+  "same_node": true,
+  "spellings": [
+   "St. Regis (Los Angeles)"
+  ]
+ },
+ {
+  "base_key": "stregishotel",
+  "same_node": true,
+  "spellings": [
+   "St. Regis Hotel (unnamed restaurant)"
+  ]
+ },
+ {
+  "base_key": "sushibyscratch",
+  "same_node": false,
+  "spellings": [
+   "Sushi by Scratch (Healdsburg)",
+   "Sushi by Scratch (Santa Barbara County)"
+  ]
+ },
+ {
+  "base_key": "syrah",
+  "same_node": true,
+  "spellings": [
+   "Syrah (Santa Rosa)"
+  ]
+ },
+ {
+  "base_key": "tacolicious",
+  "same_node": false,
+  "spellings": [
+   "Tacolicious (Noe Valley)",
+   "Tacolicious (Palo Alto)",
+   "Tacolicious (San Francisco)"
+  ]
+ },
+ {
+  "base_key": "tanglewood",
+  "same_node": true,
+  "spellings": [
+   "Tanglewood (San Jose)"
+  ]
+ },
+ {
+  "base_key": "tap",
+  "same_node": true,
+  "spellings": [
+   "Tap(415)"
+  ]
+ },
+ {
+  "base_key": "tarasorganicicecream",
+  "same_node": false,
+  "spellings": [
+   "Tara’s Organic Ice Cream (Oakland location)",
+   "Tara’s Organic Ice Cream (Temescal, Oakland location)"
+  ]
+ },
+ {
+  "base_key": "tartinemanufactory",
+  "same_node": false,
+  "spellings": [
+   "Tartine Manufactory (San Francisco)",
+   "Tartine Manufactory (bare name)"
+  ]
+ },
+ {
+  "base_key": "tastings",
+  "same_node": false,
+  "spellings": [
+   "Tastings (Healdsburg)",
+   "Tastings (Lahaina on Maui)"
+  ]
+ },
+ {
+  "base_key": "telltalepreserveco",
+  "same_node": true,
+  "spellings": [
+   "Tell Tale Preserve Co. (pop-up at Big Daddy Antiques shop)"
+  ]
+ },
+ {
+  "base_key": "terrace",
+  "same_node": true,
+  "spellings": [
+   "The Terrace (Ritz Carlton San Francisco)"
+  ]
+ },
+ {
+  "base_key": "terracerestaurant",
+  "same_node": true,
+  "spellings": [
+   "Terrace Restaurant (Ritz-Carlton, San Francisco)"
+  ]
+ },
+ {
+  "base_key": "thebungalowkitchen",
+  "same_node": true,
+  "spellings": [
+   "the Bungalow Kitchen (Tiburon)"
+  ]
+ },
+ {
+  "base_key": "thomaskellersgardens",
+  "same_node": true,
+  "spellings": [
+   "Thomas Keller's gardens (including the French Laundry)"
+  ]
+ },
+ {
+  "base_key": "todoeldia",
+  "same_node": true,
+  "spellings": [
+   "Todo el Dia (Noe Valley)"
+  ]
+ },
+ {
+  "base_key": "tomatina",
+  "same_node": true,
+  "spellings": [
+   "Tomatina (St. Helena)"
+  ]
+ },
+ {
+  "base_key": "toppersatthewauwinet",
+  "same_node": true,
+  "spellings": [
+   "Topper’s at the Wauwinet (Nantucket’s Relais & Chateaux)"
+  ]
+ },
+ {
+  "base_key": "torrakuramen",
+  "same_node": true,
+  "spellings": [
+   "Torraku Ramen (1449 Lombard St.)",
+   "Torraku Ramen (300 De Haro, Potrero Hill)",
+   "Torraku Ramen (SoMa StrEat Food Park / District 6, food truck)"
+  ]
+ },
+ {
+  "base_key": "trex",
+  "same_node": true,
+  "spellings": [
+   "T-Rex (upcoming venue)"
+  ]
+ },
+ {
+  "base_key": "tru",
+  "same_node": false,
+  "spellings": [
+   "Tru (Chicago)",
+   "Tru (bare name)"
+  ]
+ },
+ {
+  "base_key": "tsuta",
+  "same_node": false,
+  "spellings": [
+   "Tsuta (San Francisco)",
+   "Tsuta (Tokyo)"
+  ]
+ },
+ {
+  "base_key": "unapizzanapoletana",
+  "same_node": false,
+  "spellings": [
+   "Una Pizza Napoletana (East Village)",
+   "Una Pizza Napoletana (East Village, New York)",
+   "Una Pizza Napoletana (New York, 175 Orchard Street)",
+   "Una Pizza Napoletana (Point Pleasant Beach, New Jersey)",
+   "Una Pizza Napoletana (San Francisco)"
+  ]
+ },
+ {
+  "base_key": "unionsquare",
+  "same_node": true,
+  "spellings": [
+   "Union Square (dual cafes)"
+  ]
+ },
+ {
+  "base_key": "vengaempanadas",
+  "same_node": false,
+  "spellings": [
+   "Venga Empanadas (Mission shop)",
+   "Venga Empanadas (commercial kitchen)"
+  ]
+ },
+ {
+  "base_key": "vengapaella",
+  "same_node": false,
+  "spellings": [
+   "Venga Paella (catering)",
+   "Venga Paella (restaurant)"
+  ]
+ },
+ {
+  "base_key": "viaaurelia",
+  "same_node": true,
+  "spellings": [
+   "Via Aurelia (San Francisco)"
+  ]
+ },
+ {
+  "base_key": "viognier",
+  "same_node": false,
+  "spellings": [
+   "Viognier (Draeger's in San Mateo)",
+   "Viognier (bare name)"
+  ]
+ },
+ {
+  "base_key": "waxmansandjbird",
+  "same_node": true,
+  "spellings": [
+   "Waxman’s and J. Bird (Ghirardelli Square)"
+  ]
+ },
+ {
+  "base_key": "wellsfargo",
+  "same_node": true,
+  "spellings": [
+   "Wells Fargo (private dining room)"
+  ]
+ },
+ {
+  "base_key": "wholefoods",
+  "same_node": true,
+  "spellings": [
+   "Whole Foods (San Francisco, deli department)"
+  ]
+ },
+ {
+  "base_key": "wholefoodsmarkets",
+  "same_node": true,
+  "spellings": [
+   "Whole Foods markets (Northern California region)"
+  ]
+ },
+ {
+  "base_key": "wildhare",
+  "same_node": false,
+  "spellings": [
+   "Wild Hare (Menlo Park)",
+   "Wild Hare (bare name)"
+  ]
+ },
+ {
+  "base_key": "williescafe",
+  "same_node": true,
+  "spellings": [
+   "Willie's Cafe (Kentfield)"
+  ]
+ },
+ {
+  "base_key": "winebarandrestaurant",
+  "same_node": true,
+  "spellings": [
+   "wine bar and restaurant (former Studio Aurora space)"
+  ]
+ },
+ {
+  "base_key": "winespectatorrestaurantatciasgreystonecampus",
+  "same_node": true,
+  "spellings": [
+   "Wine Spectator Restaurant at CIA's Greystone campus (St. Helena)"
+  ]
+ },
+ {
+  "base_key": "wursthall",
+  "same_node": true,
+  "spellings": [
+   "Wursthall (San Jose)",
+   "Wursthall (San Mateo)"
+  ]
+ },
+ {
+  "base_key": "xanadu",
+  "same_node": true,
+  "spellings": [
+   "Xanadu (Berkeley)"
+  ]
+ },
+ {
+  "base_key": "yabbiescoastalkitchen",
+  "same_node": true,
+  "spellings": [
+   "Yabbies Coastal Kitchen (2237 Polk St.)"
+  ]
+ },
+ {
+  "base_key": "yoshis",
+  "same_node": false,
+  "spellings": [
+   "Yoshi’s (Oakland and San Francisco locations)",
+   "Yoshi’s (San Francisco)"
+  ]
+ }
+]
