@@ -13,6 +13,8 @@
 (function () {
   'use strict';
 
+  var SVG_NS = 'http://www.w3.org/2000/svg';
+
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
       return '&#' + c.charCodeAt(0) + ';';
@@ -393,9 +395,167 @@
     return li;
   }
 
+  /* The rings drawing: the family tree as concentric rings (plan section 6).
+   * `svg` is the (empty) <svg> element; `t` is the /api/tree payload.
+   * opts.onSelect(node, el, parents) runs when a node is clicked or
+   * Enter/Space is pressed; opts.maxGen trims the drawing (the landing hero
+   * draws two moves). Returns the parents map for the caller's own use. */
+  function renderRings(svg, t, opts) {
+    opts = opts || {};
+    var CX = 560, CY = 384, R1 = 168, R2 = 280, R3 = 330;
+    var maxGen = opts.maxGen || 3;
+    function point(cx, cy, r, ang) {
+      return { x: cx + r * Math.cos(ang), y: cy + r * Math.sin(ang) };
+    }
+    function clip(s, n) {
+      s = String(s);
+      return s.length > n ? s.slice(0, n - 1) + '\u2026' : s;
+    }
+    var parents = {};
+    var flat = [];
+    (function walk(nodes, parent, depth) {
+      (nodes || []).forEach(function (n) {
+        if (depth > maxGen) return;
+        parents[n.id] = parent;
+        flat.push(n);
+        walk(n.children, n, depth + 1);
+      });
+    })(t.children, t.root, 1);
+
+    svg.innerHTML = '';
+    svg.setAttribute('aria-label', 'Family tree of ' + t.root.name + ': ' +
+      t.summary.reach + ' kitchens within three cited moves, ' + t.summary.starred + ' Michelin-starred.' +
+      (opts.listHint ? ' The same branches are in the list view.' : ''));
+    [R1, R2, R3].forEach(function (r) {
+      var c = document.createElementNS(SVG_NS, 'circle');
+      c.setAttribute('class', 'guide'); c.setAttribute('cx', CX); c.setAttribute('cy', CY); c.setAttribute('r', r);
+      svg.appendChild(c);
+    });
+    var g0 = document.createElementNS(SVG_NS, 'g');
+    var disc = document.createElementNS(SVG_NS, 'circle');
+    disc.setAttribute('class', 'rootdisc'); disc.setAttribute('cx', CX); disc.setAttribute('cy', CY); disc.setAttribute('r', 46);
+    var rname = document.createElementNS(SVG_NS, 'text');
+    rname.setAttribute('class', 'rootname'); rname.setAttribute('x', CX); rname.setAttribute('y', CY + 4);
+    rname.setAttribute('text-anchor', 'middle');
+    rname.textContent = clip(t.root.name, 16);
+    g0.appendChild(disc); g0.appendChild(rname);
+    svg.appendChild(g0);
+
+    var pos = {};
+    pos[t.root.id] = { x: CX, y: CY };
+    var byGen = [[], [], []];
+    flat.forEach(function (n) { byGen[n.gen - 1].push(n); });
+    var label2 = byGen[1].length <= 40;
+
+    var N1 = byGen[0].length || 1;
+    byGen[0].forEach(function (n, i) {
+      pos[n.id] = point(CX, CY, R1, i / N1 * 2 * Math.PI - Math.PI / 2);
+    });
+    var counts2 = byGen[0].map(function (n) { return Math.max(1, n.children.length); });
+    var total2 = counts2.reduce(function (a, b) { return a + b; }, 0) || 1;
+    var acc = 0;
+    byGen[0].forEach(function (p, i) {
+      var start = acc / total2 * 2 * Math.PI - Math.PI / 2;
+      acc += counts2[i];
+      var end = acc / total2 * 2 * Math.PI - Math.PI / 2;
+      var kids = p.children || [];
+      var m = kids.length;
+      kids.forEach(function (n, k) {
+        if (n.gen > maxGen) return;
+        var a = start + (end - start) * ((k + 0.5) / m);
+        pos[n.id] = point(CX, CY, R2, a);
+      });
+    });
+    byGen[1].forEach(function (p) {
+      var kids = p.children || [];
+      var m = kids.length;
+      if (!m) return;
+      for (var k = 0; k < m; k++) {
+        if (kids[k].gen > maxGen) break;
+        var pa = Math.atan2(pos[p.id].y - CY, pos[p.id].x - CX);
+        var spread = 2 * Math.PI / Math.max(8, byGen[1].length);
+        var a = pa + (k - (m - 1) / 2) * spread / Math.max(1, m) * 1.4;
+        pos[kids[k].id] = point(CX, CY, R3, a);
+      }
+    });
+
+    flat.forEach(function (n) {
+      var p = parents[n.id];
+      if (!p) return;
+      var edge = document.createElementNS(SVG_NS, 'path');
+      var a = pos[p.id], b = pos[n.id];
+      if (!a || !b) return;
+      var mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+      var kk = 0.18;
+      var cxp = mx + (CY - my) * kk, cyp = my + (CX - mx) * kk;
+      edge.setAttribute('d', 'M' + a.x.toFixed(1) + ' ' + a.y.toFixed(1) +
+        'Q' + cxp.toFixed(1) + ' ' + cyp.toFixed(1) + ' ' + b.x.toFixed(1) + ' ' + b.y.toFixed(1));
+      var cls = 'e g' + n.gen + (n.stars > 0 ? ' s' : '') + (n.via.length + n.more_via > 1 ? ' w2' : '');
+      edge.setAttribute('class', cls);
+      edge.setAttribute('pathLength', '1');
+      edge.dataset.from = p.id;
+      edge.dataset.to = n.id;
+      svg.appendChild(edge);
+    });
+
+    flat.forEach(function (n) {
+      var a = document.createElementNS(SVG_NS, 'a');
+      if (opts.onSelect) {
+        a.setAttribute('tabindex', '0');
+        a.setAttribute('role', 'link');
+      }
+      var via0 = (n.via && n.via[0]) || null;
+      var moved = via0 ? via0.person : 'a cited move';
+      var role = via0 && via0.role ? ', ' + via0.role : '';
+      a.setAttribute('aria-label', n.name + (n.stars ? ', ' + starsLabel(n.stars) : '') +
+        ', via ' + moved + role + ', ' + n.gen + (n.gen === 1 ? ' cited move' : ' cited moves') + ' from the root');
+      var p = pos[n.id];
+      var crowded2 = n.gen === 2 && !label2 && !n.stars;
+      if (n.gen === 3 || crowded2) {
+        var d = document.createElementNS(SVG_NS, 'circle');
+        d.setAttribute('cx', p.x); d.setAttribute('cy', p.y);
+        d.setAttribute('class', 'mark3' + (n.stars ? ' star' : ''));
+        d.setAttribute('r', n.gen === 2 ? 2.9 : 3.2);
+        var title = document.createElementNS(SVG_NS, 'title');
+        title.textContent = n.name + (n.stars ? ' ' + starsTxt(n.stars) : '');
+        a.appendChild(d); a.appendChild(title);
+      } else {
+        var lab = document.createElementNS(SVG_NS, 'text');
+        var anchor = p.x >= CX ? 'start' : 'end';
+        var dx = p.x >= CX ? 8 : -8;
+        lab.setAttribute('x', p.x + dx); lab.setAttribute('y', p.y + 4);
+        lab.setAttribute('text-anchor', anchor);
+        lab.setAttribute('class', 'lab f' + n.gen + (n.stars ? ' star' : ''));
+        var txt = clip(n.name, 26);
+        if (n.stars) {
+          var st = document.createElementNS(SVG_NS, 'tspan');
+          st.setAttribute('class', 'starglyph');
+          st.textContent = starsTxt(Math.min(n.stars, 3)) + ' ';
+          lab.appendChild(st);
+        }
+        lab.appendChild(document.createTextNode(txt));
+        a.appendChild(lab);
+        var dot = document.createElementNS(SVG_NS, 'circle');
+        dot.setAttribute('cx', p.x); dot.setAttribute('cy', p.y); dot.setAttribute('r', 2.6);
+        dot.setAttribute('class', 'dot f' + n.gen);
+        a.insertBefore(dot, lab);
+      }
+      if (opts.onSelect) {
+        a.addEventListener('click', function () { opts.onSelect(n, a, parents); });
+        a.addEventListener('keydown', function (ev) {
+          if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); opts.onSelect(n, a, parents); }
+        });
+      }
+      a.dataset.id = n.id;
+      svg.appendChild(a);
+    });
+    return parents;
+  }
+
   window.Lineage = {
     esc: esc, fmt: fmt, starsTxt: starsTxt, starsLabel: starsLabel,
     safeUrl: safeUrl, hostOf: hostOf, citeCard: citeCard, picker: picker,
-    renderLine: renderLine, renderTreeList: renderTreeList
+    renderLine: renderLine, renderTreeList: renderTreeList,
+    renderRings: renderRings
   };
 })();
