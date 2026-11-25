@@ -26,6 +26,7 @@ def test_clean_name_drops_permit_register_noise():
     assert bvb.clean_name("Penny Roma/Flour+Water Pasta Shop") == "penny roma"
     assert bvb.clean_name("The Brixton") == "brixton"
     assert bvb.clean_name("Schroeder's") == "schroeders"
+    assert bvb.clean_name("Fior D'Italia") == "fior d italia"
 
 
 def test_accepts_the_venues_own_sf_page():
@@ -37,6 +38,11 @@ def test_accepts_the_venues_own_sf_page():
 def test_accepts_a_slug_that_runs_the_name_together():
     assert bvb.verified("tock", "https://www.exploretock.com/garydanko", ["gary danko"])
     assert bvb.verified("tock", "https://www.exploretock.com/zunicafe/", ["zuni cafe"])
+    # a non-possessive apostrophe may be split or joined in the slug
+    assert bvb.verified("opentable", "https://www.opentable.com/fior-d-italia-san-francisco", [bvb.clean_name("Fior D'Italia")])
+    assert bvb.verified("opentable", "https://www.opentable.com/r/lardoise-san-francisco", [bvb.clean_name("L'Ardoise")])
+    # one real word plus a single letter is not distinctive without a city
+    assert not bvb.verified("opentable", "https://www.opentable.com/lardoise", [bvb.clean_name("L'Ardoise")])
     # a joined name with a place word left over is still another restaurant
     assert not bvb.verified("tock", "https://www.exploretock.com/garydanko-napa", ["gary danko"])
 

@@ -54,9 +54,12 @@ _LEGAL = {"llc", "inc", "corp", "co", "ltd", "lp", "sf", "cal", "dba", "restaura
 
 def clean_name(name):
     head = re.split(r"[/,]", name or "")[0]
-    # Apostrophes join, as they do in slugs ("Akiko's" -> akikos). Splitting
-    # on them made "Schroeder's" two words and let it pass the multi-word rule.
-    head = re.sub(r"['\u2019]", "", head)
+    # A possessive joins, as in slugs ("Akiko's" -> akikos); counting its "s"
+    # as a word let "Schroeder's" pass the multi-word rule. Any other
+    # apostrophe separates ("Fior D'Italia" -> fior d italia), and
+    # _leftover_words still accepts the joined slug form (/lardoise).
+    head = re.sub(r"['\u2019]s\b", "s", head, flags=re.I)
+    head = re.sub(r"['\u2019]", " ", head)
     words = [w for w in re.split(r"[^a-z0-9]+", head.lower()) if w and w not in _LEGAL]
     if len(words) > 1 and words[0] == "the":  # the slug matcher does not skip a leading "the"
         words = words[1:]
@@ -113,7 +116,8 @@ def verified(platform, url, pin_names):
     for i, name in enumerate(pin_names):
         if not name or not _slug_names_venue(path, name) or _leftover_words(path, name):
             continue
-        if in_sf or (i == 0 and len(set(name.split()) - _STOP) >= 2):
+        # single letters ("l" in L'Ardoise) do not make a name distinctive
+        if in_sf or (i == 0 and len({w for w in name.split() if len(w) > 1} - _STOP) >= 2):
             return name
     return None
 
