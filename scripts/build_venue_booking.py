@@ -55,6 +55,8 @@ _LEGAL = {"llc", "inc", "corp", "co", "ltd", "lp", "sf", "cal", "dba", "restaura
 def clean_name(name):
     head = re.split(r"[/,]", name or "")[0]
     words = [w for w in re.split(r"[^a-z0-9]+", head.lower()) if w and w not in _LEGAL]
+    if len(words) > 1 and words[0] == "the":  # the slug matcher does not skip a leading "the"
+        words = words[1:]
     return " ".join(words)
 
 
@@ -89,11 +91,11 @@ _STOP = {"the", "and", "of", "a", "an", "at", "by"}
 def verified(platform, url, pin_names):
     """The first cleaned pin name this booking URL provably belongs to, or None.
 
-    pin_names[0] is the pin's own (permit or curated) name; later entries are
-    the lineage name the map links it to. A URL that names San Francisco may
-    match either. A URL with no city (`opentable.com/kaya`, `/r/hearth`) is a
-    guess unless the pin's OWN name has two or more words and matches it:
-    "Kaya", "Sasa" and "Hearth" are restaurants in other towns too."""
+    pin_names[0] is the pin's own (permit or curated) name. A URL with no city
+    (`opentable.com/kaya`, `/r/hearth`) is a guess unless that name has two or
+    more words and matches it: "Kaya", "Sasa" and "Hearth" are restaurants in
+    other towns too. Later entries, if a caller passes them, may only vouch
+    for a URL that names San Francisco."""
     if platform not in HOSTS or not isinstance(url, str) or not _path_ok(platform, url):
         return None
     path = urllib.parse.unquote(urllib.parse.urlsplit(url).path)
@@ -106,14 +108,32 @@ def verified(platform, url, pin_names):
     return None
 
 
+def _cache_keys(pin):
+    """Cache keys to try for a pin. The crawl keyed some venues by their short
+    name ("zuni" for Zuni Cafe), so also try each name without trailing
+    generic words. Verification below still requires the URL to name the pin."""
+    keys = []
+    for n in (pin.get("lineage_name"), pin.get("name")):
+        if not n:
+            continue
+        keys.append(norm(n))
+        words = clean_name(n).split()
+        while len(words) > 1 and words[-1] in _NEUTRAL:
+            words.pop()
+            keys.append(norm(" ".join(words)))
+    return list(dict.fromkeys(k for k in keys if k))
+
+
 def build():
     cache = json.load(open(CACHE))
     out, rejected = {}, []
     for pin in dossier.venues_geo():
-        for name in dict.fromkeys(n for n in (pin.get("lineage_name"), pin.get("name")) if n):
-            rec = cache.get(norm(name)) or {}
-            pin_names = list(dict.fromkeys(
-                clean_name(n) for n in (pin.get("name"), pin.get("lineage_name")) if n))
+        for name in _cache_keys(pin):
+            rec = cache.get(name) or {}
+            # Only the pin's OWN name can vouch for a link. The lineage name
+            # is a looser corpus link ("Balboa Produce" -> "Balboa"), and let
+            # a produce market inherit Balboa Cafe's OpenTable page.
+            pin_names = [clean_name(pin.get("name"))]
             links = {}
             for platform, url in sorted((rec.get("booking") or {}).items()):
                 if verified(platform, url, pin_names):

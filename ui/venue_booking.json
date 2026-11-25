@@ -11,9 +11,6 @@
  "7 Adams": {
   "resy": "https://resy.com/cities/san-francisco-ca/venues/7-adams"
  },
- "Akikos Sushi Bar": {
-  "opentable": "https://www.opentable.com/r/akikos-san-francisco"
- },
  "Alembic, Sf": {
   "opentable": "https://www.opentable.com/r/the-alembic-san-francisco"
  },
@@ -41,7 +38,7 @@
  "Back To Back": {
   "opentable": "https://www.opentable.com/r/back-to-back-san-francisco"
  },
- "Balboa Produce": {
+ "Balboa Cafe": {
   "opentable": "https://www.opentable.com/balboa-cafe-sf"
  },
  "Bar Crenn": {
@@ -58,10 +55,6 @@
  },
  "Bellota": {
   "opentable": "https://www.opentable.com/r/bellota-san-francisco"
- },
- "Benihana Of Tokyo": {
-  "opentable": "https://www.opentable.com/benihana-san-francisco",
-  "resy": "https://resy.com/cities/san-francisco-ca/venues/benihana-san-francisco-ca"
  },
  "Benu": {
   "opentable": "https://www.opentable.com/r/benu-san-francisco"
@@ -99,9 +92,6 @@
  },
  "Camino Alto": {
   "resy": "https://resy.com/cities/san-francisco-ca/venues/camino-alto"
- },
- "Catch French Bistro": {
-  "opentable": "https://www.opentable.com/r/catch-san-francisco-1"
  },
  "Causwells": {
   "opentable": "https://www.opentable.com/r/causwells-san-francisco",
@@ -229,9 +219,6 @@
  "Kiln": {
   "opentable": "https://www.opentable.com/r/kiln-san-francisco"
  },
- "Kin Khao Thai Eatery": {
-  "resy": "https://resy.com/cities/san-francisco-ca/venues/kin-khao"
- },
  "Kokkari Estiatorio": {
   "opentable": "https://www.opentable.com/kokkari-estiatorio"
  },
@@ -277,9 +264,6 @@
  "Mission Chinese Food Sf": {
   "resy": "https://resy.com/cities/san-francisco-ca/venues/mission-chinese-food-sf"
  },
- "Mona Lisa Mare E Monti Restaurant And Bar": {
-  "opentable": "https://www.opentable.com/r/mona-lisa-mare-e-monti-san-francisco"
- },
  "Mr Pollo Llc": {
   "resy": "https://resy.com/cities/san-francisco-ca/venues/mr-pollo"
  },
@@ -306,9 +290,6 @@
  },
  "Papito": {
   "opentable": "https://www.opentable.com/r/papito-san-francisco"
- },
- "Pearl Spa": {
-  "resy": "https://resy.com/cities/san-francisco-ca/venues/pearl"
  },
  "Penny Roma/Flour+Water Pasta Shop": {
   "opentable": "https://www.opentable.com/r/penny-roma-san-francisco",
@@ -396,9 +377,6 @@
  "Spruce": {
   "opentable": "https://www.opentable.com/r/spruce-san-francisco"
  },
- "Starlite Room": {
-  "opentable": "https://www.opentable.com/r/starlite-san-francisco"
- },
  "State Bird Provisions": {
   "opentable": "https://www.opentable.com/r/state-bird-provisions-san-francisco"
  },
@@ -410,9 +388,6 @@
  },
  "Sushi Sato": {
   "opentable": "https://www.opentable.com/r/sushi-sato-san-francisco"
- },
- "Sweet Maple Coffee Shop": {
-  "opentable": "https://www.opentable.com/r/sweet-maple-sf-san-francisco"
  },
  "Tartine Manufactory": {
   "opentable": "https://www.opentable.com/r/tartine-manufactory-san-francisco"
@@ -438,6 +413,13 @@
  },
  "The Happy Crane": {
   "opentable": "https://www.opentable.com/r/the-happy-crane-san-francisco"
+ },
+ "The Morris": {
+  "opentable": "https://www.opentable.com/r/the-morris-san-francisco",
+  "resy": "https://resy.com/cities/san-francisco-ca/venues/the-morris"
+ },
+ "The Sentinel Restaurant": {
+  "opentable": "https://www.opentable.com/r/the-sentinel-san-francisco"
  },
  "The Snug": {
   "tock": "https://www.exploretock.com/the-snug-san-francisco"
@@ -478,5 +460,8 @@
  },
  "Zazie Restaurant Llc": {
   "opentable": "https://www.opentable.com/r/zazie-san-francisco"
+ },
+ "Zuni Cafe": {
+  "opentable": "https://www.opentable.com/zuni-cafe"
  }
 }

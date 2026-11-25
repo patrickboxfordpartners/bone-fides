@@ -24,11 +24,12 @@ def test_clean_name_drops_permit_register_noise():
     assert bvb.clean_name("Angler Sf, Llc") == "angler"
     assert bvb.clean_name("Ernest Restaurant / Befr Llc") == "ernest"
     assert bvb.clean_name("Penny Roma/Flour+Water Pasta Shop") == "penny roma"
+    assert bvb.clean_name("The Brixton") == "brixton"
 
 
 def test_accepts_the_venues_own_sf_page():
     assert bvb.verified("opentable", "https://www.opentable.com/r/tosca-cafe-san-francisco", ["tosca cafe"])
-    assert bvb.verified("resy", "https://resy.com/cities/san-francisco-ca/venues/kin-khao", ["kin khao thai eatery", "kin khao"])
+    assert bvb.verified("opentable", "https://www.opentable.com/r/the-brixton-san-francisco", ["brixton"])
     assert bvb.verified("opentable", "https://www.opentable.com/gary-danko", ["gary danko"])
 
 
@@ -49,6 +50,12 @@ def test_a_url_without_a_city_needs_the_pins_own_multiword_name():
     assert not bvb.verified("opentable", "https://www.opentable.com/r/hearth", ["hearth"])
     # the lineage name (second entry) cannot vouch for a city-less page
     assert not bvb.verified("opentable", "https://www.opentable.com/r/the-richmond", ["richmond market", "the richmond"])
+
+
+def test_lineage_name_cannot_vouch_for_the_pin():
+    # "Balboa Produce" (a market) is linked to the corpus name "Balboa";
+    # Balboa Cafe's page must not become the market's booking button.
+    assert not bvb.verified("opentable", "https://www.opentable.com/balboa-cafe-sf", ["balboa produce"])
 
 
 def test_rejects_search_and_directory_pages():
