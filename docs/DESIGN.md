@@ -94,7 +94,7 @@ over edges. Third-move kitchens are 3.2px marks, gold when starred.
 is one person, one quotation, one source badge. Stations are kitchen names at
 19px; the end stations carry no border.
 
-**Branch lines use `--dim`** — never terracotta. Terracotta marks a node or an
-edge weight (`w2`, two or more moves), gold marks a path to a starred kitchen,
-and only the selected edge goes ink. The drawing is a claim, so its color
-vocabulary stays as restrained as its text.
+**Branch lines use `--dim`** — never terracotta. Terracotta marks a node;
+line width marks edge weight (`w2`, two or more moves). Gold marks a path to a
+starred kitchen, and only the selected edge goes ink. The drawing is a claim,
+so its color vocabulary stays as restrained as its text.
