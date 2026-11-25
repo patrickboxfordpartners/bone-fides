@@ -41,10 +41,6 @@
    "Alborz Restaurant",
    "Alborz Restaurant (San Rafael)"
   ],
-  "Alexander’s Steakhouse": [
-   "Alexander's Steakhouse (Cupertino)",
-   "Alexander’s Steakhouse"
-  ],
   "Arinell Pizza": [
    "Arinell Pizza",
    "Arinell Pizza (Berkeley)",
@@ -1276,7 +1272,9 @@
   ],
   "Alexander's Steakhouse": [
    "Alexander's Steakhouse",
-   "Alexander's Steakhouse (Cupertino)"
+   "Alexander’s Steakhouse",
+   "Alexander's Steakhouse (Cupertino)",
+   "Alexander’s Steakhouse (Cupertino)"
   ]
  }
 }

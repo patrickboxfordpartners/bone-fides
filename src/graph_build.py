@@ -68,7 +68,7 @@ def build(edges, starred_rows=None, alias_data=None, hood_maps=None):
 
     # ---- pass 1: keep moves (gate, named person, named kitchen) ----
     dropped = {"gate": 0, "unnamed_person": 0, "unnamed_kitchen": 0,
-               "junk_kitchen": 0, "same_brand": 0}
+               "junk_kitchen": 0, "venue_kind": 0, "same_brand": 0}
     kept = []
     for e in edges:
         if not dossier.citation_reason(e):
@@ -85,6 +85,13 @@ def build(edges, starred_rows=None, alias_data=None, hood_maps=None):
                 continue
             if dossier._is_junk_venue(v):
                 dropped["junk_kitchen"] += 1
+                bad = True
+                break
+            if dossier._is_show_or_event_venue(v):
+                # a museum or a show is not a kitchen, even when an
+                # old-path move named it (the widened gate checks this
+                # itself, but pre-gate moves never ran through it)
+                dropped["venue_kind"] += 1
                 bad = True
                 break
             if not dossier.is_named_kitchen(v):

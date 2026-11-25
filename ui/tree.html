@@ -352,7 +352,7 @@ details.cite[open] summary::after{content:'▴';color:var(--accent)}
     $('panel-idle').innerHTML = 'No kitchen of that name is in the record yet.' +
       (s ? '<br><br>Did you mean:<ul class="sugg" style="position:static">' + s + '</ul>' : '');
     $('panel-idle').querySelectorAll('button').forEach(function (b) {
-      b.addEventListener('click', function () { load(b.dataset.k, 'down'); });
+      b.addEventListener('click', function () { load(b.dataset.k, state.dir); });
     });
   }
 
@@ -852,6 +852,9 @@ details.cite[open] summary::after{content:'▴';color:var(--accent)}
   function tryGrow() {
     var q = inputEl.value.trim();
     if (q) load(q, state.dir || 'down');
+    inputEl.value = '';
+    suggEl.hidden = true;
+    inputEl.setAttribute('aria-expanded', 'false');
   }
   $('grow-form').addEventListener('submit', function (ev) { ev.preventDefault(); tryGrow(); });
 

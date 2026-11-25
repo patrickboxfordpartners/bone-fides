@@ -374,14 +374,6 @@
   ]
  },
  {
-  "base_key": "cafeohlone",
-  "same_node": false,
-  "spellings": [
-   "Cafe Ohlone (Phoebe A. Hearst Museum of Anthropology courtyard)",
-   "Cafe Ohlone (Phoebe A. Hearst Museum of Anthropology)"
-  ]
- },
- {
   "base_key": "californios",
   "same_node": true,
   "spellings": [
@@ -1273,14 +1265,6 @@
   "same_node": true,
   "spellings": [
    "Monterey Bay Aquarium (Portola)"
-  ]
- },
- {
-  "base_key": "museumoftheafricandiaspora",
-  "same_node": false,
-  "spellings": [
-   "Museum of the African Diaspora (MoAD)",
-   "Museum of the African Diaspora (bare name)"
   ]
  },
  {
