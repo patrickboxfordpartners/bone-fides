@@ -395,21 +395,37 @@
     return li;
   }
 
-  /* The rings drawing: the family tree as concentric rings (plan section 6).
+  /* The tree drawing: the family tree as a tree (plan section 6, the
+   * owner's look: a trunk, limbs and branches, not concentric rings).
    * `svg` is the (empty) <svg> element; `t` is the /api/tree payload.
    * opts.onSelect(node, el, parents) runs when a node is clicked or
    * Enter/Space is pressed; opts.maxGen trims the drawing (the landing hero
    * draws two moves). Returns the parents map for the caller's own use. */
   function renderRings(svg, t, opts) {
     opts = opts || {};
-    var CX = 560, CY = 384, R1 = 168, R2 = 280, R3 = 330;
     var maxGen = opts.maxGen || 3;
+    var W = 1040;
+    /* opts.leftPad keeps the left band clear for pages that lay a column
+     * over the drawing (the tree page's stats sit there); the root and every
+     * limb, branch and twig stay right of it */
+    var leftPad = opts.leftPad || 0;
+    var ROOTX = leftPad + (W - leftPad) / 2, ROOTY = 646, TRUNKY = 566;
     function point(cx, cy, r, ang) {
       return { x: cx + r * Math.cos(ang), y: cy + r * Math.sin(ang) };
     }
     function clip(s, n) {
       s = String(s);
-      return s.length > n ? s.slice(0, n - 1) + '\u2026' : s;
+      if (s.length <= n) return s;
+      var cut = s.slice(0, n - 1);
+      var sp = cut.lastIndexOf(' ');
+      if (sp > n * 0.5) { cut = cut.slice(0, sp); }
+      cut = cut.replace(/[\s,]+$/, '').replace(/\s+\S{1,2}$/, '');
+      return cut + '\u2026';
+    }
+    function qbez(p0, p1, p2, tt) {
+      var a = (1 - tt) * (1 - tt), b = 2 * tt * (1 - tt), c = tt * tt;
+      return { x: a * p0.x + b * p1.x + c * p2.x,
+               y: a * p0.y + b * p1.y + c * p2.y };
     }
     var parents = {};
     var flat = [];
@@ -426,69 +442,126 @@
     svg.setAttribute('aria-label', 'Family tree of ' + t.root.name + ': ' +
       t.summary.reach + ' kitchens within three cited moves, ' + t.summary.starred + ' Michelin-starred.' +
       (opts.listHint ? ' The same branches are in the list view.' : ''));
-    [R1, R2, R3].forEach(function (r) {
-      var c = document.createElementNS(SVG_NS, 'circle');
-      c.setAttribute('class', 'guide'); c.setAttribute('cx', CX); c.setAttribute('cy', CY); c.setAttribute('r', r);
-      svg.appendChild(c);
-    });
-    var g0 = document.createElementNS(SVG_NS, 'g');
-    var disc = document.createElementNS(SVG_NS, 'circle');
-    disc.setAttribute('class', 'rootdisc'); disc.setAttribute('cx', CX); disc.setAttribute('cy', CY); disc.setAttribute('r', 46);
-    var rname = document.createElementNS(SVG_NS, 'text');
-    rname.setAttribute('class', 'rootname'); rname.setAttribute('x', CX); rname.setAttribute('y', CY + 4);
-    rname.setAttribute('text-anchor', 'middle');
-    rname.textContent = clip(t.root.name, 16);
-    g0.appendChild(disc); g0.appendChild(rname);
 
-    var pos = {};
-    pos[t.root.id] = { x: CX, y: CY };
+    /* the ground the tree stands on */
+    var ground = document.createElementNS(SVG_NS, 'line');
+    ground.setAttribute('class', 'guide');
+    ground.setAttribute('x1', leftPad + 60); ground.setAttribute('x2', W - 150);
+    ground.setAttribute('y1', ROOTY + 38); ground.setAttribute('y2', ROOTY + 38);
+    svg.appendChild(ground);
+
     var byGen = [[], [], []];
     flat.forEach(function (n) { byGen[n.gen - 1].push(n); });
     var label2 = byGen[1].length <= 40;
 
-    var N1 = byGen[0].length || 1;
-    byGen[0].forEach(function (n, i) {
-      pos[n.id] = point(CX, CY, R1, i / N1 * 2 * Math.PI - Math.PI / 2);
-    });
-    var counts2 = byGen[0].map(function (n) { return Math.max(1, n.children.length); });
-    var total2 = counts2.reduce(function (a, b) { return a + b; }, 0) || 1;
+    /* positions: the trunk rises from the root, and each first move is a
+     * limb whose sector width follows the size of what grows from it */
+    function desc(n) {
+      var c = 0;
+      (function cc(kids) { (kids || []).forEach(function (k) { c++; cc(k.children); }); })(n.children);
+      return c;
+    }
+    var pos = {};
+    pos[t.root.id] = { x: ROOTX, y: ROOTY };
+    var limbPts = {};      /* gen1 id -> {p0, p1, p2} limb bezier */
+    var margin = leftPad + 50, span = W - margin - 60;
+    var weights = byGen[0].map(function (n) { return 2 + desc(n); });
+    var wtot = weights.reduce(function (a, b) { return a + b; }, 0) || 1;
     var acc = 0;
-    byGen[0].forEach(function (p, i) {
-      var start = acc / total2 * 2 * Math.PI - Math.PI / 2;
-      acc += counts2[i];
-      var end = acc / total2 * 2 * Math.PI - Math.PI / 2;
-      var kids = p.children || [];
-      var m = kids.length;
-      kids.forEach(function (n, k) {
-        if (n.gen > maxGen) return;
-        var a = start + (end - start) * ((k + 0.5) / m);
-        pos[n.id] = point(CX, CY, R2, a);
-      });
-    });
-    byGen[1].forEach(function (p) {
-      var kids = p.children || [];
-      var m = kids.length;
-      if (!m) return;
-      for (var k = 0; k < m; k++) {
-        if (kids[k].gen > maxGen) break;
-        var pa = Math.atan2(pos[p.id].y - CY, pos[p.id].x - CX);
-        var spread = 2 * Math.PI / Math.max(8, byGen[1].length);
-        var a = pa + (k - (m - 1) / 2) * spread / Math.max(1, m) * 1.4;
-        pos[kids[k].id] = point(CX, CY, R3, a);
-      }
+    byGen[0].forEach(function (n, i) {
+      var w = weights[i];
+      var x0 = margin + span * acc / wtot;
+      acc += w;
+      var x1 = margin + span * acc / wtot;
+      var cx = (x0 + x1) / 2;
+      /* limb tips alternate high and low so neighbouring labels never
+       * share a level */
+      var topY = 214 + (i % 2) * 88 + 26 * Math.sin(i * 2.399963);
+      var p0 = { x: ROOTX + (((i % 3) - 1) * 7),
+                 y: TRUNKY + 34 - (i % 4) * 16 - (i % 7) * 3 };
+      var p2 = { x: cx, y: topY };
+      var p1 = { x: (ROOTX + cx) / 2, y: (TRUNKY + topY) / 2 - 70 };
+      limbPts[n.id] = { p0: p0, p1: p1, p2: p2 };
+      pos[n.id] = { x: cx, y: topY };
     });
 
+    /* gen-2 branches sprout along their limb, staggered in t and height */
+    var dirOf = {};
+    byGen[0].forEach(function (n, i) {
+      var kids = (n.children || []).filter(function (k) { return k.gen <= maxGen; });
+      var k = kids.length;
+      dirOf[n.id] = pos[n.id].x >= ROOTX ? 1 : -1;
+      kids.forEach(function (c, j) {
+        var tt = k === 1 ? 0.7 : 0.28 + 0.62 * (j + 1) / k;
+        var base = qbez(limbPts[n.id].p0, limbPts[n.id].p1, limbPts[n.id].p2, tt);
+        var dir = dirOf[n.id];
+        if (Math.abs(pos[n.id].x - ROOTX) < 60) { dir = j % 2 === 0 ? -1 : 1; }
+        var len = 46 + 34 * ((j * 2.399963) % 1);
+        var drop = 26 + 26 * ((j * 1.618) % 1);
+        var end = { x: base.x + dir * len, y: base.y - drop };
+        if (end.x < leftPad + 24) {
+          dir = 1;
+          end = { x: base.x + len, y: base.y - drop };
+        }
+        var bp1 = { x: base.x + dir * len * 0.25, y: base.y - drop * 0.2 };
+        limbPts[c.id] = { p0: base, p1: bp1, p2: end, twig: true };
+        pos[c.id] = end;
+      });
+    });
+
+    /* gen-3 twigs: short sprays of marks off their branch */
+    byGen[1].forEach(function (p) {
+      var kids = (p.children || []).filter(function (k) { return k.gen <= maxGen; });
+      var k = kids.length;
+      if (!k) return;
+      var dir = limbPts[p.id] && limbPts[p.id].twig ?
+        (pos[p.id].x >= pos[parents[p.id].id].x ? 1 : -1) : 1;
+      kids.forEach(function (c, j) {
+        var spread = 26;
+        var px = Math.max(leftPad + 16,
+          pos[p.id].x + dir * (10 + spread * (j - (k - 1) / 2) * 0.9));
+        var py = pos[p.id].y - 26 - 14 * ((j * 1.618) % 1);
+        pos[c.id] = { x: px, y: py };
+      });
+    });
+
+    /* the trunk itself */
+    var trunk = document.createElementNS(SVG_NS, 'path');
+    trunk.setAttribute('d', 'M' + ROOTX + ' ' + (ROOTY + 2) +
+      'C' + (ROOTX - 5) + ' ' + (TRUNKY + 50) + ' ' + (ROOTX + 5) + ' ' + (TRUNKY + 40) +
+      ' ' + ROOTX + ' ' + (TRUNKY + 34));
+    trunk.setAttribute('class', 'trunk');
+    svg.appendChild(trunk);
+
+    var g0 = document.createElementNS(SVG_NS, 'g');
+    var disc = document.createElementNS(SVG_NS, 'circle');
+    disc.setAttribute('class', 'rootdisc'); disc.setAttribute('cx', ROOTX); disc.setAttribute('cy', ROOTY); disc.setAttribute('r', 46);
+    var rname = document.createElementNS(SVG_NS, 'text');
+    rname.setAttribute('class', 'rootname'); rname.setAttribute('x', ROOTX); rname.setAttribute('y', ROOTY + 66);
+    rname.setAttribute('text-anchor', 'middle');
+    rname.textContent = clip(t.root.name, 16);
+    g0.appendChild(disc); g0.appendChild(rname);
+
+    /* edges: limbs and branches, drawn as the curves they are */
     flat.forEach(function (n) {
       var p = parents[n.id];
       if (!p) return;
-      var edge = document.createElementNS(SVG_NS, 'path');
       var a = pos[p.id], b = pos[n.id];
       if (!a || !b) return;
-      var mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
-      var kk = 0.18;
-      var cxp = mx + (CY - my) * kk, cyp = my + (CX - mx) * kk;
-      edge.setAttribute('d', 'M' + a.x.toFixed(1) + ' ' + a.y.toFixed(1) +
-        'Q' + cxp.toFixed(1) + ' ' + cyp.toFixed(1) + ' ' + b.x.toFixed(1) + ' ' + b.y.toFixed(1));
+      var lp = limbPts[n.id];
+      var d;
+      if (lp) {
+        d = 'M' + lp.p0.x.toFixed(1) + ' ' + lp.p0.y.toFixed(1) +
+          'Q' + lp.p1.x.toFixed(1) + ' ' + lp.p1.y.toFixed(1) +
+          ' ' + lp.p2.x.toFixed(1) + ' ' + lp.p2.y.toFixed(1);
+      } else {
+        var mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+        d = 'M' + a.x.toFixed(1) + ' ' + a.y.toFixed(1) +
+          'Q' + mx.toFixed(1) + ' ' + my.toFixed(1) +
+          ' ' + b.x.toFixed(1) + ' ' + b.y.toFixed(1);
+      }
+      var edge = document.createElementNS(SVG_NS, 'path');
+      edge.setAttribute('d', d);
       var cls = 'e g' + n.gen + (n.stars > 0 ? ' s' : '') + (n.via.length + n.more_via > 1 ? ' w2' : '');
       edge.setAttribute('class', cls);
       edge.setAttribute('pathLength', '1');
@@ -497,7 +570,7 @@
       svg.appendChild(edge);
     });
 
-    /* the root disc and its name draw above the spokes, not under them */
+    /* the root disc and its name draw above the trunk, not under it */
     svg.appendChild(g0);
 
     flat.forEach(function (n) {
@@ -511,8 +584,9 @@
       var role = via0 && via0.role ? ', ' + via0.role : '';
       /* the accessible name must contain the visible label (clipped text
        * and star glyphs included), so it starts with exactly what shows */
+      var clipAt = n.gen === 1 ? 22 : 26;
       var visible = (n.stars ? starsTxt(Math.min(n.stars, 3)) + ' ' : '') +
-        String(n.name).slice(0, 25) + (String(n.name).length > 26 ? '\u2026' : '');
+        clip(n.name, clipAt);
       var full = n.name + (n.stars ? ', ' + starsLabel(n.stars) : '') +
         ', via ' + moved + role + ', ' + n.gen + (n.gen === 1 ? ' cited move' : ' cited moves') + ' from the root';
       a.setAttribute('aria-label', visible === n.name ? full : visible + ' \u2014 ' + full);
@@ -528,12 +602,13 @@
         a.appendChild(d); a.appendChild(title);
       } else {
         var lab = document.createElementNS(SVG_NS, 'text');
-        var anchor = p.x >= CX ? 'start' : 'end';
-        var dx = p.x >= CX ? 8 : -8;
-        lab.setAttribute('x', p.x + dx); lab.setAttribute('y', p.y + 4);
+        var anchor = n.gen === 1 ? 'middle' : (p.x >= ROOTX ? 'start' : 'end');
+        var dx = n.gen === 1 ? 0 : (p.x >= ROOTX ? 8 : -8);
+        var dy = n.gen === 1 ? (p.y < TRUNKY - 160 ? -13 : 20) : 4;
+        lab.setAttribute('x', p.x + dx); lab.setAttribute('y', p.y + dy);
         lab.setAttribute('text-anchor', anchor);
         lab.setAttribute('class', 'lab f' + n.gen + (n.stars ? ' star' : ''));
-        var txt = clip(n.name, 26);
+        var txt = clip(n.name, n.gen === 1 ? 22 : 26);
         if (n.stars) {
           var st = document.createElementNS(SVG_NS, 'tspan');
           st.setAttribute('class', 'starglyph');
@@ -556,6 +631,35 @@
       a.dataset.id = n.id;
       svg.appendChild(a);
     });
+
+    /* labels never sit on each other: after drawing, nudge any pair that
+     * overlaps apart in y, in document order, a bounded number of times */
+    (function collide() {
+      var labs = svg.querySelectorAll('.lab');
+      if (!labs.length) return;
+      var rounds = 0;
+      function box(l) { return l.getBoundingClientRect(); }
+      function overlaps(a, b) {
+        return Math.min(a.right, b.right) - Math.max(a.left, b.left) > -5 &&
+               Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) > -5;
+      }
+      var moved = true;
+      while (moved && rounds < 24) {
+        moved = false;
+        rounds++;
+        for (var i = 0; i < labs.length; i++) {
+          for (var k = i + 1; k < labs.length; k++) {
+            if (overlaps(box(labs[i]), box(labs[k]))) {
+              /* the right-hand label steps away from the trunk's height band */
+              var y = parseFloat(labs[k].getAttribute('y'));
+              var away = y < (TRUNKY - 100) ? -15 : 15;
+              labs[k].setAttribute('y', (y + away));
+              moved = true;
+            }
+          }
+        }
+      }
+    })();
     return parents;
   }
 
