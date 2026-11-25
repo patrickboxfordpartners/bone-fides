@@ -29,6 +29,6 @@ mkdir -p api/_lib
 touch api/_lib/__init__.py
 cp ../src/dossier.py ../src/es_query.py ../src/roles.py ../src/venue_aliases.py api/_lib/
 cp ../ui/map.js ../ui/city_venues.json ../ui/venues_geo.json ../ui/score_sample.json \
-   ../ui/venue_aliases.json api/_lib/
+   ../ui/venue_aliases.json ../ui/venue_booking.json api/_lib/
 
 echo "vercel-app build: pages and api/_lib assembled from ui/ and src/"

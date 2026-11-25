@@ -67,11 +67,18 @@
         a.textContent = 'Website';
         links.appendChild(a);
       }
-      const res = document.createElement('a');
-      res.href = 'https://www.resy.com/city/san-francisco?query=' + encodeURIComponent(v.name);
-      res.target = '_blank'; res.rel = 'noopener'; res.className = 'res';
-      res.textContent = 'Book on Resy';
-      links.appendChild(res);
+      // Only verified pages for THIS venue (scripts/build_venue_booking.py).
+      // A Resy city search was shown for every dot before, which booked
+      // nothing and often listed other restaurants.
+      const PLATFORMS = [['resy', 'Resy'], ['opentable', 'OpenTable'], ['tock', 'Tock']];
+      for (const [key, label] of PLATFORMS) {
+        const url = v.booking && v.booking[key];
+        if (!url) continue;
+        const res = document.createElement('a');
+        res.href = url; res.target = '_blank'; res.rel = 'noopener'; res.className = 'res';
+        res.textContent = 'Book on ' + label;
+        links.appendChild(res);
+      }
       if (hits.length) {
         const tr = document.createElement('a');
         tr.href = '/explorer?q=' + encodeURIComponent(v.lineage_name || v.name);
