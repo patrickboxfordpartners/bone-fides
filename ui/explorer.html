@@ -431,7 +431,10 @@
      so one link's area never covers the link on the next line. */
   @media (max-width: 900px), (pointer: coarse) {
     .watchbtn, .copybtn, .rolebar .rchip { display: inline-flex; align-items: center; min-height: 40px; padding-block: 0; }
-    .chips, .chain, .tlvenues { row-gap: 20px; }
+    .chips, .chain, .tlvenues, .tlundated .urow, .tlundated .urowmain { row-gap: 20px; }
+    /* stacked rows need the same clearance as wrapped lines */
+    .tlbody { padding-bottom: 20px; }
+    .tlundated .urow { margin-bottom: 20px; }
     .flaglink { margin-top: 22px; }
     .chip, .vchip, .flaglink, .viewtoggle button, .chef .src a, .imgcredit a, .pedmethod, .igbadge { position: relative; }
     .chip::before, .vchip::before, .flaglink::before, .viewtoggle button::before,

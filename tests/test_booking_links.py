@@ -216,6 +216,22 @@ def test_search_payload_carries_booking_only_for_a_resolved_dossier(monkeypatch)
     assert dossier.dossier_booking("Palette") is None and dossier.dossier_booking("") is None
 
 
+def test_booking_lookup_does_not_follow_branch_aliases():
+    """venue_key() merges branches for lineage ("A16 Oakland" -> A16). The
+    booking lookup must not: the Oakland dossier would offer the SF room."""
+    assert dossier.venue_key("A16 Oakland") == dossier.venue_key("A16"), "fixture: the alias table merges these"
+    assert dossier.dossier_booking("A16")
+    for branch in ("A16 Oakland", "Balboa Café Mill Valley", "Balboa Cafe Mill Valley"):
+        assert dossier.dossier_booking(branch) is None, branch
+    assert dossier.dossier_booking("Balboa Café") == dossier.dossier_booking("Balboa Cafe")
+    # no lookup may return a page that does not verify for the name asked
+    cities = bvb.load_cities()
+    names = json.load(open(os.path.join(_ROOT, "ui", "dossier_booking.json")))
+    for name in list(names) + ["A16 Oakland", "Balboa Café Mill Valley"]:
+        for platform, url in (dossier.dossier_booking(name) or {}).items():
+            assert bvb.verified(platform, url, [bvb.clean_name(name)], cities), (name, url)
+
+
 def test_map_popup_uses_verified_links_not_a_resy_search():
     js = open(os.path.join(_ROOT, "ui", "map.js")).read()
     assert "resy.com/city" not in js

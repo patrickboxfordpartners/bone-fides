@@ -71,10 +71,16 @@ def test_touch_layout_enlarges_small_targets_without_overlap():
     # a hit area grows 10px above and below its link; every row that stacks
     # such links must open by at least 20px, or one area covers the next line
     grow = int(re.search(r"inset: -(\d+)px -(\d+)px", css).group(1))
-    row_gap = int(re.search(r"\.chips, \.chain, \.tlvenues \{ row-gap: (\d+)px; \}", css).group(1))
-    assert row_gap >= 2 * grow
+    rows = re.search(r"([^{}]*)\{ row-gap: (\d+)px; \}", css)
+    assert int(rows.group(2)) >= 2 * grow
+    # every container that wraps or stacks venue links, including the undated
+    # timeline rows, must be in that rule or carry the clearance itself
+    for sel in (".chips", ".chain", ".tlvenues", ".tlundated .urow", ".tlundated .urowmain"):
+        assert sel in rows.group(1), sel
+    assert int(re.search(r"\.tlbody \{ padding-bottom: (\d+)px; \}", css).group(1)) >= 2 * grow
+    assert int(re.search(r"\.tlundated \.urow \{ margin-bottom: (\d+)px; \}", css).group(1)) >= 2 * grow
     side = int(re.search(r"inset: -(\d+)px -(\d+)px", css).group(2))
-    col_gaps = [int(g) for g in re.findall(r"\.(?:chips|chain|tlvenues) \{[^}]*gap: \d+px (\d+)px", HTML)]
+    col_gaps = [int(g) for g in re.findall(r"\.(?:chips|chain|tlvenues|urow|urowmain) \{[^}]*gap: \d+px (\d+)px", HTML)]
     assert col_gaps and min(col_gaps) >= 2 * side, col_gaps
 
 
