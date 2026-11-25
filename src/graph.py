@@ -365,3 +365,299 @@ def summary(g):
     s = dict(g["raw"]["summary"])
     s["built_at"] = g["raw"].get("built_at")
     return s
+
+
+def _chef_kitchens(g, pid):
+    """Every kitchen in a chef's kept moves, with the move indices."""
+    out = {}
+    for i, row in enumerate(g["moves"]):
+        if row[0] == pid:
+            for k in (row[1], row[2]):
+                if 0 <= k < len(g["kitchens"]):
+                    out.setdefault(k, []).append(i)
+    return out
+
+
+def _resolve_end(g, name):
+    """One end of a trace: a kitchen, or chef:<person id or name>."""
+    if not name:
+        return None, None
+    if name.startswith("chef:"):
+        q = name[5:].strip()
+        hit = g["by_pid"].get(q)
+        if hit is None:
+            for p in g["people"]:
+                if _fold(p[1]) == _fold(q):
+                    hit = p
+                    break
+        if hit is None:
+            return None, None
+        return {"kind": "chef", "id": hit[0], "name": hit[1],
+                "homonym": bool(hit[2])}, None
+    i = _resolve(g, name)
+    if i is None:
+        return None, None
+    k = g["kitchens"][i]
+    also = None
+    for p in g["people"]:
+        if _fold(p[1]) == _fold(k[1]) or _fold(p[0]) == _fold(k[2]):
+            also = {"kind": "chef", "id": p[0], "name": p[1]}
+            break
+    return {"kind": "kitchen", "id": k[0], "name": k[1], "slug": k[2],
+            "stars": k[3]}, also
+
+
+def _stint_row(g, pid, kitchen_i):
+    """The row that joins a chef to one of their kitchens: their own cited
+    move there (plan section 5: a chef end point's first or last row)."""
+    row_k = g["kitchens"][kitchen_i]
+    idxs = _chef_kitchens(g, pid).get(kitchen_i) or []
+    cites = sorted(
+        idxs,
+        key=lambda i: (-(g["moves"][i][11] or 0),
+                       -TIER_WEIGHT.get(g["moves"][i][5], 0),
+                       0 if g["moves"][i][4] else 1,
+                       g["moves"][i][6]))
+    via = [_cite(g, i) for i in cites[:3]]
+    return {"stint": True, "person": g["by_pid"][pid][1],
+            "person_id": pid, "homonym": bool(g["by_pid"][pid][2]),
+            "kitchen": {"id": row_k[0], "name": row_k[1], "stars": row_k[3]},
+            "via": via, "more_via": max(0, len(cites) - 3)}
+
+
+def connect(g, a, b):
+    """The shortest chain of cited moves between two ends (plan section 5).
+
+    Breadth-first on the undirected link set, neighbours in key order, so
+    the same pair always returns the same chain. A chef end starts from
+    every kitchen in that chef's kept moves; the row joining the chef to
+    the chain is a stint row. `found: false` with the two connected-set
+    sizes is the honest no-chain answer."""
+    ea, also_a = _resolve_end(g, a)
+    eb, _ = _resolve_end(g, b)
+    if ea is None:
+        return {"resolved": True, "found": False, "reason": "unknown_a",
+                "query": a, "suggestions": unresolved(g, a)}
+    if eb is None:
+        return {"resolved": True, "found": False, "reason": "unknown_b",
+                "query": b, "suggestions": unresolved(g, b)}
+    if ea["kind"] == "kitchen" and eb["kind"] == "kitchen" \
+            and ea["id"] == eb["id"]:
+        return {"resolved": True, "found": False, "reason": "same",
+                "a": ea, "b": eb}
+
+    def starts(end):
+        if end["kind"] == "chef":
+            return sorted(_chef_kitchens(g, end["id"]))
+        return [_resolve(g, end["id"]) or _resolve(g, end.get("slug") or end["name"])]
+
+    sa, sb = starts(ea), starts(eb)
+    if any(s is None for s in sa + sb):
+        return {"resolved": True, "found": False, "reason": "unknown_a"}
+    # breadth-first from a's starts until a b start is reached
+    parent = {}
+    seen = set(sa)
+    queue = list(sa)
+    targets = set(sb)
+    hit = None
+    for s in queue:
+        if s in targets:
+            hit = s
+            break
+    while queue and hit is None:
+        x = queue.pop(0)
+        for y in sorted(g["und"].get(x, ())):
+            if y in seen:
+                continue
+            seen.add(y)
+            parent[y] = x
+            if y in targets:
+                hit = y
+                queue = []
+                break
+            queue.append(y)
+    if hit is None:
+        def set_of(i):
+            return g["comps"][g["comp"].get(i)] if g["comp"].get(i) is not None else 0
+        return {"resolved": True, "found": False, "reason": "no_chain",
+                "a": ea, "b": eb, "a_set": set_of(sa[0]), "b_set": set_of(sb[0]),
+                "also": also_a}
+
+    chain = [hit]
+    cur = hit
+    while cur in parent:
+        cur = parent[cur]
+        chain.append(cur)
+    chain.reverse()
+
+    hops = []
+    for x, y in zip(chain, chain[1:]):
+        row_x, row_y = g["kitchens"][x], g["kitchens"][y]
+        via, more = _citations_for(g, x, y, limit=3)
+        forward = bool(via)
+        if not forward:
+            via, more = _citations_for(g, y, x, limit=3)
+        hops.append({
+            "from": {"id": row_x[0], "name": row_x[1], "stars": row_x[3]},
+            "to": {"id": row_y[0], "name": row_y[1], "stars": row_y[3]},
+            "direction": "forward" if forward else "reverse",
+            "via": via, "more_via": more})
+
+    if ea["kind"] == "chef":
+        hops.insert(0, _stint_row(g, ea["id"], chain[0]))
+    if eb["kind"] == "chef":
+        hops.append(_stint_row(g, eb["id"], chain[-1]))
+
+    return {"resolved": True, "found": True, "length": len(chain) - 1,
+            "a": ea, "b": eb, "hops": hops, "also": also_a,
+            "built_at": g["raw"].get("built_at")}
+
+
+_LEDGER_CACHE = {}
+
+
+def _kitchen_alumni(g, i):
+    out = set()
+    for tgts in g["out"].get(i, {}).values():
+        for m in tgts:
+            out.add(g["moves"][m][0])
+    return out
+
+
+def _tree_stats(g, i, depth=3):
+    """reach, starred count and starred names within `depth` moves."""
+    seen = {i}
+    frontier = [i]
+    starred_names = []
+    for _ in range(depth):
+        nxt = []
+        for x in frontier:
+            for y in sorted(g["out"].get(x, {})):
+                if y in seen:
+                    continue
+                seen.add(y)
+                nxt.append(y)
+                if g["kitchens"][y][3] > 0:
+                    starred_names.append(g["kitchens"][y][1])
+        frontier = nxt
+    starred_names.sort()
+    return len(seen), len(starred_names), starred_names
+
+
+def ledger(g):
+    """The rankings payload (plan section 10). Memoized per graph file."""
+    key = id(g)
+    if key in _LEDGER_CACHE:
+        return _LEDGER_CACHE[key]
+
+    alumni = {i: len(_kitchen_alumni(g, i)) for i in range(len(g["kitchens"]))}
+    rows = []
+    stats = {}
+    for i, n in alumni.items():
+        if n < 3:
+            continue
+        reach, starred, starred_names = _tree_stats(g, i)
+        stats[i] = (reach, starred, starred_names)
+        k = g["kitchens"][i]
+        rows.append({"kitchen": {"id": k[0], "name": k[1], "slug": k[2],
+                                 "stars": k[3]},
+                     "alumni": n, "kitchens": reach, "reach": reach,
+                     "starred": starred, "starred_names": starred_names})
+    rows.sort(key=lambda r: (-r["alumni"], -r["reach"], r["kitchen"]["name"]))
+
+    # leaders: the four record holders
+    by_reach = sorted(rows, key=lambda r: (-r["reach"], -r["alumni"],
+                                           r["kitchen"]["name"]))
+    by_starred = sorted(rows, key=lambda r: (-r["starred"], -r["alumni"],
+                                             r["kitchen"]["name"]))
+
+    # mentors: chefs per named mentor, from the moves' mentor credit
+    mentors = {}
+    for row in g["moves"]:
+        m = row[8]
+        if not m:
+            continue
+        slot = mentors.setdefault(m, {"chefs": set(), "moves": 0, "samples": []})
+        slot["chefs"].add(row[0])
+        slot["moves"] += 1
+        if len(slot["samples"]) < 2:
+            slot["samples"].append(i)
+    mentor_rows = []
+    for m, slot in mentors.items():
+        if len(slot["chefs"]) < 2:
+            continue
+        mentor_rows.append({
+            "mentor": m, "chefs": len(slot["chefs"]), "moves": slot["moves"],
+            "sample": [_cite(g, i) for i in
+                       sorted(slot["samples"],
+                              key=lambda i2: -TIER_WEIGHT.get(g["moves"][i2][5], 0))[:2]]})
+    mentor_rows.sort(key=lambda r: (-r["chefs"], -r["moves"], r["mentor"]))
+
+    # starred rows: all Michelin kitchens, their cited arrivals
+    starred_rows = []
+    for i, k in enumerate(g["kitchens"]):
+        if k[3] <= 0:
+            continue
+        arrivals = 0
+        froms = []
+        for a, tgts in g["out"].items():
+            for b in tgts:
+                if b == i:
+                    arrivals += 1
+                    froms.append(g["kitchens"][a][1])
+        status = "linked" if g["degree"].get(i) else (
+            "move_only" if alumni.get(i) else "none")
+        starred_rows.append({
+            "kitchen": {"id": k[0], "name": k[1], "slug": k[2], "stars": k[3]},
+            "arrivals": arrivals, "from": sorted(set(froms))[:4],
+            "alumni": alumni.get(i, 0), "status": status})
+    for miss in g["raw"]["summary"]["starred"].get("missing_rows") or []:
+        starred_rows.append({
+            "kitchen": {"id": None, "name": miss["name"], "slug": None,
+                        "stars": miss["stars"]},
+            "arrivals": 0, "from": [], "alumni": 0, "status": "none"})
+    starred_rows.sort(key=lambda r: (-r["arrivals"], r["kitchen"]["name"]))
+
+    # featured: the tree with the most starred within three moves, and up to
+    # four traceable pairs from the top kitchens by alumni
+    featured_tree = by_starred[0]["kitchen"]["slug"] if by_starred else None
+    pairs = []
+    for r in rows[:12]:
+        if r["kitchen"]["slug"] == featured_tree:
+            continue
+        if not r["starred_names"]:
+            continue
+        best = r["starred_names"][0]
+        chain = connect(g, r["kitchen"]["slug"], best)
+        if chain.get("found") and 2 <= chain["length"] <= 4:
+            pairs.append({"a": r["kitchen"]["slug"],
+                          "b": _resolve(g, best) and
+                          g["kitchens"][_resolve(g, best)][2],
+                          "length": chain["length"]})
+        if len(pairs) >= 4:
+            break
+
+    out = {
+        "built_at": g["raw"].get("built_at"),
+        "featured": {"tree": featured_tree, "pairs": pairs},
+        "leaders": {
+            "alumni": {"slug": rows[0]["kitchen"]["slug"],
+                       "name": rows[0]["kitchen"]["name"],
+                       "value": rows[0]["alumni"]} if rows else {},
+            "reach": {"slug": by_reach[0]["kitchen"]["slug"],
+                      "name": by_reach[0]["kitchen"]["name"],
+                      "value": by_reach[0]["reach"]} if by_reach else {},
+            "starred_within": {"slug": by_starred[0]["kitchen"]["slug"],
+                               "name": by_starred[0]["kitchen"]["name"],
+                               "value": by_starred[0]["starred"]} if by_starred else {},
+            "mentor": {"name": mentor_rows[0]["mentor"],
+                       "value": mentor_rows[0]["chefs"]} if mentor_rows else {},
+        },
+        "kitchens": rows,
+        "mentors": mentor_rows[:25],
+        "starred": starred_rows,
+        "rules": {"min_alumni": 3, "mentor_min_chefs": 2, "depth": 3,
+                  "mentor_moves": g["raw"]["summary"]["mentor_moves"]},
+    }
+    _LEDGER_CACHE[key] = out
+    return out

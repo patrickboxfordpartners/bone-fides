@@ -25,6 +25,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 PAGES = {
     "/": "landing.html", "/landing": "landing.html", "/landing.html": "landing.html",
     "/tree": "tree.html", "/tree.html": "tree.html",
+    "/connect": "connect.html", "/connect.html": "connect.html",
     "/explorer": "explorer.html", "/explorer/": "explorer.html",
     "/explorer.html": "explorer.html", "/explorer/index.html": "explorer.html",
     "/method": "method.html", "/method.html": "method.html",

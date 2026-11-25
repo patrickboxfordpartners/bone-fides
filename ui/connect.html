@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bone Fides — Connect</title>
+<meta name="description" content="Trace the shortest line of cited moves between two San Francisco kitchens: one person, one quotation, one source article per link.">
+<meta property="og:title" content="Bone Fides — Connect">
+<meta property="og:description" content="The shortest line of cited chef moves between two kitchens. Every link is one named person, quoted and sourced.">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&display=swap" rel="stylesheet">
+<style>
+/* bf:chrome */
+/* Shared header, phone menu and footer. Tokens from docs/DESIGN.md only. */
+.bf-skip{position:absolute;left:12px;top:-60px;z-index:20;background:var(--bg2);color:var(--ink);
+  border:1px solid var(--accent);border-radius:999px;padding:0 18px;min-height:44px;
+  display:inline-flex;align-items:center;font-size:13.5px}
+.bf-skip:focus{top:8px;left:12px}
+.bf-top{min-height:60px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
+  gap:0 28px;padding:0 32px;border-bottom:1px solid var(--faint);background:var(--bg);
+  position:relative;z-index:5}
+.wordmark{font-size:19px;font-weight:560;letter-spacing:.01em;color:var(--ink);border:0;
+  display:inline-flex;align-items:baseline;gap:7px;line-height:1}
+.wordmark em{color:var(--accent);font-style:italic;font-weight:500}
+.bf-nav{display:flex;gap:28px;align-self:stretch}
+.bf-nav a{font-size:13.5px;font-weight:400;color:var(--dim);border:0;border-bottom:1px solid transparent;
+  margin-bottom:-1px;display:flex;align-items:center;line-height:1;min-height:59px}
+.bf-nav a:hover{color:var(--ink)}
+.bf-nav a[aria-current=page]{color:var(--ink);border-bottom-color:var(--accent)}
+.bf-menu{font:500 12px/1 'Fraunces',Georgia,serif;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--dim);background:transparent;border:1px solid var(--faint);border-radius:999px;
+  padding:0 18px;min-height:44px;cursor:pointer;display:none}
+.bf-menu:hover,.bf-menu[aria-expanded=true]{color:var(--accent);border-color:var(--accent)}
+/* JavaScript folds the nav behind the Menu button at 760 px and narrower.
+   Without JavaScript the button stays hidden and the links show as a
+   wrapped block under the wordmark, so every link stays reachable. */
+@media (max-width:760px){
+  .bf-top{min-height:56px;padding:0 20px}
+  .bf-nav a{min-height:44px}
+  body.bf-js .bf-nav{display:none;flex-direction:column;gap:0;position:absolute;top:100%;
+    left:0;right:0;background:var(--bg2);border-bottom:1px solid var(--faint);
+    padding:0 20px 10px;z-index:6}
+  body.bf-js .bf-nav.open{display:flex}
+  body.bf-js .bf-menu{display:inline-flex;align-items:center}
+  .bf-nav a{min-height:44px}
+}
+/* Shared footer */
+.bf-foot{border-top:1px solid var(--faint);padding:26px 32px 44px;margin-top:56px}
+.bf-foot .footrow{display:flex;flex-wrap:wrap;gap:10px 28px;justify-content:space-between;
+  font-size:13.5px;color:var(--dim)}
+.bf-foot .footrow b{color:var(--ink);font-weight:560}
+.bf-foot .footrow a{color:var(--gold);border-bottom:1px solid rgba(194,160,90,.35)}
+.bf-foot .footrow a:hover{color:var(--ink);border-color:var(--ink)}
+.bf-foot .footnote{font-size:12.5px;color:var(--dim);line-height:1.6;margin-top:14px;max-width:72ch}
+/* /bf:chrome */
+:root{--bg:#171310;--bg2:#1f1a15;--ink:#efe6d3;--dim:#9b8f7c;--faint:rgba(239,230,211,.14);
+  --accent:#d08152;--gold:#c2a05a;--stargold:#efd9a0;--ok:#8fb996;--bad:#d9776b;}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--ink);font-family:'Fraunces',Georgia,serif;font-size:17px;line-height:1.6;font-weight:350}
+a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(194,160,90,.35)}
+a:hover{color:var(--ink);border-color:var(--ink)}
+button{font-family:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+::selection{background:rgba(208,129,82,.35)}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+/* connect page */
+.kicker{font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);line-height:1.4}
+.st{color:var(--stargold);letter-spacing:.1em;font-style:normal}
+.srcbadge{display:inline-block;font-size:10.5px;font-weight:560;letter-spacing:.08em;text-transform:uppercase;padding:1px 7px 2px;
+  border:1px solid currentColor;border-radius:99px;margin-left:8px;vertical-align:1px;line-height:1.4}
+.srcbadge.sfgate{color:#7dcec8}.srcbadge.eater{color:var(--gold)}.srcbadge.sfchronicle{color:#e7b0a4}.srcbadge.other{color:var(--dim)}
+.src{font-size:12.5px;color:var(--dim);letter-spacing:.04em;line-height:1.5}
+.src a{color:var(--gold);border-bottom:1px solid rgba(194,160,90,.35)}
+blockquote.ev{font-size:14.5px;line-height:1.5;color:var(--dim);font-weight:350;font-style:italic}
+.copybtn{font:400 12px 'Fraunces',Georgia,serif;letter-spacing:.06em;border:1px solid var(--faint);background:none;color:var(--dim);
+  border-radius:999px;padding:4px 12px;cursor:pointer;line-height:1.5;min-height:40px}
+.copybtn:hover{color:var(--accent);border-color:var(--accent)}
+.go{font:500 12px/1 'Fraunces',Georgia,serif;padding:0 24px;background:transparent;color:var(--dim);border:1px solid var(--faint);
+  border-radius:999px;cursor:pointer;letter-spacing:.2em;text-transform:uppercase;min-height:46px}
+.go:hover{color:var(--accent);border-color:var(--accent)}
+.textlink{font-size:13.5px;color:var(--gold);border-bottom:1px solid rgba(194,160,90,.35)}
+.sugg{position:absolute;left:0;right:0;top:100%;background:var(--bg2);border:1px solid var(--faint);border-radius:0 0 12px 12px;z-index:9;
+  list-style:none;box-shadow:0 12px 30px rgba(0,0,0,.45)}
+.sugg li{border-bottom:1px solid var(--faint)}
+.sugg li:last-child{border-bottom:0}
+.sugg button{display:block;width:100%;text-align:left;background:none;border:0;color:var(--ink);
+  font:420 14px 'Fraunces',Georgia,serif;padding:10px 12px;cursor:pointer;min-height:44px}
+.sugg button:hover{color:var(--accent)}
+.nonote{color:var(--dim);font-size:11.5px;font-style:italic;margin-left:6px}
+.cwrap{max-width:1080px;margin:0 auto;padding:30px 32px 0}
+.cbar{display:flex;flex-wrap:wrap;align-items:flex-end;gap:14px}
+.cfield{position:relative;flex:1 1 240px}
+.cfield label{display:block;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+.cfield input{width:100%;font:350 17px/1 'Fraunces',Georgia,serif;padding:9px 2px;border:0;
+  border-bottom:1px solid var(--faint);background:transparent;color:var(--ink)}
+.cfield input::placeholder{color:#7d7361;font-style:italic}
+.cfield input:focus{outline:none;border-bottom-color:var(--accent)}
+.swap{font:400 18px/1 'Fraunces',Georgia,serif;color:var(--dim);background:none;border:1px solid var(--faint);
+  border-radius:999px;min-width:44px;min-height:44px;cursor:pointer}
+.swap:hover{color:var(--accent);border-color:var(--accent)}
+.cbar .right{margin-left:auto;display:flex;gap:8px}
+.cres{max-width:1080px;margin:0 auto;padding:26px 32px 8px}
+.cres h1{font-size:clamp(24px,3vw,40px);line-height:1.08;font-weight:380;letter-spacing:-.01em;margin-top:8px}
+.cres h1 em{color:var(--accent);font-style:italic;font-weight:500}
+.cres .meta{color:var(--dim);font-size:14px;margin-top:8px;font-style:italic}
+.cres .meta b{color:var(--ink);font-style:normal;font-weight:550;font-variant-numeric:tabular-nums}
+ol.line{list-style:none;margin-top:26px;counter-reset:none}
+ol.line li.station{position:relative;padding:10px 0}
+ol.line li.station a{font:420 19px/1.3 'Fraunces',Georgia,serif;color:var(--ink);border:0}
+ol.line li.station a:hover{color:var(--accent)}
+ol.line li.station .st{font-size:12px;margin-left:8px}
+ol.line li.station .stint{font-size:13.5px;color:var(--dim);font-style:italic;margin-top:2px}
+ol.line li.station .stint a{font-style:normal;color:var(--ink);border-bottom:1px solid var(--faint);font-size:15px}
+ol.line li.station .ev{margin-top:6px;font-size:13.5px}
+li.hop{border-left:1px solid var(--dim);margin-left:9px;padding:10px 0 16px 26px;position:relative}
+li.hop::before{content:'';position:absolute;left:-6px;top:-6px;width:11px;height:11px;border-radius:50%;
+  background:var(--accent);box-shadow:0 0 0 3px var(--bg)}
+li.hop .dirmark{position:absolute;left:5px;top:14px;font-size:16px;color:var(--ink)}
+li.hop .dirmark.rev{color:var(--dim)}
+li.hop .sent{font-size:17px;color:var(--ink)}
+li.hop .sent a{color:var(--ink);font-weight:560;border-bottom:1px solid var(--faint)}
+li.hop .role{color:var(--dim);font-size:13.5px;font-style:italic;margin-top:2px}
+li.hop .role .yr{font-style:normal;color:var(--gold);font-size:11.5px;letter-spacing:.06em;margin-left:4px}
+li.hop .ev{margin-top:10px;font-size:14px}
+li.hop .src{margin-top:6px}
+details.morecite{margin-top:10px}
+details.morecit summary{min-height:44px}
+details.morecite summary{display:inline-flex;align-items:center;cursor:pointer;list-style:none;
+  font-size:12.5px;color:var(--gold);border:0;background:none;padding:0}
+details.morecite summary::-webkit-details-marker{display:none}
+details.morecite summary::after{content:'\25be';color:var(--dim);font-size:11px;margin-left:6px}
+.citebody{margin-top:8px;padding:12px 18px 14px;background:rgba(208,129,82,.06);border-left:2px solid var(--accent);max-width:78ch}
+.note{font-size:12.5px;color:var(--dim);line-height:1.6;margin-top:26px;max-width:78ch}
+.endrow{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:baseline;margin-top:22px;padding-top:14px;border-top:1px solid var(--faint)}
+.endrow .nm{font-size:19px;font-weight:480}
+.bookrow{display:flex;gap:8px;flex-wrap:wrap}
+.res{display:inline-flex;align-items:center;font-size:13.5px;color:var(--gold);text-decoration:none;border:1px solid rgba(194,160,90,.45);
+  border-radius:999px;padding:0 14px;min-height:40px;line-height:1;background:var(--gold);color:var(--bg);border-color:var(--gold);font-weight:600}
+.idlestate{color:var(--dim);font-style:italic;line-height:1.6}
+.trypairs{margin-top:18px;border-top:1px solid var(--faint);padding-top:14px}
+.trypairs .chip{display:inline-block;margin:0 10px 10px 0}
+.chip a{display:inline-flex;align-items:center;font-size:13.5px;color:var(--gold);text-decoration:none;
+  border:1px solid rgba(194,160,90,.45);border-radius:999px;padding:0 14px;min-height:40px;line-height:1}
+.chip a:hover{color:var(--ink);border-color:var(--ink)}
+.err{margin-top:20px;padding:14px 18px;border-left:2px solid var(--bad);background:rgba(217,119,107,.06)}
+.retry{font:500 12px/1 'Fraunces',Georgia,serif;padding:0 18px;background:transparent;color:var(--dim);
+  border:1px solid var(--faint);border-radius:999px;cursor:pointer;letter-spacing:.14em;text-transform:uppercase;
+  min-height:44px;margin-top:12px}
+.retry:hover{color:var(--accent);border-color:var(--accent)}
+@media (min-width:900px){
+  /* a chain of five hops or fewer is one horizontal line with a card under
+     each link; the markup is the same, only the grid changes */
+  ol.line.hrail{display:grid;gap:0 18px;grid-template-columns:repeat(var(--cols,2),1fr)}
+  ol.line.hrail li.station{grid-row:1;display:flex;align-items:center}
+  ol.line.hrail li.hop{grid-row:2;margin-left:0;border-left:0;padding:0 0 0 6px}
+  ol.line.hrail li.hop::before{display:none}
+  ol.line.hrail li.hop .dirmark{position:static;margin-right:8px}
+}
+@media (max-width:899px){
+  .cwrap,.cres{padding-left:20px;padding-right:20px}
+  .cbar{gap:10px}
+  .cbar .right{margin-left:0;width:100%}
+  ol.line li.hop .sent{font-size:16px}
+  .endrow{flex-direction:column;gap:8px}
+}
+</style>
+</head>
+<body>
+<!-- bf:header -->
+<a class="bf-skip" href="#main">Skip to content</a>
+<header class="bf-top">
+  <a class="wordmark" href="/" aria-label="Bone Fides, home">Bone <em>Fides</em></a>
+  <button type="button" class="bf-menu" hidden aria-expanded="false" aria-controls="bf-nav">Menu</button>
+  <nav class="bf-nav" id="bf-nav" aria-label="Site">
+    <a href="/explorer">Explore</a>
+    <a href="/tree">Trees</a>
+    <a href="/connect" aria-current="page">Connect</a>
+    <a href="/method">Method</a>
+  </nav>
+</header>
+<!-- /bf:header -->
+
+<main id="main">
+  <form class="cwrap cbar" role="search" aria-label="Trace a line" id="trace-form">
+    <div class="cfield">
+      <label for="c-from">From</label>
+      <input id="c-from" type="search" placeholder="A kitchen…" autocomplete="off"
+             role="combobox" aria-expanded="false" aria-controls="c-sugg-a">
+      <ul class="sugg" id="c-sugg-a" role="listbox" aria-label="Kitchen suggestions" hidden></ul>
+    </div>
+    <button type="button" class="swap" id="c-swap" aria-label="Swap the two ends">&#8646;</button>
+    <div class="cfield">
+      <label for="c-to">To</label>
+      <input id="c-to" type="search" placeholder="Another kitchen…" autocomplete="off"
+             role="combobox" aria-expanded="false" aria-controls="c-sugg-b">
+      <ul class="sugg" id="c-sugg-b" role="listbox" aria-label="Kitchen suggestions" hidden></ul>
+    </div>
+    <button class="go" type="submit" id="c-go">Trace</button>
+    <div class="right">
+      <button type="button" class="copybtn" id="c-copy">copy link</button>
+    </div>
+  </form>
+
+  <section class="cres" id="result" aria-label="The line">
+    <div id="idle" class="idlestate">Name two kitchens. The line between them is the shortest chain of cited moves the record can prove.</div>
+    <div id="body" hidden></div>
+    <div id="trypairs" class="trypairs" hidden>
+      <p class="kicker">Traced lines to try</p>
+      <div id="pairs"></div>
+    </div>
+  </section>
+</main>
+
+<!-- bf:footer -->
+<footer class="bf-foot">
+  <div class="footrow">
+    <span><b>Bone Fides</b> · the kitchen lineage of San Francisco</span>
+    <span><a href="/explorer">Explore</a> · <a href="/tree">Trees</a> · <a href="/connect">Connect</a> · <a href="/method">Method</a></span>
+  </div>
+  <p class="footnote">Lineage is reconstructed from public reporting and can be incomplete or
+    contested. Every claim on this page links to the article behind it, so you can read the same
+    evidence we did. A line between two kitchens is a cited move by a named person, and nothing
+    more is claimed. Corrections and source tips welcome.</p>
+</footer>
+<!-- /bf:footer -->
+<script src="/lineage.js" defer></script>
+<script>
+window.addEventListener('DOMContentLoaded', function () {
+  'use strict';
+  var L = window.Lineage;
+  var $ = function (id) { return document.getElementById(id); };
+  var fromEl = $('c-from'), toEl = $('c-to');
+  var state = { a: null, b: null, req: 0, data: null };
+
+  function nearA() { return state.a ? (state.a.slug || state.a.name) : ''; }
+  L.picker(fromEl, function (n) { state.a = n; maybeTrace(); },
+           { kind: 'kitchen' });
+  L.picker(toEl, function (n) { state.b = n; maybeTrace(); },
+           { kind: 'kitchen', near: nearA });
+
+  function maybeTrace() {
+    if (state.a && state.b) trace(state.a, state.b);
+  }
+
+  function trace(a, b, push) {
+    var n = ++state.req;
+    $('body').hidden = true; $('idle').hidden = false; $('trypairs').hidden = true;
+    $('idle').textContent = 'Tracing\u2026';
+    var qs = 'a=' + encodeURIComponent(a.slug || a.name || a) +
+             '&b=' + encodeURIComponent(b.slug || b.name || b);
+    fetch('/api/connect?' + qs)
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (n !== state.req) return;
+        state.data = d;
+        render(d);
+        if (push !== false) {
+          var u = '/connect?a=' + encodeURIComponent(d.a && (d.a.slug || d.a.name) || a) +
+                  '&b=' + encodeURIComponent(d.b && (d.b.slug || d.b.name) || b);
+          history.pushState(state, '', u);
+        }
+      })
+      .catch(function () {
+        if (n !== state.req) return;
+        $('idle').hidden = true; $('body').hidden = false;
+        $('body').innerHTML = '<div class="err"><p>The line could not be traced. The request failed.</p>' +
+          '<button type="button" class="retry" id="retry">Try again</button></div>';
+        $('retry').addEventListener('click', function () { trace(a, b, false); });
+      });
+  }
+
+  function render(d) {
+    $('idle').hidden = true; $('trypairs').hidden = true;
+    var body = $('body');
+    if (!d.found) {
+      body.hidden = false;
+      if (d.reason === 'unknown_a' || d.reason === 'unknown_b') {
+        var sug = (d.suggestions || []).map(function (s) {
+          return '<button type="button" data-k="' + L.esc(s.slug) + '" class="copybtn" style="min-height:44px">' + L.esc(s.name) + '</button>';
+        }).join(' ');
+        body.innerHTML = '<div class="err"><p>No kitchen of that name is in the record yet.' +
+          (sug ? '<br><br>Did you mean: ' + sug : '') + '</p></div>';
+        body.querySelectorAll('button[data-k]').forEach(function (b2) {
+          b2.addEventListener('click', function () {
+            var node = { slug: b2.dataset.k, name: b2.textContent };
+            if (d.reason === 'unknown_a') { state.a = node; fromEl.value = node.name; trace(state.a, state.b); }
+            else { state.b = node; toEl.value = node.name; trace(state.a, state.b); }
+          });
+        });
+      } else if (d.reason === 'same') {
+        body.innerHTML = '<div class="err"><p>Those are the same kitchen. Name two different kitchens.</p></div>';
+      } else if (d.reason === 'no_chain') {
+        var setNote = d.a_set ? ' The first kitchen\u2019s cited chain holds ' + L.fmt(d.a_set) +
+          ' kitchens; the second\u2019s holds ' + L.fmt(d.b_set) + '.' : '';
+        body.innerHTML = '<div class="err"><p>No chain of cited moves joins these two kitchens yet.' +
+          L.esc(setNote) + '</p>' +
+          '<p style="margin-top:12px"><a class="textlink" href="/tree?k=' +
+          encodeURIComponent(d.a && d.a.slug || '') + '">Open ' + L.esc(d.a && d.a.name || '') + '\u2019s tree \u2192</a> ' +
+          '<a class="textlink" href="/tree?k=' + encodeURIComponent(d.b && d.b.slug || '') +
+          '">Open ' + L.esc(d.b && d.b.name || '') + '\u2019s tree \u2192</a></p></div>';
+      }
+      return;
+    }
+    var people = {}, outlets = {};
+    (d.hops || []).forEach(function (h) {
+      (h.via || []).forEach(function (v) {
+        people[v.person] = true;
+        outlets[v.outlet] = true;
+      });
+    });
+    var nPeople = Object.keys(people).length;
+    var nOut = Object.keys(outlets).length;
+    var html = '<p class="kicker">The shortest line we can cite</p>' +
+      '<h1 id="line-title">' + L.esc(d.a.name) + ' to ' + L.esc(d.b.name) +
+      ', in <em>' + (d.length === 1 ? 'one cited move' : L.fmt(d.length) + ' cited moves') + '</em>.</h1>' +
+      '<p class="meta" aria-live="polite"><b>' + L.fmt(d.length) + '</b> cited move' +
+      (d.length > 1 ? 's' : '') + ' \u00b7 <b>' + L.fmt(nPeople) + '</b> ' +
+      (nPeople === 1 ? 'person' : 'people') + ' \u00b7 <b>' + L.fmt(nOut) + '</b> source ' +
+      (nOut === 1 ? 'article' : 'articles') + '</p>' +
+      '<ol class="line' + (d.length <= 5 ? ' hrail' : '') + '" id="line" aria-label="The line, in order" style="--cols:' + (d.length + 1) + '"></ol>' +
+      '<p class="note">Each link is one named person cited at both kitchens. The arrow shows which way ' +
+      'that person moved. The line is the shortest route, not a timeline.</p>';
+    var end = d.b;
+    html += '<div class="endrow">' +
+      '<div class="who"><p class="kicker">At the end of the line</p><p class="nm">' +
+      L.esc(end.name) + (end.stars ? '<span class="st" aria-label="' + L.esc(L.starsLabel(end.stars)) +
+      '">' + L.starsTxt(Math.min(end.stars, 3)) + '</span>' : '') + '</p></div>' +
+      '<div class="links"><a class="textlink" href="/explorer?q=' + encodeURIComponent(end.name) +
+      '">Open dossier \u2192</a> <a class="textlink" href="/tree?k=' + encodeURIComponent(end.slug || end.id || end.name) +
+      '">Family tree \u2192</a></div></div>';
+    body.innerHTML = html;
+    body.hidden = false;
+    L.renderLine($('line'), d);
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduce) {
+      $('line').querySelectorAll('li').forEach(function (li, i) {
+        li.style.opacity = '0';
+        setTimeout(function () { li.style.opacity = '1'; }, Math.min(i * 120, 600));
+      });
+    }
+  }
+
+  function showPairs(featured) {
+    var pairs = (featured && featured.pairs) || [];
+    if (!pairs.length) return;
+    $('idle').hidden = true;
+    $('trypairs').hidden = false;
+    var box = $('pairs');
+    box.innerHTML = '';
+    pairs.forEach(function (p) {
+      var chip = document.createElement('span');
+      chip.className = 'chip';
+      chip.innerHTML = '<a href="/connect?a=' + encodeURIComponent(p.a) +
+        '&b=' + encodeURIComponent(p.b) + '">' + L.esc(p.a.replace(/-/g, ' ')) +
+        ' \u2192 ' + L.esc(p.b.replace(/-/g, ' ')) + '</a>';
+      box.appendChild(chip);
+    });
+  }
+
+  $('trace-form').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var a = fromEl.value.trim(), b = toEl.value.trim();
+    if (a && b) trace({ slug: a, name: a }, { slug: b, name: b });
+  });
+  $('c-swap').addEventListener('click', function () {
+    var t = fromEl.value; fromEl.value = toEl.value; toEl.value = t;
+    var s = state.a; state.a = state.b; state.b = s;
+    if (state.a && state.b) trace(state.a, state.b, false);
+  });
+  $('c-copy').addEventListener('click', function () {
+    var u = location.href;
+    if (navigator.share) { navigator.share({ url: u, title: document.title }); return; }
+    if (navigator.clipboard) navigator.clipboard.writeText(u);
+    this.textContent = 'copied';
+    var btn = this;
+    setTimeout(function () { btn.textContent = 'copy link'; }, 1500);
+  });
+  window.addEventListener('popstate', function () { fromUrl(false); });
+
+  function fromUrl() {
+    var p = new URLSearchParams(location.search);
+    var a = p.get('a'), b = p.get('b');
+    if (a) fromEl.value = a;
+    if (b) toEl.value = b;
+    if (a && b) {
+      state.a = { slug: a, name: a }; state.b = { slug: b, name: b };
+      trace(state.a, state.b, false);
+    } else {
+      fetch('/api/ledger')
+        .then(function (r) { return r.json(); })
+        .then(function (led) { showPairs(led.featured); })
+        .catch(function () {});
+    }
+  }
+  fromUrl();
+});
+</script>
+<!-- bf:chrome-js -->
+<script>
+(function () {
+  'use strict';
+  // Phone menu: fold the nav behind the Menu button. Without JavaScript the
+  // button stays hidden (the hidden attribute) and the links stay visible.
+  document.body.classList.add('bf-js');
+  var btn = document.querySelector('.bf-menu');
+  var nav = document.getElementById('bf-nav');
+  if (!btn || !nav) return;
+  btn.removeAttribute('hidden');
+  function setOpen(open) {
+    nav.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', String(open));
+    btn.textContent = open ? 'Close' : 'Menu';
+  }
+  btn.addEventListener('click', function () {
+    setOpen(!nav.classList.contains('open'));
+  });
+  btn.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Escape') { setOpen(false); }
+  });
+  document.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Escape' && nav.classList.contains('open')) {
+      setOpen(false);
+      btn.focus();
+    }
+  });
+  nav.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () { setOpen(false); });
+  });
+})();
+</script>
+<!-- /bf:chrome-js -->
+</body>
+</html>
