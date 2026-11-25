@@ -94,7 +94,7 @@ main{display:block}
 .ringsbox{position:relative;min-height:520px;border:1px solid var(--faint);background:var(--bg2);
   border-radius:14px;overflow:hidden}
 .ringsbox svg{display:block;width:100%;height:100%;position:absolute;inset:0}
-.ringsbox .ringsnote{position:absolute;left:18px;bottom:14px;font-size:12px;color:var(--dim);font-style:italic;z-index:2}
+.ringsnote{font-size:12.5px;color:var(--dim);font-style:italic;line-height:1.6;margin-top:14px}
 /* ring drawing styles (shared renderer, tokens only) */
 .guide{fill:none;stroke:var(--faint)}
 .e{fill:none;stroke:var(--dim);stroke-width:1;stroke-linecap:round}
@@ -192,7 +192,6 @@ table.miniled td.kn a:hover{color:var(--accent)}
 .stat small{display:block;font-size:12.5px;color:var(--dim);font-style:italic;line-height:1.4;margin-top:4px}
 .gateline{margin-top:18px;font-size:14px;color:var(--dim);line-height:1.6;max-width:72ch}
 .gateline b{color:var(--ink);font-weight:560;font-variant-numeric:tabular-nums}
-.prooflinks{margin-top:18px;font-size:14px}
 /* consumer loop */
 .loop{margin-top:90px;border:1px solid var(--faint);background:var(--bg2);border-radius:14px;padding:52px 56px}
 .loop h2{font-size:clamp(26px,2.8vw,40px);line-height:1.08;font-weight:380;letter-spacing:-.015em;margin-top:16px}
@@ -220,7 +219,6 @@ table.miniled td.kn a:hover{color:var(--accent)}
   .herogrid{grid-template-columns:1fr;gap:34px}
   .ringsbox{min-height:440px}
   .plate{grid-template-columns:1fr;gap:30px}
-  .leadgrid{grid-template-columns:1fr 1fr}
   .loopsteps{grid-template-columns:1fr}
 }
 @media (max-width:760px){
@@ -275,7 +273,7 @@ table.miniled td.kn a:hover{color:var(--accent)}
           <div class="hf"><b class="fig" id="hf-reach">&mdash;</b><span>kitchens within three cited moves</span></div>
           <div class="hf"><b class="fig" id="hf-starred">&mdash;</b><span>Michelin-starred among them</span></div>
         </div>
-        <p class="ringsnote" style="position:static;margin-top:20px;font-size:13px;color:var(--dim);font-style:italic;line-height:1.6">
+        <p class="ringsnote" style="margin-top:20px">
           The drawing shows the featured kitchen and two moves of its cited alumni. Every line is a
           cited move by a named person. <a id="hero-link" href="/tree">Open the full tree &rarr;</a></p>
       </div>
@@ -301,7 +299,7 @@ table.miniled td.kn a:hover{color:var(--accent)}
           <span><b class="fig" id="ts-reach">&mdash;</b> kitchens within three moves</span></div>
       </div>
       <div><ol class="ltree" id="treespec" aria-label="A sample of the tree, in list form"><li><span class="k1">&mdash;</span></li></ol>
-        <p class="ringsnote" style="margin-top:14px">A sample of the tree, in list form. Each name in italics is the
+        <p class="ringsnote">A sample of the tree, in list form. Each name in italics is the
           person whose cited move draws that branch.</p></div>
     </div>
 
@@ -317,7 +315,7 @@ table.miniled td.kn a:hover{color:var(--accent)}
       <div>
         <p class="linemeta" id="pairmeta">&mdash;</p>
         <ol class="line" id="pairline" aria-label="The shortest chain of cited moves between two featured kitchens"></ol>
-        <p class="ringsnote" style="margin-top:14px">A line is a chain of cited moves by named people, and nothing more is claimed.</p>
+        <p class="ringsnote">A line is a chain of cited moves by named people, and nothing more is claimed.</p>
       </div>
     </div>
 
@@ -479,17 +477,12 @@ table.miniled td.kn a:hover{color:var(--accent)}
       var ftree = led.featured && led.featured.tree;
       var pair = led.featured && led.featured.pairs && led.featured.pairs[0];
       var leads = led.leaders || {};
-      function fill(id, lead, key) {
-        $(id).textContent = lead && lead[key] != null ? L.fmt(lead[key]) : '\u2014';
-      }
-      fill('lg-alumni', leads.alumni, 'value');
-      $('lg-alumni-name').textContent = leads.alumni ? leads.alumni.name : '\u2014';
-      fill('lg-reach', leads.reach, 'value');
-      $('lg-reach-name').textContent = leads.reach ? leads.reach.name : '\u2014';
-      fill('lg-starred', leads.starred_within, 'value');
-      $('lg-starred-name').textContent = leads.starred_within ? leads.starred_within.name : '\u2014';
-      fill('lg-mentor', leads.mentor, 'value');
-      $('lg-mentor-name').textContent = leads.mentor ? leads.mentor.name : '\u2014';
+      [['alumni', 'lg-alumni'], ['reach', 'lg-reach'],
+       ['starred_within', 'lg-starred'], ['mentor', 'lg-mentor']].forEach(function (pair) {
+        var lead = leads[pair[0]];
+        $(pair[1]).textContent = lead && lead.value != null ? L.fmt(lead.value) : '\u2014';
+        $(pair[1] + '-name').textContent = lead ? lead.name : '\u2014';
+      });
       var top = (led.kitchens || []).slice(0, 5);
       if (top.length) {
         $('miniled-body').innerHTML = top.map(function (r, i) {

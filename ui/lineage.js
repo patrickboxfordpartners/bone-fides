@@ -458,7 +458,7 @@
       acc += counts2[i];
       var end = acc / total2 * 2 * Math.PI - Math.PI / 2;
       var kids = p.children || [];
-      var m = kids.length || 1;
+      var m = kids.length;
       kids.forEach(function (n, k) {
         if (n.gen > maxGen) return;
         var a = start + (end - start) * ((k + 0.5) / m);
@@ -510,7 +510,7 @@
       var crowded2 = n.gen === 2 && !label2 && !n.stars;
       if (n.gen === 3 || crowded2) {
         var d = document.createElementNS(SVG_NS, 'circle');
-        d.setAttribute('cx', p.x); d.setAttribute('cy', p.y); d.setAttribute('r', 3.2);
+        d.setAttribute('cx', p.x); d.setAttribute('cy', p.y);
         d.setAttribute('class', 'mark3' + (n.stars ? ' star' : ''));
         d.setAttribute('r', n.gen === 2 ? 2.9 : 3.2);
         var title = document.createElementNS(SVG_NS, 'title');
