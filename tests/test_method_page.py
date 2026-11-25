@@ -120,6 +120,8 @@ def test_method_page_explains_kitchen_names_are_not_restaurants():
     assert "tartine" in html, (
         "method.html dropped the concrete alias example that makes the caveat "
         "understandable")
+    assert "venue_aliases" in html, (
+        "method.html no longer names the identity table that resolves aliases")
 
 
 def test_method_counts_outlets_with_the_score_s_own_rule():

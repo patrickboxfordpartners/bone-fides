@@ -293,8 +293,9 @@
     <h3>Why kitchen names are not restaurant count</h3>
     <p>The kitchen figure counts <b>distinct normalized names</b>, not distinct restaurants. Names are
       folded for case, punctuation, accents, possessives and stop words, so "Chez TJ's" and "Chez TJ"
-      count once. But the corpus has no venue identity table, so "Tartine" and "Tartine Bakery" count
-      twice. Treat the number as kitchen <em>names</em> in the record, not a count of restaurants that
+      count once. The graph resolves identities further through an adjudicated table
+      (ui/venue_aliases.json: 183 spellings joined under the titles the owner chose), but the live
+      count from the index does not read it, so "Tartine" and "Tartine Bakery" can still count twice. Treat the number as kitchen <em>names</em> in the record, not a count of restaurants that
       exist.</p>
   </section>
 

@@ -76,3 +76,25 @@ sizes are fluid via clamp; small labels fixed.
 Editorial, evidentiary, restrained. Emphasis = italic Fraunces in terracotta,
 not size jumps. Numbers are claims — always tabular, always traceable to a
 source link.
+
+## Shared chrome & graph views (Nov 2026)
+
+**Header** (`ui/_chrome.html`, synced into every page by `scripts/sync_chrome.py`):
+60px bar, wordmark left, nav right at `--dim` 13.5px; the current page's link
+carries `aria-current="page"` and the terracotta underline. The nav folds
+behind a 44px "Menu" pill at 760px, and without JavaScript the links stay
+visible — the button keeps the `hidden` attribute until JS removes it. A skip
+link (`bf-skip`) sits off-screen until focused.
+
+**Tree node**: a 2.6px terracotta dot with its kitchen label in 12.5px ink,
+star glyphs in `--stargold`; labels paint their stroke in `--bg` so they read
+over edges. Third-move kitchens are 3.2px marks, gold when starred.
+
+**Line (Connect)**: a vertical spine in `--dim` with terracotta nodes; each hop
+is one person, one quotation, one source badge. Stations are kitchen names at
+19px; the end stations carry no border.
+
+**Branch lines use `--dim`** — never terracotta. Terracotta marks a node or an
+edge weight (`w2`, two or more moves), gold marks a path to a starred kitchen,
+and only the selected edge goes ink. The drawing is a claim, so its color
+vocabulary stays as restrained as its text.
