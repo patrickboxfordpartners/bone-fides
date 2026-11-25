@@ -38,6 +38,9 @@ def test_accepts_the_venues_own_sf_page():
 def test_accepts_a_slug_that_runs_the_name_together():
     assert bvb.verified("tock", "https://www.exploretock.com/garydanko", ["gary danko"])
     assert bvb.verified("tock", "https://www.exploretock.com/zunicafe/", ["zuni cafe"])
+    # "sf" joined to the name is San Francisco, not an unknown word
+    assert bvb.verified("tock", "https://www.exploretock.com/trestlesf", ["trestle"])
+    assert not bvb.verified("tock", "https://www.exploretock.com/trestlenapa", ["trestle"])
     # a non-possessive apostrophe may be split or joined in the slug
     assert bvb.verified("opentable", "https://www.opentable.com/fior-d-italia-san-francisco", [bvb.clean_name("Fior D'Italia")])
     assert bvb.verified("opentable", "https://www.opentable.com/r/lardoise-san-francisco", [bvb.clean_name("L'Ardoise")])

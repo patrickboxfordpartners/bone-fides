@@ -91,10 +91,28 @@ def _leftover_words(path, name):
     _slug_names_venue accepts. Joins of consecutive own words therefore count
     as own words too; anything else left over still means another place."""
     words = set(re.split(r"[^a-z0-9]+", path.lower())) - {""}
-    parts = name.split()
-    own = set(parts) | {"".join(parts[i:j]) for i in range(len(parts))
-                        for j in range(i + 2, len(parts) + 1)}
+    own = _own_forms(name)
+    own |= {o + sf for o in own for sf in _SF_SUFFIXES}  # /trestlesf
     return sorted(w for w in words - own - _NEUTRAL if not w.isdigit())
+
+
+_SF_SUFFIXES = ("sf", "sanfrancisco")
+
+
+def _own_forms(name):
+    """The pin's words plus every run-together join of consecutive words."""
+    parts = name.split()
+    return set(parts) | {"".join(parts[i:j]) for i in range(len(parts))
+                         for j in range(i + 2, len(parts) + 1)}
+
+
+def _names_sf(path, name):
+    """Does the path name San Francisco, as its own slug word or joined to
+    the venue's name (`/trestlesf`)?"""
+    if _SF.search(path.lower()):
+        return True
+    words = set(re.split(r"[^a-z0-9]+", path.lower()))
+    return any(o + sf in words for o in _own_forms(name) for sf in _SF_SUFFIXES)
 
 
 _SF = re.compile(r"san-francisco|sanfrancisco|(^|[^a-z])sf([^a-z]|$)")
@@ -112,10 +130,10 @@ def verified(platform, url, pin_names):
     if platform not in HOSTS or not isinstance(url, str) or not _path_ok(platform, url):
         return None
     path = urllib.parse.unquote(urllib.parse.urlsplit(url).path)
-    in_sf = bool(_SF.search(path.lower()))
     for i, name in enumerate(pin_names):
         if not name or not _slug_names_venue(path, name) or _leftover_words(path, name):
             continue
+        in_sf = _names_sf(path, name)
         # single letters ("l" in L'Ardoise) do not make a name distinctive
         if in_sf or (i == 0 and len({w for w in name.split() if len(w) > 1} - _STOP) >= 2):
             return name

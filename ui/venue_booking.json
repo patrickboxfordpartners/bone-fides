@@ -11,6 +11,9 @@
  "7 Adams": {
   "resy": "https://resy.com/cities/san-francisco-ca/venues/7-adams"
  },
+ "Acquerello": {
+  "tock": "https://www.exploretock.com/acquerellosf/"
+ },
  "Akiko's": {
   "opentable": "https://www.opentable.com/r/akikos-san-francisco"
  },
@@ -158,6 +161,9 @@
  "El Lopo": {
   "opentable": "https://www.opentable.com/r/bar-el-lopo-san-francisco"
  },
+ "Elixir": {
+  "tock": "https://www.exploretock.com/elixirsf"
+ },
  "Empress By Boon": {
   "opentable": "https://www.opentable.com/r/the-empress-by-boon-san-francisco"
  },
@@ -243,6 +249,9 @@
  "Jasper's Corner Tap And Kitchen": {
   "opentable": "https://www.opentable.com/jaspers-corner-tap-and-kitchen"
  },
+ "Jou Jou": {
+  "tock": "https://www.exploretock.com/joujousf"
+ },
  "Jules": {
   "resy": "https://resy.com/cities/san-francisco-ca/venues/jules"
  },
@@ -253,7 +262,8 @@
   "opentable": "https://www.opentable.com/kokkari-estiatorio"
  },
  "Lazy Bear": {
-  "opentable": "https://www.opentable.com/r/lazy-bear-san-francisco"
+  "opentable": "https://www.opentable.com/r/lazy-bear-san-francisco",
+  "tock": "https://www.exploretock.com/lazybearsf/"
  },
  "Leopold's": {
   "opentable": "https://www.opentable.com/r/leopolds-sf-san-francisco",
@@ -349,7 +359,8 @@
   "resy": "https://resy.com/cities/san-francisco-ca/venues/penny-roma"
  },
  "Perbacco": {
-  "opentable": "https://www.opentable.com/r/perbacco-san-francisco-2"
+  "opentable": "https://www.opentable.com/r/perbacco-san-francisco-2",
+  "tock": "https://www.exploretock.com/perbaccosf/"
  },
  "Perrys Embarcadero": {
   "opentable": "https://www.opentable.com/perrys-embarcadero"
@@ -395,10 +406,12 @@
   "opentable": "https://www.opentable.com/r/rich-table-san-francisco"
  },
  "Robin": {
-  "resy": "https://resy.com/cities/san-francisco-ca/venues/robin-san-francisco"
+  "resy": "https://resy.com/cities/san-francisco-ca/venues/robin-san-francisco",
+  "tock": "https://www.exploretock.com/robinsanfrancisco/"
  },
  "Roka Akor": {
-  "opentable": "https://www.opentable.com/r/roka-akor-san-francisco"
+  "opentable": "https://www.opentable.com/r/roka-akor-san-francisco",
+  "tock": "https://www.exploretock.com/rokaakorsanfrancisco"
  },
  "Rooh": {
   "opentable": "https://www.opentable.com/r/rooh-san-francisco"
@@ -454,6 +467,9 @@
  "Steps Of Rome Trattoria": {
   "opentable": "https://www.opentable.com/r/steps-of-rome-trattoria-san-francisco"
  },
+ "Stonemill Matcha": {
+  "tock": "https://www.exploretock.com/stonemillmatchasf/"
+ },
  "Sushi Hon": {
   "opentable": "https://www.opentable.com/r/sushi-hon-san-francisco"
  },
@@ -502,7 +518,8 @@
   "opentable": "https://www.opentable.com/r/tilak-indian-cuisine-san-francisco"
  },
  "Tiya": {
-  "opentable": "https://www.opentable.com/r/tiya-san-francisco"
+  "opentable": "https://www.opentable.com/r/tiya-san-francisco",
+  "tock": "https://www.exploretock.com/tiyasf/"
  },
  "Tony's Pizza Napoletana": {
   "opentable": "https://www.opentable.com/r/tonys-pizza-napoletana-san-francisco"
@@ -517,7 +534,11 @@
   "opentable": "https://www.opentable.com/r/trailblazer-tavern-san-francisco-san-francisco"
  },
  "Trestle": {
-  "opentable": "https://www.opentable.com/r/trestle-san-francisco"
+  "opentable": "https://www.opentable.com/r/trestle-san-francisco",
+  "tock": "https://www.exploretock.com/trestlesf"
+ },
+ "True Laurel": {
+  "tock": "https://www.exploretock.com/truelaurelsf"
  },
  "Uva Enoteca": {
   "opentable": "https://www.opentable.com/r/uva-enoteca-san-francisco"
