@@ -63,6 +63,10 @@ def test_build_ships_every_module_and_data_file_the_dossier_needs():
     build = open(_BUILD).read()
     code = open(_DOSSIER_PATH).read()
     modules = set(re.findall(r"^from \.(\w+) import", code, re.M))
+    # 'from . import graph as _graph_mod' has no captured name; pin it
+    # explicitly so build.sh keeps shipping it
+    if re.search(r"^from \. import (\w+)", code, re.M):
+        modules |= set(re.findall(r"^from \. import (\w+)", code, re.M))
     data = set(re.findall(r'data_path\("([^"]+)"\)', code))
     assert modules and data
     missing = [f"src/{m}.py" for m in sorted(modules | {"dossier"}) if f"{m}.py" not in build]

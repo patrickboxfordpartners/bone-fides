@@ -65,6 +65,32 @@ def build_graph(edges):
     return g
 
 
+def write_identity_review(g, path):
+    """Candidate identity groups (plan section 3): venue spellings that
+    differ only by a parenthetical note, with the node key each spelling
+    resolves to today, so the owner's rulings can be re-checked after each
+    corpus update."""
+    import re as _re
+    from src import dossier as _D
+    groups = {}
+    for key, name, slug, stars, others in g["kitchens"]:
+        for spelling in [name] + list(others):
+            base = _re.sub(r"\s*\([^)]*\)\s*$", "", spelling).strip()
+            if not base or base == spelling:
+                continue
+            groups.setdefault(_D.venue_key(base), []).append(
+                {"spelling": spelling, "key": key})
+    out = []
+    for base_key, rows in sorted(groups.items()):
+        keys = sorted({r["key"] for r in rows})
+        out.append({"base_key": base_key,
+                    "same_node": len(keys) == 1,
+                    "spellings": sorted(r["spelling"] for r in rows)})
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(out, f, indent=1, ensure_ascii=False)
+    return len(out)
+
+
 def main(argv=None):
     p = argparse.ArgumentParser()
     p.add_argument("--check", action="store_true",
@@ -102,6 +128,9 @@ def main(argv=None):
         f.write("\n")
     os.replace(tmp, OUT)
     print(f"wrote {OUT} ({os.path.getsize(OUT)} bytes)")
+    n_groups = write_identity_review(g, os.path.join(BASE, "crawl",
+                                                      "graph_identity_review.json"))
+    print(f"wrote crawl/graph_identity_review.json ({n_groups} candidate groups)")
     return 0
 
 

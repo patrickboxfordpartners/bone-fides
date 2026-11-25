@@ -284,7 +284,6 @@ def build(edges, starred_rows=None, alias_data=None, hood_maps=None):
     for (a, b) in hops:
         linked.add(a)
         linked.add(b)
-    node_keys = {dossier.venue_key(row[1]) for row in kitchens}
     matched_rows = sum(1 for r in star_rows
                        if any(k in kindex for k in r["keys"]))
     missing_rows = [r for r in star_rows

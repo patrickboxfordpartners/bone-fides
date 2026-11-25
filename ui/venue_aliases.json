@@ -319,12 +319,6 @@
    "Nusara and Le Du",
    "Nusara and Le Du (Bangkok)"
   ],
-  "Nyum Bai": [
-   "Nyum Bai",
-   "Nyum Bai (Fruitvale Public Market space)",
-   "Nyum Bai (kiosk at Emeryville Public Market)",
-   "Nyum Bai (restaurant near Fruitvale Bart station)"
-  ],
   "Padovani's Restaurant and Wine Bar": [
    "Padovani's Restaurant and Wine Bar",
    "Padovani's Restaurant and Wine Bar (Honolulu)",
@@ -1023,11 +1017,6 @@
    "Home (2100 Market St.)",
    "Home (2100 Market St., at Church)"
   ],
-  "Ike's Love & Sandwiches": [
-   "Ike's Love & Sandwiches",
-   "Ike's Love & Sandwiches (Castro location)",
-   "Ike's Love & Sandwiches (Mission Rock location)"
-  ],
   "Inn Marin": [
    "Inn Marin",
    "Inn Marin (formerly Alvarado Garden Inn)"
@@ -1073,11 +1062,6 @@
    "Little Joe's (2550 Van Ness)",
    "Little Joe's (Eddy Street near Market)"
   ],
-  "Magnolia": [
-   "Magnolia",
-   "Magnolia (Dogpatch location, Smokestack restaurant)",
-   "Magnolia (Haight Street location)"
-  ],
   "Manos Nouveau": [
    "Manos Nouveau",
    "Manos Nouveau (Castro location, former Pica Pica Maize Kitchen)",
@@ -1113,12 +1097,6 @@
   "Ono Snax": [
    "Ono Snax",
    "Ono Snax (pop-up)"
-  ],
-  "Out the Door": [
-   "Out the Door",
-   "Out the Door (Bush Street)",
-   "Out the Door (Pacific Heights location)",
-   "Out the Door (Westfield San Francisco Centre)"
   ],
   "Pabu and Ramen Market": [
    "Pabu and Ramen Market",
@@ -1222,11 +1200,6 @@
    "Sons & Daughters",
    "Sons & Daughters (new Mission District space)"
   ],
-  "Squat & Gobble": [
-   "Squat & Gobble",
-   "Squat & Gobble (Castro location)",
-   "Squat & Gobble (Marina location)"
-  ],
   "Starter Bakery": [
    "Starter Bakery",
    "Starter Bakery (brick-and-mortar)"
@@ -1295,6 +1268,15 @@
    "Quince (original location, now occupied by Baker and Banker)",
    "Quince (post-renovation)",
    "Quince (pre-renovation)"
+  ],
+  "Nyum Bai": [
+   "Nyum Bai",
+   "Nyum Bai (Fruitvale Public Market space)",
+   "Nyum Bai (restaurant near Fruitvale Bart station)"
+  ],
+  "Alexander's Steakhouse": [
+   "Alexander's Steakhouse",
+   "Alexander's Steakhouse (Cupertino)"
   ]
  }
 }

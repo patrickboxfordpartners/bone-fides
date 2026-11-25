@@ -160,7 +160,7 @@ def _citations_for(g, a, b, limit=MAX_VIA):
 def _walk(g, root, depth, direction):
     """Breadth-first tree over the hops. Each kitchen appears once, at its
     smallest depth; the parent is the first one in key order. Returns
-    (parent-of, depth-of, order-of-discovery) before any node cut."""
+    (parent-of, depth-of, order-of-discovery, adjacency) before any node cut."""
     adj = g["out"] if direction == "down" else {}
     if direction != "down":
         adj = {}
@@ -262,6 +262,7 @@ def tree(g, name, depth=MAX_DEPTH, direction="down", booking=None):
 
     _, _, other_order, _ = _walk(g, root, depth,
                                  "up" if direction == "down" else "down")
+    other_direction = max(0, len(other_order) - 1)
     k = _knode(g, root)
     if booking:
         k["booking"] = booking(g["kitchens"][root][1])
@@ -283,7 +284,7 @@ def tree(g, name, depth=MAX_DEPTH, direction="down", booking=None):
             "starred_names": starred_names,
             "depth": depth,
             "truncated": truncated,
-            "other_direction": len(other_order),
+            "other_direction": other_direction,
         },
         "children": children,
     }
