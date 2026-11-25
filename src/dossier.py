@@ -14,6 +14,7 @@ import os
 import re
 import time
 import traceback
+import unicodedata
 from urllib.parse import parse_qs
 
 from .es_query import INDEX, TIPS_INDEX, ensure_tips_index, find_edges, make_client  # noqa: F401
@@ -1246,7 +1247,44 @@ def _search(es, q1):
                      and (not era or e.get("era_bucket") == era)
                      and (not hood or hood in (e.get("venue_hoods") or []))]
             lin = dedupe(lin + extra)
-    return assemble_dossier(q, lin, role=role, era=era, hood=hood, es=es)
+    out = assemble_dossier(q, lin, role=role, era=era, hood=hood, es=es)
+    booking = dossier_booking(q) if out.get("resolved") else None
+    if booking:
+        out["booking"] = booking
+    return out
+
+
+_DOSSIER_BOOKING = None
+
+
+def dossier_booking(name):
+    """Verified Resy / OpenTable / Tock pages for the kitchen dossier `name`,
+    or None. Read from dossier_booking.json (scripts/build_venue_booking.py),
+    where every page was verified against the dossier's own name, so a pin the
+    map only loosely links to a lineage name cannot lend it a booking button.
+    The lookup matches that verified name only (see _booking_key)."""
+    global _DOSSIER_BOOKING
+    if _DOSSIER_BOOKING is None:
+        try:
+            with open(data_path("dossier_booking.json")) as f:
+                raw = json.load(f)
+        except (OSError, ValueError):
+            raw = {}
+        _DOSSIER_BOOKING = {_booking_key(k): v for k, v in raw.items() if _booking_key(k)}
+    key = _booking_key(name)
+    return _DOSSIER_BOOKING.get(key) if key else None
+
+
+def _booking_key(name):
+    """Formatting-only fold: accents, case, punctuation and spacing.
+
+    Deliberately NOT venue_key(): that applies the lineage alias table, which
+    merges branches into one kitchen ("A16 Oakland" -> A16, "Balboa Café Mill
+    Valley" -> Balboa Cafe). Right for lineage, wrong for a reservation: the
+    reader would book the San Francisco room for the Oakland dossier."""
+    s = unicodedata.normalize("NFKD", name or "")
+    s = "".join(c for c in s if not unicodedata.combining(c))
+    return re.sub(r"[^a-z0-9]", "", s.lower())
 
 
 def _tip(es, ip, body_bytes):

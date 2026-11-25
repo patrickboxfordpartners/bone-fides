@@ -17,13 +17,20 @@
   body { font-family: 'Fraunces', Georgia, serif; background: var(--bg); color: var(--ink); overflow: hidden; }
 
   /* ── App shell: dossier rail | map stage ──── */
-  .app { display: grid; grid-template-columns: clamp(380px, 34vw, 500px) 1fr; height: 100dvh; }
+  /* The dossier is the product: the rail may grow to a full reading measure
+     (about 66ch at body size) before the map takes the rest. */
+  .app { display: grid; grid-template-columns: clamp(400px, 40vw, 600px) 1fr; height: 100dvh; }
   .rail { overflow-y: auto; border-right: 1px solid var(--faint); padding: 26px 36px 30px;
           background: linear-gradient(180deg, rgba(208,129,82,.05), transparent 320px); }
   .stage { position: relative; }
   #map { position: absolute; inset: 0; }
   body.nomap .app { grid-template-columns: 1fr; }
   body.nomap .stage { display: none; }
+  /* No map (no token, CDN down, no WebGL): the rail owns the page, centred
+     at a reading width instead of stretched across it. */
+  @media (min-width: 901px) {
+    body.nomap .rail { padding-inline: max(36px, calc((100vw - 720px) / 2)); }
+  }
   /* List | Map view switch: mobile only (flexed on inside the 900px block). */
   .seg { display: none; }
 
@@ -36,6 +43,13 @@
   h1 em { color: var(--accent); font-style: italic; font-weight: 500; }
   .tagline { font-size: 15px; color: var(--dim); line-height: 1.5; font-weight: 350; }
   .tagline b { color: var(--ink); font-weight: 480; }
+  /* After a trace the introduction has done its job: fold it away so the
+     dossier starts near the top instead of below the fold. */
+  body.has-dossier h1 { font-size: 24px; margin: 16px 0 0; }
+  body.has-dossier .tagline, body.has-dossier #chips { display: none; }
+  body.has-dossier .searchbar { margin-top: 14px; }
+  body.has-dossier .watchtray { margin: 16px 0 0; }
+  body.has-dossier .roster { margin-top: 22px; }
 
   /* ── Search ───────────────────────────────── */
   .searchbar { display: flex; gap: 12px; margin: 26px 0 0; position: relative; }
@@ -43,6 +57,12 @@
             border: 0; border-bottom: 1px solid var(--faint); background: transparent; color: var(--ink); }
   input#q::placeholder { color: #7d7361; font-style: italic; }
   input#q:focus { outline: none; border-bottom-color: var(--accent); }
+  /* the native clear button is browser blue; redraw it in the palette */
+  input#q::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; width: 14px; height: 14px;
+            margin-left: 10px; cursor: pointer; background: var(--dim);
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M2 2l10 10M12 2L2 12' stroke='black' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M2 2l10 10M12 2L2 12' stroke='black' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat; }
+  input#q::-webkit-search-cancel-button:hover { background: var(--accent); }
   button.go { font: 500 12px/1 'Fraunces', Georgia, serif; padding: 0 24px; background: transparent; color: var(--dim);
               border: 1px solid var(--faint); border-radius: 999px; cursor: pointer; letter-spacing: .2em; text-transform: uppercase; }
   button.go:hover { color: var(--accent); border-color: var(--accent); }
@@ -135,7 +155,7 @@
   .evimg[src=""] { display: none; }
   img.evimg.broken { display: none; }
   /* The photo belongs to the publisher, so it is never shown uncaptioned. */
-  .imgcredit { font-size: 9.5px; line-height: 1.25; margin-top: 3px; color: var(--dim);
+  .imgcredit { font-size: 10.5px; line-height: 1.25; margin-top: 3px; color: var(--dim);
                text-align: center; letter-spacing: .02em; }
   .imgcredit a { color: inherit; text-decoration: none;
                  border-bottom: 1px solid color-mix(in srgb, var(--dim) 45%, transparent); }
@@ -178,7 +198,7 @@
   .arr .yr { font-size: 12px; color: var(--dim); font-weight: 340; font-style: italic; margin-left: 5px; }
   .chef .ev { font-size: 14.5px; margin-top: 10px; line-height: 1.5; color: var(--dim); font-weight: 350; font-style: italic; }
   .chef .src { font-size: 12.5px; margin-top: 8px; color: var(--dim); letter-spacing: .04em; }
-  .srcbadge { display: inline-block; font-size: 10px; font-weight: 560; letter-spacing: .08em;
+  .srcbadge { display: inline-block; font-size: 10.5px; font-weight: 560; letter-spacing: .08em;
               text-transform: uppercase; padding: 1px 7px 2px; border: 1px solid currentColor;
               border-radius: 99px; margin-left: 8px; vertical-align: 1px; }
   .srcbadge.sfchronicle, .tier-chron { color: #e7b0a4; }
@@ -313,11 +333,13 @@
   .mappop { font-family: 'Fraunces', Georgia, serif; min-width: 220px; color: var(--ink); }
   .mappop .t { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
   .mappop .m { font-size: 13px; color: var(--dim); margin-bottom: 10px; font-style: italic; }
-  .mappop a { display: inline-flex; align-items: center; font-size: 13.5px; color: var(--gold); text-decoration: none;
+  .mappop a, .bookrow a { display: inline-flex; align-items: center; font-size: 13.5px; color: var(--gold); text-decoration: none;
               border: 1px solid rgba(194,160,90,.45); border-radius: 999px; padding: 0 14px; min-height: 40px; margin: 3px 8px 3px 0; }
-  .mappop a:hover { background: var(--gold); color: var(--bg); }
-  .mappop .res { background: var(--gold); color: var(--bg); border-color: var(--gold); font-weight: 600; }
-  .mappop .res:hover { background: var(--ink); border-color: var(--ink); }
+  .mappop a:hover, .bookrow a:hover { background: var(--gold); color: var(--bg); }
+  .mappop .res, .bookrow .res { background: var(--gold); color: var(--bg); border-color: var(--gold); font-weight: 600; }
+  .mappop .res:hover, .bookrow .res:hover { background: var(--ink); border-color: var(--ink); }
+  /* the same booking pills, in the dossier header */
+  .bookrow { display: flex; flex-wrap: wrap; margin-top: 12px; }
 
   /* ── a11y ─────────────────────────────────── */
   .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
@@ -345,7 +367,8 @@
                  background: linear-gradient(90deg, var(--accent), var(--gold)); transition: width .6s ease; }
   .pedlbl { margin-top: 8px; font-size: 12.5px; color: var(--dim); line-height: 1.5; }
   .pedlbl b { color: var(--gold); font-weight: 600; font-size: 13.5px; }
-  .pedmethod { border: 0; text-decoration: none; }
+  .pedmethod { border: 0; text-decoration: none; color: inherit; }
+  .pednote { font: italic 350 12.5px 'Fraunces', Georgia, serif; color: var(--dim); margin-top: 2px; }
   .pedmethod:hover b { text-decoration: underline; text-underline-offset: 3px; }
   .legend .conf { display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px; vertical-align:middle; }
   @media (prefers-reduced-motion: reduce) { * { transition:none !important; } }
@@ -359,7 +382,7 @@
             --accent: #a05a2c; --gold: #8a6d1f; --ok: #2e6b3f; --bad: #9c3325; --stargold: #8a6d1f; }
     body { background: #fff; color: var(--ink); overflow: visible; }
     .stage, .searchbar, .roster, .chips, .watchtray, .railmeta, .railfoot,
-    .legend, .rolebar, .facetbar, .viewtoggle, .flagrow, .flaglink, .watchbtn, .copybtn,
+    .legend, .rolebar, .facetbar, .viewtoggle, .flagrow, .flaglink, .watchbtn, .copybtn, .bookrow,
     .sugg, .seg, .mapcontrols { display: none !important; }
     .app { display: block; height: auto; }
     .rail { overflow: visible; border: 0; padding: 0; width: auto; max-width: none; }
@@ -398,6 +421,25 @@
     body.mapview .rail > :not(.seg) { display: none; }
     body.mapview .seg { margin: 0; background: rgba(23,19,16,.85); backdrop-filter: blur(8px);
                         box-shadow: 0 4px 18px rgba(0,0,0,.4); }
+  }
+
+  /* ── touch targets ──
+     Quiet pills and text links are 12–25px tall: fine for a mouse, too small
+     for a thumb. On touch layouts the pills get real height. Text links keep
+     their line (the hover underline stays under the word) and grow a hit area
+     10px above and below; the rows that hold them open up by the same 20px,
+     so one link's area never covers the link on the next line. */
+  @media (max-width: 900px), (pointer: coarse) {
+    .watchbtn, .copybtn, .rolebar .rchip { display: inline-flex; align-items: center; min-height: 40px; padding-block: 0; }
+    .chips, .chain, .tlvenues, .tlundated .urow, .tlundated .urowmain { row-gap: 20px; }
+    /* stacked rows need the same clearance as wrapped lines */
+    .tlbody { padding-bottom: 20px; }
+    .tlundated .urow { margin-bottom: 20px; }
+    .flaglink { margin-top: 22px; }
+    .chip, .vchip, .flaglink, .viewtoggle button, .chef .src a, .imgcredit a, .pedmethod, .igbadge { position: relative; }
+    .chip::before, .vchip::before, .flaglink::before, .viewtoggle button::before,
+    .chef .src a::before, .imgcredit a::before, .pedmethod::before, .igbadge::before {
+      content: ''; position: absolute; inset: -10px -3px; }
   }
 </style>
 </head>
@@ -481,6 +523,13 @@
 
 <script>
 const Q = document.getElementById('q'), SUGG = document.getElementById('sugg'), CARD = document.getElementById('card');
+/* The rail head folds away while a dossier is on screen (body.has-dossier)
+   and returns for the idle, no-result and error states. Loading keeps the
+   current state, so the head does not jump between two traces. */
+new MutationObserver(() => {
+  if(CARD.querySelector('.dossier')) document.body.classList.add('has-dossier');
+  else if(!CARD.querySelector('.loading')) document.body.classList.remove('has-dossier');
+}).observe(CARD, { childList: true });
 const SEEDS = ['Betelnut', 'Gitane', 'Cotogna', 'Outerlands', 'Finn Town', 'China Live', 'Maria Isabel'];
 
 function esc(s){ return (s||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
@@ -669,11 +718,13 @@ if(SEGB){
     const b = e.target.closest('button');
     if(b && !b.disabled) setView(b.id === 'seg-map' ? 'map' : 'list');
   });
-  /* map.js reports when the map cannot start — no token, or the Mapbox CDN
-     unreachable. The Map button would only ever open an empty stage, so
-     remove the whole switcher: List stays the one view. */
+  /* map.js reports when the map cannot start — no token, the Mapbox CDN
+     unreachable, or no WebGL. The Map button would only ever open an empty
+     stage, so remove the whole switcher: List stays the one view. On desktop
+     body.nomap hands the empty stage's space to the rail. */
   window.__bfMapUnavailable = () => {
     document.body.classList.remove('mapview');
+    document.body.classList.add('nomap');
     SEGB.remove();
     delete window.__bfMapUnavailable;
   };
@@ -685,6 +736,9 @@ let lastFetch = 0;
 // chip re-renders the same data instead of refetching (the filter is a view,
 // not a query)
 let lastDossier = null;
+// booking pages of the dossier on screen (payload.booking); kept beside
+// lastDossier because role-chip re-renders reuse it
+let dossierBooking = null;
 // server-side role facet (roadmap 4.3) + era/hood facets (roadmap 4.4):
 // active on permalink loads (/explorer?q=A16&role=chef or &era=2010s or
 // &hood=Marina) and kept across retries of that same load. A NEW query
@@ -813,6 +867,7 @@ async function run(opts){
     return;
   }
   lastDossier = { q, lineage: d.lineage, ms: performance.now() - t0, ped: d.pedigree, identity: d.identity };
+  dossierBooking = d.booking || null;
   render(q, d.lineage, performance.now() - t0, d.pedigree, d.identity, null,
          { role: d.role_filter || null, era: d.era_filter || null, hood: d.hood_filter || null,
            eraCoverage: d.era_coverage || null, hoodCoverage: d.hood_coverage || null });
@@ -1248,7 +1303,8 @@ function render(q, edges, ms, ped, identity, roleFilter, serverFilter){
     if(ped.tiers.other) tierBits.push('<span>'+ped.tiers.other+' other</span>');
     pedHTML = '<div class="pedigree" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+ped.score+'" title="Lineage score: how well documented this kitchen is — outlet authority (Chronicle &gt; SFGate &gt; Eater), corroboration across cited articles, and depth of the record. Measures documentation, not culinary quality. See /method">'+
       '<div class="pedbar" aria-hidden="true"><span style="width:'+ped.score+'%"></span></div>'+
-      '<div class="pedlbl"><a class="pedmethod" href="/method" title="How this score is calculated"><b>Lineage score '+ped.score+'</b>/100</a> — '+ped.moves+' move'+(ped.moves===1?'':'s')+', cited in '+ped.sources+' article'+(ped.sources===1?'':'s')+' · '+tierBits.join(' · ')+'</div></div>';
+      '<div class="pedlbl"><a class="pedmethod" href="/method" title="How this score is calculated"><b>Lineage score '+ped.score+'</b>/100</a> — '+ped.moves+' move'+(ped.moves===1?'':'s')+', cited in '+ped.sources+' article'+(ped.sources===1?'':'s')+' · '+tierBits.join(' · ')+'</div>'+
+      '<div class="pednote">How well documented this kitchen is, not how good it is.</div></div>';
   }
 
   // one card per identity cluster (server-side people disambiguation).
@@ -1356,7 +1412,8 @@ function render(q, edges, ms, ped, identity, roleFilter, serverFilter){
   CARD.innerHTML = `
     <div class="kicker">Kitchen dossier</div>
     <h2>${esc(q)}<button type="button" class="watchbtn" id="watchbtn" data-watch="${esc(q)}" aria-pressed="false">☆ watch this</button><button type="button" class="copybtn" id="copybtn" title="Copy a link to this dossier">copy link</button></h2>
-    <div class="sub"><b>${shown}</b> chef${shown===1?'':'s'} in the record${ms ? ' · resolved in ' + Math.round(ms) + ' ms' : ''}${roleFilter ? ' · filtered to ' + esc(BUCKET_LABEL[roleFilter] || roleFilter) : ''}${svRole && !roleFilter ? ' · filtered to ' + esc(BUCKET_LABEL[svRole] || svRole) + ' (server-side)' : ''} · <i>click any kitchen to keep tracing</i></div>
+    <div class="sub"><b>${shown}</b> chef${shown===1?'':'s'} in the record${roleFilter ? ' · filtered to ' + esc(BUCKET_LABEL[roleFilter] || roleFilter) : ''}${svRole && !roleFilter ? ' · filtered to ' + esc(BUCKET_LABEL[svRole] || svRole) + ' (server-side)' : ''} · <i>click any kitchen to keep tracing</i></div>
+    ${isPersonQuery ? '' : bookingRow(dossierBooking)}
     ${pedHTML}
     <div class="legend" aria-hidden="true"><span><span class="conf high"></span>High confidence</span><span><span class="conf medium"></span>Medium</span><span><span class="conf low"></span>Low</span></div>
     ${rolebar}
@@ -1367,6 +1424,19 @@ function render(q, edges, ms, ped, identity, roleFilter, serverFilter){
     <div class="flagrow"><button type="button" class="flaglink" data-flag="dossier" title="Missing a cited move or source? Add it">flag or add to this dossier</button></div>`;
   buildTreeToggle(q, edges, isPersonQuery);
   syncWatchBtn();
+}
+
+/* Booking buttons for a kitchen dossier. /api/search returns `booking` only
+   for a dossier whose own name each Resy / OpenTable / Tock page was verified
+   against (scripts/build_venue_booking.py), so the explorer never matches
+   restaurants to pages itself. Chef dossiers get no row. */
+const BOOKING_PLATFORMS = [['resy', 'Resy'], ['opentable', 'OpenTable'], ['tock', 'Tock']];
+function bookingRow(links){
+  const html = BOOKING_PLATFORMS
+    .filter(([key]) => links && /^https:\/\//.test(links[key] || ''))
+    .map(([key, label]) => `<a class="res" href="${esc(links[key])}" target="_blank" rel="noopener">Book on ${label}</a>`)
+    .join('');
+  return html ? `<div class="bookrow">${html}</div>` : '';
 }
 
 /* Person-query chain: no venue pivot exists, so lay the chef's cited moves
@@ -1524,14 +1594,18 @@ function buildTreeToggle(q, edges, isPersonQuery){
 }
 
 // ── autosuggest ──
-let sugTimer;
+// sugSeq: a suggestion response that lands after the reader pressed Enter (or
+// typed on) must not reopen the list over the dossier it would cover.
+let sugTimer, sugSeq = 0;
 Q.addEventListener('input', () => {
   clearTimeout(sugTimer);
   const v = Q.value.trim();
   if(v.length < 2){ hideSugg(); return; }
+  const mine = ++sugSeq;
   sugTimer = setTimeout(async () => {
     const r = await fetch('/api/suggest?q=' + encodeURIComponent(v));
     const d = await r.json();
+    if(mine !== sugSeq) return;
     if(d.suggestions && d.suggestions.length){
       SUGG.innerHTML = d.suggestions.map((s,i) => `<div role="option" id="sg${i}" aria-selected="false" data-pick="${esc(s)}">${esc(s)}</div>`).join('');
       SUGG.style.display = 'block'; Q.setAttribute('aria-expanded','true'); sugIdx = -1;
@@ -1540,7 +1614,7 @@ Q.addEventListener('input', () => {
 });
 document.addEventListener('click', e => { if(!SUGG.contains(e.target) && e.target !== Q) SUGG.style.display='none'; });
 let sugIdx = -1;
-function hideSugg(){ SUGG.style.display='none'; Q.setAttribute('aria-expanded','false'); Q.removeAttribute('aria-activedescendant'); sugIdx=-1; }
+function hideSugg(){ clearTimeout(sugTimer); sugSeq++; SUGG.style.display='none'; Q.setAttribute('aria-expanded','false'); Q.removeAttribute('aria-activedescendant'); sugIdx=-1; }
 Q.addEventListener('keydown', e => {
   const opts = [...SUGG.querySelectorAll('[role=option]')];
   if(e.key === 'Escape'){ hideSugg(); return; }

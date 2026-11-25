@@ -28,11 +28,21 @@
 
   function init() {
     mapboxgl.accessToken = TOKEN;
-    const map = new mapboxgl.Map({
-      container: 'map',
-      style: 'mapbox://styles/mapbox/dark-v11',
-      center: SF, zoom: 12.0, attributionControl: false,
-    });
+    let map;
+    try {
+      map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/dark-v11',
+        center: SF, zoom: 12.0, attributionControl: false,
+      });
+    } catch (e) {
+      // No WebGL (old GPU, locked-down browser): the constructor throws and
+      // the stage would stay an empty dark panel. Same dead end as no token.
+      console.warn('map unavailable', e);
+      el.remove();
+      if (window.__bfMapUnavailable) window.__bfMapUnavailable();
+      return;
+    }
     map.addControl(new mapboxgl.NavigationControl({ showCompass: false }), 'top-right');
     map.on('error', e => console.warn('map error', e && e.error));
     /* Mobile view switch hooks: the map initializes while its container is
