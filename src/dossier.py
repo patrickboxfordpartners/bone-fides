@@ -1140,6 +1140,17 @@ def venues_geo(es=None):
                     venues.append(v)
                 else:
                     if v.get("website"): hit["website"] = v["website"]  # curated metadata wins
+    # Verified reservation pages (scripts/build_venue_booking.py). Only pins
+    # whose Resy/OpenTable/Tock page provably names them get one; the map
+    # shows no booking button rather than a guess.
+    booking_file = data_path("venue_booking.json")
+    if os.path.exists(booking_file):
+        with open(booking_file) as f:
+            booking = json.load(f)
+        for v in venues:
+            links = booking.get(v.get("name"))
+            if links:
+                v["booking"] = links
     return venues
 
 
