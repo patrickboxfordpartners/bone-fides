@@ -150,6 +150,34 @@ def test_new_cue_rejects_a_contradicted_direction():
     assert dossier.citation_reason(e) is None
 
 
+def test_former_guard_rejects_a_vacant_space():
+    # "former ... space/site/home/location" describes a room, not a stint;
+    # the guard must not be defeated by the token run consuming the word
+    for quote in ("The former Coco500 space will hold a new wine bar",
+                  "a build-out of the former Little Skips home",
+                  "in the former Mars bar site"):
+        e = _edge(person="Alex Rivera", from_venue="Coco500", to_venue=None,
+                  evidence=quote)
+        assert dossier.citation_reason(e) is None, quote
+    # a real tenure next to an incidental "space" phrase still passes
+    e = _edge(person="David Kinch", from_venue="Manresa", to_venue=None,
+              evidence="David Kinch, the former Manresa chef, is back")
+    assert dossier.citation_reason(e) is not None
+
+
+def test_partial_venue_name_anchors():
+    # the quote names a shorter spelling of the row's venue: "Alfred's"
+    # names "Alfred's Steakhouse" as a whole-token prefix
+    e = _edge(person="Alex Rivera", from_venue="Alfred's Steakhouse", to_venue=None,
+              evidence="Alex Rivera, former Alfred's sous chef, pours wine")
+    assert dossier._quote_names_venue(e) is True
+    assert dossier.citation_reason(e) is not None
+    # the boundary rule still holds: no crossing into a longer word
+    e2 = _edge(person="Alex Rivera", from_venue="El Farolito", to_venue=None,
+               evidence="Alex Rivera, former El Faro cook, pours wine")
+    assert dossier._quote_names_venue(e2) is False
+
+
 def test_new_cue_rejects_a_show_as_venue():
     e = _edge(person="Mattin Noblia", from_venue="Top Chef", to_venue="Bento",
               evidence="prepared daily by a kitchen managed by Top Chef alum Mattin Noblia")
@@ -248,12 +276,29 @@ def test_gate_stamp_equals_the_recomputed_figures():
     assert stamp["sample_n"] == len(rows)
     assert stamp["sample_true"] == acc_true
     assert abs(stamp["precision"] - round(acc_true / len(rows), 4)) < 1e-9
+    z = 1.96
+    p = acc_true / len(rows)
+    d = 1 + z * z / len(rows)
+    c = p + z * z / (2 * len(rows))
+    h = z * ((p * (1 - p) + z * z / (4 * len(rows))) / len(rows)) ** 0.5
+    assert abs(stamp["precision_low"] - round(max(0.0, (c - h) / d), 4)) < 1e-9
+    by_family = {}
+    for r in rows:
+        fam = r.get("family") or "?"
+        a, b = by_family.get(fam, (0, 0))
+        by_family[fam] = [a + 1, b + (1 if _counted_true(r) else 0)]
+    assert stamp["by_family"] == {k: v for k, v in sorted(by_family.items())}
+    two_venue = [r for r in rows
+                 if r.get("from_venue") and r.get("to_venue")]
+    both = sum(1 for r in two_venue if r.get("both"))
+    assert abs(stamp["both_share"] - round(both / max(1, len(two_venue)), 4)) < 1e-9
     assert stamp["baseline_n"] == len(base)
     assert stamp["baseline_true"] == base_true
     assert stamp["cue_hash"] == dossier._cue_hash()
     assert stamp["cue_hash"] == fx["cue_hash"]
     assert stamp["displayed"] >= stamp["displayed_before"]
     assert stamp["newly_displayed"] == stamp["displayed"] - stamp["displayed_before"]
+    assert stamp["on_record"] == fx["corpus"]["on_record"]
 
 
 # ── 6. ingestion and the method endpoint ────────────────────────────────────

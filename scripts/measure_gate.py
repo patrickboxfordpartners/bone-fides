@@ -316,7 +316,9 @@ def stamp(edges, measured_at=None):
         "sample_true": acc_k,
         "precision": round(acc_k / acc_n, 4) if acc_n else 0.0,
         "precision_low": round(wilson_low(acc_k, acc_n), 4) if acc_n else 0.0,
-        "both_share": (round(sum(1 for r in acceptance if r.get("both")) / acc_n, 4)
+        "both_share": (round(sum(1 for r in acceptance if r.get("both"))
+                             / max(1, sum(1 for r in acceptance
+                                          if r.get("from_venue") and r.get("to_venue"))), 4)
                       if acc_n else 0.0),
         "baseline_n": base_n,
         "baseline_true": base_k,
@@ -383,16 +385,24 @@ def check(edges, verbose=True):
               f"recount gives {displayed}")
     else:
         print(f"ok: displayed count {displayed} equals the stamp")
-    # samples come again from their seeds
+    # samples come again from their seeds; on a fresh checkout the working
+    # files in crawl/gate_review are absent, so compare against the rows
+    # committed in the fixture instead
+    fixture_path = os.path.join(BASE, "tests", "fixtures", "gate_labels.json")
+    fixture = json.load(open(fixture_path, encoding="utf-8"))["samples"] \
+        if os.path.exists(fixture_path) else {}
     for name in ("acceptance", "baseline"):
-        rows = _read_labels(name)
+        rows = _read_labels(name) or fixture.get(name, [])
         drawn = {r["id"] for r in draw_sample(edges, name)}
-        if drawn == {r["id"] for r in rows}:
+        if rows and drawn == {r["id"] for r in rows}:
             print(f"ok: {name} sample comes again from its seed "
                   f"({len(rows)} rows)")
-        else:
+        elif rows:
             ok = False
             print(f"FAIL: {name} sample does not come again from its seed")
+        else:
+            ok = False
+            print(f"FAIL: no {name} rows to verify (run --stamp first)")
     # cue hash
     if stamp_obj["cue_hash"] != cue_hash():
         ok = False

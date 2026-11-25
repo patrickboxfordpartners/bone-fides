@@ -330,8 +330,10 @@
       set('gate-both', (g.both_share * 100).toFixed(1) + '%');
       set('gate-both-note', 'of moves that join two named kitchens');
       set('gate-note', 'Each sampled quotation was read by two independent labellers. A row counts' +
-          ' as true only when both agreed. The sample is drawn by a seeded hash, so the same' +
-          ' corpus and seed draw the same rows again. Measured ' + g.measured_at + '.');
+          ' as true when both agreed, or when the two disagreed and a third blind reader' +
+          ' resolved the dispute as true. The sample covers only the moves the wider gate' +
+          ' newly displays, drawn by a seeded hash, so the same corpus and seed draw the' +
+          ' same rows again. Measured ' + g.measured_at + '.');
     } else {
       set('gate-note', 'The precision of the displayed moves has not been measured yet.');
     }
