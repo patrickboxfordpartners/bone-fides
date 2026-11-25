@@ -39,6 +39,24 @@ BAY_AREA_ANCHORS = (
 )
 
 
+# A venue IS a show, an award, an event or a museum when the kind words
+# lead the name (parentheticals stripped): 'Museum of the African
+# Diaspora', 'Top Chef', 'Farmstock 2K12 (event)'. A restaurant AT one
+# keeps its restaurant head and stays a kitchen.
+_KIND_HEAD = re.compile(r"^\s*(?:the\s+)?museum\b", re.I)
+_KIND_ANYWHERE = re.compile(
+    r"top chef|iron chef|chef'?s table|chopped\b|farmstock|\bfestival\b|"
+    r"\(event\)|\baward\b|james beard|bocuse d.?or|memorial building|"
+    r"design group|design studio", re.I)
+
+
+def _venue_is_kind(v):
+    head = re.sub(r"\s*\([^)]*\)\s*$", "", v or "").strip()
+    if not head:
+        return dossier._is_show_or_event_venue(v)
+    return bool(_KIND_HEAD.match(head) or _KIND_ANYWHERE.search(head))
+
+
 def _slug(s):
     s = unicodedata.normalize("NFKD", s or "")
     s = "".join(c for c in s if not unicodedata.combining(c))
@@ -87,10 +105,12 @@ def build(edges, starred_rows=None, alias_data=None, hood_maps=None):
                 dropped["junk_kitchen"] += 1
                 bad = True
                 break
-            if dossier._is_show_or_event_venue(v):
-                # a museum or a show is not a kitchen, even when an
-                # old-path move named it (the widened gate checks this
-                # itself, but pre-gate moves never ran through it)
+            if _venue_is_kind(v):
+                # a museum APPOINTMENT or a show is not a kitchen, even
+                # when an old-path move named it (the widened gate checks
+                # this itself, but pre-gate moves never ran through it).
+                # A restaurant AT a museum is a restaurant and stays:
+                # 'Cafe Ohlone (Hearst Museum)', 'Broad Museum restaurant'
                 dropped["venue_kind"] += 1
                 bad = True
                 break

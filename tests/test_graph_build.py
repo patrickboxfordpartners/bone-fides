@@ -185,6 +185,29 @@ def test_oakland_counts_and_the_richmond_does_not():
     assert "Richmond" not in towns
 
 
+def test_a_restaurant_at_a_museum_is_a_kitchen():
+    # the museum is a location note, not the venue: Cafe Ohlone at the
+    # Hearst Museum and the Broad's stand-alone restaurant stay
+    edges = [_move(person="Vincent Medina", frm="Cafe Ohlone (Phoebe A. Hearst Museum of Anthropology courtyard)", to=None,
+                   evidence="Vincent Medina worked at Cafe Ohlone (Phoebe A. Hearst Museum)"),
+             _move(person="Timothy Hollingsworth", frm="The French Laundry", to="Broad Museum restaurant",
+                   evidence="Timothy Hollingsworth joined Broad Museum restaurant from the French Laundry",
+                   source_url="https://sf.eater.com/h")]
+    g = _build(edges)
+    names = [k[1] for k in g["kitchens"]]
+    assert any("Cafe Ohlone" in n for n in names)
+    assert any("Broad Museum restaurant" in n for n in names)
+    assert g["summary"]["dropped"]["venue_kind"] == 0
+
+
+def test_a_museum_appointment_is_not_a_kitchen():
+    edges = [_move(person="Bryant Terry", frm="Museum of the African Diaspora", to=None,
+                   evidence="Bryant Terry worked at the Museum of the African Diaspora")]
+    g = _build(edges)
+    assert g["summary"]["moves_kept"] == 0
+    assert g["summary"]["dropped"]["venue_kind"] == 1
+
+
 def test_shows_fail_the_venue_kind_check_not_named_kitchen():
     assert dossier.is_named_kitchen("Top Chef") is True
     assert dossier._is_show_or_event_venue("Top Chef") is True
