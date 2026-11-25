@@ -79,6 +79,9 @@ def test_touch_layout_enlarges_small_targets_without_overlap():
         assert sel in rows.group(1), sel
     assert int(re.search(r"\.tlbody \{ padding-bottom: (\d+)px; \}", css).group(1)) >= 2 * grow
     assert int(re.search(r"\.tlundated \.urow \{ margin-bottom: (\d+)px; \}", css).group(1)) >= 2 * grow
+    # "View as tree" list rows stack venue links too: top + bottom padding of
+    # two neighbours must cover both hit areas
+    assert int(re.search(r"\.treelist \.trow \{ padding-block: (\d+)px; \}", css).group(1)) >= grow
     side = int(re.search(r"inset: -(\d+)px -(\d+)px", css).group(2))
     col_gaps = [int(g) for g in re.findall(r"\.(?:chips|chain|tlvenues|urow|urowmain) \{[^}]*gap: \d+px (\d+)px", HTML)]
     assert col_gaps and min(col_gaps) >= 2 * side, col_gaps
