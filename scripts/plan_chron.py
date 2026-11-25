@@ -5,16 +5,16 @@ sitemap indexes with ~3.5k ID-range shards each. We download every shard once
 (concurrently), keep only food/restaurant URLs, and grade them hot if the slug
 smells like lineage-stating genres (chef moves, closings, openings).
 
-Writes data_chron_urls.json {"all": [...], "hot": [...]} — same shape the
+Writes crawl/chron_urls.json {"all": [...], "hot": [...]} — same shape the
 grow loop already understands.
 
-Usage: ./.venv/bin/python src/plan_chron.py
+Usage: .venv/bin/python scripts/plan_chron.py
 """
 import re, os, sys, json, time, requests
 from concurrent.futures import ThreadPoolExecutor
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-OUT = os.path.join(BASE, "data_chron_urls.json")
+OUT = os.path.join(BASE, "crawl", "chron_urls.json")
 UA = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"}
 
 HOSTS = ["https://www.sfgate.com", "https://www.sfchronicle.com"]

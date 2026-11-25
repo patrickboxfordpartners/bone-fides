@@ -5,9 +5,11 @@ the index predates the stamp. Scroll the index, compute the bucket from
 each doc's raw role with src.roles.role_bucket (the same function the twins
 use), and bulk-update in place. Idempotent: reruns produce the same stamps.
 
-Usage: PYTHONPATH=. .venv/bin/python src/stamp_role_buckets.py [--dry-run]
+Usage: .venv/bin/python scripts/stamp_role_buckets.py [--dry-run]
 """
 import sys
+import os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # repo root, for src.*
 
 from src.cli import load_env
 from src.roles import role_bucket, BUCKETS

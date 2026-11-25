@@ -109,7 +109,7 @@ def test_facet_probes_are_scoped_and_citation_gated():
 # update (a mapping-less index would auto-create text fields and the term
 # gates would silently match nothing)
 def test_backfill_ensures_keyword_mappings_first():
-    src = open(os.path.join(_ROOT, "src", "stamp_era_hoods.py")).read()
+    src = open(os.path.join(_ROOT, "scripts", "stamp_era_hoods.py")).read()
     assert "INDEX_SETTINGS" in src
     assert "put_mapping" in src
     # mapping check happens before the scan loop

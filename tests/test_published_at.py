@@ -65,7 +65,7 @@ def test_reads_itemprop_date_published_in_both_attribute_orders():
 def test_measure_and_read_are_separate_functions():
     """The computing half and the file-reading half must not be the same name.
 
-    Collapsing them broke src/stamp_score_sample.py: it passed an ES client to
+    Collapsing them broke scripts/stamp_score_sample.py: it passed an ES client to
     the reader, which called open() on it and raised TypeError. The refresh
     command is documented in that script, so it has to actually run.
     """

@@ -5,11 +5,12 @@ accepts it here and runs the normal ingest discipline on the source
 (same extraction + citation gate as a manual scrape run).
 
 Usage:
-  python src/review_tips.py list [--status open|resolved|rejected|ingested] [--type ...]
-  python src/review_tips.py show <id>
-  python src/review_tips.py set <id> <resolved|rejected|ingested> [--note ...]
+  python scripts/review_tips.py list [--status open|resolved|rejected|ingested] [--type ...]
+  python scripts/review_tips.py show <id>
+  python scripts/review_tips.py set <id> <resolved|rejected|ingested> [--note ...]
 """
 import argparse, json, os, sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # repo root, for src.*
 
 def load_env(path=".env"):
     if os.path.exists(path):

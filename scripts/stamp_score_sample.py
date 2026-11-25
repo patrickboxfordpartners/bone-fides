@@ -9,7 +9,7 @@ JSON file, and shipped with the deploy.
 Re-run after a corpus-growth session so the published distribution tracks the
 data:
 
-    ./.venv/bin/python src/stamp_score_sample.py
+    .venv/bin/python scripts/stamp_score_sample.py
 
 The output records when it was measured, so the page can say so rather than
 implying the number is live to the second.

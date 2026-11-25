@@ -44,7 +44,7 @@ without waiting for the next manual scrape run.
   inbox exists to protect it, not bypass it.
 - Rate limit: reuse `allow_request`, bucket `"tips"`, 5/hour/IP. Size caps on
   every field.
-- Triage: `src/review_tips.py` CLI (list open tips, mark
+- Triage: `scripts/review_tips.py` CLI (list open tips, mark
   resolved/rejected/ingested). Tips get reviewed during corpus-growth
   sessions, same discipline as the manual scrape runs today.
 

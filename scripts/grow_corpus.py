@@ -3,7 +3,7 @@
 Queries target extraction-friendly food journalism: chef-shuffle roundups,
 closures, openings, chef-profiles — the genres that state lineage outright.
 
-Usage: ./.venv/bin/python src/grow_corpus.py [max_articles]
+Usage: .venv/bin/python scripts/grow_corpus.py [max_articles]
        (default 60; each article = 1 SERP discovery batch + 1 Mistral call)
 """
 import os, re, sys, time, json, html, urllib.parse
@@ -51,8 +51,8 @@ QUERIES = [
     "site:sfgate.com san francisco beloved restaurant closes chef",
 ]
 
-EATER_PLAN = os.path.join(BASE, "data_eater_urls.json")
-SEEN = os.path.join(BASE, "data_seen_urls.json")
+EATER_PLAN = os.path.join(BASE, "crawl", "eater_urls.json")
+SEEN = os.path.join(BASE, "crawl", "seen_urls.json")
 
 # free regex pre-pass: an edge needs a person (chef/owner/founder) and a move
 # verb; articles with neither almost never yield one, so skip them before

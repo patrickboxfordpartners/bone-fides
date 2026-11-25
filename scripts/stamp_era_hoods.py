@@ -6,9 +6,11 @@ index, compute stamps with src.eras.era_bucket / src.hoods.hood_for (the
 same functions the twins use via build_edge_doc), and bulk-update in
 place. Idempotent: reruns produce the same stamps.
 
-Usage: PYTHONPATH=. .venv/bin/python src/stamp_era_hoods.py [--dry-run]
+Usage: .venv/bin/python scripts/stamp_era_hoods.py [--dry-run]
 """
 import sys
+import os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # repo root, for src.*
 
 from src.cli import load_env
 from src.es import make_client, INDEX, INDEX_SETTINGS, build_edge_doc

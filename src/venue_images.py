@@ -21,7 +21,7 @@ a wrong photograph on a dossier whose premise is sourced claims is worse than an
 empty frame.
 
 Nothing is fetched at request time. `resolve_all()` walks the corpus once,
-writes `data_venue_images.json`, and the servers read that file. So:
+writes `crawl/venue_images.json`, and the servers read that file. So:
   - no per-request network call, no cold-start cost
   - no hotlinking: the stored record carries attribution + license note
   - a venue with no confident image simply has none, and the UI renders none
@@ -44,7 +44,7 @@ import unicodedata
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, BASE)
 
-CACHE = os.path.join(BASE, "data_venue_images.json")
+CACHE = os.path.join(BASE, "crawl", "venue_images.json")
 # Downloaded venue photos live under ui/ so both server twins can serve them
 # statically without a third-party request at render time.
 IMG_DIR = os.path.join(BASE, "ui", "venue-images")

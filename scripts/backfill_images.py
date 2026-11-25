@@ -8,7 +8,7 @@ load_env(os.path.join(os.getcwd(), ".env"))
 from src.es import make_client, INDEX
 from src.images import fetch_image
 
-CACHE = "data_source_images.json"
+CACHE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "crawl", "source_images.json")
 
 def main(limit=None):
     es = make_client()

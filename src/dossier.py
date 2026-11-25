@@ -153,7 +153,7 @@ def measure_score_sample(es):
 def _score_sample(_data_path=None):
     """The published score distribution, read from a stamped data file.
 
-    Measured offline by src/stamp_score_sample.py rather than computed per
+    Measured offline by scripts/stamp_score_sample.py rather than computed per
     request: assembling 18 dossiers costs ~7s, which every cold serverless
     instance would pay before the page could render a number. The sample is
     fixed, so the result is stable; re-stamp it after a corpus-growth run.
@@ -1104,7 +1104,7 @@ def _is_junk_venue(name):
 
 def venues_geo(es=None):
     """Venues for the map: the full SF permitted-food universe (ui/city_venues.json,
-    written by src/pull_city.py) merged with the curated geocode cache (ui/venues_geo.json).
+    written by scripts/pull_city.py) merged with the curated geocode cache (ui/venues_geo.json).
 
     Quiet-dot curation: only eateries keep a dot. Chains, corporate cafeterias,
     tobacco shops, pushcarts, schools and other permitted-but-not-a-kitchen

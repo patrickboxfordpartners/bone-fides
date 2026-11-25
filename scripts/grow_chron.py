@@ -6,7 +6,7 @@ Chronicle paywall) -> free regex pre-pass -> Mistral structured extraction ->
 Elasticsearch. Shares the seen-URL ledger with the Eater loop, so SERP-era
 sfgate URLs already in the corpus are not reprocessed.
 
-Usage: ./.venv/bin/python src/grow_chron.py [max_articles]   (default 60)
+Usage: .venv/bin/python scripts/grow_chron.py [max_articles]   (default 60)
 """
 import os, re, sys, time, json
 
@@ -21,8 +21,8 @@ from src.fetch_chron import fetch_chron_text
 from src.extract import extract_edges
 from src.es import make_client, INDEX, ensure_index, index_edges, build_edge_doc
 
-CHRON_PLAN = os.path.join(BASE, "data_chron_urls.json")
-SEEN = os.path.join(BASE, "data_seen_urls.json")
+CHRON_PLAN = os.path.join(BASE, "crawl", "chron_urls.json")
+SEEN = os.path.join(BASE, "crawl", "seen_urls.json")
 
 # free regex pre-pass — extended with Chronicle/SFGate personnel-change phrasing
 ROLE_HINT = re.compile(
@@ -41,7 +41,7 @@ def main(max_articles=60):
     print(f"{len(seen)} URLs already processed")
 
     if not os.path.exists(CHRON_PLAN):
-        print("no data_chron_urls.json — run src/plan_chron.py first")
+        print("no crawl/chron_urls.json — run scripts/plan_chron.py first")
         return
     plan = json.load(open(CHRON_PLAN))
     # cascade: lineage-genre slugs first, then the whole food pool (the free

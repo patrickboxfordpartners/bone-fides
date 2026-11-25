@@ -1,6 +1,6 @@
 """Set Vercel env vars from local .env without echoing values to the transcript.
 
-Usage: .venv/bin/python src/vercel_env_set.py NAME[:target,...] [NAME2 ...]
+Usage: .venv/bin/python scripts/vercel_env_set.py NAME[:target,...] [NAME2 ...]
 Target defaults to all three: production,preview,development.
 Values are piped to `vercel env add` via stdin (never argv).
 """

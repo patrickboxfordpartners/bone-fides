@@ -4,12 +4,12 @@ The sitemap index lists 59 monthly sitemaps back to 2007. Each holds every
 article URL. We filter by slug keywords for the lineage-genre pieces
 (closures, chef moves, openings), then the grow loop fetches + extracts.
 
-Usage: ./.venv/bin/python src/plan_corpus.py   # writes data_eater_urls.json
+Usage: .venv/bin/python scripts/plan_corpus.py   # writes crawl/eater_urls.json
 """
 import re, os, sys, json, time, requests
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-OUT = os.path.join(BASE, "data_eater_urls.json")
+OUT = os.path.join(BASE, "crawl", "eater_urls.json")
 UA = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"}
 
 # slug words that indicate lineage-stating genres
