@@ -167,6 +167,10 @@ td.key .num{color:var(--accent)}
   background:transparent;color:var(--dim);border:1px solid var(--faint);border-radius:999px;cursor:pointer;min-height:44px}
 .retry:hover{color:var(--accent);border-color:var(--accent)}
 .failmsg .retry{margin-top:14px}
+/* tablet: the mentor column drops below before the kitchen table starves */
+@media (max-width:1100px){
+  .lgrid{grid-template-columns:1fr;gap:40px}
+}
 /* phone: chips show, headers hide, rows stack but keep their table roles */
 @media (max-width:760px){
   .lh{padding:26px 20px 0}
@@ -272,14 +276,14 @@ td.key .num{color:var(--accent)}
         <thead role="rowgroup"><tr role="row">
           <th scope="col" role="columnheader" class="sr-only">Rank</th>
           <th scope="col" role="columnheader"><span class="h">Kitchen</span></th>
-          <th scope="col" role="columnheader"><span class="h">Cited arrivals</span><span class="def">Displayed moves of chefs into this kitchen.</span></th>
+          <th scope="col" role="columnheader"><span class="h">Cited arrivals</span><span class="def">Displayed moves of chefs into this kitchen, from the kitchens named beside it.</span></th>
           <th scope="col" role="columnheader"><span class="h">Came from</span></th>
           <th scope="col" role="columnheader"><span class="h">Alumni</span><span class="def">Named people with a displayed cited move out.</span></th>
         </tr></thead>
         <tbody id="sbody" role="rowgroup"><tr role="row"><td role="cell" colspan="5">&mdash;</td></tr></tbody>
       </table>
-      <p class="trule">A starred kitchen with no arrivals row says &ldquo;no cited move yet&rdquo;: the record
-        holds no displayed move for it. Stars come from the San Francisco list of the Michelin Guide.</p>
+      <p class="trule">A starred kitchen with no arrivals row says &ldquo;no cited arrivals yet&rdquo;: no
+        displayed move of a chef into it is on record. Stars come from the San Francisco list of the Michelin Guide.</p>
     </section>
   </div>
   <p class="lfoot" id="lfoot">Every figure here counts only the <b id="lfig">&mdash;</b> moves on display:
@@ -432,7 +436,7 @@ td.key .num{color:var(--accent)}
         : '';
       var arrivals = r.arrivals > 0
         ? '<span class="num">' + r.arrivals + '</span>'
-        : '<span class="nonote">no cited move yet</span>';
+        : '<span class="nonote">no cited arrivals yet</span>';
       var from = r.from && r.from.length
         ? L.esc(r.from.join(', '))
         : (r.status === 'none' ? '<span class="nonote">none on record</span>' : '&mdash;');

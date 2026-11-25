@@ -74,7 +74,7 @@ def test_kitchen_rows_link_to_the_tree_and_the_dossier():
 def test_starred_rows_link_upward_and_say_when_no_move_exists():
     p = _page()
     assert '"/tree?k=\' + encodeURIComponent(k.slug) + \'&dir=up"' in p
-    assert "no cited move yet" in p
+    assert "no cited arrivals yet" in p
 
 
 def test_the_mentor_note_states_the_limit_figure():

@@ -596,9 +596,9 @@ def ledger(g):
         arrivals = 0
         froms = []
         for a, tgts in g["out"].items():
-            for b in tgts:
+            for b, edge_moves in tgts.items():
                 if b == i:
-                    arrivals += 1
+                    arrivals += len(edge_moves)
                     froms.append(g["kitchens"][a][1])
         status = "linked" if g["degree"].get(i) else (
             "move_only" if alumni.get(i) else "none")
