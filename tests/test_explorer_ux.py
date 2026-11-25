@@ -82,6 +82,13 @@ def test_touch_layout_enlarges_small_targets_without_overlap():
     # "View as tree" list rows stack venue links too: top + bottom padding of
     # two neighbours must cover both hit areas
     assert int(re.search(r"\.treelist \.trow \{ padding-block: (\d+)px; \}", css).group(1)) >= grow
+    # the Instagram badge sits on the name line just above the first venue
+    # link: its hit area must come after the shared rule and not reach down
+    badge = re.search(r"\.igbadge::before \{ inset: -(\d+)px -(\d+)px (-?\d+)(?:px)?; \}", css)
+    assert badge, "the badge-specific hit area is gone"
+    assert int(badge.group(3)) == 0, "the badge hit area must not extend downward"
+    assert int(badge.group(1)) >= 2 * grow, "it grows upward by the full amount instead"
+    assert css.index(".igbadge::before { inset:") > css.index("inset: -10px -3px"), "later rule wins the cascade"
     side = int(re.search(r"inset: -(\d+)px -(\d+)px", css).group(2))
     col_gaps = [int(g) for g in re.findall(r"\.(?:chips|chain|tlvenues|urow|urowmain) \{[^}]*gap: \d+px (\d+)px", HTML)]
     assert col_gaps and min(col_gaps) >= 2 * side, col_gaps
