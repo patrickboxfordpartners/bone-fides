@@ -1,0 +1,37 @@
+{
+ "baseline_n": 200,
+ "baseline_true": 167,
+ "both_share": 0.3506,
+ "by_family": {
+  "credential": [
+   73,
+   69
+  ],
+  "lead": [
+   16,
+   16
+  ],
+  "opening": [
+   14,
+   14
+  ],
+  "tenure": [
+   155,
+   153
+  ],
+  "title": [
+   142,
+   134
+  ]
+ },
+ "cue_hash": "7480e194abac68580ab698455ea53238be3cc710011e99ca8808d944ea57b841",
+ "displayed": 4991,
+ "displayed_before": 3388,
+ "measured_at": "2026-11-25",
+ "newly_displayed": 1603,
+ "on_record": 9312,
+ "precision": 0.965,
+ "precision_low": 0.9421,
+ "sample_n": 400,
+ "sample_true": 386
+}

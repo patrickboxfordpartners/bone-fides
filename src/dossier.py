@@ -88,7 +88,7 @@ def method(es):
         src = h["_source"]
         tiers[outlet_tier(src.get("source"), src.get("source_url"))] += 1
     value = {"coverage": coverage, "tiers": tiers,
-             "scores": _score_sample()}
+             "scores": _score_sample(), "gate": gate_stamp()}
     _METHOD_CACHE["at"], _METHOD_CACHE["value"] = now, value
     return value
 
@@ -171,6 +171,26 @@ def _score_sample(_data_path=None):
     if not isinstance(d, dict) or "min" not in d:
         return None
     return d
+
+
+def gate_stamp(_data_path=None):
+    """The measured display-gate figures, read from ui/gate_stamp.json.
+
+    Written offline by scripts/measure_gate.py --stamp after the labelling
+    protocol, never computed per request. Returns the stamp without
+    `cue_hash` (an internal integrity value), or None when the file is
+    missing — the method page then says precision is not measured, which is
+    the honest fallback rather than a 500.
+    """
+    path = _data_path or data_path("gate_stamp.json")
+    try:
+        with open(path) as f:
+            d = json.load(f)
+    except (OSError, ValueError):
+        return None
+    if not isinstance(d, dict) or "precision" not in d:
+        return None
+    return {k: v for k, v in d.items() if k != "cue_hash"}
 
 MAX_QUERY_LEN = 120  # abuse cap: queries are names, not free-text essays
 MAX_RESULT_SIZE = 40  # a dossier, not a corpus dump
@@ -538,16 +558,371 @@ def citation_supported(edge):
     Indexed edges are not re-fetched. PROMOTED is kept only when the
     quotation says so; guest shifts and supplier blurbs are not moves.
     """
+    return citation_reason(edge) is not None
+
+
+# ---- The widened gate (docs/flagship/plan.md section 1) ----
+#
+# _MOVE_CUE, _PROMO_CUE and _NONCAREER above are the OLD gate and do not
+# change: everything displayed before stays displayed, and their pattern
+# sources are pinned by hash in tests/test_citation_gate.py so a silent edit
+# fails the suite. The families below only ADD moves, and only when all five
+# conditions of plan section 1.2 hold:
+#
+#   1. the quote is not empty and has no _NONCAREER word; the role has none;
+#   2. the action is not PROMOTED (promotions keep their own rule);
+#   3. the quote has no _NOT_A_STINT guard phrase, and no venue of the row is
+#      a television show, an award, an event, a festival or another
+#      non-food venue kind (museum, memorial hall, design studio);
+#   4. the person is named (not "a chef", "the team behind X", "alums") and
+#      every venue of the row is a named kitchen, not a description
+#      ("high-end restaurants and hotels", "unnamed project") — the
+#      labelling protocol counts descriptor rows as false, so the gate does
+#      not display them (is_named_kitchen, plan section 3);
+#   5. the quote names a venue of the row (the anchor rule), with the same
+#      whole-token discipline as _venue_touch: "El Faro" does not match
+#      "El Farolito" and a one-word generic venue does not anchor;
+#   6. the quote names a PERSON of the row too: a name token, a pronoun or a
+#      role reference (development-sample rule: "the team behind X" and
+#      "the space's last day" quotes name a venue but nobody);
+#   7. the quote does not contradict the row's direction ("stepped away from
+#      Boot & Shoe" is not a move TO Boot & Shoe; development-sample rule);
+#   8. a pattern of a cue family in _CAREER_CUES matches.
+#
+# Each family is one pattern with word-order limits, not a list of loose
+# words. A family ships only after it passed the labelled-sample precision
+# test (tests/fixtures/gate_labels.json records the proof).
+
+_NOT_A_STINT = re.compile(
+    r"\b(?:"
+    r"guest (?:dinner|appearance|spot|stint)|guest spots?\b|"
+    r"pop-?up (?:dinner|collab|event|series)|"
+    r"collab(?:oration)? (?:dinner|menu|supper|event|series)|"
+    r"one[- ]night(?: only)?|"
+    r"dinner series|supper series|"
+    r"take-?over|"
+    r"inspired by|"
+    r"sources? (?:from|at)\b|sourced (?:from|at)\b|supplied by|"
+    r"hosts? .{0,40}?\bdinner\b"
+    r")\b",
+    re.I)
+
+_CAREER_CUES = {
+    # past employment: "former Quince sous Jared Sippel", "the French
+    # Laundry vet", "Tartine alums", "stints at", "who was last at",
+    # "most recently at", "cut her teeth at", "resume includes".
+    # "former" must tie to a role word or a proper name, and must never
+    # describe a space, a site, a home or a location.
+    "tenure": re.compile(
+        r"\b(?:"
+        r"\bveterans?\b|\bvets?\b|alum(?:ni|nus|nae|s)?\b|"
+        r"was last at|most recently (?:at|of)|"
+        r"stints? (?:at|in|with)|"
+        r"cut (?:her|his|their) teeth (?:at|in|on)|"
+        r"(?:resume|cv|résumé) includes|includes time at|"
+        r"career (?:with jobs|including) (?:at|in|with)|"
+        r"[0-9]+ years at|kitchens (?:of|at)|gigs? at|jobs at|"
+        r"(?-i:formers? (?:the |his |her |their )?[A-Z0-9][\w&'’.\-]*"
+        r"(?: (?!(?:space|site|home|location|haunt|building|premises|address)\b)"
+        r"[\w&'’.\-]+){0,3}"
+        r"(?!\s+(?:[\w&'’.\-]+\s+)?"
+        r"(?:space|site|home|location|haunt|building|premises|address)\b))"
+        r"|"
+        r"formers? [a-z][^.;]{0,50}?\b(?:chef|cook|sous|pastry|bartender|barista|owner|"
+        r"sommelier|server|waiter|butcher|barback|partner|manager|director)\b"
+        r")",
+        re.I),
+    # a parenthesis after a name or role that holds a venue of the row:
+    # "Dustin Falcon (Morimoto, Ad Hoc, The French Laundry)". The
+    # parenthetical must hold a row venue (checked in citation_reason),
+    # so a parenthetical note cannot lend a credential.
+    "credential": re.compile(
+        r"(?:^|[\s,;:.]|\b(?:chef|owner|partner|director|sommelier|bartender|founder)\b)"
+        r"[A-Z][^.()]{0,60}?\(\s*[^()]{2,80}\)"),
+    # a job title joined to a venue: "chef-owner of Relæ",
+    # "executive chef at Frascati", "was the sous chef at".
+    "title": re.compile(
+        r"\b(?:executive chef|chef de cuisine|chef\s*-?\s*owner|co\s*-?\s*owner|"
+        r"sous chef|pastry chef|head chef|general manager|sommelier|"
+        r"bar director|beverage director|wine director|culinary director|"
+        r"chef|owner|partner|director|bartender)\b[^.]{0,40}?\b(?:at|of)\b",
+        re.I),
+    # taking the helm, or leaving one: "at the helm", "has taken over",
+    # "will run the kitchen", "brought on as", "stepped away from".
+    "lead": re.compile(
+        r"\b(?:"
+        r"at the helm|has taken over|has taken the helm|takes? over|took over|"
+        r"taking over|taking the reins|"
+        r"will run the kitchen|to run the kitchen|runs? the kitchen|"
+        r"running the kitchen|"
+        r"brought (?:on|in|aboard) as|"
+        r"helming|stepping in(?: (?:as|to))?|steps in (?:as|to)|"
+        r"in the kitchen at|behind the stove|"
+        r"stepped away from|parted ways with|part ways with|"
+        r"last day (?:in service|of service|at)|no longer (?:at|with)|"
+        r"shifted to|shifts to|headed up"
+        r")\b",
+        re.I),
+    # openings and foundings: "is opening", "debuted", "first restaurant",
+    # "from the team behind".
+    "opening": re.compile(
+        r"\b(?:"
+        r"is opening|are opening|opening soon|set to open|plans to open|"
+        r"planning to open|slated to open|will open|"
+        r"debuted|debuts|"
+        r"first restaurant|"
+        r"from the (?:team|folks|duo|brothers|sisters|pair) behind"
+        r")\b",
+        re.I),
+}
+
+
+def _quote_words(s):
+    """Fold a quotation to word tokens: accents, punctuation and case fold,
+    spaces kept. The same fold venue_aliases uses, so a venue name in any
+    spelling anchors (docs/flagship/plan.md section 1.2)."""
+    s = unicodedata.normalize("NFKD", s or "")
+    s = "".join(c for c in s if not unicodedata.combining(c))
+    s = (s.replace("’", "'").replace("‘", "'")
+          .replace("“", '"').replace("”", '"')
+          .replace("–", "-").replace("—", "-"))
+    s = re.sub(r"[()]", " ", s).lower()
+    return re.sub(r"[^a-z0-9\s]", " ", s).split()
+
+
+def _words_name_venue(words, venues):
+    """True when `words` (already folded) names one of `venues`, with the
+    whole-token discipline of _venue_touch: the venue's words appear as a
+    consecutive token run, or a shorter run is a whole-token prefix of the
+    venue's words ("Betelnut" names "Betelnut Pejiu Wu"). A one-word generic
+    venue never anchors, and no token boundary may be crossed: "El Faro"
+    does not name "El Farolito"."""
+    if not words:
+        return False
+    joined = " ".join(words)
+    for v in venues:
+        if not v:
+            continue
+        vw = venue_key_words(v).split()
+        if not vw:
+            continue
+        # a one-word GENERIC venue never anchors, not even on an exact token
+        # match ("this kitchen" does not name the venue "Kitchen"); a short
+        # real name ("Coi") still anchors
+        if len(vw) == 1 and vw[0] in _GENERIC_VENUE:
+            continue
+        if _venue_touch(joined, " ".join(vw)):
+            return True
+        # a shorter run of the venue's words anchors when it is a whole-token
+        # prefix of the venue ("Alfred's" names "Alfred's Steakhouse",
+        # "Betelnut" names "Betelnut Pejiu Wu") — the run cannot cross a token
+        # boundary ("El Faro" does not name "El Farolito")
+        for i in range(len(words)):
+            for L in range(1, len(vw) + 1):
+                window = words[i:i + L]
+                if len(window) < L:
+                    break
+                if _venue_touch(" ".join(window), " ".join(vw)):
+                    return True
+    return False
+
+
+def _quote_names_venue(edge):
+    """The anchor rule: the quotation itself names a venue of the row."""
+    venues = (edge.get("from_venue"), edge.get("to_venue"))
+    return _words_name_venue(_quote_words(edge.get("evidence")), venues)
+
+
+# A venue that is a television show, an award, an event or a festival is not
+# a stint (plan section 1.4: "Top Chef", "Farmstock 2K12 (event)"). A museum,
+# a memorial hall or a design studio is not a food business either. The
+# check runs on the widened path only: the old path's decisions do not
+# change.
+_SHOW_EVENT_VENUE = re.compile(
+    r"top chef|iron chef|chef'?s table|chopped\b|farmstock|\bfestival\b|\(event\)"
+    r"|\baward\b|james beard|bocuse d.?or"
+    r"|\bmuseum\b|memorial building|design group|design studio", re.I)
+
+
+def _is_show_or_event_venue(name):
+    return bool(name and _SHOW_EVENT_VENUE.search(name))
+
+
+# A person string that names nobody: a role, a collective or a relation
+# ("Momofuku Noodle Bar alum", "the team behind NYC's Spotted Pig",
+# "owners of the Munch India food truck", "a chef (unnamed)"). The labelling
+# protocol counts such rows as false, so the widened gate does not display
+# them. A named person passes; no real name in the corpus carries these
+# descriptor words.
+_PERSON_DESCRIPTOR = re.compile(
+    r"\b(?:alum(?:ni|nus|s)?|team|duo|trio|group|owners?|staff|crew|veterans?|chefs?)\b"
+    r"|^(?:the|a|an|former)\b"
+    r"|\bchef (?:at|de)\b"
+    r"|chef$|sommelier$|manager$|director$"
+    r"|\(unnamed\)",
+    re.I)
+
+
+def _is_named_person(name):
+    return bool(name) and not _PERSON_DESCRIPTOR.search(name)
+
+
+# A kitchen name that names a kitchen (docs/flagship/plan.md section 3): not
+# an article or possessive with a generic tail, not "unnamed", not a
+# descriptor ("high-end restaurants and hotels", "restaurants in Tokyo"),
+# not a list of three or more venues, not only a street address, not a show
+# or an event. The graph builder reuses this rule for hops.
+_VENUE_DESCRIPTOR = re.compile(
+    r"^(?:a|an|his|her|their|its|unnamed|various|several|some|local|other|another|"
+    r"multiple|two|three|one of|high-?end|luxury|former|original|neighborhood|country|"
+    r"downtown)\b", re.I)
+_STREET_ADDRESS = re.compile(r"^\d+\s+\w+(\s+\w+)*\s"
+                             r"(st|street|ave|avenue|blvd|boulevard|road|rd|way)\b\.?$",
+                             re.I)
+
+
+def is_named_kitchen(name):
+    n = (name or "").strip()
+    if not n:
+        return False
+    if _VENUE_DESCRIPTOR.search(n):
+        return False
+    if not re.search(r"[A-Z0-9]", n):
+        return False
+    if n.count(",") >= 2:  # "Town Hall, Salt House, Anchor & Hope"
+        return False
+    if _STREET_ADDRESS.match(n):
+        return False
+    return True
+
+
+_PERSON_PRONOUNS = {"he", "she", "his", "her", "him", "they", "their", "them"}
+
+# a definite reference by role: "the former Mister Jiu's pastry chef",
+# "a former opening sous chef at Gather", "the current owner of
+# Thorough Bread", "the chef, who also brings experience".
+_PERSON_ROLE = re.compile(
+    r"\b(?:the|a|an) (?:former|current|onetime|one-?time) [a-z'’\- ]{0,40}?"
+    r"(?:chef|cook|owner|sommelier|bartender|barista|manager|partner|director|founder|barman)\b"
+    r"|\bthe (?:chef|owner|partner|sommelier|bartender|founder|pastry chef|sous chef)s?, (?:who|which)\b"
+    r"|\bthe (?:chef|cook|owner|sommelier|bartender|barista|partner|director|founder|barman)s? of\b",
+    re.I)
+
+
+def _quote_references_person(edge):
+    """The quotation is about the row's person: it names them (a folded name
+    token of three or more characters), refers to them with a pronoun the
+    article resolves, or points at them by role ("the former Mister Jiu's
+    pastry chef"). Development-sample rule: quotes that name only a venue
+    ("the team behind Popson's", "the restaurant's last day of service")
+    state no career fact about the person in the row."""
+    ev = edge.get("evidence") or ""
+    qw = set(_quote_words(ev))
+    if qw & _PERSON_PRONOUNS:
+        return True
+    ptoks = {t for t in _quote_words(edge.get("person") or "") if len(t) >= 3}
+    if ptoks & qw:
+        return True
+    return bool(_PERSON_ROLE.search(ev))
+
+
+_DEPARTURE_PHRASE = re.compile(
+    r"\b(?:stepped away from|parted ways with|part ways with|"
+    r"no longer (?:at|with)|last day (?:in service|of service|at))\b", re.I)
+
+
+def _contradicts_direction(edge):
+    """The quotation states the person LEFT the venue the row says they
+    joined ("stepped away from his businesses - Pizzaiolo, Boot & Shoe
+    Service" cannot display as a move TO Boot & Shoe Service).
+    Development-sample rule: a departure phrase followed by the row's
+    to_venue contradicts the row's direction."""
+    to_v = edge.get("to_venue")
+    if not to_v:
+        return False
+    ev = edge.get("evidence") or ""
+    for m in _DEPARTURE_PHRASE.finditer(ev):
+        window = ev[m.end():m.end() + 80]
+        if _words_name_venue(_quote_words(window), (to_v,)):
+            return True
+    return False
+
+
+def _credential_lists_venue(edge):
+    """The credential family's own discipline: some parenthetical after a
+    name or role holds a venue of the row."""
+    ev = edge.get("evidence") or ""
+    venues = (edge.get("from_venue"), edge.get("to_venue"))
+    for m in _CAREER_CUES["credential"].finditer(ev):
+        inner = m.group(0)[m.group(0).find("(") + 1:m.group(0).rfind(")")]
+        if _words_name_venue(_quote_words(inner), venues):
+            return True
+    return False
+
+
+def citation_reason(edge):
+    """Why the display gate accepts a move: "move" or "promotion" when the
+    old logic accepts it, the name of the new cue family when a widened cue
+    accepts it, None when the move stays rejected.
+
+    The old logic runs first and is not edited, so no move displayed before
+    can be lost. The new families apply only under the five conditions of
+    docs/flagship/plan.md section 1.2 (see the block comment above).
+    """
     ev = (edge.get("evidence") or "").strip()
     if not ev:
-        return False
+        return None
     role = edge.get("role") or ""
     if _NONCAREER.search(role) or _NONCAREER.search(ev):
-        return False
+        return None
     action = (edge.get("action") or "").upper()
     if action == "PROMOTED":
-        return bool(_PROMO_CUE.search(ev))
-    return bool(_MOVE_CUE.search(ev))
+        return "promotion" if _PROMO_CUE.search(ev) else None
+    if _MOVE_CUE.search(ev):
+        return "move"
+    # the widened path: guards first, then the anchor and person rules,
+    # then the families
+    if _NOT_A_STINT.search(ev):
+        return None
+    if (_is_show_or_event_venue(edge.get("from_venue"))
+            or _is_show_or_event_venue(edge.get("to_venue"))):
+        return None
+    if not (_is_named_person(edge.get("person"))):
+        return None
+    if not all(is_named_kitchen(v)
+               for v in (edge.get("from_venue"), edge.get("to_venue")) if v):
+        return None
+    if not _quote_names_venue(edge):
+        return None
+    if not _quote_references_person(edge):
+        return None
+    if _contradicts_direction(edge):
+        return None
+    for fam, pat in _CAREER_CUES.items():
+        if fam == "credential":
+            if _credential_lists_venue(edge):
+                return fam
+        elif pat.search(ev):
+            return fam
+    return None
+
+
+def _cue_hash():
+    """sha256 of the pattern sources of the widened path: _CAREER_CUES,
+    _NOT_A_STINT and the guard patterns the development and acceptance
+    samples added.
+
+    gate_stamp.json records this hash so a later pattern edit with no new
+    measurement is detectable (tests/test_citation_gate.py checks it)."""
+    import hashlib
+    src = [pat.pattern for _, pat in sorted(_CAREER_CUES.items())]
+    src += [_NOT_A_STINT.pattern, _SHOW_EVENT_VENUE.pattern,
+            _PERSON_ROLE.pattern, _DEPARTURE_PHRASE.pattern,
+            _PERSON_DESCRIPTOR.pattern, _VENUE_DESCRIPTOR.pattern,
+            _STREET_ADDRESS.pattern]
+    src.append(repr(sorted(_GENERIC_VENUE)))
+    src.append(repr(sorted(_PERSON_PRONOUNS)))
+    return hashlib.sha256("\n\n".join(src).encode()).hexdigest()
 
 def outlet_tier(source, url):
     """sfchronicle | sfgate | eater | other. A null or mismatched source
