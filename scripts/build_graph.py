@@ -72,6 +72,7 @@ def write_identity_review(g, path):
     corpus update."""
     import re as _re
     from src import dossier as _D
+    key_to_name = {k[0]: k[1] for k in g["kitchens"]}
     groups = {}
     for key, name, slug, stars, others in g["kitchens"]:
         for spelling in [name] + list(others):
@@ -82,6 +83,12 @@ def write_identity_review(g, path):
                 {"spelling": spelling, "key": key})
     out = []
     for base_key, rows in sorted(groups.items()):
+        # the bare name is itself a node when some kitchen carries that key;
+        # include it, or a split (Daniel vs Daniel (Manhattan)) reads as one
+        if base_key in key_to_name and not any(r["key"] == base_key
+                                               for r in rows):
+            rows = rows + [{"spelling": key_to_name[base_key] + " (bare name)",
+                            "key": base_key}]
         keys = sorted({r["key"] for r in rows})
         out.append({"base_key": base_key,
                     "same_node": len(keys) == 1,

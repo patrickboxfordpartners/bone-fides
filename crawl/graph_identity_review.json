@@ -60,6 +60,7 @@
   "base_key": "abaca",
   "same_node": false,
   "spellings": [
+   "Abaca (bare name)",
    "Abacá (Fisherman’s Wharf)",
    "Abacá (as pastry chef)"
   ]
@@ -166,7 +167,8 @@
   "same_node": false,
   "spellings": [
    "Bali's (Pacific and Battery)",
-   "Bali's (Sansome Street)"
+   "Bali's (Sansome Street)",
+   "Bali's (bare name)"
   ]
  },
  {
@@ -300,6 +302,7 @@
   "spellings": [
    "Bourbon Steak (Westin St. Francis, 2010–2016)",
    "Bourbon Steak (Westin St. Francis, 2025)",
+   "Bourbon Steak (bare name)",
    "Bourbon Steak (current iteration)"
   ]
  },
@@ -495,9 +498,10 @@
  },
  {
   "base_key": "craftsmanandwolves",
-  "same_node": true,
+  "same_node": false,
   "spellings": [
-   "Craftsman and Wolves (Pacific Avenue, Russian Hill)"
+   "Craftsman and Wolves (Pacific Avenue, Russian Hill)",
+   "Craftsman and Wolves (bare name)"
   ]
  },
  {
@@ -545,9 +549,10 @@
  },
  {
   "base_key": "daniel",
-  "same_node": true,
+  "same_node": false,
   "spellings": [
-   "Daniel (Manhattan)"
+   "Daniel (Manhattan)",
+   "Daniel (bare name)"
   ]
  },
  {
@@ -559,9 +564,10 @@
  },
  {
   "base_key": "dasaro",
-  "same_node": true,
+  "same_node": false,
   "spellings": [
-   "D'Asaro (Redwood City)"
+   "D'Asaro (Redwood City)",
+   "D'Asaro (bare name)"
   ]
  },
  {
@@ -590,8 +596,9 @@
  },
  {
   "base_key": "district",
-  "same_node": true,
+  "same_node": false,
   "spellings": [
+   "District (bare name)",
    "District (formerly Pasta Opera)"
   ]
  },
@@ -601,7 +608,8 @@
   "spellings": [
    "DOSA (Fillmore)",
    "DOSA (Valencia and Fillmore locations)",
-   "DOSA (Valencia)"
+   "DOSA (Valencia)",
+   "DOSA (bare name)"
   ]
  },
  {
@@ -620,9 +628,10 @@
  },
  {
   "base_key": "elevenmadisonpark",
-  "same_node": true,
+  "same_node": false,
   "spellings": [
-   "Eleven Madison Park (New York City)"
+   "Eleven Madison Park (New York City)",
+   "Eleven Madison Park (bare name)"
   ]
  },
  {
@@ -710,9 +719,10 @@
  },
  {
   "base_key": "flores",
-  "same_node": true,
+  "same_node": false,
   "spellings": [
-   "Flores (Corte Madera)"
+   "Flores (Corte Madera)",
+   "Flores (bare name)"
   ]
  },
  {
@@ -774,9 +784,10 @@
  },
  {
   "base_key": "gingerisland",
-  "same_node": true,
+  "same_node": false,
   "spellings": [
-   "Ginger Island (Eccolo)"
+   "Ginger Island (Eccolo)",
+   "Ginger Island (bare name)"
   ]
  },
  {
@@ -788,9 +799,10 @@
  },
  {
   "base_key": "guerillacafe",
-  "same_node": true,
+  "same_node": false,
   "spellings": [
-   "Guerilla Cafe (after Kontes sold their portion)"
+   "Guerilla Cafe (after Kontes sold their portion)",
+   "Guerilla Cafe (bare name)"
   ]
  },
  {
@@ -802,9 +814,10 @@
  },
  {
   "base_key": "hakkasan",
-  "same_node": true,
+  "same_node": false,
   "spellings": [
-   "Hakkasan (SF location)"
+   "Hakkasan (SF location)",
+   "Hakkasan (bare name)"
   ]
  },
  {
@@ -910,9 +923,10 @@
  },
  {
   "base_key": "jonsstreeteats",
-  "same_node": true,
+  "same_node": false,
   "spellings": [
-   "Jon's Street Eats (Emeryville and Alameda locations)"
+   "Jon's Street Eats (Emeryville and Alameda locations)",
+   "Jon's Street Eats (bare name)"
   ]
  },
  {
@@ -946,9 +960,10 @@
  },
  {
   "base_key": "kozykar",
-  "same_node": true,
+  "same_node": false,
   "spellings": [
-   "Kozy Kar (Santa Rosa offshoot)"
+   "Kozy Kar (Santa Rosa offshoot)",
+   "Kozy Kar (bare name)"
   ]
  },
  {
@@ -968,8 +983,9 @@
  },
  {
   "base_key": "lacotedor",
-  "same_node": true,
+  "same_node": false,
   "spellings": [
+   "La Cote d'Or (bare name)",
    "La Côte d'Or (Relais Bernard Loiseau)"
   ]
  },
@@ -998,8 +1014,9 @@
  },
  {
   "base_key": "larkcreekinn",
-  "same_node": true,
+  "same_node": false,
   "spellings": [
+   "Lark Creek Inn (bare name)",
    "The Lark Creek Inn (now the Tavern at Lark Creek)"
   ]
  },
@@ -1081,9 +1098,10 @@
  },
  {
   "base_key": "locol",
-  "same_node": true,
+  "same_node": false,
   "spellings": [
-   "Locol (Watts)"
+   "Locol (Watts)",
+   "Locol (bare name)"
   ]
  },
  {
@@ -1113,7 +1131,8 @@
   "same_node": false,
   "spellings": [
    "Magnolia (Dogpatch location, Smokestack restaurant)",
-   "Magnolia (Haight Street location)"
+   "Magnolia (Haight Street location)",
+   "Magnolia (bare name)"
   ]
  },
  {
@@ -1127,6 +1146,7 @@
   "base_key": "mandarin",
   "same_node": false,
   "spellings": [
+   "The Mandarin (bare name)",
    "the Mandarin (Beverly Hills)",
    "the Mandarin (Ghirardelli Square)",
    "the Mandarin (Polk Street)"
@@ -1145,7 +1165,8 @@
   "same_node": false,
   "spellings": [
    "Manresa Bread (Campbell location)",
-   "Manresa Bread (Los Gatos and Los Altos locations)"
+   "Manresa Bread (Los Gatos and Los Altos locations)",
+   "Manresa Bread (bare name)"
   ]
  },
  {
@@ -1174,6 +1195,7 @@
   "base_key": "marlowe",
   "same_node": false,
   "spellings": [
+   "Marlowe (bare name)",
    "Marlowe (new location on Brannan)",
    "Marlowe (original location on Townsend)"
   ]
@@ -1188,9 +1210,10 @@
  },
  {
   "base_key": "mccradys",
-  "same_node": true,
+  "same_node": false,
   "spellings": [
-   "McCrady's (Charleston)"
+   "McCrady's (Charleston)",
+   "McCrady’s (bare name)"
   ]
  },
  {
@@ -1198,7 +1221,8 @@
   "same_node": false,
   "spellings": [
    "Merchant Roots (as a fine dining restaurant)",
-   "Merchant Roots (as an artisan food shop)"
+   "Merchant Roots (as an artisan food shop)",
+   "Merchant Roots (bare name)"
   ]
  },
  {
@@ -1231,9 +1255,10 @@
  },
  {
   "base_key": "missionchinesefood",
-  "same_node": true,
+  "same_node": false,
   "spellings": [
-   "Mission Chinese Food (New York)"
+   "Mission Chinese Food (New York)",
+   "Mission Chinese Food (bare name)"
   ]
  },
  {
@@ -1252,9 +1277,10 @@
  },
  {
   "base_key": "museumoftheafricandiaspora",
-  "same_node": true,
+  "same_node": false,
   "spellings": [
-   "Museum of the African Diaspora (MoAD)"
+   "Museum of the African Diaspora (MoAD)",
+   "Museum of the African Diaspora (bare name)"
   ]
  },
  {
@@ -1262,7 +1288,8 @@
   "same_node": false,
   "spellings": [
    "M.Y. China (Graton Resort & Casino)",
-   "M.Y. China (Westfield San Francisco Centre)"
+   "M.Y. China (Westfield San Francisco Centre)",
+   "MY China (bare name)"
   ]
  },
  {
@@ -1289,9 +1316,10 @@
  },
  {
   "base_key": "napavalleygrille",
-  "same_node": true,
+  "same_node": false,
   "spellings": [
-   "Napa Valley Grille (Yountville space)"
+   "Napa Valley Grille (Yountville space)",
+   "Napa Valley Grille (bare name)"
   ]
  },
  {
@@ -1310,8 +1338,9 @@
  },
  {
   "base_key": "newyork",
-  "same_node": true,
+  "same_node": false,
   "spellings": [
+   "New York (bare name)",
    "New York (under Rocco DiSpirito)"
   ]
  },
@@ -1355,6 +1384,7 @@
   "base_key": "oliveto",
   "same_node": false,
   "spellings": [
+   "Oliveto (bare name)",
    "Oliveto (downstairs cafe)",
    "Oliveto (upstairs)"
   ]
@@ -1420,8 +1450,9 @@
  },
  {
   "base_key": "penrose",
-  "same_node": true,
+  "same_node": false,
   "spellings": [
+   "Penrose (bare name)",
    "Penrose (rebranded as Almond & Oak)"
   ]
  },
@@ -1502,7 +1533,8 @@
   "same_node": false,
   "spellings": [
    "Pizza Antica (Lafayette)",
-   "Pizza Antica (Santana Row)"
+   "Pizza Antica (Santana Row)",
+   "Pizza Antica (bare name)"
   ]
  },
  {
@@ -1518,16 +1550,18 @@
  },
  {
   "base_key": "plouf",
-  "same_node": true,
+  "same_node": false,
   "spellings": [
-   "Plouf (Financial District)"
+   "Plouf (Financial District)",
+   "Plouf (bare name)"
   ]
  },
  {
   "base_key": "plumedhorse",
-  "same_node": true,
+  "same_node": false,
   "spellings": [
-   "Plumed Horse (Saratoga)"
+   "Plumed Horse (Saratoga)",
+   "Plumed Horse (bare name)"
   ]
  },
  {
@@ -1588,7 +1622,8 @@
   "same_node": false,
   "spellings": [
    "RakiRaki (San Diego-based chain)",
-   "RakiRaki (San Francisco outpost at 3282 Mission Street)"
+   "RakiRaki (San Francisco outpost at 3282 Mission Street)",
+   "RakiRaki (bare name)"
   ]
  },
  {
@@ -1607,8 +1642,9 @@
  },
  {
   "base_key": "reems",
-  "same_node": true,
+  "same_node": false,
   "spellings": [
+   "Reem's (bare name)",
    "Reem's (formerly Mission Pie space)"
   ]
  },
@@ -1640,7 +1676,8 @@
   "spellings": [
    "Ritz Carlton (Phoenix)",
    "Ritz Carlton (San Francisco)",
-   "Ritz-Carlton (San Francisco)"
+   "Ritz-Carlton (San Francisco)",
+   "Ritz-Carlton (bare name)"
   ]
  },
  {
@@ -1693,15 +1730,17 @@
  },
  {
   "base_key": "sanaacafe",
-  "same_node": true,
+  "same_node": false,
   "spellings": [
-   "Sana’a Cafe (San Rafael location)"
+   "Sana’a Cafe (San Rafael location)",
+   "Sana’a Cafe (bare name)"
   ]
  },
  {
   "base_key": "sanfrancisco",
-  "same_node": true,
+  "same_node": false,
   "spellings": [
+   "San Francisco (bare name)",
    "San Francisco (unspecified location)"
   ]
  },
@@ -1728,8 +1767,9 @@
  },
  {
   "base_key": "scotthoward",
-  "same_node": true,
+  "same_node": false,
   "spellings": [
+   "Scott Howard (bare name)",
    "Scott Howard (eponymous restaurant)"
   ]
  },
@@ -1828,7 +1868,8 @@
   "same_node": false,
   "spellings": [
    "Stars (San Francisco and Seattle)",
-   "Stars (San Francisco)"
+   "Stars (San Francisco)",
+   "Stars (bare name)"
   ]
  },
  {
@@ -1929,9 +1970,10 @@
  },
  {
   "base_key": "tartinemanufactory",
-  "same_node": true,
+  "same_node": false,
   "spellings": [
-   "Tartine Manufactory (San Francisco)"
+   "Tartine Manufactory (San Francisco)",
+   "Tartine Manufactory (bare name)"
   ]
  },
  {
@@ -2016,9 +2058,10 @@
  },
  {
   "base_key": "tru",
-  "same_node": true,
+  "same_node": false,
   "spellings": [
-   "Tru (Chicago)"
+   "Tru (Chicago)",
+   "Tru (bare name)"
   ]
  },
  {
@@ -2072,9 +2115,10 @@
  },
  {
   "base_key": "viognier",
-  "same_node": true,
+  "same_node": false,
   "spellings": [
-   "Viognier (Draeger's in San Mateo)"
+   "Viognier (Draeger's in San Mateo)",
+   "Viognier (bare name)"
   ]
  },
  {
@@ -2107,9 +2151,10 @@
  },
  {
   "base_key": "wildhare",
-  "same_node": true,
+  "same_node": false,
   "spellings": [
-   "Wild Hare (Menlo Park)"
+   "Wild Hare (Menlo Park)",
+   "Wild Hare (bare name)"
   ]
  },
  {

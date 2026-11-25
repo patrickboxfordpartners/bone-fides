@@ -760,6 +760,7 @@ details.cite[open] summary::after{content:'▴';color:var(--accent)}
     $('panel-body').hidden = true; $('panel-idle').hidden = false;
     var svg = $('graph');
     svg.querySelectorAll('a.on').forEach(function (a) { a.classList.remove('on'); });
+    svg.querySelectorAll('.e.sel').forEach(function (e) { e.classList.remove('sel'); });
     if (state.focusNode && document.contains(state.focusNode)) state.focusNode.focus();
     state.focusNode = null;
   }
