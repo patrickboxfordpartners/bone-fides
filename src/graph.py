@@ -634,6 +634,7 @@ def ledger(g):
 
     out = {
         "built_at": g["raw"].get("built_at"),
+        "moves_on_display": g["raw"]["summary"]["gate_passed"],
         "featured": {"tree": featured_tree, "pairs": pairs},
         "leaders": {
             "alumni": {"slug": rows[0]["kitchen"]["slug"],
