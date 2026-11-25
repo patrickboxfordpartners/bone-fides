@@ -118,6 +118,44 @@ def test_shipped_file_has_no_link_the_page_places_elsewhere():
     assert not elsewhere, elsewhere
 
 
+def test_tavily_accept_prefers_an_sf_url_over_a_city_less_one():
+    spec = importlib.util.spec_from_file_location(
+        "find_booking_tavily_t", os.path.join(_ROOT, "scripts", "find_booking_tavily.py"))
+    fbt = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(fbt)
+    urls = ["https://www.opentable.com/black-cat",
+            "https://www.opentable.com/r/black-cat-san-francisco?lang=es"]
+    assert fbt.accept(urls, {"name": "Black Cat"}) == {
+        "opentable": "https://www.opentable.com/r/black-cat-san-francisco"}
+    assert fbt.accept(urls[:1], {"name": "Black Cat"}) == {"opentable": urls[0]}
+
+
+def test_city_checker_saves_after_every_batch(monkeypatch, tmp_path):
+    spec = importlib.util.spec_from_file_location(
+        "check_booking_cities_s", os.path.join(_ROOT, "scripts", "check_booking_cities.py"))
+    cbc = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(cbc)
+    out = tmp_path / "cities.json"
+    monkeypatch.setattr(cbc.bvb, "CITIES", str(out))
+    monkeypatch.setattr(cbc.bvb, "load_cities", lambda: {})
+    monkeypatch.setattr(cbc.tavily, "_load_key", lambda: "k")
+    monkeypatch.setattr(cbc, "pending", lambda c: [f"https://www.opentable.com/x{i}" for i in range(7)])
+    calls = []
+
+    def fake_extract(key, urls, depth="basic"):
+        calls.append(urls)
+        if len(calls) > 1:
+            raise TimeoutError("second batch fails")
+        return {u: "San Francisco" for u in urls}
+
+    monkeypatch.setattr(cbc, "extract", fake_extract)
+    try:
+        cbc.main()
+    except TimeoutError:
+        pass
+    assert len(json.loads(out.read_text())) == 5, "the finished first batch must be on disk"
+
+
 def test_rejects_search_and_directory_pages():
     assert not bvb.verified("resy", "https://resy.com/city/san-francisco?query=Rich%20Table", ["rich table"])
     assert not bvb.verified("opentable", "https://www.opentable.com/metro/san-francisco-restaurants", ["san francisco"])

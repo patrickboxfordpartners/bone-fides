@@ -22,6 +22,7 @@ import datetime
 import json
 import os
 import sys
+import urllib.parse
 import urllib.request
 
 VERBOSE = False
@@ -66,14 +67,26 @@ def lookup(key, name):
 
 
 def accept(urls, pin):
-    names = [bvb.clean_name(pin["name"])]
-    found = {}
+    """Best verified page per platform. A URL that names San Francisco beats
+    a city-less one whatever Tavily's order: the city-less page may belong to
+    another town and be rejected by the city check later, and booking_checked
+    stops a second search, so the SF page must not be thrown away."""
+    name = bvb.clean_name(pin["name"])
+    found, in_sf = {}, set()
     for url in urls:
         # drop tracking and language parameters (?lang=es, ?ref=...)
         url = url.split("?", 1)[0].split("#", 1)[0]
         for platform, host in bvb.HOSTS.items():
-            if platform not in found and host in url and bvb.verified(platform, url, names, require_city=False):
+            if platform in in_sf or host not in url:
+                continue
+            if not bvb.verified(platform, url, [name], require_city=False):
+                continue
+            path = urllib.parse.unquote(urllib.parse.urlsplit(url).path)
+            if bvb._names_sf(path, name):
                 found[platform] = url
+                in_sf.add(platform)
+            else:
+                found.setdefault(platform, url)
     return found
 
 

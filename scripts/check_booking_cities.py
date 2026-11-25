@@ -6,8 +6,10 @@ Longmont, Colorado "Black Cat" on an SF pin. This script finds every such URL
 that passes the other checks, extracts the page (Tavily: 1 credit per 5
 URLs; a page the basic depth cannot read is retried at the advanced depth),
 and records its city in crawl/booking_cities.json. URLs already in the
-file are skipped. A page that cannot be read is recorded as null and stays
-rejected; delete its entry to retry.
+file are skipped. A page that cannot be read is recorded as null; the build
+then falls back to requiring two or more real words in the pin's own name.
+Delete the entry to retry. Results are saved after every batch, so a failed
+run resumes without paying for finished pages again.
 
 Usage: .venv/bin/python scripts/check_booking_cities.py
 """
@@ -76,6 +78,13 @@ def extract(key, urls, depth="basic"):
     return {u: got.get(u) for u in urls}
 
 
+def save(cities):
+    with open(bvb.CITIES + ".tmp", "w") as f:
+        json.dump(cities, f, indent=1, sort_keys=True)
+        f.write("\n")
+    os.replace(bvb.CITIES + ".tmp", bvb.CITIES)
+
+
 def main():
     key = tavily._load_key()
     if not key:
@@ -93,10 +102,8 @@ def main():
         for url in batch:
             cities[url] = found.get(url)
             print(f"  {cities[url] or 'unknown':<22} {url}")
-    with open(bvb.CITIES + ".tmp", "w") as f:
-        json.dump(cities, f, indent=1, sort_keys=True)
-        f.write("\n")
-    os.replace(bvb.CITIES + ".tmp", bvb.CITIES)
+        save(cities)
+    save(cities)
     return 0
 
 
