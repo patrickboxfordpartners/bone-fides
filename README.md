@@ -9,19 +9,13 @@ SFGate). Mistral extracts person/venue moves from each article, a citation gate
 keeps only moves the quoted text actually states, and Elasticsearch serves
 hybrid (fuzzy keyword + semantic) search over the result.
 
-> **Status (Nov 2026):** the Elastic Cloud project the app pointed at no longer
-> exists, so `/api/search`, `/api/stats` and `/api/method` return 500 on the
-> live site. The pages, `/api/venues` and `/api/map.js` still work. To restore
-> search, point `ELASTIC_ENDPOINT` / `ELASTIC_API_KEY` at a new index and
-> rebuild the corpus with the pipeline below.
-
 ## Layout
 
 | Path | What it is |
 |---|---|
 | `src/` | The library. `dossier.py` is all query/dossier logic for the web API; `es_query.py` the ES client and search; `es.py` index mapping and doc building; `extract.py`, `fetch.py`, `pipeline.py` the extraction pipeline; `venue_images.py`, `hoods.py`, `eras.py`, `roles.py`, `venue_aliases.py` corpus enrichment. |
-| `scripts/` | Command-line entry points: corpus planning and growth, backfills, tip triage, image publishing. Run from the repo root. |
-| `ui/` | The front end (`landing.html`, `explorer.html`, `method.html`, `map.js`), its data files, and `server.py`, the local demo server. |
+| `scripts/` | Command-line entry points: corpus planning and growth, backfills, tip triage, image publishing, `build_graph.py` (the committed graph), `measure_gate.py` (the citation-gate measurement), `sync_chrome.py` (the shared header and footer). Run from the repo root. |
+| `ui/` | The front end (`landing.html`, `explorer.html`, `method.html`, `tree.html`, `connect.html`, `ledger.html`, `numbers.html`, `lineage.js`, `map.js`), its data files (`graph.json`, `venue_aliases.json`, `gate_stamp.json`, `og.png`), and `server.py`, the local demo server. |
 | `vercel-app/` | The Vercel deployment. `api/search.py` is the one Python function; `build.sh` assembles everything else from `ui/` and `src/` at deploy time. |
 | `crawl/` | Crawl plans and caches the scripts read and write (URL lists, seen URLs, image records). |
 | `tests/` | pytest suite. |
