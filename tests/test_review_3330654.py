@@ -1,19 +1,16 @@
 """Regression tests for the post-ship review of commit 3330654.
 
 Every critical finding from the two-reviewer pass, locked:
-- plus-encoding facet params on the local twin (URLSearchParams sends
-  spaces as '+', unquote_plus decodes them; plain unquote does not)
 - CLOSED_SF lookups normalize (curly apostrophes, articles, case place
   the same as the straight curated key)
 - out-of-city parenthetical annotations refuse the token-prefix fallback
 - single-token permit keys never claim multi-token venue names
 - completion edges carry facet stamps and get gated at the merge site
 - the facet-empty probe forwards role and honors the citation gate
-- twin find_edges copies stay in sync on gate composition
+- find_edges composes facet gates as post_filter terms
 - era regex accepts decade-suffixed dates ("1970s") without lying about
   relative dates
 """
-import importlib.util
 import inspect
 import os
 import sys
@@ -27,29 +24,10 @@ from src.eras import era_bucket  # noqa: E402
 from src.hoods import hood_for, load_hood_maps  # noqa: E402
 
 
-def _load(name, path):
-    spec = importlib.util.spec_from_file_location(name, path)
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
-    return mod
+from src import dossier  # noqa: E402
 
-
-_UI = _load("ui_server_rv", os.path.join(_ROOT, "ui", "server.py"))
-_VERCEL = _load("vercel_search_rv", os.path.join(_ROOT, "vercel-app", "api", "search.py"))
+_DOSSIER = os.path.join(_ROOT, "src", "dossier.py")
 _MAPS = load_hood_maps()
-
-
-# Fix 1: + encoding on the local twin
-def test_ui_server_parses_plus_encoded_facet_params():
-    import re
-    from urllib.parse import unquote_plus
-    # mirror of the _search extraction lines, pinned by reading them
-    src = open(os.path.join(_ROOT, "ui", "server.py")).read()
-    assert "unquote_plus(mr.group(1))" in src, "role param must decode +"
-    assert "unquote_plus(me.group(1))" in src, "era param must decode +"
-    assert "unquote_plus(mh.group(1))" in src, "hood param must decode +"
-    # and the decoding itself must actually fold + to space
-    assert unquote_plus("South+of+Market") == "South of Market"
 
 
 # Fix 2: CLOSED_SF normalized lookups
@@ -86,11 +64,7 @@ def test_single_token_permit_key_does_not_prefix_claim():
 
 # Fix 5: completion edges carry stamps and get gated at the merge site
 def test_completion_edges_carry_stamps_and_merge_site_gates():
-    for mod in (_UI, _VERCEL):
-        src = open(mod.__file__).read() if hasattr(mod, "__file__") else ""
-    # stamps fetched by fetch_person_edges (both twins)
-    for path in (os.path.join(_ROOT, "ui", "server.py"),
-                 os.path.join(_ROOT, "vercel-app", "api", "search.py")):
+    for path in (_DOSSIER,):
         src = open(path).read()
         assert '"role_bucket", "era_bucket", "venue_hoods"' in src, path
         # merge site gates extras by the stamps
@@ -103,26 +77,21 @@ def test_fetch_person_edges_returns_stamps():
     # live-shape check without ES: the function's source includes the
     # stamp fields and passes them through to the edge dict
     import inspect
-    src = inspect.getsource(_UI.fetch_person_edges)
+    src = inspect.getsource(dossier.fetch_person_edges)
     assert "role_bucket" in src and "era_bucket" in src and "venue_hoods" in src
-    src_v = inspect.getsource(_VERCEL.fetch_person_edges)
-    assert "role_bucket" in src_v and "era_bucket" in src_v and "venue_hoods" in src_v
 
 
 # Fix 6: role forwarded to the facet probe
 def test_probe_forwards_role():
-    for path in (os.path.join(_ROOT, "ui", "server.py"),
-                 os.path.join(_ROOT, "vercel-app", "api", "search.py")):
-        src = open(path).read()
-        assert "_facet_probe(es, q, era=era, hood=hood, role=role)" in src, path
+    src = open(_DOSSIER).read()
+    assert "_facet_probe(es, q, era=era, hood=hood, role=role)" in src
 
 
 # Fix 7 + Greptile fix 4: the facet-empty claims rest on one shared honest
 # probe — resolution, query-scoped rows, and the citation gate. Raw window
 # matches (recipe rows, unrelated hits) prove nothing.
 def test_facet_probes_are_scoped_and_citation_gated():
-    for path, mod in ((os.path.join(_ROOT, "ui", "server.py"), _UI),
-                      (os.path.join(_ROOT, "vercel-app", "api", "search.py"), _VERCEL)):
+    for path, mod in ((_DOSSIER, dossier),):
         src = open(path).read()
         # the shared ungated probe exists and binds rows to the query
         assert "def _cited_moves_exist(es, q):" in src, path
@@ -136,21 +105,11 @@ def test_facet_probes_are_scoped_and_citation_gated():
         assert "bool(probe) and bool(" in src, path
 
 
-# Greptile fix 1: local twin decodes q with unquote_plus (URLSearchParams
-# sends spaces in q as '+', so "Finn Town" must match "Finn Town Taproom")
-def test_ui_server_q_decodes_plus():
-    src = open(os.path.join(_ROOT, "ui", "server.py")).read()
-    # both search and suggest
-    assert src.count("urllib.parse.unquote_plus(m.group(1))") >= 2
-    # and no plain-unquote q decoding is left
-    assert "urllib.parse.unquote(m.group(1))" not in src
-
-
 # Greptile fix 2: the backfill puts keyword mappings on BEFORE the first
 # update (a mapping-less index would auto-create text fields and the term
 # gates would silently match nothing)
 def test_backfill_ensures_keyword_mappings_first():
-    src = open(os.path.join(_ROOT, "src", "stamp_era_hoods.py")).read()
+    src = open(os.path.join(_ROOT, "scripts", "stamp_era_hoods.py")).read()
     assert "INDEX_SETTINGS" in src
     assert "put_mapping" in src
     # mapping check happens before the scan loop
@@ -184,29 +143,19 @@ def test_era_boundary_rejects_case_underscore_unicode():
     assert era_bucket("2017-fall") == "2010s"
 
 
-# Fix 10: twin find_edges gate composition stays in sync
-def test_twin_find_edges_gate_strings_match():
-    import inspect
-    a = inspect.getsource(_UI.__dict__.get("find_edges") or _VERCEL.find_edges) \
-        if hasattr(_UI, "find_edges") else None
-    # ui/server.py imports find_edges from src.es; vercel carries the copy
-    from src import es as src_es
-    from src.es import find_edges as _src_fe
-    import re
-    def gates(source):
-        return {l.strip() for l in source.splitlines()
-                if "role_bucket" in l or "era_bucket" in l or "venue_hoods" in l
-                or 'body["post_filter"]' in l}
-    src_body = inspect.getsource(_src_fe)
-    vercel_body = inspect.getsource(_VERCEL.find_edges)
-    # the gate-composition lines must exist in both, modulo docstring
+# Fix 10: find_edges composes the facet gates as post_filter terms. There is
+# one implementation now (src/es_query.py), used by the indexer and the API.
+def test_find_edges_gate_strings():
+    from src.es_query import find_edges
+    body = inspect.getsource(find_edges)
     for needle in ('{"term": {"role_bucket": role}}',
                    '{"term": {"era_bucket": era}}',
                    '{"term": {"venue_hoods": hood}}',
                    'body["post_filter"] = {"bool": {"filter": gates}}',
                    'body["post_filter"] = gates[0]'):
-        assert needle in src_body, needle
-        assert needle in vercel_body, needle
+        assert needle in body, needle
+    from src import es
+    assert es.find_edges is find_edges and dossier.find_edges is find_edges
 
 
 # Fix 9: era regex handles decade suffixes, never relative dates
@@ -224,10 +173,9 @@ def test_era_relative_dates_stay_none():
     assert era_bucket("1045s") is None  # out-of-window noise, even with s
 
 
-# Fix 4: role facet chip clearable in both explorer twins
+# Fix 4: role facet chip clearable in the explorer
 def test_explorer_facetclear_handles_role():
-    for path in (os.path.join(_ROOT, "ui", "explorer.html"),
-                 os.path.join(_ROOT, "vercel-app", "explorer.html")):
+    for path in (os.path.join(_ROOT, "ui", "explorer.html"),):
         src = open(path).read()
         assert "if(k === 'role'){ run({ role: null }); return; }" in src, path
         # role-chip re-render keeps era/hood disclosure chips
@@ -236,8 +184,7 @@ def test_explorer_facetclear_handles_role():
 
 # Fix 8: facet-empty wording keyed off server-validated values
 def test_facet_empty_wording_uses_validated_values():
-    for path in (os.path.join(_ROOT, "ui", "explorer.html"),
-                 os.path.join(_ROOT, "vercel-app", "explorer.html")):
+    for path in (os.path.join(_ROOT, "ui", "explorer.html"),):
         src = open(path).read()
         assert "const valEra = d.era_filter || null;" in src, path
         assert "const namedEra" in src, path
@@ -247,8 +194,7 @@ def test_facet_empty_wording_uses_validated_values():
 # facet_empty fallback that blames era/hood when a different filter emptied
 # the dossier (e.g. role=chef emptied it while era=bogus was rejected).
 def test_facet_names_require_own_echo():
-    for path in (os.path.join(_ROOT, "ui", "explorer.html"),
-                 os.path.join(_ROOT, "vercel-app", "explorer.html")):
+    for path in (os.path.join(_ROOT, "ui", "explorer.html"),):
         src = open(path).read()
         assert "const namedRole = (valRole && serverRole === valRole) ? serverRole : null;" in src, path
         assert "const namedEra = (valEra && serverEra === valEra) ? serverEra : null;" in src, path
@@ -260,8 +206,7 @@ def test_facet_names_require_own_echo():
 
 # Greptile fix 6: coverage notes visible beside the chips, not hover-only
 def test_facet_coverage_note_visible():
-    for path in (os.path.join(_ROOT, "ui", "explorer.html"),
-                 os.path.join(_ROOT, "vercel-app", "explorer.html")):
+    for path in (os.path.join(_ROOT, "ui", "explorer.html"),):
         src = open(path).read()
         assert "const facetNote = facetBits.filter(f => f.note).map(f => esc(f.note)).join(' · ');" in src, path
         assert '<span class="facetcov">${facetNote}</span>' in src, path
@@ -274,8 +219,7 @@ def test_facet_coverage_note_visible():
 # from the validated role_filter echo, and role carries no coverage caveat
 # (it is stamped on every row).
 def test_facet_empty_branch_gates_on_role():
-    for path in (os.path.join(_ROOT, "ui", "explorer.html"),
-                 os.path.join(_ROOT, "vercel-app", "explorer.html")):
+    for path in (os.path.join(_ROOT, "ui", "explorer.html"),):
         src = open(path).read()
         assert "if(serverRole || serverEra || serverHood){" in src, path
         assert "const valRole = d.role_filter || null;" in src, path

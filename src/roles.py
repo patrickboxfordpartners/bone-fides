@@ -1,9 +1,7 @@
 """Role bucketing: raw role text -> filter bucket.
 
-Canonical implementation. The two API twins (ui/server.py,
-vercel-app/api/search.py) carry inline copies because the deployed
-functions must stay dependency-free; tests/test_role_bucket.py locks all
-copies together. Keep them in sync.
+Single implementation, used by the indexer (src/es.py) and the web API
+(src/dossier.py). Stdlib only: build.sh ships it in the Vercel bundle.
 """
 import re
 

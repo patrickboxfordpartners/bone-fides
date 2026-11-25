@@ -69,8 +69,8 @@ def parse_extraction(raw, article_text=None):
     guest/supplier roles, and promotions the quotation does not state.
     When article_text is given, evidence must appear in it.
     """
-    # Imported lazily so this module stays usable without the UI server.
-    from ui.server import citation_supported
+    # Imported lazily: the dossier module pulls in the elasticsearch client.
+    from src.dossier import citation_supported
     out = []
     for e in raw.get("edges", []):
         if not e.get("person") or not (e.get("from_venue") or e.get("to_venue")):

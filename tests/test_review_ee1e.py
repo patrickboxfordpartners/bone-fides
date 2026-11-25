@@ -1,15 +1,16 @@
 """Review round-trip for PR #5 (entity scope + citation gate).
 
-Both server implementations must behave identically: ui/server.py (local
-demo) and vercel-app/api/search.py (deployed). Each test runs against the
-Vercel twin via the same function handles.
+Runs against src/dossier.py, the logic both web runtimes serve.
 """
 import importlib.util
 import os
+import sys
 
 import pytest
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.dirname(_HERE))
+from src import dossier  # noqa: E402
 
 
 def _load(name, path):
@@ -19,15 +20,9 @@ def _load(name, path):
     return mod
 
 
-_vercel = _load("vercel_search", os.path.join(
-    _HERE, "..", "vercel-app", "api", "search.py"))
+_vercel = dossier
 
-
-SERVERS = [
-    pytest.param(_load("ui_server", os.path.join(_HERE, "..", "ui", "server.py")),
-                 id="ui/server.py"),
-    pytest.param(_vercel, id="vercel-app/api/search.py"),
-]
+SERVERS = [pytest.param(dossier, id="src/dossier.py")]
 
 
 def _move(person, frm, to, evidence, **kw):

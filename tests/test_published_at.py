@@ -65,15 +65,11 @@ def test_reads_itemprop_date_published_in_both_attribute_orders():
 def test_measure_and_read_are_separate_functions():
     """The computing half and the file-reading half must not be the same name.
 
-    Collapsing them broke src/stamp_score_sample.py: it passed an ES client to
+    Collapsing them broke scripts/stamp_score_sample.py: it passed an ES client to
     the reader, which called open() on it and raised TypeError. The refresh
     command is documented in that script, so it has to actually run.
     """
-    import importlib.util
-    spec = importlib.util.spec_from_file_location(
-        "ui_server_measure", os.path.join(_ROOT, "ui", "server.py"))
-    ui = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(ui)
+    from src import dossier as ui
     assert callable(getattr(ui, "measure_score_sample", None)), (
         "measure_score_sample() is gone — the offline refresh cannot compute")
     # the reader must take a path, not a client

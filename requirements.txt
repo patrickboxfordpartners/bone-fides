@@ -1,0 +1,6 @@
+# Local development: pipeline scripts, the demo server, and tests.
+# The deployed function has its own list in vercel-app/requirements.txt.
+elasticsearch>=8.14,<9
+mistralai
+requests
+pytest

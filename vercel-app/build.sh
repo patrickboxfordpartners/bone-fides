@@ -1,34 +1,34 @@
 #!/bin/bash
-# Vercel build: copy the UI front-end from ui/ into this app dir when the repo
-# is present (git deploys). The copies are committed so CLI deploys from a
-# shallow checkout (or CI machines without ../ui/) still get the assets.
-# map.js loads only when the runtime injects a token, so it ships verbatim.
+# Vercel build step (vercel.json "buildCommand"). Assembles this deploy dir
+# from the sources of truth; none of the copied files are committed.
 #
-# The explorer ships as explorer.html (NOT index.html): the landing page owns
-# "/" — a static index.html at the output root would win over the / rewrite.
-set -e
+#   ui/*.html                      -> public/, the only static output (so no
+#                                     source file in this dir is ever served)
+#   src/{dossier,es_query,roles,venue_aliases}.py
+#                                  -> api/_lib/, the code api/search.py imports
+#   ui/{map.js,*.json data}        -> api/_lib/, the files dossier.data_path() reads
+#
+# The Vercel project needs "Include source files outside of the Root
+# Directory" enabled (it is), so ../ui and ../src exist during the build.
+set -euo pipefail
 cd "$(dirname "$0")"
-if [ -f ../ui/explorer.html ]; then
-  cp ../ui/explorer.html explorer.html
-  # landing.html serves "/" via the vercel.json rewrite. It was missing from
-  # this copy list, so the deployed landing page silently drifted from ui/
-  # for every content change (it shipped 9,309 moves / 799 kitchens / a
-  # pedigree of 73 long after ui/ said otherwise).
-  cp ../ui/landing.html landing.html
-  cp ../ui/method.html method.html
-  cp ../ui/map.js map.js
-  cp ../ui/city_venues.json city_venues.json
-  cp ../ui/venues_geo.json venues_geo.json
-  cp ../ui/city_venues.json api/city_venues.json
-  cp ../ui/venues_geo.json api/venues_geo.json
-  cp ../ui/map.js api/_map.js
-  cp ../ui/score_sample.json api/score_sample.json
-  # The shared venue-identity path. stats() and dossier matching must count
-  # the same kitchens locally and on Vercel; this file is stdlib-only
-  # precisely so it can ship here without the src/ package.
-  cp ../src/venue_aliases.py api/venue_aliases.py
-  cp ../ui/venue_aliases.json api/venue_aliases.json
-  echo "vercel-app build: UI assets copied from ui/"
-else
-  echo "vercel-app build: using committed copies"
+
+if [ ! -f ../ui/explorer.html ] || [ ! -f ../src/dossier.py ]; then
+  echo "vercel-app build: ../ui or ../src is missing; deploy from the repo root" >&2
+  exit 1
 fi
+
+# The explorer ships as explorer.html, not index.html: a static index.html at
+# the output root would win over the "/" -> landing.html rewrite.
+rm -rf public
+mkdir -p public
+cp ../ui/explorer.html ../ui/landing.html ../ui/method.html public/
+
+rm -rf api/_lib
+mkdir -p api/_lib
+touch api/_lib/__init__.py
+cp ../src/dossier.py ../src/es_query.py ../src/roles.py ../src/venue_aliases.py api/_lib/
+cp ../ui/map.js ../ui/city_venues.json ../ui/venues_geo.json ../ui/score_sample.json \
+   ../ui/venue_aliases.json api/_lib/
+
+echo "vercel-app build: pages and api/_lib assembled from ui/ and src/"

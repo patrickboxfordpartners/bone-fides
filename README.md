@@ -1,41 +1,77 @@
 # Bone Fides
 
-**What:** A kitchen-lineage explorer for San Francisco. Type a restaurant, get its bone fides: where this kitchen came from, where its alumni went, with a source on every edge.
+A kitchen-lineage explorer for San Francisco. Type a restaurant or a chef and
+get its bone fides: where the kitchen's people came from and where its alumni
+went, with a cited article on every edge.
 
-**The Betelnut test:** Betelnut closed. Where did its chefs go? Type "Betelnut" → lineage graph of the chefs who filtered into other SF kitchens, each edge backed by a cited article.
+The corpus is built from public food journalism (Eater SF, the Chronicle,
+SFGate). Mistral extracts person/venue moves from each article, a citation gate
+keeps only moves the quoted text actually states, and Elasticsearch serves
+hybrid (fuzzy keyword + semantic) search over the result.
 
-**Why it matters to a resident:** You can look up a restaurant's Yelp stars, but you can't look up its kitchen's pedigree. This is spot-checking a kitchen's bone fides — resident-facing, built from public food journalism.
+> **Status (Nov 2026):** the Elastic Cloud project the app pointed at no longer
+> exists, so `/api/search`, `/api/stats` and `/api/method` return 500 on the
+> live site. The pages, `/api/venues` and `/api/map.js` still work. To restore
+> search, point `ELASTIC_ENDPOINT` / `ELASTIC_API_KEY` at a new index and
+> rebuild the corpus with the pipeline below.
 
-## Stack (per the hackathon brief)
+## Layout
 
-- **Mistral** — structured extraction (article prose → lineage edges) + narrative synthesis (the bone-fides card text)
-- **Elasticsearch** — hybrid search: fuzzy keyword on venue/chef names (aliasing hell: "Tartine" vs "Tartine Bakery") + vector search over article text and chef/venue descriptions
-
-## Data strategy (rules-compliant)
-
-- **This afternoon (allowed = "thinking about ideas"):** source list only — bookmarked public articles, no extraction, no dataset.
-- **Tonight at the venue (everything that IS the project):** pipeline code, Mistral extraction, Elasticsearch indexing, the dataset materializing from the reading list, live-extraction demo beat.
-
-## Tonight's plan (5:30–7:30 build, 7:30 demos)
-
-| Time | Goal |
+| Path | What it is |
 |---|---|
-| 5:30–6:15 | Project skeleton + Elasticsearch up (local docker or provided cloud) + Mistral key working |
-| 6:15–6:45 | Extraction pipeline: article URL → Mistral → edges → ES index. Parallel: Patrick reads sources, feeds links |
-| 6:45–7:15 | UI: search box → bone-fides card + lineage graph. Seed data in |
-| 7:15–7:30 | Demo rehearsal: Betelnut query, live-extract an Eater article, close with the pitch |
-| — | Fallback: if extraction is slow, even ~15 verified edges demo fine |
+| `src/` | The library. `dossier.py` is all query/dossier logic for the web API; `es_query.py` the ES client and search; `es.py` index mapping and doc building; `extract.py`, `fetch.py`, `pipeline.py` the extraction pipeline; `venue_images.py`, `hoods.py`, `eras.py`, `roles.py`, `venue_aliases.py` corpus enrichment. |
+| `scripts/` | Command-line entry points: corpus planning and growth, backfills, tip triage, image publishing. Run from the repo root. |
+| `ui/` | The front end (`landing.html`, `explorer.html`, `method.html`, `map.js`), its data files, and `server.py`, the local demo server. |
+| `vercel-app/` | The Vercel deployment. `api/search.py` is the one Python function; `build.sh` assembles everything else from `ui/` and `src/` at deploy time. |
+| `crawl/` | Crawl plans and caches the scripts read and write (URL lists, seen URLs, image records). |
+| `tests/` | pytest suite. |
+| `docs/` | `DESIGN.md` (visual design), `ROADMAP.md` (specced next steps). |
+| `READING-LIST.md` | The seed source list `src/sources.py` parses. |
 
-## Demo beats
+`ui/server.py` and `vercel-app/api/search.py` are thin HTTP adapters around
+`src.dossier.dispatch()`, so the local demo and the deployed site run the same
+code. `tests/test_shared_core.py` keeps it that way.
 
-1. "Betelnut closed. Where did its chefs go?" → graph appears with cited edges
-2. Live extraction: paste an Eater SF chef-shuffle article URL → new edges land in the graph in seconds
-3. Pitch: "Every edge has a source. The database starts from journalism and grows from the web."
+## Run locally
 
-## Schema
-
+```bash
+python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
+cp .env.example .env          # ELASTIC_ENDPOINT, ELASTIC_API_KEY, MISTRAL_API_KEY; MAPBOX_TOKEN for the map
+.venv/bin/python ui/server.py # http://127.0.0.1:8017
+.venv/bin/python -m pytest -q
 ```
-Person    { id, name }
-Venue     { id, name, neighborhood?, open/closed status }
-Edge      { person, from_venue, to_venue, role, date?, source_url, extracted_at }
+
+## Build the corpus
+
+```bash
+.venv/bin/python -m src.cli ingest                 # READING-LIST.md -> Mistral -> ES
+.venv/bin/python scripts/plan_corpus.py            # Eater SF URL plan -> crawl/eater_urls.json
+.venv/bin/python scripts/grow_corpus.py            # discover, extract and index more articles
+.venv/bin/python scripts/plan_chron.py && .venv/bin/python scripts/grow_chron.py   # same for the Chronicle
+.venv/bin/python -m src.cli ask "Betelnut"         # query from the shell
 ```
+
+Backfills that stamp derived fields onto existing docs live in
+`scripts/stamp_*.py`. Reader tips (`POST /api/tip`) go to a separate
+`bone-fides-tips` index and are triaged with `scripts/review_tips.py`; nothing
+enters the corpus without the citation gate.
+
+## Venue photos
+
+`src/venue_images.py` resolves a photo per venue (the venue's own site first)
+and downloads it into `ui/venue-images/` (gitignored).
+`scripts/publish_venue_images.py` uploads those files to the
+`bone-fides-venue-images` Vercel Blob store and rewrites
+`crawl/venue_images.json` to the public URLs. It needs
+`VENUE_IMAGES_READ_WRITE_TOKEN`, which the Vercel project already has.
+
+## Deploy
+
+The Vercel project `bone-fides` (team pat-mitchells-projects) deploys from
+`main` with root directory `vercel-app/` and "Include source files outside of
+the Root Directory" on. `build.sh` copies the pages into `public/` (the only
+static output) and the dossier modules and data files into `api/_lib/`. Every
+branch push gets a preview deployment.
+
+Environment variables on the project: `ELASTIC_ENDPOINT`, `ELASTIC_API_KEY`,
+`MAPBOX_TOKEN`, `VENUE_IMAGES_READ_WRITE_TOKEN`.

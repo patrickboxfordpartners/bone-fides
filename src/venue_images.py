@@ -21,7 +21,7 @@ a wrong photograph on a dossier whose premise is sourced claims is worse than an
 empty frame.
 
 Nothing is fetched at request time. `resolve_all()` walks the corpus once,
-writes `data_venue_images.json`, and the servers read that file. So:
+writes `crawl/venue_images.json`, and the servers read that file. So:
   - no per-request network call, no cold-start cost
   - no hotlinking: the stored record carries attribution + license note
   - a venue with no confident image simply has none, and the UI renders none
@@ -44,9 +44,10 @@ import unicodedata
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, BASE)
 
-CACHE = os.path.join(BASE, "data_venue_images.json")
-# Downloaded venue photos live under ui/ so both server twins can serve them
-# statically without a third-party request at render time.
+CACHE = os.path.join(BASE, "crawl", "venue_images.json")
+# Downloaded photos land here (gitignored) under relative "venue-images/..."
+# urls; scripts/publish_venue_images.py uploads them to Vercel Blob and
+# rewrites those urls, so nothing is hotlinked at render time.
 IMG_DIR = os.path.join(BASE, "ui", "venue-images")
 UA = {"User-Agent": "BoneFides/1.0 (kitchen lineage research; patrick@boxfordpartners.com)"}
 
@@ -1614,11 +1615,7 @@ def main(argv):
         limit = max(0, int(argv[argv.index("--limit") + 1]))
 
     # Venues worth resolving: those the lineage graph actually names.
-    import importlib.util
-    spec = importlib.util.spec_from_file_location(
-        "ui_server_img", os.path.join(BASE, "ui", "server.py"))
-    ui = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(ui)
+    from src import dossier
     from src.es import make_client
     es = make_client()
 
@@ -1631,7 +1628,7 @@ def main(argv):
     # Try the mapped field, and fall back to the subfield on either an
     # exception or an empty result. Getting this wrong is silent in one
     # direction (zero venues, "resolved successfully") and fatal in the other.
-    raw = distinct_venues(es, ui._distinct_values)
+    raw = distinct_venues(es, dossier._distinct_values)
     # Collapse spelling variants BEFORE resolving. The corpus holds 1,114 raw
     # names for 442 venues; resolving every raw name would fetch the same
     # restaurant's site twice and write both answers to one cache key, so
@@ -1641,7 +1638,7 @@ def main(argv):
     # reproducible.
     _by_key = {}
     for name in raw:
-        if not name or ui._is_junk_venue(name):
+        if not name or dossier._is_junk_venue(name):
             continue
         _by_key.setdefault(venue_identity(name), []).append(name)
 

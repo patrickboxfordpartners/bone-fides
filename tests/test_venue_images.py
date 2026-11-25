@@ -679,7 +679,7 @@ def test_decade_phrases_do_not_become_exact_years():
     assert _year("fall 2017") == 2017
 
 
-def test_completion_rows_carry_year_in_both_twins():
+def test_completion_rows_carry_year():
     """fetch_person_edges requested year but dropped it, so a completion row
     merged beside a ranked row partitioned on a different time key and one move
     split into an e2010s row and a y2013 row."""
@@ -687,7 +687,7 @@ def test_completion_rows_carry_year_in_both_twins():
     import src.venue_images  # noqa: F401  (import path sanity)
     import importlib.util, os
     root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    for rel in ("ui/server.py", "vercel-app/api/search.py"):
+    for rel in ("src/dossier.py",):
         src = open(os.path.join(root, rel), encoding="utf-8").read()
         # the completion builder must copy year out of _source
         assert src.count('"year": s.get("year")') >= 2, (
@@ -1068,23 +1068,6 @@ def test_a_closure_does_not_spend_the_social_tier(monkeypatch):
     assert calls["social"] == 0
 
 
-def test_the_bundled_identity_copy_is_byte_identical():
-    """vercel-app/api/venue_aliases.py is a copy that ships inside the function
-    bundle (which has no src/ package). It went stale once during review and
-    broke /api/stats with AttributeError; a byte comparison is the cheapest way
-    to make that impossible to miss."""
-    import os
-
-    here = os.path.dirname(os.path.abspath(__file__))
-    root = os.path.dirname(here)
-    src = open(os.path.join(root, "src", "venue_aliases.py")).read()
-    bundled = open(os.path.join(root, "vercel-app", "api", "venue_aliases.py")).read()
-    assert src == bundled, (
-        "vercel-app/api/venue_aliases.py drifted from src/venue_aliases.py — "
-        "copy it again (build.sh does this on deploy, but the committed copy "
-        "is what CLI deploys use)")
-
-
 def test_matching_form_strips_the_article_too():
     """identity_words kept a leading "The"; identity did not.
 
@@ -1161,12 +1144,7 @@ def test_plumpjack_operator_prefix_does_not_merge_two_restaurants():
 def test_plumpjack_empire_is_not_a_venue():
     """It is the group, not a restaurant. Counting it adds a kitchen that does
     not exist."""
-    import importlib.util, os
-    here = os.path.dirname(os.path.abspath(__file__))
-    spec = importlib.util.spec_from_file_location(
-        "ui_server_alias", os.path.join(os.path.dirname(here), "ui", "server.py"))
-    ui = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(ui)
+    from src import dossier as ui
 
     assert ui._is_junk_venue("PlumpJack empire")
     # the actual restaurants must survive the same filter

@@ -18,6 +18,7 @@ if _ROOT not in sys.path:
     sys.path.insert(0, _ROOT)
 
 from src.roles import role_bucket as src_bucket, BUCKETS  # noqa: E402
+from src import dossier  # noqa: E402
 
 
 def _load(name, path):
@@ -29,11 +30,7 @@ def _load(name, path):
 
 SERVERS = [
     pytest.param(src_bucket, id="src/roles.py"),
-    pytest.param(_load("ui_server", os.path.join(_HERE, "..", "ui", "server.py")).role_bucket,
-                 id="ui/server.py"),
-    pytest.param(_load("vercel_search", os.path.join(
-        _HERE, "..", "vercel-app", "api", "search.py")).role_bucket,
-                 id="vercel-app/api/search.py"),
+    pytest.param(dossier.role_bucket, id="src/dossier.py"),
 ]
 
 
@@ -44,18 +41,14 @@ def bucket(request):
 
 def test_bucket_vocabulary_matches_twins():
     # the &role= facet accepts exactly the canonical vocabulary
-    for mod_path in [os.path.join(_HERE, "..", "ui", "server.py"),
-                     os.path.join(_HERE, "..", "vercel-app", "api", "search.py")]:
-        assert set(_load("m_" + os.path.basename(mod_path), mod_path)._ROLE_BUCKETS) == set(BUCKETS)
+    assert set(dossier._ROLE_BUCKETS) == set(BUCKETS)
 
 
 def test_era_vocabulary_matches_twins():
     # roadmap 4.4: the &era= facet accepts exactly src.eras.ERA_BUCKETS
     from src.eras import ERA_BUCKETS
     expected = set(ERA_BUCKETS)
-    for mod_path in [os.path.join(_HERE, "..", "ui", "server.py"),
-                     os.path.join(_HERE, "..", "vercel-app", "api", "search.py")]:
-        assert set(_load("e_" + os.path.basename(mod_path), mod_path)._ERA_BUCKETS) == expected
+    assert set(dossier._ERA_BUCKETS) == expected
 
 
 def test_hood_vocabulary_matches_twins():
@@ -63,9 +56,7 @@ def test_hood_vocabulary_matches_twins():
     # analysis_neighborhood labels (+ the curated closed-venue labels)
     from src.hoods import hood_vocabulary
     expected = set(hood_vocabulary())
-    for mod_path in [os.path.join(_HERE, "..", "ui", "server.py"),
-                     os.path.join(_HERE, "..", "vercel-app", "api", "search.py")]:
-        assert set(_load("h_" + os.path.basename(mod_path), mod_path)._HOOD_VOCAB) == expected
+    assert set(dossier._HOOD_VOCAB) == expected
 
 
 def test_case_and_punctuation_fold(bucket):

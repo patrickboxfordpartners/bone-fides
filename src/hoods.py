@@ -1,7 +1,7 @@
 """Roadmap 4.4 — venue -> neighborhood enrichment.
 
 The city permit snapshot (ui/city_venues.json, from SF DPH inspections,
-pulled by src/pull_city.py) carries an analysis_neighborhood on 99% of
+pulled by scripts/pull_city.py) carries an analysis_neighborhood on 99% of
 its 8,155 rows — but only for businesses with an ACTIVE permit file. The
 corpus's most-cited kitchens include closed venues (Betelnut, SPQR, Bar
 Agricole, Rubicon) that no longer appear there, and non-SF venues

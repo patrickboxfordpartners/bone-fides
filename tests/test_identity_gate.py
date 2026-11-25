@@ -6,13 +6,10 @@ chefs") — they must not resolve junk queries, and person-name venue values
 venue queries.
 """
 import os
-import importlib.util
+import sys
 
-_HERE = os.path.dirname(os.path.abspath(__file__))
-_spec = importlib.util.spec_from_file_location(
-    "ui_server", os.path.join(_HERE, "..", "ui", "server.py"))
-_mod = importlib.util.module_from_spec(_spec)
-_spec.loader.exec_module(_mod)
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from src import dossier as _mod  # noqa: E402
 
 resolve_query = _mod.resolve_query
 _is_collective = _mod._is_collective
